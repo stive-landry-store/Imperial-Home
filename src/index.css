@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Montserrat", "Outfit", system-ui, sans-serif;
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #111111;
+  --color-gold: #c4a35a;
+  --color-gold-light: #e0c57a;
+  --color-gold-dim: #8b6f32;
+  --color-cream: #f4eee3;
+  --color-paper: #f7f4ee;
+  --color-stone: #a89f90;
+  --color-muted: #6f675c;
+  --color-line: #e4dccb;
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-base: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.4375rem;
+  --text-2xl: 1.75rem;
+  --surface-fg: #14110c;
+  --surface-muted: #524a40;
+  --surface-head: #3d362c;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+}
+
+html.theme-dark {
+  --page: #050505;
+  --page-alt: #0c0c0c;
+  --page-fg: #f4eee3;
+  --muted-fg: rgba(244, 238, 227, 0.68);
+  --muted-fg-soft: rgba(244, 238, 227, 0.5);
+  --header-solid: rgba(5, 5, 5, 0.95);
+  --header-fg: #d4af6a;
+  --card-bg: #111111;
+  --input-bg: #ffffff;
+  --input-fg: #14110c;
+  color-scheme: dark;
+}
+
+html.theme-light {
+  --page: #f7f4ee;
+  --page-alt: #efe8da;
+  --page-fg: #14110c;
+  --muted-fg: rgba(20, 17, 12, 0.68);
+  --muted-fg-soft: rgba(20, 17, 12, 0.48);
+  --header-solid: rgba(247, 244, 238, 0.96);
+  --header-fg: #8b6f32;
+  --card-bg: #fffdf8;
+  --input-bg: #ffffff;
+  --input-fg: #14110c;
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--page, #050505);
+  color: var(--page-fg, #f4eee3);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.theme-page {
+  background: var(--page);
+  color: var(--page-fg);
+}
+
+.theme-alt {
+  background: var(--page-alt);
+  color: var(--page-fg);
+}
+
+.theme-card {
+  border: 1px solid rgba(212, 175, 106, 0.35);
+  background: var(--card-bg);
+  color: var(--page-fg);
+}
+
+.theme-muted {
+  color: var(--muted-fg);
+}
+
+.theme-muted-soft {
+  color: var(--muted-fg-soft);
+}
+
+/* Light panels on dark pages (admin tables, lists, forms) */
+.surface-light,
+.theme-page .bg-white,
+.theme-page .bg-cream {
+  background: #fffdf8;
+  color: var(--surface-fg);
+}
+
+.surface-light .text-muted,
+.theme-page .bg-white .text-muted,
+.theme-page .bg-cream .text-muted {
+  color: var(--surface-muted);
+}
+
+.theme-page .bg-white a,
+.theme-page .bg-cream a,
+.surface-light a {
+  color: var(--surface-fg);
+}
+
+.theme-page .bg-white a:hover,
+.theme-page .bg-cream a:hover,
+.surface-light a:hover {
+  color: var(--color-gold-dim);
+}
+
+.theme-page .bg-white button,
+.theme-page .bg-cream button,
+.surface-light button {
+  color: var(--surface-muted);
+}
+
+.theme-page .bg-white button:hover,
+.theme-page .bg-cream button:hover,
+.surface-light button:hover {
+  color: var(--color-gold-dim);
+}
+
+.theme-page table {
+  font-size: 1.0625rem;
+}
+
+.theme-page table th {
+  color: var(--surface-head);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.theme-page table td {
+  color: var(--surface-fg);
+}
+
+.theme-page .bg-white li,
+.theme-page .bg-white p,
+.theme-page .bg-white span,
+.theme-page .bg-cream li,
+.theme-page .bg-cream p,
+.theme-page .bg-cream span,
+.surface-light li,
+.surface-light p,
+.surface-light span {
+  color: inherit;
+}
+
+.admin-main {
+  font-size: 1.0625rem;
+}
+
+.admin-main h1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+}
+
+#root {
+  min-height: 100svh;
+}
+
+::selection {
+  background: #c4a35a;
+  color: #0a0a0a;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c4a35a, transparent);
+}
+
+.kenburns {
+  animation: kenburns 28s ease-out forwards;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.housing-a4 {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  color: #111111;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color-scheme: light;
+}
+
+.housing-a4 * {
+  color-scheme: light;
+}
+
+.housing-box {
+  border: 1px solid #c4a35a;
+  border-radius: 18px;
+}
+
+.housing-header {
+  background: #000;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+  .fiche-page > :not(.housing-print-wrap) {
+    display: none !important;
+  }
+  .fiche-toolbar {
+    display: none !important;
+  }
+  #ih-boot {
+    display: none !important;
+  }
+  .housing-print-target,
+  .housing-a4 {
+    box-shadow: none !important;
+    width: 210mm;
+    min-height: 297mm;
+  }
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
