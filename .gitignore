@@ -19,7 +19,6 @@ supabase/.branches
 supabase/bootstrap.sql
 
 # Editor directories and files
-.cursor
 .vscode/*
 !.vscode/extensions.json
 .idea

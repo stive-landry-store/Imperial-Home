@@ -28,7 +28,7 @@ export function PropertyCard({
     .slice(0, 3)
 
   return (
-    <Link to={`/properties/${property.slug}${query}`} className="group block">
+    <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="group block">
       <div className="relative aspect-[3/4] overflow-hidden bg-black">
         {image ? (
           <img

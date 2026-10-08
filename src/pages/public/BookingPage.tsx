@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { Input, Label } from '../../components/ui/Field'
@@ -19,12 +19,14 @@ export function BookingPage() {
   const guests = Number(params.get('guests') ?? 1)
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { data: config } = useSiteConfig()
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
   const [wantCar, setWantCar] = useState(false)
   const [vehicleId, setVehicleId] = useState('')
   const [withDriver, setWithDriver] = useState(false)
+  const [usePromo, setUsePromo] = useState(false)
   const [carPromo, setCarPromo] = useState('')
 
   const { data: property } = useQuery({
@@ -44,9 +46,9 @@ export function BookingPage() {
     if (!wantCar || !selectedVehicle || !quote?.nights) return null
     const rate = withDriver ? selectedVehicle.daily_rate_with_driver_xaf : selectedVehicle.daily_rate_no_driver_xaf
     const base = rate * quote.nights
-    const discount = carPromo.trim() ? Math.floor(base * 0.05) : 0
+    const discount = usePromo && carPromo.trim() ? Math.floor(base * 0.05) : 0
     return { base, discount, total: base - discount, rate }
-  }, [wantCar, selectedVehicle, quote?.nights, withDriver, carPromo])
+  }, [wantCar, selectedVehicle, quote?.nights, withDriver, usePromo, carPromo])
 
   async function confirm() {
     if (!property) return
@@ -59,8 +61,13 @@ export function BookingPage() {
       }
       const result = await createBooking(property.id, checkIn, checkOut, guests)
       if (wantCar && vehicleId) {
-        await addVehicleRental(result.id, vehicleId, withDriver, carPromo)
+        await addVehicleRental(result.id, vehicleId, withDriver, usePromo ? carPromo : undefined)
       }
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['unavailable'] }),
+        queryClient.invalidateQueries({ queryKey: ['admin-reservations'] }),
+        queryClient.invalidateQueries({ queryKey: ['quote'] }),
+      ])
       navigate(`/account/reservations/${result.id}`)
     } catch (e) {
       setError(e instanceof Error ? e.message : t('common.error'))
@@ -138,9 +145,34 @@ export function BookingPage() {
                 {t('cars.withDriver')}
               </label>
             </div>
-            <div>
-              <Label>{t('cars.promoCode')}</Label>
-              <Input value={carPromo} onChange={(e) => setCarPromo(e.target.value)} placeholder={t('cars.promoCodePlaceholder')} />
+            <div className="space-y-2">
+              <label className="flex items-start gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  className="mt-0.5"
+                  checked={usePromo}
+                  onChange={(e) => {
+                    setUsePromo(e.target.checked)
+                    if (!e.target.checked) setCarPromo('')
+                  }}
+                />
+                <span>{t('cars.promoOptional')}</span>
+              </label>
+              {usePromo ? (
+                <div>
+                  <Label>{t('cars.promoCode')}</Label>
+                  <Input
+                    name="car-promo-optional"
+                    autoComplete="off"
+                    value={carPromo}
+                    onChange={(e) => setCarPromo(e.target.value)}
+                    placeholder={t('cars.promoCodePlaceholder')}
+                  />
+                  <p className="mt-1 text-xs theme-muted">{t('cars.promoSkipHint')}</p>
+                </div>
+              ) : (
+                <p className="text-xs theme-muted">{t('cars.promoSkipHint')}</p>
+              )}
             </div>
             {carEstimate ? (
               <p className="text-sm text-[#d4af6a]">

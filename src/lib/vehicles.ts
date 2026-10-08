@@ -86,9 +86,11 @@ export async function fetchPublishedVehicles(): Promise<Vehicle[]> {
     .select(vehicleSelect)
     .eq('status', 'published')
     .order('sort_order', { ascending: true })
-  if (error) return demoVehicles
-  const rows = (data as Vehicle[]) ?? []
-  return rows.length > 0 ? rows : demoVehicles
+  if (error) {
+    if (vehicleFetchFailed(error)) return demoVehicles
+    throw error
+  }
+  return (data as Vehicle[]) ?? []
 }
 
 export async function fetchAllVehicles(): Promise<Vehicle[]> {
@@ -98,8 +100,7 @@ export async function fetchAllVehicles(): Promise<Vehicle[]> {
     if (vehicleFetchFailed(error)) return demoVehicles
     throw error
   }
-  const rows = (data as Vehicle[]) ?? []
-  return rows.length > 0 ? rows : demoVehicles
+  return (data as Vehicle[]) ?? []
 }
 
 export async function isVehicleAvailable(vehicleId: string, checkIn: string, checkOut: string) {

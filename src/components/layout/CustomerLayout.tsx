@@ -6,13 +6,16 @@ import { cn } from '../../lib/cn'
 export function CustomerLayout() {
   const { t } = useTranslation()
   const item = ({ isActive }: { isActive: boolean }) =>
-    cn('px-3 py-2 text-sm uppercase tracking-[0.14em]', isActive ? 'text-[#d4af6a]' : 'opacity-50 hover:opacity-100')
+    cn(
+      'inline-flex min-h-11 shrink-0 snap-start items-center px-3 py-2 text-sm uppercase tracking-[0.14em] touch-manipulation',
+      isActive ? 'text-[#d4af6a]' : 'opacity-50 hover:opacity-100',
+    )
 
   return (
     <div className="admin-main theme-page min-h-svh">
       <Header />
       <div className="mx-auto max-w-5xl px-4 pt-28 pb-16">
-        <nav className="mb-8 flex flex-wrap gap-2 border-b border-[#d4af6a]/25">
+        <nav className="admin-nav-rail mb-8 flex snap-x snap-mandatory gap-2 overflow-x-auto border-b border-[#d4af6a]/25 pb-1 md:overflow-visible md:snap-none">
           <NavLink to="/account" end className={item}>
             {t('account.title')}
           </NavLink>

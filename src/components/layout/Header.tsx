@@ -50,7 +50,12 @@ export function Header() {
         </Link>
         <div className="flex items-center gap-2 md:hidden">
           <PreferenceBar compact />
-          <button type="button" onClick={() => setOpen((v) => !v)} aria-label="Menu">
+          <button
+            type="button"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Menu"
+          >
             {open ? <X /> : <Menu />}
           </button>
         </div>
@@ -89,28 +94,28 @@ export function Header() {
         </nav>
       </div>
       {open ? (
-        <div className="space-y-3 border-t border-gold/20 px-6 py-6 text-base uppercase tracking-[0.16em] md:hidden" style={{ background: 'var(--header-solid)' }}>
+        <div className="space-y-1 border-t border-gold/20 px-6 py-4 text-base uppercase tracking-[0.16em] md:hidden" style={{ background: 'var(--header-solid)' }}>
           {links.map((l) => (
-            <Link key={l.to} to={l.to} className="block">
+            <Link key={l.to} to={l.to} className="flex min-h-11 items-center">
               {l.label}
             </Link>
           ))}
-          <Link to={user ? '/account' : '/login'} className="block">
+          <Link to={user ? '/account' : '/login'} className="flex min-h-11 items-center">
             {user ? t('nav.account') : t('nav.login')}
           </Link>
           {isStaff ? (
-            <Link to="/admin" className="block text-gold-light">
+            <Link to="/admin" className="flex min-h-11 items-center text-gold-light">
               {t('nav.admin')}
             </Link>
           ) : null}
-          <Link to="/properties" className="block text-[#e0c57a]">
+          <Link to="/properties" className="flex min-h-11 items-center text-[#e0c57a]">
             {t('nav.book')}
           </Link>
-          <Link to="/fiche" className="block">
+          <Link to="/fiche" className="flex min-h-11 items-center">
             {t('account.housing')}
           </Link>
           {user ? (
-            <button type="button" onClick={() => void signOut()}>
+            <button type="button" className="flex min-h-11 items-center" onClick={() => void signOut()}>
               {t('nav.logout')}
             </button>
           ) : null}

@@ -29,6 +29,18 @@ html {
   font-size: 18px;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@media (max-width: 767px) {
+  html {
+    font-size: 16px;
+  }
+}
+
 html.theme-dark {
   --page: #050505;
   --page-alt: #0c0c0c;
@@ -162,6 +174,49 @@ body {
 
 .admin-main {
   font-size: 1.0625rem;
+  overflow-x: visible;
+}
+
+.swipe-rail {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  scrollbar-width: none;
+}
+
+.swipe-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-nav-rail {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: none;
+}
+
+.admin-nav-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.table-swipe {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+}
+
+@media (max-width: 767px) {
+  .admin-main h1 {
+    font-size: 1.75rem;
+  }
+
+  button,
+  a,
+  select,
+  input,
+  textarea {
+    max-width: 100%;
+  }
 }
 
 .admin-main h1 {

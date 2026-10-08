@@ -7,6 +7,10 @@ export async function invalidateSiteData(client: QueryClient, propertyId?: strin
     client.invalidateQueries({ queryKey: ['properties'] }),
     client.invalidateQueries({ queryKey: ['admin-properties'] }),
     client.invalidateQueries({ queryKey: ['promotions'] }),
+    client.invalidateQueries({ queryKey: ['unavailable'] }),
+    client.invalidateQueries({ queryKey: ['admin-reservations'] }),
+    client.invalidateQueries({ queryKey: ['vehicles'] }),
+    client.invalidateQueries({ queryKey: ['admin-vehicles'] }),
   ]
   if (propertyId) {
     tasks.push(client.invalidateQueries({ queryKey: ['property', propertyId] }))

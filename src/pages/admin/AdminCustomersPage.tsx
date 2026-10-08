@@ -17,7 +17,7 @@ export function AdminCustomersPage() {
   })
 
   return (
-    <div className="p-6 md:p-10">
+    <div className="px-4 py-5 md:p-10">
       <Helmet>
         <title>{t('admin.customers')} | Imperial Home</title>
       </Helmet>

@@ -11,7 +11,7 @@ export function AdminPaymentsPage() {
   const { data = [] } = useQuery({ queryKey: ['admin-reservations'], queryFn: fetchAllReservations })
 
   return (
-    <div className="p-6 md:p-10">
+    <div className="px-4 py-5 md:p-10">
       <Helmet>
         <title>{t('admin.payments')} | Imperial Home</title>
       </Helmet>

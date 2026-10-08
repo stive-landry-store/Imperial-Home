@@ -165,7 +165,7 @@ export function AdminVehiclesPage() {
   const editingMedia = [...(editing?.vehicle_media ?? [])].sort((a, b) => a.sort_order - b.sort_order)
 
   return (
-    <div className="p-6 md:p-10">
+    <div className="px-4 py-5 md:p-10">
       <Helmet>
         <title>{t('admin.vehicles')} | Impérial Home</title>
       </Helmet>
