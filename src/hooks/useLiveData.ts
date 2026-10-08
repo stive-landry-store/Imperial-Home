@@ -10,6 +10,7 @@ const TABLES = [
   'vehicle_media',
   'system_config',
   'promotions',
+  'property_blocks',
 ] as const
 
 /** Keep calendars and catalogue in sync with Supabase on every device (local, mobile, Vercel). */

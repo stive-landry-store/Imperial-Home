@@ -33,9 +33,15 @@ import { AdminVehiclesPage } from '../pages/admin/AdminVehiclesPage'
 import { HousingSheetEditorPage } from '../pages/shared/HousingSheetEditorPage'
 import { RequireAuth, RequireStaff } from './guards'
 
+function routerBasename() {
+  const base = import.meta.env.BASE_URL
+  if (!base || base === '/') return undefined
+  return base.replace(/\/$/, '')
+}
+
 export function AppRouter() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={routerBasename()}>
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />

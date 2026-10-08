@@ -1,4 +1,5 @@
 import type { TFunction } from 'i18next'
+import { authRedirectHint } from './authRedirect'
 
 export function formatAuthError(error: unknown, t: TFunction): string {
   const message =
@@ -22,9 +23,5 @@ export function formatAuthError(error: unknown, t: TFunction): string {
 }
 
 function authRedirectHintInline() {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173'
-  const configured = import.meta.env.VITE_APP_URL?.replace(/\/$/, '')
-  const urls = new Set([`${origin}/reset-password`, 'http://localhost:5173/reset-password', 'http://localhost:5174/reset-password'])
-  if (configured) urls.add(`${configured}/reset-password`)
-  return [...urls].join(', ')
+  return authRedirectHint().replaceAll('\n', ', ')
 }

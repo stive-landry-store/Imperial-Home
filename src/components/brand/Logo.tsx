@@ -8,7 +8,7 @@ export function ImperialMark({ className = 'h-16 w-auto', markClassName = '', va
   if (variant === 'photo') {
     return (
       <img
-        src="/brand/imperial-monogram.png"
+        src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`}
         alt="Impérial Home"
         className={`object-contain object-center ${className}`}
       />
