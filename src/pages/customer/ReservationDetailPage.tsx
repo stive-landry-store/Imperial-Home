@@ -60,6 +60,13 @@ export function ReservationDetailPage() {
       <p className="mt-2 text-lg">{formatXaf(reservation.total_amount_xaf)}</p>
       {payment ? <p className="text-sm theme-muted-soft">{t(`status.${payment.status}`)}</p> : null}
 
+      {reservation.status === 'confirmed' ? (
+        <div className="theme-card mt-8 border border-[#d4af6a]/50 p-6">
+          <h2 className="font-display text-2xl">{t('account.bookingValidated')}</h2>
+          <p className="mt-2 text-sm theme-muted">{t('account.bookingValidatedLead')}</p>
+        </div>
+      ) : null}
+
       {awaiting ? (
         <div className="theme-card mt-8 p-6">
           <h2 className="font-display text-2xl">{t('booking.payTitle')}</h2>

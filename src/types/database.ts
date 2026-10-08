@@ -193,6 +193,16 @@ export type Message = {
   message_attachments?: { id: string; storage_path: string; mime_type: string }[]
 }
 
+export type AppNotification = {
+  id: string
+  user_id: string
+  title: string
+  body: string | null
+  link: string | null
+  read_at: string | null
+  created_at: string
+}
+
 export type SiteConfig = {
   brand_name: string
   phone: string

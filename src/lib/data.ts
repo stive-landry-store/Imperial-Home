@@ -2,6 +2,7 @@ import { SITE_DEFAULTS, jsonText } from './config'
 import { demoConfig, demoProperties, demoPromotions, demoQuote, demoUnavailable } from './demo'
 import { supabase, isSupabaseConfigured } from './supabase'
 import type {
+  AppNotification,
   DateRange,
   Profile,
   Promotion,
@@ -200,6 +201,23 @@ export async function rejectPayment(reservationId: string, reason?: string) {
   })
   if (error) throw error
   return data
+}
+
+export async function fetchMyNotifications(): Promise<AppNotification[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('notifications')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(20)
+  if (error) throw error
+  return (data as AppNotification[]) ?? []
+}
+
+export async function markNotificationRead(id: string) {
+  if (!supabase) return
+  const { error } = await supabase.from('notifications').update({ read_at: new Date().toISOString() }).eq('id', id)
+  if (error) throw error
 }
 
 export async function fetchProfile(userId: string): Promise<Profile | null> {

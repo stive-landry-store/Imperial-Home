@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Header } from './Header'
+import { CustomerNotifications } from '../account/CustomerNotifications'
 import { cn } from '../../lib/cn'
 
 export function CustomerLayout() {
@@ -26,6 +27,7 @@ export function CustomerLayout() {
             {t('account.profile')}
           </NavLink>
         </nav>
+        <CustomerNotifications />
         <Outlet />
       </div>
     </div>

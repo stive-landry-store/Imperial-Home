@@ -6,7 +6,11 @@ import { fetchAllReservations } from '../../lib/data'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
-import { isPendingReservation, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
+import {
+  decisionErrorMessage,
+  isPendingReservation,
+  useAdminReservationActions,
+} from '../../hooks/useAdminReservationActions'
 
 export function AdminReservationsPage() {
   const { t } = useTranslation()
@@ -19,6 +23,14 @@ export function AdminReservationsPage() {
         <title>{t('admin.reservations')} | Imperial Home</title>
       </Helmet>
       <h1 className="font-display text-3xl md:text-4xl">{t('admin.reservations')}</h1>
+      {confirm.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.approveSuccess')}</p> : null}
+      {reject.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.rejectSuccess')}</p> : null}
+      {confirm.isError ? (
+        <p className="mt-3 text-sm text-red-600">{decisionErrorMessage(confirm.error, t('admin.approveError'))}</p>
+      ) : null}
+      {reject.isError ? (
+        <p className="mt-3 text-sm text-red-600">{decisionErrorMessage(reject.error, t('admin.rejectError'))}</p>
+      ) : null}
 
       <ul className="mt-6 space-y-3 md:hidden">
         {data.map((r) => (

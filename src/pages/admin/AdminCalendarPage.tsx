@@ -17,7 +17,11 @@ import { fetchAllReservations, fetchAllProperties } from '../../lib/data'
 import { cn } from '../../lib/cn'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
-import { isPendingReservation, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
+import {
+  decisionErrorMessage,
+  isPendingReservation,
+  useAdminReservationActions,
+} from '../../hooks/useAdminReservationActions'
 
 function iso(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -88,6 +92,14 @@ export function AdminCalendarPage() {
       <section className="surface-light mt-6 border border-line p-4">
         <h2 className="font-display text-2xl">{t('admin.pendingQueue')}</h2>
         <p className="mt-1 text-sm theme-muted">{t('admin.pendingQueueLead')}</p>
+        {confirm.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.approveSuccess')}</p> : null}
+        {reject.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.rejectSuccess')}</p> : null}
+        {confirm.isError ? (
+          <p className="mt-3 text-sm text-red-600">{decisionErrorMessage(confirm.error, t('admin.approveError'))}</p>
+        ) : null}
+        {reject.isError ? (
+          <p className="mt-3 text-sm text-red-600">{decisionErrorMessage(reject.error, t('admin.rejectError'))}</p>
+        ) : null}
         {pending.length === 0 ? (
           <p className="mt-4 text-sm theme-muted">{t('admin.noPending')}</p>
         ) : (

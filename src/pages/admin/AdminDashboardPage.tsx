@@ -9,7 +9,7 @@ import { todayIso } from '../../lib/availability'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { SwipeRail } from '../../components/ui/SwipeRail'
-import { useAdminReservationActions } from '../../hooks/useAdminReservationActions'
+import { decisionErrorMessage, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
 import type { Reservation } from '../../types/database'
 
 function PendingSwipeCard({
@@ -137,6 +137,14 @@ export function AdminDashboardPage() {
 
       <h2 className="mt-10 font-display text-2xl">{t('admin.pendingQueue')}</h2>
       <p className="mt-1 text-sm theme-muted">{t('admin.pendingQueueLead')}</p>
+      {confirm.isSuccess ? <p className="mt-2 text-sm text-emerald-700">{t('admin.approveSuccess')}</p> : null}
+      {reject.isSuccess ? <p className="mt-2 text-sm text-emerald-700">{t('admin.rejectSuccess')}</p> : null}
+      {confirm.isError ? (
+        <p className="mt-2 text-sm text-red-600">{decisionErrorMessage(confirm.error, t('admin.approveError'))}</p>
+      ) : null}
+      {reject.isError ? (
+        <p className="mt-2 text-sm text-red-600">{decisionErrorMessage(reject.error, t('admin.rejectError'))}</p>
+      ) : null}
       <p className="mt-1 text-sm text-[#c4a35a] md:hidden">{t('admin.swipeToApprove')}</p>
       <ul className="surface-light mt-4 overflow-hidden border border-line">
         {pendingPay.slice(0, 8).map((r) => (

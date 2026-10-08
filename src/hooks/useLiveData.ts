@@ -11,6 +11,8 @@ const TABLES = [
   'system_config',
   'promotions',
   'property_blocks',
+  'notifications',
+  'messages',
 ] as const
 
 /** Keep calendars and catalogue in sync with Supabase on every device (local, mobile, Vercel). */

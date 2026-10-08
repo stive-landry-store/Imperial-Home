@@ -6,7 +6,11 @@ import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
-import { isPendingReservation, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
+import {
+  decisionErrorMessage,
+  isPendingReservation,
+  useAdminReservationActions,
+} from '../../hooks/useAdminReservationActions'
 
 export function AdminReservationDetailPage() {
   const { id = '' } = useParams()
@@ -37,6 +41,14 @@ export function AdminReservationDetailPage() {
         <Badge>{t(`status.${r.status}`)}</Badge>
       </div>
       {canDecide ? <p className="mt-3 max-w-xl text-sm theme-muted">{t('admin.pendingDecisionLead')}</p> : null}
+      {confirm.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.approveSuccess')}</p> : null}
+      {reject.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.rejectSuccess')}</p> : null}
+      {confirm.isError ? (
+        <p className="mt-3 text-sm text-red-600">{decisionErrorMessage(confirm.error, t('admin.approveError'))}</p>
+      ) : null}
+      {reject.isError ? (
+        <p className="mt-3 text-sm text-red-600">{decisionErrorMessage(reject.error, t('admin.rejectError'))}</p>
+      ) : null}
       <dl className="mt-8 max-w-xl space-y-2 text-sm">
         <div className="flex justify-between">
           <dt>{t('admin.guest')}</dt>
