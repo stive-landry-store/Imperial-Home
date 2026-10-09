@@ -11,7 +11,7 @@ export function AppTabBar() {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const { user, profile } = useAuth()
-  const accountTo = user ? '/account/profile' : '/login?next=/account/profile'
+  const accountTo = user ? '/account/profile' : '/login'
   const staysTo = user ? '/account' : '/login?next=/account'
   const searchOn = pathname === '/' || pathname.startsWith('/properties') || pathname.startsWith('/cars')
   const favoritesOn = pathname.startsWith('/favoris')

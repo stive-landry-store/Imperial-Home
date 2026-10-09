@@ -17,7 +17,8 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
   const [params] = useSearchParams()
-  const next = params.get('next') || '/account'
+  const requested = params.get('next')
+  const next = !requested || requested.startsWith('/account/profile') ? '/' : requested
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')

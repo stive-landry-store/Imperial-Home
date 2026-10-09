@@ -61,7 +61,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
   const roleLabel =
     profile?.role === 'main_admin' ? t('menu.roleMain') : profile?.role === 'admin' ? t('menu.roleAdmin') : t('menu.roleCustomer')
   const menuItems = [
-    { to: user ? '/account/profile' : '/login?next=/account/profile', label: t('account.myAccount'), icon: UserRound },
+    { to: user ? '/account/profile' : '/login', label: t('account.myAccount'), icon: UserRound },
     { to: user ? '/account' : '/login?next=/account', label: t('nav.reservations'), icon: CalendarDays },
     { to: '/favoris', label: t('nav.favorites'), icon: Heart },
     { to: '/properties', label: t('nav.residences'), icon: Home },
