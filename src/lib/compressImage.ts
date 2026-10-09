@@ -3,7 +3,7 @@ export async function compressPhoto(file: File, maxEdge = 1600, quality = 0.82):
   if (!file.type.startsWith('image/') || file.type === 'image/gif') return file
   if (typeof createImageBitmap !== 'function') return file
 
-  const bitmap = await createImageBitmap(file)
+  const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
   const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height))
   const width = Math.max(1, Math.round(bitmap.width * scale))
   const height = Math.max(1, Math.round(bitmap.height * scale))

@@ -33,7 +33,7 @@ export function AppTabBar() {
           <Heart className="h-6 w-6" strokeWidth={favoritesOn ? 2.25 : 1.75} />
           <span>{t('nav.favorites')}</span>
         </NavLink>
-        <NavLink to={staysTo} className={cn(item, staysOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
+        <NavLink to={staysTo} end={Boolean(user)} className={cn(item, staysOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
           <CalendarDays className="h-6 w-6" strokeWidth={staysOn ? 2.25 : 1.75} />
           <span>{t('nav.reservations')}</span>
         </NavLink>

@@ -1,26 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { supabase } from '../../lib/supabase'
-import { Button } from '../../components/ui/Button'
-import { Textarea } from '../../components/ui/Field'
-import { ChatLine, type ChatSender } from '../../components/chat/ChatLine'
-import { VerifiedBadge } from '../../components/ui/VerifiedBadge'
-import type { Conversation, Message } from '../../types/database'
+import { ChatInbox, type InboxRow } from '../../components/chat/ChatInbox'
+import { ChatThread, type Bubble } from '../../components/chat/ChatThread'
 import { useAuth } from '../../hooks/useAuth'
+import { chatSeen, markChatSeen, visibleMessage } from '../../lib/chatText'
+import { sendChatMessage, signedAttachmentUrls } from '../../lib/chatSend'
+import { supabase } from '../../lib/supabase'
+import { cn } from '../../lib/cn'
+import type { Conversation, Message } from '../../types/database'
 
-type Row = Conversation & { guest?: string }
+type Person = { id: string; full_name: string | null; email: string | null; phone: string | null; avatar_url: string | null }
+type Row = Conversation & { person?: Person }
+type Recent = Pick<Message, 'id' | 'conversation_id' | 'body' | 'role' | 'created_at'> & {
+  message_attachments?: { id: string }[]
+}
 
 export function AdminChatPage() {
-  const { t } = useTranslation()
-  const { user, profile, admin } = useAuth()
-  const [params] = useSearchParams()
+  const { t, i18n } = useTranslation()
+  const { user } = useAuth()
+  const [params, setParams] = useSearchParams()
   const [conversations, setConversations] = useState<Row[]>([])
+  const [recent, setRecent] = useState<Recent[]>([])
   const [active, setActive] = useState<string | null>(params.get('c'))
-  const [messages, setMessages] = useState<Message[]>([])
-  const [senders, setSenders] = useState<ChatSender[]>([])
+  const [archived, setArchived] = useState(false)
+  const [messages, setMessages] = useState<Bubble[]>([])
   const [body, setBody] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+  const [seenTick, setSeenTick] = useState(0)
 
   useEffect(() => {
     const id = params.get('c')
@@ -30,109 +38,180 @@ export function AdminChatPage() {
   useEffect(() => {
     if (!supabase) return
     const client = supabase
-    void client
-      .from('conversations')
-      .select('*')
-      .order('last_message_at', { ascending: false, nullsFirst: false })
-      .then(async ({ data }) => {
-        const rows = (data as Conversation[]) ?? []
-        const ids = [...new Set(rows.map((row) => row.customer_id))]
-        const { data: people } = ids.length
-          ? await client.from('profiles').select('id, full_name, email').in('id', ids)
-          : { data: [] }
-        const names = new Map((people ?? []).map((person) => [person.id, person.full_name || person.email || person.id.slice(0, 8)]))
-        setConversations(rows.map((row) => ({ ...row, guest: names.get(row.customer_id) })))
-      })
-  }, [active])
-
-  useEffect(() => {
-    if (!supabase || !active) return
-    const client = supabase
     let cancelled = false
     async function load() {
-      const [{ data: rows }, { data: people }] = await Promise.all([
-        client.from('messages').select('*').eq('conversation_id', active).order('created_at'),
-        client.rpc('conversation_senders', { p_conversation_id: active }),
-      ])
+      const { data } = await client.from('conversations').select('*').order('last_message_at', { ascending: false, nullsFirst: false })
+      const rows = (data as Conversation[]) ?? []
+      const ids = [...new Set(rows.map((row) => row.customer_id))]
+      const { data: people } = ids.length
+        ? await client.from('profiles').select('id, full_name, email, phone, avatar_url').in('id', ids)
+        : { data: [] as Person[] }
+      const byId = new Map(((people as Person[]) ?? []).map((person) => [person.id, person]))
       if (cancelled) return
-      setMessages((rows as Message[]) ?? [])
-      setSenders((people as ChatSender[]) ?? [])
+      setConversations(rows.map((row) => ({ ...row, person: byId.get(row.customer_id) })))
+      if (!rows.length) {
+        setRecent([])
+        return
+      }
+      const { data: notes } = await client
+        .from('messages')
+        .select('id, conversation_id, body, role, created_at, message_attachments(id)')
+        .in(
+          'conversation_id',
+          rows.map((row) => row.id),
+        )
+        .order('created_at', { ascending: false })
+        .limit(500)
+      if (!cancelled) setRecent((notes as Recent[]) ?? [])
     }
     void load()
     const channel = client
-      .channel(`admin-chat-${active}`)
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${active}` },
-        () => void load(),
-      )
+      .channel('admin-inbox')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => void load())
       .subscribe()
     return () => {
       cancelled = true
       void client.removeChannel(channel)
     }
-  }, [active])
+  }, [])
+
+  useEffect(() => {
+    if (!supabase || !active) return
+    const client = supabase
+    let cancelled = false
+    async function loadThread() {
+      const { data } = await client.from('messages').select('*, message_attachments(*)').eq('conversation_id', active).order('created_at')
+      const rows = (data as Message[]) ?? []
+      const urls = await signedAttachmentUrls(rows.flatMap((row) => row.message_attachments?.map((item) => item.storage_path) ?? []))
+      if (cancelled || !active) return
+      markChatSeen(active)
+      setSeenTick((value) => value + 1)
+      setMessages(
+        rows.map((row) => ({
+          id: row.id,
+          body: visibleMessage(row.body, t),
+          at: row.created_at,
+          mine: row.role === 'admin',
+          system: row.role === 'system',
+          imageUrl: urls.get(row.message_attachments?.[0]?.storage_path ?? ''),
+        })),
+      )
+    }
+    markChatSeen(active)
+    setSeenTick((value) => value + 1)
+    void loadThread()
+    const channel = client
+      .channel(`admin-chat-${active}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${active}` }, () => void loadThread())
+      .subscribe()
+    return () => {
+      cancelled = true
+      void client.removeChannel(channel)
+    }
+  }, [active, t])
+
+  function open(id: string) {
+    setActive(id)
+    setParams({ c: id })
+  }
 
   async function send() {
-    if (!supabase || !active || !body.trim() || !user) return
-    const text = body.trim()
+    if (!user || !active) return
+    const current = body
+    const currentFile = file
     setBody('')
-    await supabase.from('messages').insert({
-      conversation_id: active,
-      sender_id: user.id,
+    setFile(null)
+    const error = await sendChatMessage({
+      conversationId: active,
+      senderId: user.id,
       role: 'admin',
-      body: text,
+      body: current,
+      file: currentFile,
     })
+    if (error) {
+      setBody(current)
+      setFile(currentFile)
+    }
   }
 
   const current = conversations.find((item) => item.id === active)
+  const rows = useMemo(() => {
+    const list = conversations
+      .filter((item) => (archived ? item.status === 'closed' || item.status === 'archived' : item.status !== 'closed' && item.status !== 'archived'))
+      .slice()
+      .sort((a, b) => Number(b.needs_human) - Number(a.needs_human) || (b.last_message_at || b.created_at).localeCompare(a.last_message_at || a.created_at))
+    return list.map((item) => {
+      const last = recent.find((note) => note.conversation_id === item.id)
+      const seen = chatSeen(item.id)
+      const unread = recent.filter((note) => note.conversation_id === item.id && note.role === 'customer' && note.created_at > seen).length
+      const photo = Boolean(last?.message_attachments?.length)
+      const preview = last ? visibleMessage(last.body, t).trim() : ''
+      const row: InboxRow = {
+        id: item.id,
+        title: item.person?.full_name || item.person?.email || t('chat.guest'),
+        preview: preview || (photo ? t('chat.photo') : ''),
+        at: last?.created_at || item.last_message_at || item.created_at,
+        avatarUrl: item.person?.avatar_url,
+        unread,
+        pinned: item.needs_human,
+        ring: item.needs_human || unread > 0,
+        photo: photo && !preview,
+      }
+      return row
+    })
+  }, [archived, conversations, recent, seenTick, t])
 
   return (
-    <div className="md:grid md:min-h-[80vh] md:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
+    <div className="ih-chat flex h-full min-h-0 flex-1 bg-[#ffffff]">
       <Helmet>
-        <title>{t('admin.chat')} | Impérial Home</title>
+        <title>{t('chat.discussions')} | Impérial Home</title>
       </Helmet>
-      <aside className={active ? 'hidden border-r border-line md:block' : 'block'}>
-        <h1 className="px-4 py-5 font-display text-3xl">{t('admin.chat')}</h1>
-        {conversations.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setActive(item.id)}
-            className={`block min-h-14 w-full px-4 py-3 text-left text-base touch-manipulation ${active === item.id ? 'bg-[#d4af6a]/15' : ''}`}
-          >
-            <span className="block truncate">{item.guest || item.id.slice(0, 8)}</span>
-            {item.needs_human ? <span className="text-[#d4af6a]">●</span> : null}
-          </button>
-        ))}
+      <aside className={cn('h-full min-h-0 w-full md:w-[340px] md:shrink-0 md:border-r md:border-[#e9edef]', active && 'hidden md:block')}>
+        <ChatInbox
+          title={t('chat.discussions')}
+          rows={rows}
+          activeId={active}
+          archived={archived}
+          archivedLabel={t('chat.archived')}
+          archivedEmpty={t('chat.archivedEmpty')}
+          locale={i18n.language}
+          photoLabel={t('chat.photo')}
+          onArchived={() => setArchived((value) => !value)}
+          onOpen={open}
+        />
       </aside>
-      <div className={active ? 'flex min-h-[70vh] min-w-0 flex-col p-4' : 'hidden md:flex md:flex-col md:p-4'}>
+      <section className={cn('h-full min-h-0 min-w-0 flex-1', !active && 'hidden md:block')}>
         {active ? (
-          <>
-            <div className="mb-3 flex items-center gap-2">
-              <button type="button" className="min-h-11 px-2 text-sm uppercase tracking-wider md:hidden" onClick={() => setActive(null)}>
-                {t('common.back')}
-              </button>
-              <p className="min-w-0 flex-1 truncate font-display text-2xl">{current?.guest}</p>
-            </div>
-            <div className="flex-1 space-y-3 overflow-y-auto">
-              {messages.map((message) => (
-                <ChatLine key={message.id} message={message} senders={senders} />
-              ))}
-            </div>
-            <p className="mt-3 flex items-center gap-2 text-sm">
-              <span className="truncate">{profile?.full_name || profile?.email}</span>
-              {admin?.is_verified ? <VerifiedBadge title={t('admin.verified')} /> : null}
-            </p>
-            <div className="mt-2 flex flex-col gap-2">
-              <Textarea rows={3} value={body} onChange={(event) => setBody(event.target.value)} />
-              <Button className="min-h-12 w-full" onClick={() => void send()}>
-                {t('chat.send')}
-              </Button>
-            </div>
-          </>
-        ) : null}
-      </div>
+          <ChatThread
+            title={current?.person?.full_name || current?.person?.email || t('chat.guest')}
+            subtitle={current?.person?.phone || t('chat.guest')}
+            avatarUrl={current?.person?.avatar_url}
+            phone={current?.person?.phone}
+            messages={messages}
+            locale={i18n.language}
+            body={body}
+            file={file}
+            placeholder={t('chat.compose')}
+            sendLabel={t('chat.send')}
+            callLabel={t('chat.call')}
+            whatsappLabel={t('chat.whatsapp')}
+            cameraLabel={t('chat.camera')}
+            attachLabel={t('chat.attach')}
+            backLabel={t('common.back')}
+            onBody={setBody}
+            onSend={() => void send()}
+            onBack={() => {
+              setActive(null)
+              setParams({})
+            }}
+            onPick={setFile}
+          />
+        ) : (
+          <div className="hidden h-full place-items-center bg-[#f0f2f5] px-8 text-center text-[#667781] md:grid">
+            <p>{t('chat.emptyPick')}</p>
+          </div>
+        )}
+      </section>
     </div>
   )
 }

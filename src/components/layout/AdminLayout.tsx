@@ -62,7 +62,7 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="theme-page min-h-svh md:grid md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr]">
+    <div className={cn('theme-page min-h-svh md:grid md:h-dvh md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr]', location.pathname.startsWith('/admin/chat') && 'flex h-dvh flex-col md:grid')}>
       <header className="sticky top-0 z-40 flex items-center gap-2 border-b border-[#d4af6a]/20 bg-black px-3 py-2 text-[#d4af6a] pt-[max(0.5rem,env(safe-area-inset-top))] md:hidden">
         <button
           type="button"
@@ -142,7 +142,7 @@ export function AdminLayout() {
         </div>
       </aside>
 
-      <div className="admin-main min-w-0 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <div className={cn('admin-main min-w-0', location.pathname.startsWith('/admin/chat') ? 'flex min-h-0 flex-1 flex-col pb-0' : 'pb-[max(1.5rem,env(safe-area-inset-bottom))]')}>
         {!isSupabaseConfigured() ? (
           <div className="border-b border-amber-600/40 bg-amber-950/80 px-4 py-3 text-sm text-amber-100 md:px-8">
             {t('admin.supabaseRequired')}

@@ -20,9 +20,10 @@ export function HomePage() {
   const { data: config } = useSiteConfig()
   const featured = properties.slice(0, 3)
   const offer = promotions.find((p) => p.is_active && p.code)
-  const bundledHero = `${import.meta.env.BASE_URL}hero-accueil.jpg`
+  const bundledHero = `${import.meta.env.BASE_URL}hero-accueil.jpg?v=2`
   function readyHero(url: string | null | undefined) {
     if (!url || url.includes('/site/hero-accueil/1791483803854')) return bundledHero
+    if (url.includes('hero-accueil.jpg') && !url.includes('v=2')) return bundledHero
     return url
   }
   const [hero, setHero] = useState(() => {
@@ -64,11 +65,11 @@ export function HomePage() {
             key={hero}
             src={hero}
             alt=""
-            width={1600}
-            height={1000}
+            width={1200}
+            height={1600}
             decoding="async"
             fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover object-center"
+            className="hero-still absolute inset-0 h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35" />
         </div>

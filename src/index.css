@@ -295,17 +295,41 @@ input[type='date']::-webkit-calendar-picker-indicator {
   background: linear-gradient(90deg, transparent, #c4a35a, transparent);
 }
 
-.kenburns {
-  animation: kenburns 28s ease-out forwards;
+.hero-still {
+  object-fit: cover;
+  object-position: center center;
+  animation: none;
+  transform: none;
 }
 
-@keyframes kenburns {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.08);
-  }
+.ih-chat,
+.ih-profile {
+  color: #111b21;
+  color-scheme: light;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.ih-chat button,
+.ih-chat a,
+.ih-profile button,
+.ih-profile a {
+  color: inherit;
+}
+
+.ih-chat h1 {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  text-transform: none;
+  color: #111b21;
+}
+
+.ih-chat-wall {
+  background-color: #efeae2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' fill='none' stroke='%238f8878' stroke-width='1.1'%3E%3Ccircle cx='18' cy='22' r='7' opacity='.28'/%3E%3Crect x='78' y='16' width='22' height='14' rx='3' opacity='.22'/%3E%3Cpath d='M128 48c6 0 10 4 10 9s-8 11-10 11-10-6-10-11 4-9 10-9z' opacity='.22'/%3E%3Cpath d='M36 92h16v10H36z' opacity='.2'/%3E%3Ccircle cx='112' cy='108' r='5' opacity='.22'/%3E%3Cpath d='M70 128c8-8 18-8 26 0' opacity='.22'/%3E%3C/svg%3E");
 }
 
 .housing-a4 {
