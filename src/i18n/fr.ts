@@ -252,6 +252,7 @@ export const fr: Messages = {
     share: 'Partager Impérial Home',
     social: 'Réseaux sociaux',
     myAccount: 'Mon compte',
+    editProfile: 'Modifier le compte',
     guestLine: 'Client · Carrefour Conquête',
     favoritesEmpty: 'Rien d’enregistré pour l’instant. Appuyez sur le cœur d’un appartement ou d’une voiture.',
     adminLine: 'Administrateur · Impérial Home',

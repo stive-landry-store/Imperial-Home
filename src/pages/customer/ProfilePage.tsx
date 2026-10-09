@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Mail, MapPin, Phone } from 'lucide-react'
+import { ProfileMenu } from '../../components/account/ProfileMenu'
 import { VerifiedBadge } from '../../components/ui/VerifiedBadge'
 import { useAuth } from '../../hooks/useAuth'
 import { fetchMyReservations } from '../../lib/data'
@@ -15,6 +16,7 @@ export function ProfilePage() {
   const { t, i18n } = useTranslation()
   const { profile, user, isStaff, admin, reloadProfile } = useAuth()
   const [error, setError] = useState<string | null>(null)
+  const [editOpen, setEditOpen] = useState(false)
   const verified = Boolean(isStaff && (admin?.is_verified || profile?.role === 'admin' || profile?.role === 'main_admin'))
   const stays = useQuery({ queryKey: ['my-reservations'], queryFn: fetchMyReservations })
   const cars = useQuery({
@@ -110,8 +112,16 @@ export function ProfilePage() {
             {isStaff ? admin?.title || t('account.adminLine') : t('account.guestLine')}
           </p>
           {profile?.email ? <p className="mt-1 truncate text-sm theme-muted">{profile.email}</p> : null}
+          <button
+            type="button"
+            className="mt-4 inline-flex min-h-11 items-center border border-[#d4af6a]/40 px-4 text-sm tracking-[0.12em] text-[#d4af6a] uppercase"
+            onClick={() => setEditOpen(true)}
+          >
+            {t('account.editProfile')}
+          </button>
         </div>
       </section>
+      <ProfileMenu open={editOpen} onClose={() => setEditOpen(false)} />
 
       <div className="mt-4 grid grid-cols-3 gap-2">
         <Link to="/account" className="flex min-h-16 flex-col items-center justify-center border border-[#d4af6a]/30 px-2 text-center touch-manipulation">

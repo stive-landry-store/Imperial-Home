@@ -16,7 +16,7 @@ export function formatLoginRegisterError(error: unknown, t: TFunction, mode: 'lo
     return t('auth.configure')
   }
   if (lower.includes('email not confirmed') || lower.includes('not confirmed')) {
-    return t('auth.confirmEmail')
+    return t('auth.error')
   }
   if (lower.includes('invalid login credentials') || lower.includes('invalid credentials')) {
     return t('auth.invalidCredentials')

@@ -249,6 +249,7 @@ export const en = {
     share: 'Share Impérial Home',
     social: 'Social',
     myAccount: 'My account',
+    editProfile: 'Edit account',
     guestLine: 'Guest · Carrefour Conquête',
     favoritesEmpty: 'Nothing saved yet. Tap the heart on an apartment or a car.',
     adminLine: 'Administrator · Impérial Home',

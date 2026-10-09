@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { LogOut, Menu, X } from 'lucide-react'
+import { LogOut, Menu } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
@@ -10,6 +10,7 @@ import { cn } from '../../lib/cn'
 import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
 import { SocialLinks } from './SocialLinks'
+import { SettingsMenu } from './SettingsMenu'
 
 const links = [
   { to: '/admin', key: 'dashboard', end: true },
@@ -38,15 +39,6 @@ export function AdminLayout() {
   useEffect(() => {
     setMenuOpen(false)
   }, [location.pathname])
-
-  useEffect(() => {
-    if (!menuOpen) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [menuOpen])
 
   function renderNav() {
     return (
@@ -108,36 +100,9 @@ export function AdminLayout() {
         </button>
       </header>
 
-      {menuOpen ? (
-        <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-black text-[#d4af6a] md:hidden">
-          <div className="flex items-center justify-between px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-            <p className="font-display text-2xl">{t('admin.menu')}</p>
-            <button
-              type="button"
-              className="inline-flex min-h-12 min-w-12 items-center justify-center touch-manipulation"
-              aria-label={t('common.cancel')}
-              onClick={() => setMenuOpen(false)}
-            >
-              <X size={28} />
-            </button>
-          </div>
-          <div className="min-h-0 flex-1 overflow-y-auto pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-            {renderNav()}
-            <div className="border-t border-[#d4af6a]/25 px-5 py-4">
-              <div className="mb-3 flex items-center gap-3 text-sm">
-                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : null}
-                <p className="min-w-0 flex-1 truncate">{profile?.full_name || profile?.email}</p>
-                {admin?.is_verified ? <VerifiedBadge className="h-6 w-6" /> : null}
-              </div>
-              <p className="mb-2 text-sm tracking-[0.18em] uppercase">{t('nav.networks')}</p>
-              <SocialLinks />
-              <button type="button" className="mt-4 min-h-12 text-base uppercase tracking-[0.12em]" onClick={() => void signOut()}>
-                {t('nav.logout')}
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <div className="md:hidden">
+        <SettingsMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      </div>
 
       <aside className="hidden border-r border-[#d4af6a]/20 bg-black text-[#d4af6a] md:flex md:h-svh md:flex-col md:overflow-y-auto">
         <div className="px-5 py-5">

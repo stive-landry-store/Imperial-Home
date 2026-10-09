@@ -105,12 +105,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       hasPermission: (key) => profile?.role === 'main_admin' || permissions.includes(key),
       signIn: async (email, password) => {
         if (!supabase) throw new Error('Supabase is not configured')
-        const { error } = await supabase.auth.signInWithPassword({
-          email: email.trim().toLowerCase(),
-          password,
-        })
+        const client = supabase
+        const normalized = email.trim().toLowerCase()
+        const attempt = () => client.auth.signInWithPassword({ email: normalized, password })
+        let { error } = await attempt()
+        const unconfirmed = `${error?.code ?? ''} ${error?.message ?? ''}`.toLowerCase().includes('not confirmed')
+        if (unconfirmed) {
+          const base = import.meta.env.VITE_SUPABASE_URL as string
+          const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string
+          await fetch(`${base}/functions/v1/confirm-email`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: anon,
+              Authorization: `Bearer ${anon}`,
+            },
+            body: JSON.stringify({ email: normalized }),
+          })
+          const retry = await attempt()
+          error = retry.error
+        }
         if (error) throw error
-        await supabase.rpc('ensure_profile')
+        await client.rpc('ensure_profile')
       },
       signUp: async ({ email, password, full_name, phone }) => {
         if (!supabase) throw new Error('Supabase is not configured')
