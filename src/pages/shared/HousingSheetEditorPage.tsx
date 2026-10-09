@@ -187,7 +187,7 @@ export function HousingSheetEditorPage({
       </div>
       {saved ? <p className="py-2 text-center text-sm tracking-wider text-[#d4af6a] uppercase">Enregistré</p> : null}
       {error ? <p className="px-4 py-2 text-center text-sm text-red-300">{error}</p> : null}
-      <div className="housing-print-wrap mx-auto w-full max-w-[210mm] px-3 py-4">
+      <div className="housing-print-wrap mx-auto w-full max-w-[430px] px-3 py-4">
         <div ref={sheetRef} className="housing-print-target">
           <HousingSheet data={data} onChange={setData} role={role} />
         </div>

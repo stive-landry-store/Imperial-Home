@@ -7,11 +7,13 @@ export function SignaturePad({
   onChange,
   disabled,
   label,
+  compact = false,
 }: {
   value: string
   onChange: (dataUrl: string) => void
   disabled?: boolean
   label: string
+  compact?: boolean
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawing = useRef(false)
@@ -69,13 +71,14 @@ export function SignaturePad({
 
   return (
     <div>
-      <p className="mb-1 text-[10px] tracking-[0.14em] text-[#8a7344] uppercase">{label}</p>
+      <p className="mb-0.5 text-[0.62em] tracking-[0.08em] text-[#8a7344] uppercase">{label}</p>
       <canvas
         ref={canvasRef}
         width={320}
-        height={90}
+        height={72}
         className={cn(
-          'h-[70px] w-full touch-none border-b border-dotted border-[#c4a35a] bg-transparent',
+          'w-full touch-none border-b border-dotted border-[#c4a35a] bg-transparent',
+          compact ? 'h-[2.1em]' : 'h-[2.6em]',
           disabled ? 'pointer-events-none opacity-80' : 'cursor-crosshair',
         )}
         onPointerDown={start}

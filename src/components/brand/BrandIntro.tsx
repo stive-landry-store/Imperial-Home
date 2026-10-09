@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const MIN_MS = 2000
+const MIN_MS = 700
 const EXIT_MS = 700
 
 export function BrandIntro() {

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Phone, Shield, Sparkles, Wifi } from 'lucide-react'
@@ -19,7 +20,28 @@ export function HomePage() {
   const { data: config } = useSiteConfig()
   const featured = properties.slice(0, 3)
   const offer = promotions.find((p) => p.is_active && p.code)
+  const bundledHero = `${import.meta.env.BASE_URL}hero-accueil.jpg`
+  function readyHero(url: string | null | undefined) {
+    if (!url || url.includes('/site/hero-accueil/1791483803854')) return bundledHero
+    return url
+  }
+  const [hero, setHero] = useState(() => {
+    try {
+      return readyHero(localStorage.getItem('ih-hero'))
+    } catch {
+      return bundledHero
+    }
+  })
   const chosenHero = config?.home_hero_image_url?.trim() || ''
+  useEffect(() => {
+    const next = readyHero(chosenHero)
+    setHero(next)
+    try {
+      localStorage.setItem('ih-hero', next)
+    } catch {
+      /* ignore private mode */
+    }
+  }, [chosenHero, bundledHero])
   const place = imperialPlace(config)
 
   const pillars = [
@@ -33,13 +55,21 @@ export function HomePage() {
     <div className="theme-page">
       <Helmet>
         <title>Impérial Home | L&apos;art du soin. L&apos;esprit du détail.</title>
+        <link rel="preload" as="image" href={hero} fetchPriority="high" />
       </Helmet>
 
       <section className="relative min-h-[100svh] bg-[#1a1612] pt-[4.5rem]">
         <div className="absolute inset-x-0 top-[4.5rem] bottom-0">
-          {chosenHero ? (
-            <img key={chosenHero} src={chosenHero} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
-          ) : null}
+          <img
+            key={hero}
+            src={hero}
+            alt=""
+            width={1600}
+            height={1000}
+            decoding="async"
+            fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35" />
         </div>
         <div className="relative z-10 flex min-h-[calc(100svh-4.5rem)] flex-col justify-end px-5 pb-24 md:px-10">
@@ -107,31 +137,19 @@ export function HomePage() {
         </section>
       ) : null}
 
-      <section className="theme-page overflow-hidden py-10">
-        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 md:grid-cols-2 md:px-6">
-          <div>
-            <h2 className="text-2xl font-semibold">{t('home.ficheTitle')}</h2>
-            <p className="mt-3 text-base leading-relaxed theme-muted">{t('home.ficheBody')}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button to="/fiche">{t('home.ficheCta')}</Button>
-              <Button to="/properties" variant="ghost">
-                {t('nav.book')}
-              </Button>
-            </div>
+      <section className="theme-page overflow-x-clip py-10">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <h2 className="text-2xl font-semibold">{t('home.ficheTitle')}</h2>
+          <p className="mt-3 text-base leading-relaxed theme-muted">{t('home.ficheBody')}</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button to="/fiche">{t('home.ficheCta')}</Button>
+            <Button to="/properties" variant="ghost">
+              {t('nav.book')}
+            </Button>
           </div>
-          <div className="relative mx-auto h-[440px] w-full max-w-[320px] overflow-hidden border border-[#d4af6a]/35 bg-white shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
-            {config?.home_fiche_image_url ? (
-              <img
-                src={config.home_fiche_image_url}
-                alt={t('home.ficheTitle')}
-                className="h-full w-full object-cover object-top"
-              />
-            ) : (
-              <div className="pointer-events-none w-[210mm] origin-top-left scale-[0.405]">
-                <HousingSheet data={demoHousingSheet()} onChange={() => undefined} role="view" />
-              </div>
-            )}
-          </div>
+        </div>
+        <div className="mx-auto mt-6 w-full max-w-[430px] px-3">
+          <HousingSheet data={demoHousingSheet()} onChange={() => undefined} role="view" />
         </div>
       </section>
 

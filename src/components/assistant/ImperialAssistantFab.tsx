@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { usePublishedProperties, useSiteConfig } from '../../hooks/useSite'
 import { groundedReply } from '../../lib/assistant'
+import { compressPhoto } from '../../lib/compressImage'
 import { fetchMyReservations } from '../../lib/data'
 import { supabase } from '../../lib/supabase'
 import { whatsappUrl } from '../../lib/whatsapp'
@@ -48,8 +49,12 @@ export function ImperialAssistantFab() {
     let imageUrl: string | undefined
     try {
       if (pendingImage && supabase) {
-        const path = `assistant/${user?.id ?? 'guest'}/${Date.now()}-${pendingImage.name}`
-        const { error } = await supabase.storage.from('property-images').upload(path, pendingImage, { upsert: true })
+        const photo = await compressPhoto(pendingImage, 1200, 0.82)
+        const path = `assistant/${user?.id ?? 'guest'}/${Date.now()}.jpg`
+        const { error } = await supabase.storage.from('property-images').upload(path, photo, {
+          upsert: true,
+          contentType: 'image/jpeg',
+        })
         if (!error) {
           imageUrl = supabase.storage.from('property-images').getPublicUrl(path).data.publicUrl
         }

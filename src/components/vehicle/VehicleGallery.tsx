@@ -11,7 +11,16 @@ function Frame({ item, className }: { item: VehicleMedia; className?: string }) 
   if (item.media_type === 'video') {
     return <video src={item.url} className={cn('h-full w-full object-cover', className)} controls muted playsInline />
   }
-  return <img src={item.url} alt="" className={cn('h-full w-full object-cover', className)} />
+  return (
+    <img
+      src={item.url}
+      alt=""
+      decoding="async"
+      loading="eager"
+      fetchPriority="high"
+      className={cn('h-full w-full object-cover', className)}
+    />
+  )
 }
 
 export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title: string }) {
@@ -59,7 +68,7 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
               {item.media_type === 'video' ? (
                 <span className="flex h-full items-center justify-center bg-black text-[10px] text-[#d4af6a]">VIDEO</span>
               ) : (
-                <img src={item.url} alt="" className="h-full w-full object-cover" />
+                <img src={item.url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
               )}
             </button>
           ))}

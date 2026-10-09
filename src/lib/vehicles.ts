@@ -1,3 +1,4 @@
+import { compressPhoto } from './compressImage'
 import { supabase } from './supabase'
 
 export type Vehicle = {
@@ -144,12 +145,14 @@ async function nextVehicleMediaSortOrder(vehicleId: string) {
 
 export async function uploadVehicleMedia(file: File, vehicleId: string) {
   if (!supabase) throw new Error('Supabase required')
-  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
   const isVideo = file.type.startsWith('video/')
+  const photo = isVideo ? file : await compressPhoto(file, 1400, 0.82)
+  const ext = isVideo ? file.name.split('.').pop()?.toLowerCase() || 'mp4' : 'jpg'
   const path = `vehicles/${vehicleId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-  const { error } = await supabase.storage.from('property-images').upload(path, file, {
+  const { error } = await supabase.storage.from('property-images').upload(path, photo, {
     upsert: true,
-    contentType: file.type || (isVideo ? 'video/mp4' : 'image/jpeg'),
+    contentType: photo.type || (isVideo ? 'video/mp4' : 'image/jpeg'),
+    cacheControl: '31536000',
   })
   if (error) throw error
   const { data } = supabase.storage.from('property-images').getPublicUrl(path)

@@ -9,6 +9,7 @@ import { VerifiedBadge } from '../../components/ui/VerifiedBadge'
 import { useAuth } from '../../hooks/useAuth'
 import { fetchMyReservations } from '../../lib/data'
 import { formatDate } from '../../lib/format'
+import { compressPhoto } from '../../lib/compressImage'
 import { supabase } from '../../lib/supabase'
 import { fetchMyVehicleRentals } from '../../lib/vehicles'
 
@@ -37,11 +38,12 @@ export function ProfilePage() {
   async function upload(file: File, kind: 'avatar' | 'cover') {
     if (!supabase || !profile) return
     setError(null)
-    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
-    const path = `${profile.id}/${kind}.${ext}`
-    const { error: uploadError } = await supabase.storage.from('profile-media').upload(path, file, {
+    const photo = await compressPhoto(file, kind === 'avatar' ? 800 : 1400, 0.82)
+    const path = `${profile.id}/${kind}.jpg`
+    const { error: uploadError } = await supabase.storage.from('profile-media').upload(path, photo, {
       upsert: true,
-      contentType: file.type || 'image/jpeg',
+      contentType: 'image/jpeg',
+      cacheControl: '31536000',
     })
     if (uploadError) {
       setError(uploadError.message)

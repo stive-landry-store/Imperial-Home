@@ -1,12 +1,14 @@
+import { compressPhoto } from './compressImage'
 import { supabase } from './supabase'
 
 export async function uploadPropertyImage(file: File, propertyId: string) {
   if (!supabase) throw new Error('Supabase required')
-  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
-  const path = `${propertyId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-  const { error } = await supabase.storage.from('property-images').upload(path, file, {
+  const photo = await compressPhoto(file, 1400, 0.82)
+  const path = `${propertyId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`
+  const { error } = await supabase.storage.from('property-images').upload(path, photo, {
     upsert: true,
-    contentType: file.type || 'image/jpeg',
+    contentType: 'image/jpeg',
+    cacheControl: '31536000',
   })
   if (error) throw error
   const { data } = supabase.storage.from('property-images').getPublicUrl(path)
