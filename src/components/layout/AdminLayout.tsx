@@ -7,7 +7,8 @@ import { isSupabaseConfigured } from '../../lib/supabase'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
 import { ImperialLogo } from '../brand/Logo'
 import { cn } from '../../lib/cn'
-import { PreferenceBar } from './PreferenceBar'
+import { NotificationBell } from './NotificationBell'
+import { ThemeSwitch } from './ThemeSwitch'
 import { SocialLinks } from './SocialLinks'
 
 const links = [
@@ -47,7 +48,8 @@ export function AdminLayout() {
     }
   }, [menuOpen])
 
-  const navLinks = (
+  function renderNav() {
+    return (
     <nav className="flex flex-col gap-1 px-3 pb-4">
       <NavLink
         to="/account/profile"
@@ -76,7 +78,8 @@ export function AdminLayout() {
         </NavLink>
       ))}
     </nav>
-  )
+    )
+  }
 
   return (
     <div className="theme-page min-h-svh md:grid md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr]">
@@ -93,7 +96,8 @@ export function AdminLayout() {
         <NavLink to="/" className="min-w-0 flex-1 origin-left scale-90">
           <ImperialLogo light compact />
         </NavLink>
-        <PreferenceBar compact />
+        <NotificationBell />
+        <ThemeSwitch compact />
         <button
           type="button"
           className="inline-flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
@@ -117,24 +121,20 @@ export function AdminLayout() {
               <X size={28} />
             </button>
           </div>
-          <nav className="grid flex-1 grid-cols-2 content-start gap-2 overflow-y-auto px-3 pb-3">
-            <NavLink to="/account/profile" className="menu-choice" onClick={() => setMenuOpen(false)}>
-              {t('account.profile')}
-            </NavLink>
-            {links.map((item) => (
-              <NavLink key={item.to} to={item.to} end={item.to === '/admin'} className="menu-choice" onClick={() => setMenuOpen(false)}>
-                {t(`admin.${item.key}`)}
-              </NavLink>
-            ))}
-          </nav>
-          <div className="shrink-0 border-t border-[#d4af6a]/25 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-            <div className="mb-3 flex items-center gap-3 text-sm">
-              {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : null}
-              <p className="min-w-0 truncate">{profile?.full_name || profile?.email}</p>
-              {admin?.is_verified ? <VerifiedBadge /> : null}
+          <div className="min-h-0 flex-1 overflow-y-auto pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+            {renderNav()}
+            <div className="border-t border-[#d4af6a]/25 px-5 py-4">
+              <div className="mb-3 flex items-center gap-3 text-sm">
+                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : null}
+                <p className="min-w-0 flex-1 truncate">{profile?.full_name || profile?.email}</p>
+                {admin?.is_verified ? <VerifiedBadge className="h-6 w-6" /> : null}
+              </div>
+              <p className="mb-2 text-sm tracking-[0.18em] uppercase">{t('nav.networks')}</p>
+              <SocialLinks />
+              <button type="button" className="mt-4 min-h-12 text-base uppercase tracking-[0.12em]" onClick={() => void signOut()}>
+                {t('nav.logout')}
+              </button>
             </div>
-            <p className="mb-2 text-center text-sm tracking-[0.18em] uppercase">{t('nav.networks')}</p>
-            <SocialLinks prominent />
           </div>
         </div>
       ) : null}
@@ -145,18 +145,18 @@ export function AdminLayout() {
             <ImperialLogo light compact />
           </NavLink>
         </div>
-        {navLinks}
+        {renderNav()}
         <div className="mt-auto">
           <div className="flex items-center gap-2 px-5 py-4 text-base">
             {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-9 w-9 rounded-full object-cover" /> : null}
             <span>{profile?.full_name || profile?.email}</span>
-            {admin?.is_verified ? <VerifiedBadge /> : null}
+            {admin?.is_verified ? <VerifiedBadge className="h-6 w-6" /> : null}
           </div>
           <div className="px-5 pb-3">
             <SocialLinks />
           </div>
           <div className="px-5 pb-3">
-            <PreferenceBar compact />
+            <ThemeSwitch compact />
           </div>
           <button
             type="button"

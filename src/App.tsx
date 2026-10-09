@@ -4,6 +4,7 @@ import { AuthProvider } from './hooks/useAuth'
 import { ThemeProvider } from './hooks/useTheme'
 import { AppRouter } from './app/router'
 import { BrandIntro } from './components/brand/BrandIntro'
+import { LanguageDock } from './components/layout/LanguageDock'
 import { LiveDataSync } from './components/LiveDataSync'
 
 const queryClient = new QueryClient({
@@ -21,6 +22,7 @@ export default function App() {
             <LiveDataSync />
             <BrandIntro />
             <AppRouter />
+            <LanguageDock />
           </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>

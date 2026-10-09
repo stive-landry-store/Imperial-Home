@@ -9,6 +9,8 @@ import {
   Wifi,
 } from 'lucide-react'
 import { ImperialMark, ImperialWordmark } from '../brand/Logo'
+import { useTranslation } from 'react-i18next'
+import { useLiveTranslation } from '../i18n/Live'
 import { SectionCapsule } from '../brand/SectionCapsule'
 import { DottedField } from './DottedField'
 import { SignaturePad } from './SignaturePad'
@@ -36,7 +38,27 @@ export function HousingSheet({
     return GUEST_FIELDS.includes(key)
   }
 
+  const { t } = useTranslation()
   const locked = (key: keyof HousingSheetData) => !canEdit(key)
+  const sheetTitle = t('account.housing')
+  const sheetLead = useLiveTranslation(
+    'Merci de bien vouloir remplir cette fiche. Vos informations nous permettent de mieux vous accueillir et d’assurer votre confort.',
+    'fr',
+  )
+  const clientInfo = useLiveTranslation('Informations du client', 'fr')
+  const reception = useLiveTranslation('Contact de la réception', 'fr')
+  const stayInfo = useLiveTranslation('Informations du séjour', 'fr')
+  const wifiInfo = useLiveTranslation('Informations wifi', 'fr')
+  const wifiLocked = useLiveTranslation('Le nom du Wi-Fi et le mot de passe s’affichent ici lorsque la réservation est validée.', 'fr')
+  const pledgeTitle = useLiveTranslation('Engagement du client', 'fr')
+  const pledge = useLiveTranslation(
+    'Je soussigné(e) déclare avoir pris connaissance du règlement intérieur de l’établissement et m’engage à le respecter durant tout mon séjour.',
+    'fr',
+  )
+  const guestSign = useLiveTranslation('Signature du client', 'fr')
+  const receptionSign = useLiveTranslation('Signature de la réception', 'fr')
+  const signLabel = useLiveTranslation('Signature', 'fr')
+  const thanks = useLiveTranslation('MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !', 'fr')
 
   return (
     <article className="housing-a4 text-[#111]">
@@ -53,14 +75,11 @@ export function HousingSheet({
           </div>
           <div className="text-right">
             <h1 className="font-display text-[2.15rem] leading-none tracking-[0.06em] text-[#d4af6a]">
-              FICHE DE LOGEMENT
+              {sheetTitle}
             </h1>
           </div>
         </div>
-        <p className="mt-6 max-w-xl text-[11px] leading-relaxed tracking-wide text-[#d4af6a]">
-          Merci de bien vouloir remplir cette fiche. Vos informations nous permettent de mieux vous accueillir et
-          d&apos;assurer votre confort.
-        </p>
+        <p className="mt-6 max-w-xl text-[11px] leading-relaxed tracking-wide text-[#d4af6a]">{sheetLead}</p>
         <svg className="absolute inset-x-0 -bottom-px h-6 w-full" viewBox="0 0 800 24" preserveAspectRatio="none" aria-hidden>
           <path d="M0 24 C200 4 600 4 800 24 L800 24 L0 24 Z" fill="#ffffff" />
         </svg>
@@ -69,7 +88,7 @@ export function HousingSheet({
       <div className="space-y-4 bg-white px-7 py-6">
         <div className="grid gap-4 md:grid-cols-2">
           <section className="housing-box p-4">
-            <SectionCapsule icon={UserRound}>Informations du client</SectionCapsule>
+            <SectionCapsule icon={UserRound}>{clientInfo}</SectionCapsule>
             <div className="mt-4 space-y-3">
               <DottedField icon={UserRound} label="Nom :" value={data.guest_name} disabled={locked('guest_name')} onChange={(v) => set('guest_name', v)} />
               <DottedField icon={Phone} label="Téléphone :" value={data.guest_phone} disabled={locked('guest_phone')} onChange={(v) => set('guest_phone', v)} />
@@ -78,7 +97,7 @@ export function HousingSheet({
           </section>
 
           <section className="housing-box flex flex-col items-center justify-center p-4">
-            <SectionCapsule icon={Phone}>Contact de la réception</SectionCapsule>
+            <SectionCapsule icon={Phone}>{reception}</SectionCapsule>
             <div className="mt-5 flex flex-col items-center">
               <ImperialMark className="h-14 w-auto" />
               <p className="mt-1 font-display text-sm tracking-[0.28em] text-[#c4a35a]">IMPÉRIAL</p>
@@ -99,7 +118,7 @@ export function HousingSheet({
         </div>
 
         <section className="housing-box p-4">
-          <SectionCapsule icon={CalendarDays}>Informations du séjour</SectionCapsule>
+          <SectionCapsule icon={CalendarDays}>{stayInfo}</SectionCapsule>
           <div className="mt-5 grid gap-6 md:grid-cols-2 md:divide-x md:divide-dotted md:divide-[#c4a35a]">
             <div className="space-y-3 md:pr-6">
               <DottedField icon={CalendarDays} label="Date d'arrivée :" type="date" value={data.arrival_date} disabled={locked('arrival_date')} onChange={(v) => set('arrival_date', v)} />
@@ -114,12 +133,10 @@ export function HousingSheet({
 
         <section>
           <SectionCapsule icon={Wifi} className="mb-2">
-            Informations wifi
+            {wifiInfo}
           </SectionCapsule>
           {role !== 'admin' && !data.wifi_password ? (
-            <p className="housing-box px-4 py-6 text-center text-[13px] leading-relaxed text-[#8a7344]">
-              Le nom du Wi-Fi et le mot de passe s’affichent ici lorsque la réservation est validée.
-            </p>
+            <p className="housing-box px-4 py-6 text-center text-[13px] leading-relaxed text-[#8a7344]">{wifiLocked}</p>
           ) : (
             <div className="housing-box grid gap-4 p-4 md:grid-cols-2 md:divide-x md:divide-dotted md:divide-[#c4a35a]">
               <DottedField label="Nom du wifi :" value={data.wifi_name} disabled={locked('wifi_name')} onChange={(v) => set('wifi_name', v)} className="md:pr-4" />
@@ -129,18 +146,15 @@ export function HousingSheet({
         </section>
 
         <section className="housing-box p-4">
-          <SectionCapsule icon={ShieldCheck}>Engagement du client</SectionCapsule>
-          <p className="mt-4 text-center text-[12px] leading-relaxed text-[#333]">
-            Je soussigné(e) déclare avoir pris connaissance du règlement intérieur de l&apos;établissement et m&apos;engage à
-            le respecter durant tout mon séjour.
-          </p>
+          <SectionCapsule icon={ShieldCheck}>{pledgeTitle}</SectionCapsule>
+          <p className="mt-4 text-center text-[12px] leading-relaxed text-[#333]">{pledge}</p>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <div className="housing-box p-3">
-              <p className="mb-2 text-center text-[10px] tracking-[0.16em] text-[#8a7344] uppercase">Signature du client</p>
+              <p className="mb-2 text-center text-[10px] tracking-[0.16em] text-[#8a7344] uppercase">{guestSign}</p>
               <DottedField label="Nom :" value={data.guest_sign_name} disabled={locked('guest_sign_name')} onChange={(v) => set('guest_sign_name', v)} />
               <div className="mt-2">
                 <SignaturePad
-                  label="Signature"
+                  label={signLabel}
                   value={data.guest_signature}
                   disabled={locked('guest_signature')}
                   onChange={(v) => set('guest_signature', v)}
@@ -148,11 +162,11 @@ export function HousingSheet({
               </div>
             </div>
             <div className="housing-box p-3">
-              <p className="mb-2 text-center text-[10px] tracking-[0.16em] text-[#8a7344] uppercase">Signature de la réception</p>
+              <p className="mb-2 text-center text-[10px] tracking-[0.16em] text-[#8a7344] uppercase">{receptionSign}</p>
               <DottedField label="Nom :" value={data.reception_sign_name} disabled={locked('reception_sign_name')} onChange={(v) => set('reception_sign_name', v)} />
               <div className="mt-2">
                 <SignaturePad
-                  label="Signature"
+                  label={signLabel}
                   value={data.reception_signature}
                   disabled={locked('reception_signature')}
                   onChange={(v) => set('reception_signature', v)}
@@ -178,20 +192,20 @@ export function HousingSheet({
           <FooterPill icon={Sparkles} title="Service ménage" text="Confort et propreté au quotidien." />
           <FooterPill icon={Phone} title="Assistance" text="Équipe à votre écoute à tout moment." />
         </div>
-        <p className="mt-4 text-center font-display text-sm tracking-[0.18em] text-[#d4af6a]">
-          MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !
-        </p>
+        <p className="mt-4 text-center font-display text-sm tracking-[0.18em] text-[#d4af6a]">{thanks}</p>
       </footer>
     </article>
   )
 }
 
 function FooterPill({ icon: Icon, title, text }: { icon: typeof Shield; title: string; text: string }) {
+  const shownTitle = useLiveTranslation(title, 'fr')
+  const shownText = useLiveTranslation(text, 'fr')
   return (
     <div className="px-2 text-center">
       <Icon className="mx-auto mb-1.5 h-4 w-4" strokeWidth={1.4} />
-      <p className="text-[10px] tracking-[0.14em] uppercase">{title}</p>
-      <p className="mt-1 text-[9px] leading-snug text-[#d4af6a]/80">{text}</p>
+      <p className="text-[10px] tracking-[0.14em] uppercase">{shownTitle}</p>
+      <p className="mt-1 text-[9px] leading-snug text-[#d4af6a]/80">{shownText}</p>
     </div>
   )
 }

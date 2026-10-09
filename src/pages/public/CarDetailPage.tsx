@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { ManualDate } from '../../components/booking/ManualDate'
 import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
 import { Button } from '../../components/ui/Button'
+import { Live } from '../../components/i18n/Live'
 import { Input, Label } from '../../components/ui/Field'
 import { useAuth } from '../../hooks/useAuth'
 import { addDaysIso, nightsBetween, todayIso } from '../../lib/availability'
@@ -117,7 +118,9 @@ export function CarDetailPage() {
           </Link>
           <p className="mt-4 text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{vehicle.brand}</p>
           <h1 className="mt-1 font-display text-5xl">{vehicle.model}</h1>
-          <p className="mt-4 max-w-xl theme-muted">{desc}</p>
+          <p className="mt-4 max-w-xl theme-muted">
+            <Live text={desc} />
+          </p>
           <div className="mt-6 overflow-hidden border border-[#d4af6a]/30">
             <VehicleGallery media={vehicle.vehicle_media ?? []} title={title} />
           </div>

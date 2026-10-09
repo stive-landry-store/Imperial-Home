@@ -11,6 +11,7 @@ import { whatsappUrl } from '../../lib/whatsapp'
 import { checkOutFromNights, todayIso } from '../../lib/availability'
 import { ImperialMark } from '../../components/brand/Logo'
 import { SocialLinks } from '../../components/layout/SocialLinks'
+import { Live } from '../../components/i18n/Live'
 import { OptimizedImage } from '../../components/ui/OptimizedImage'
 import { DEFAULT_HOME_HERO_IMAGE } from '../../lib/config'
 import { demoHousingSheet } from '../../lib/housingSheet'
@@ -169,9 +170,11 @@ export function HomePage() {
           <div className="absolute inset-0 bg-black/70" />
           <div className="relative mx-auto max-w-3xl px-6 text-center">
             <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('home.promoTitle')}</p>
-            <h2 className="mt-4 font-display text-4xl text-[#f4eee3] md:text-5xl">{offer.name}</h2>
+            <h2 className="mt-4 font-display text-4xl text-[#f4eee3] md:text-5xl">
+              <Live text={offer.name} />
+            </h2>
             <p className="mt-5 text-base leading-relaxed text-[#f4eee3]/90">
-              {i18n.language.startsWith('fr') ? offer.description_fr : offer.description_en}
+              <Live text={(i18n.language.startsWith('fr') ? offer.description_fr : offer.description_en) || ''} />
             </p>
             <Button className="mt-8" to="/properties">
               {t('home.viewAll')}

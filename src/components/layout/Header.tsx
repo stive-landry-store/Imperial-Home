@@ -9,8 +9,10 @@ import { useAuth } from '../../hooks/useAuth'
 import { useTheme } from '../../hooks/useTheme'
 import { SetupBanner } from './SetupBanner'
 import { ImperialLogo } from '../brand/Logo'
-import { PreferenceBar } from './PreferenceBar'
+import { NotificationBell } from './NotificationBell'
+import { ThemeSwitch } from './ThemeSwitch'
 import { SocialLinks } from './SocialLinks'
+import { ProfileMenu } from '../account/ProfileMenu'
 
 export function Header() {
   const { t } = useTranslation()
@@ -21,6 +23,7 @@ export function Header() {
   const [copied, setCopied] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const home = location.pathname === '/'
+  const profileMenu = location.pathname === '/account/profile'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -73,8 +76,9 @@ export function Header() {
             <ImperialLogo light={theme === 'dark' || (home && !scrolled)} compact />
           </Link>
         </div>
-        <div className="flex items-center gap-2 lg:hidden">
-          <PreferenceBar compact />
+        <div className="flex items-center gap-1 lg:hidden">
+          <NotificationBell />
+          <ThemeSwitch compact />
         </div>
         <nav className="hidden min-w-0 items-center justify-end gap-4 overflow-x-auto text-[12px] uppercase tracking-[0.16em] lg:flex">
           {links.map((l) => (
@@ -101,7 +105,6 @@ export function Header() {
               {t('nav.logout')}
             </button>
           ) : null}
-          <PreferenceBar />
           <Link
             to="/properties"
             className="bg-[#c4a35a] px-4 py-2 text-[13px] tracking-[0.16em] text-black uppercase hover:bg-[#e0c57a]"
@@ -109,8 +112,13 @@ export function Header() {
             {t('nav.book')}
           </Link>
         </nav>
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
+          <NotificationBell />
+          <ThemeSwitch />
+        </div>
       </div>
-      {open
+      {open && profileMenu ? <ProfileMenu open onClose={() => setOpen(false)} /> : null}
+      {open && !profileMenu
         ? createPortal(
             <div
               className="fixed inset-0 z-[80] flex h-dvh w-full flex-col"
@@ -189,9 +197,6 @@ export function Header() {
               <div className="shrink-0 border-t border-[#d4af6a]/30 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
                 <p className="mb-3 text-center text-sm tracking-[0.22em] text-[#d4af6a] uppercase">{t('nav.networks')}</p>
                 <SocialLinks prominent />
-                <div className="mt-4 flex justify-center">
-                  <PreferenceBar />
-                </div>
               </div>
             </div>,
             document.body,

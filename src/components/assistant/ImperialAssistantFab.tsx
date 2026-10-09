@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Bot, ImagePlus, Send, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
@@ -6,12 +7,23 @@ import { usePublishedProperties, useSiteConfig } from '../../hooks/useSite'
 import { groundedReply } from '../../lib/assistant'
 import { fetchMyReservations } from '../../lib/data'
 import { supabase } from '../../lib/supabase'
+import { whatsappUrl } from '../../lib/whatsapp'
+import { Live } from '../i18n/Live'
 import { cn } from '../../lib/cn'
 
-type ChatMsg = { id: string; role: 'user' | 'assistant'; text: string; imageUrl?: string }
+type ChatMsg = {
+  id: string
+  role: 'user' | 'assistant'
+  text: string
+  imageUrl?: string
+  escalate?: boolean
+  prompt?: string
+  source?: 'fr' | 'en'
+}
 
 export function ImperialAssistantFab() {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
   const { user, isStaff } = useAuth()
   const { data: config } = useSiteConfig()
   const { data: properties = [] } = usePublishedProperties()
@@ -64,10 +76,51 @@ export function ImperialAssistantFab() {
         email: config?.email ?? 'imperialhome237@gmail.com',
         isStaff,
       })
-      setMessages((m) => [...m, { id: crypto.randomUUID(), role: 'assistant', text: reply.answer }])
+      setMessages((m) => [
+        ...m,
+        {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          text: reply.answer,
+          escalate: reply.escalate,
+          prompt: question,
+          source: i18n.language.startsWith('fr') ? 'fr' : 'en',
+        },
+      ])
     } finally {
       setPending(false)
     }
+  }
+
+  async function writeHuman(prompt: string) {
+    if (!user || !supabase) {
+      navigate('/login')
+      return
+    }
+    const client = supabase
+    const { data: existing } = await client
+      .from('conversations')
+      .select('id')
+      .eq('customer_id', user.id)
+      .eq('status', 'open')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    let id = existing?.id as string | undefined
+    if (!id) {
+      const { data: created } = await client.from('conversations').insert({ customer_id: user.id, needs_human: true }).select('id').single()
+      id = created?.id
+    }
+    if (!id) return
+    await client.from('messages').insert({
+      conversation_id: id,
+      sender_id: user.id,
+      role: 'customer',
+      body: prompt || t('assistant.unknown'),
+    })
+    await client.from('conversations').update({ needs_human: true }).eq('id', id)
+    setOpen(false)
+    navigate('/account/chat')
   }
 
   function onPick(file: File | null) {
@@ -112,7 +165,28 @@ export function ImperialAssistantFab() {
                   )}
                 >
                   {m.imageUrl ? <img src={m.imageUrl} alt="" className="mb-2 max-h-32 rounded object-cover" /> : null}
-                  <p className="whitespace-pre-wrap">{m.text}</p>
+                  <p className="whitespace-pre-wrap">
+                    {m.id === 'welcome' ? t('assistant.welcome') : <Live text={m.text} from={m.source ?? 'en'} />}
+                  </p>
+                  {m.escalate ? (
+                    <div className="mt-3 flex flex-col gap-2">
+                      <button
+                        type="button"
+                        className="min-h-11 bg-[#c4a35a] px-3 text-sm text-black touch-manipulation"
+                        onClick={() => void writeHuman(m.prompt || '')}
+                      >
+                        {t('assistant.writeHuman')}
+                      </button>
+                      <a
+                        className="inline-flex min-h-11 items-center justify-center border border-[#25D366] px-3 text-sm text-[#25D366] touch-manipulation"
+                        href={whatsappUrl(config?.whatsapp ?? '237674092263', m.prompt || t('assistant.unknown'))}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {t('assistant.whatsapp')}
+                      </a>
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>

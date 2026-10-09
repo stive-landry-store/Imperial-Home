@@ -6,8 +6,8 @@ import { useSiteConfig } from '../../hooks/useSite'
 import { shareSite } from '../../lib/social'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { ImperialLogo } from '../brand/Logo'
-import { PreferenceBar } from './PreferenceBar'
 import { SocialLinks } from './SocialLinks'
+import { Live } from '../i18n/Live'
 
 export function Footer() {
   const { t } = useTranslation()
@@ -79,13 +79,12 @@ export function Footer() {
           {copied ? t('nav.copied') : t('nav.share')}
         </button>
       </div>
-      <p className="pb-4 text-center font-display text-base tracking-[0.18em]">MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !</p>
+      <p className="pb-4 text-center font-display text-base tracking-[0.18em]">
+        <Live text="MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !" from="fr" />
+      </p>
       <p className="border-t border-[#d4af6a]/15 py-4 text-center text-[12px] tracking-wider text-[#d4af6a]/50">
         © {year} Impérial Home. {t('footer.rights')}
       </p>
-      <div className="flex justify-center pb-6">
-        <PreferenceBar />
-      </div>
     </footer>
   )
 }

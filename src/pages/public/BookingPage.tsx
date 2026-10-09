@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
+import { Live } from '../../components/i18n/Live'
 import { Input, Label } from '../../components/ui/Field'
 import { PriceBreakdown } from '../../components/property/PriceBreakdown'
 import { createBooking, fetchPropertyBySlug, fetchQuote } from '../../lib/data'
@@ -138,7 +139,7 @@ export function BookingPage() {
                   )
                 }
               />
-              {localized(service.name_en, service.name_fr, i18n.language)}
+              <Live text={localized(service.name_en, service.name_fr, i18n.language)} />
             </span>
             <span>{formatXaf(service.price_xaf)}</span>
           </label>
@@ -174,7 +175,7 @@ export function BookingPage() {
                   title={`${selectedVehicle.brand} ${selectedVehicle.model}`}
                 />
                 <p className="mt-2 text-xs theme-muted">
-                  {localized(selectedVehicle.description_en, selectedVehicle.description_fr, i18n.language)}
+                  <Live text={localized(selectedVehicle.description_en, selectedVehicle.description_fr, i18n.language)} />
                 </p>
                 <Link to={`/cars/${selectedVehicle.slug}`} className="mt-2 inline-block text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
                   {t('cars.bookThis')}

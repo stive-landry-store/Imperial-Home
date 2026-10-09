@@ -11,6 +11,7 @@ import { ReviewList } from '../../components/property/ReviewList'
 import { StayActions } from '../../components/property/StayActions'
 import { WaitlistForm } from '../../components/booking/WaitlistForm'
 import { Button } from '../../components/ui/Button'
+import { Live, useLiveTranslation } from '../../components/i18n/Live'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
 import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
@@ -68,9 +69,8 @@ export function PropertyDetailPage() {
     enabled: Boolean(property && activeCheckIn && checkOut),
   })
 
-  const description = useMemo(
-    () => (property ? localized(property.description_en, property.description_fr, i18n.language) : ''),
-    [property, i18n.language],
+  const description = useLiveTranslation(
+    property ? localized(property.description_en, property.description_fr, i18n.language) : '',
   )
 
   function onSelectDate(iso: string) {
@@ -140,7 +140,9 @@ export function PropertyDetailPage() {
         <div className="mt-10 grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="text-[13px] tracking-[0.28em] text-[#d4af6a] uppercase">{t('properties.houseLabel')}</p>
-            <h1 className="mt-2 font-display text-5xl tracking-[0.04em]">{property.name}</h1>
+            <h1 className="mt-2 font-display text-5xl tracking-[0.04em]">
+              <Live text={property.name} />
+            </h1>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <StayActions propertyId={property.id} />
               <button
@@ -181,19 +183,25 @@ export function PropertyDetailPage() {
             <h2 className="mt-10 font-display text-3xl">{t('property.amenities')}</h2>
             <ul className="mt-3 grid grid-cols-2 gap-2 text-base theme-muted">
               {(property.property_amenities ?? []).map((a) => (
-                <li key={a.amenities.id}>{localized(a.amenities.name_en, a.amenities.name_fr, i18n.language)}</li>
+                <li key={a.amenities.id}>
+                  <Live text={localized(a.amenities.name_en, a.amenities.name_fr, i18n.language)} />
+                </li>
               ))}
             </ul>
             {property.kitchen_info_en ? (
               <>
                 <h2 className="mt-10 font-display text-3xl">{t('property.kitchen')}</h2>
-                <p className="mt-3 theme-muted">{localized(property.kitchen_info_en, property.kitchen_info_fr, i18n.language)}</p>
+                <p className="mt-3 theme-muted">
+                  <Live text={localized(property.kitchen_info_en, property.kitchen_info_fr, i18n.language)} />
+                </p>
               </>
             ) : null}
             {property.rules_en ? (
               <>
                 <h2 className="mt-10 font-display text-3xl">{t('property.rules')}</h2>
-                <p className="mt-3 theme-muted">{localized(property.rules_en, property.rules_fr, i18n.language)}</p>
+                <p className="mt-3 theme-muted">
+                  <Live text={localized(property.rules_en, property.rules_fr, i18n.language)} />
+                </p>
               </>
             ) : null}
             <ReviewList propertyId={property.id} />

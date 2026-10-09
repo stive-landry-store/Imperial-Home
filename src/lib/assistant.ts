@@ -114,17 +114,17 @@ export function groundedReply(input: {
   if (input.properties.length) {
     const names = input.properties.map((p) => p.name).join(', ')
     return {
-      escalate: false,
+      escalate: true,
       answer: fr
-        ? `Impérial Home à Douala : ${names}. Demandez un appartement, un tarif ou la location voiture. Contact : ${input.phone}.`
-        : `Imperial Home in Douala: ${names}. Ask about an apartment, pricing, or car rental. Contact: ${input.phone}.`,
+        ? `Je n’ai pas la réponse exacte. Impérial Home à Douala : ${names}. Vous pouvez écrire à l’assistance ou sur WhatsApp.`
+        : `I don't have the exact answer. Imperial Home in Douala: ${names}. You can write to the team or on WhatsApp.`,
     }
   }
 
   return {
     escalate: true,
     answer: fr
-      ? `Je n’ai pas cette information. WhatsApp ${input.phone} ou écrivez à ${input.email}.`
-      : `I do not have that information. WhatsApp ${input.phone} or email ${input.email}.`,
+      ? `Je n’ai pas cette information. Écrivez à l’assistance ou sur WhatsApp.`
+      : `I do not have that information. Write to the team or on WhatsApp.`,
   }
 }

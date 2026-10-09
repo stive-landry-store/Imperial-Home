@@ -6,6 +6,7 @@ import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
 import { fetchPublishedVehicles } from '../../lib/vehicles'
 import { formatXaf, localized } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
+import { Live } from '../../components/i18n/Live'
 
 export function CarsPage() {
   const { t, i18n } = useTranslation()
@@ -33,7 +34,9 @@ export function CarsPage() {
                 <div className="p-5">
                   <p className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{v.brand}</p>
                   <h2 className="mt-1 font-display text-2xl">{v.model}</h2>
-                  <p className="mt-3 text-sm theme-muted line-clamp-3">{desc}</p>
+                  <p className="mt-3 text-sm theme-muted line-clamp-3">
+                    <Live text={desc} />
+                  </p>
                   <dl className="mt-4 space-y-1 text-sm">
                     <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
                       <dt>{t('cars.withoutDriver')}</dt>

@@ -1,4 +1,5 @@
 import { cn } from '../../lib/cn'
+import { useLiveTranslation } from '../i18n/Live'
 import type { LucideIcon } from 'lucide-react'
 
 export function DottedField({
@@ -18,10 +19,11 @@ export function DottedField({
   type?: string
   className?: string
 }) {
+  const shown = useLiveTranslation(label, 'fr')
   return (
     <label className={cn('flex min-w-0 items-end gap-2', className)}>
       {Icon ? <Icon className="mb-1 h-4 w-4 shrink-0 text-[#c4a35a]" strokeWidth={1.6} /> : null}
-      <span className="mb-1 shrink-0 text-[11px] tracking-wide text-[#111]">{label}</span>
+      <span className="mb-1 shrink-0 text-[11px] tracking-wide text-[#111]">{shown}</span>
       <input
         type={type}
         value={value}

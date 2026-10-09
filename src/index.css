@@ -2,7 +2,7 @@
 
 @theme {
   --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Montserrat", "Outfit", system-ui, sans-serif;
+  --font-sans: "Montserrat", "Noto Sans", "Noto Sans SC", "Noto Sans Arabic", "Noto Sans Devanagari", "Noto Sans Bengali", system-ui, sans-serif;
   --color-ink: #0a0a0a;
   --color-ink-soft: #111111;
   --color-gold: #c4a35a;

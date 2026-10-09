@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Promotion, Property } from '../../types/database'
+import { Live, useLiveTranslation } from '../i18n/Live'
 import { coverImage, formatXaf, localized } from '../../lib/format'
 import { pickBestPromotion, quoteStay } from '../../lib/pricing'
 import { Badge } from '../ui/Badge'
@@ -25,6 +26,7 @@ export function PropertyCard({
   )
   const promo = pickBestPromotion(property.nightly_rate_xaf, applicable)
   const quoted = quoteStay(property.nightly_rate_xaf, 1, promo)
+  const promoLabel = useLiveTranslation(promo?.name ?? '')
   const amenityNames = (property.property_amenities ?? [])
     .map((a) => localized(a.amenities.name_en, a.amenities.name_fr, lang))
     .slice(0, 3)
@@ -44,18 +46,24 @@ export function PropertyCard({
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
         {promo ? (
           <div className="absolute top-4 left-4">
-            <Badge variant="dark">{promo.name}</Badge>
+            <Badge variant="dark">{promoLabel}</Badge>
           </div>
         ) : null}
         <div className="absolute inset-x-0 bottom-0 p-5 text-[#f4eee3]">
           <p className="text-[12px] tracking-[0.22em] text-[#d4af6a] uppercase">
             {t('properties.houseLabel')}
           </p>
-          <p className="mt-1 font-display text-2xl tracking-[0.06em]">{property.name}</p>
+          <p className="mt-1 font-display text-2xl tracking-[0.06em]">
+            <Live text={property.name} />
+          </p>
           <p className="mt-2 text-sm text-white/70">
             {property.capacity} {t('properties.guests')} · {property.bedrooms} bd · {property.bathrooms} ba
           </p>
-          {amenityNames.length ? <p className="mt-1 text-sm text-white/55">{amenityNames.join(' · ')}</p> : null}
+          {amenityNames.length ? (
+            <p className="mt-1 text-sm text-white/55">
+              <Live text={amenityNames.join(' · ')} />
+            </p>
+          ) : null}
           <p className="mt-3 text-base">
             {quoted.discount_xaf > 0 ? (
               <>

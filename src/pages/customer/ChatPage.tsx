@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { Textarea } from '../../components/ui/Field'
+import { ChatLine, type ChatSender } from '../../components/chat/ChatLine'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { useSiteConfig } from '../../hooks/useSite'
@@ -15,6 +16,7 @@ export function ChatPage() {
   const { data: config } = useSiteConfig()
   const [conversationId, setConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
+  const [senders, setSenders] = useState<ChatSender[]>([])
   const [body, setBody] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const bottom = useRef<HTMLDivElement>(null)
@@ -39,8 +41,14 @@ export function ChatPage() {
       }
       if (!id || cancelled) return
       setConversationId(id)
-      const { data: rows } = await client.from('messages').select('*, message_attachments(*)').eq('conversation_id', id).order('created_at')
-      if (!cancelled) setMessages((rows as Message[]) ?? [])
+      const [{ data: rows }, { data: people }] = await Promise.all([
+        client.from('messages').select('*, message_attachments(*)').eq('conversation_id', id).order('created_at'),
+        client.rpc('conversation_senders', { p_conversation_id: id }),
+      ])
+      if (!cancelled) {
+        setMessages((rows as Message[]) ?? [])
+        setSenders((people as ChatSender[]) ?? [])
+      }
     }
     void boot()
     return () => {
@@ -56,7 +64,15 @@ export function ChatPage() {
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${conversationId}` },
-        (payload) => setMessages((prev) => [...prev, payload.new as Message]),
+        () => {
+          void client
+            .from('messages')
+            .select('*, message_attachments(*)')
+            .eq('conversation_id', conversationId)
+            .order('created_at')
+            .then(({ data }) => setMessages((data as Message[]) ?? []))
+          void client.rpc('conversation_senders', { p_conversation_id: conversationId }).then(({ data }) => setSenders((data as ChatSender[]) ?? []))
+        },
       )
       .subscribe()
     return () => {
@@ -106,11 +122,17 @@ export function ChatPage() {
   async function requestHuman() {
     if (!supabase || !conversationId) return
     await supabase.from('conversations').update({ needs_human: true }).eq('id', conversationId)
-    await supabase.from('messages').insert({
-      conversation_id: conversationId,
-      role: 'system',
-      body: t('chat.handed'),
-    })
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        conversation_id: conversationId,
+        sender_id: null,
+        role: 'system',
+        body: t('chat.handed'),
+        created_at: new Date().toISOString(),
+      },
+    ])
   }
 
   if (!isSupabaseConfigured()) {
@@ -130,31 +152,29 @@ export function ChatPage() {
       <Helmet>
         <title>{t('chat.title')} | Imperial Home</title>
       </Helmet>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="font-display text-4xl">{t('chat.title')}</h1>
-        <Button variant="outline" onClick={() => void requestHuman()}>
+        <Button variant="outline" className="min-h-12 w-full sm:w-auto" onClick={() => void requestHuman()}>
           {t('chat.human')}
         </Button>
       </div>
       <div className="theme-card mt-6 flex-1 space-y-3 overflow-y-auto p-4">
         {messages.map((m) => (
-          <div key={m.id} className={m.role === 'customer' ? 'ml-12 text-right' : 'mr-12'}>
-            <p className="text-xs uppercase tracking-wider text-muted">{m.role}</p>
-            <p className="whitespace-pre-wrap text-base">{m.body}</p>
-          </div>
+          <ChatLine key={m.id} message={m} senders={senders} />
         ))}
         <div ref={bottom} />
       </div>
-      <form className="mt-4 space-y-3" onSubmit={(e) => void send(e)}>
+      <form className="mt-4 flex flex-col gap-3" onSubmit={(e) => void send(e)}>
         <Textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder={t('chat.placeholder')} rows={3} />
-        <div className="flex flex-wrap items-center gap-3">
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          />
-          <Button type="submit">{t('chat.send')}</Button>
-        </div>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="max-w-full text-sm"
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+        />
+        <Button type="submit" className="min-h-12 w-full">
+          {t('chat.send')}
+        </Button>
       </form>
     </div>
   )

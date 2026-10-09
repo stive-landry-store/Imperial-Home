@@ -6,6 +6,7 @@ import { usePublishedProperties } from '../../hooks/useSite'
 import { compareIds } from '../../lib/savedStays'
 import { formatXaf, localized } from '../../lib/format'
 import { Skeleton } from '../../components/ui/Skeleton'
+import { Live } from '../../components/i18n/Live'
 
 export function ComparePage() {
   const { t, i18n } = useTranslation()
@@ -65,7 +66,7 @@ export function ComparePage() {
                     <th className="p-3 text-left font-normal theme-muted">{label}</th>
                     {chosen.map((property) => (
                       <td key={property.id} className="p-3 align-top">
-                        {value(property)}
+                        <Live text={String(value(property) ?? '')} />
                       </td>
                     ))}
                   </tr>

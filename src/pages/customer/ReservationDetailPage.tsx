@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf, localized } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
+import { Live } from '../../components/i18n/Live'
 import { PaymentDesk } from '../../components/booking/PaymentDesk'
 import { useSiteConfig } from '../../hooks/useSite'
 import { useAuth } from '../../hooks/useAuth'
@@ -75,9 +76,11 @@ export function ReservationDetailPage() {
           <h2 className="font-display text-2xl">{t('account.bookingValidated')}</h2>
           <p className="mt-2 text-sm theme-muted">{t('account.bookingValidatedLead')}</p>
           <h3 className="mt-6 font-display text-2xl">{t('plus.guideTitle')}</h3>
-          <p className="mt-2 text-sm">{localized(reservation.properties?.guide_en, reservation.properties?.guide_fr, i18n.language)}</p>
           <p className="mt-2 text-sm">
-            {localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)}
+            <Live text={localized(reservation.properties?.guide_en, reservation.properties?.guide_fr, i18n.language)} />
+          </p>
+          <p className="mt-2 text-sm">
+            <Live text={localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)} />
           </p>
           <Button className="mt-4" variant="outline" onClick={() => downloadInvoice(reservation)}>
             {t('plus.invoice')}
