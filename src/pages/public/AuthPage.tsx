@@ -24,7 +24,6 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [info, setInfo] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
 
   async function onSubmit(e: FormEvent) {
@@ -35,18 +34,13 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
     }
     setPending(true)
     setError(null)
-    setInfo(null)
     try {
       if (mode === 'login') {
         await signIn(email, password)
         navigate(next)
       } else {
-        const result = await signUp({ email, password, full_name: fullName, phone })
-        if (result.needsEmailConfirmation) {
-          setInfo(t('auth.confirmEmailSent'))
-          return
-        }
-        navigate(next)
+        await signUp({ email, password, full_name: fullName, phone })
+        navigate('/')
       }
     } catch (err) {
       setError(formatLoginRegisterError(err, t, mode))
@@ -102,7 +96,6 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
             />
           </div>
         ) : null}
-        {info ? <p className="text-sm text-[#d4af6a]">{info}</p> : null}
         {error ? <p className="text-sm text-red-500">{error}</p> : null}
         <Button type="submit" className="w-full" disabled={pending || !isSupabaseConfigured()}>
           {mode === 'login' ? t('auth.submitLogin') : t('auth.submitRegister')}

@@ -114,20 +114,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       signUp: async ({ email, password, full_name, phone }) => {
         if (!supabase) throw new Error('Supabase is not configured')
-        const { data, error } = await supabase.auth.signUp({
+        const base = import.meta.env.VITE_SUPABASE_URL as string
+        const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string
+        const response = await fetch(`${base}/functions/v1/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: anon,
+            Authorization: `Bearer ${anon}`,
+          },
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+            password,
+            full_name: full_name.trim(),
+            phone: phone?.trim() ?? '',
+          }),
+        })
+        const payload = (await response.json().catch(() => null)) as { error?: string } | null
+        if (!response.ok) throw new Error(payload?.error || 'Could not create the account')
+        const { error } = await supabase.auth.signInWithPassword({
           email: email.trim().toLowerCase(),
           password,
-          options: {
-            data: { full_name, phone },
-            emailRedirectTo: authRedirectUrl('/'),
-          },
         })
         if (error) throw error
-        if (data.session) {
-          await supabase.rpc('ensure_profile')
-          return { needsEmailConfirmation: false }
-        }
-        return { needsEmailConfirmation: true }
+        await supabase.rpc('ensure_profile')
+        return { needsEmailConfirmation: false }
       },
       signOut: async () => {
         await supabase?.auth.signOut()

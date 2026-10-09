@@ -54,85 +54,85 @@ export function HomePage() {
           alt=""
           priority
           width={1600}
-          className="kenburns absolute inset-0 h-full w-full object-cover opacity-55"
+          className="absolute inset-0 h-full w-full object-cover opacity-55"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/25" />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-36 md:px-6 md:pb-20">
-          <p className="text-[13px] tracking-[0.42em] text-[#d4af6a] uppercase">{t('hero.kicker')}</p>
-          <ImperialMark className="mt-6 h-28 w-auto md:h-32" />
-          <p className="mt-6 text-[13px] tracking-[0.42em] text-[#d4af6a] uppercase">{t('hero.tagline')}</p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-[1.05] tracking-[0.04em] text-[#f4eee3] md:text-6xl lg:text-7xl">
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-28 pb-8 md:px-6 md:pt-36 md:pb-16">
+          <p className="text-[13px] tracking-[0.16em] text-[#d4af6a]">{t('hero.kicker')}</p>
+          <ImperialMark className="mt-4 h-20 w-auto md:mt-6 md:h-32" />
+          <p className="mt-4 text-[13px] text-[#d4af6a] md:mt-6">{t('hero.tagline')}</p>
+          <h1 className="mt-3 max-w-3xl font-display text-3xl leading-[1.1] text-[#f4eee3] md:mt-4 md:text-6xl">
             {t('hero.title')}
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg">{t('hero.subtitle')}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Button to="/properties" className="w-full sm:w-auto">
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 md:mt-6 md:text-lg">{t('hero.subtitle')}</p>
+          <div className="mt-5 flex gap-2 md:mt-8">
+            <Button to="/properties" className="min-w-0 flex-1 px-3 text-[11px] sm:flex-none sm:px-5 sm:text-[13px]">
               {t('hero.cta')}
             </Button>
             <Button
               variant="ghost"
-              className="w-full sm:w-auto"
+              className="min-w-0 flex-1 px-3 text-[11px] sm:flex-none sm:px-5 sm:text-[13px]"
               onClick={() => window.open(whatsappUrl(config?.whatsapp ?? '237674092263', t('contact.message')), '_blank')}
             >
               {t('hero.ctaSecondary')}
             </Button>
           </div>
-          <div className="mt-6 max-w-xl">
-            <p className="mb-3 text-[13px] tracking-[0.22em] text-[#d4af6a] uppercase">{t('nav.networks')}</p>
+          <div className="mt-4 max-w-xl md:mt-6">
+            <p className="mb-2 text-[12px] text-[#d4af6a]">{t('nav.networks')}</p>
             <SocialLinks prominent />
           </div>
 
           <form
             onSubmit={search}
-            className="mt-12 grid gap-px overflow-hidden border border-[#d4af6a]/40 bg-[#d4af6a]/10 backdrop-blur-sm md:grid-cols-4"
+            className="mt-5 grid grid-cols-[minmax(0,1.15fr)_3.4rem_4.8rem_auto] overflow-hidden border border-[#d4af6a]/40 bg-[#d4af6a]/10 backdrop-blur-sm md:mt-10 md:grid-cols-4"
           >
-            <label className="bg-black/70 px-4 py-4">
-              <span className="block text-[12px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('property.checkIn')}</span>
+            <label className="min-w-0 bg-black/70 px-2 py-2 md:px-4 md:py-4">
+              <span className="block text-[10px] leading-tight tracking-[0.06em] text-[#d4af6a] uppercase md:text-[12px]">{t('property.checkIn')}</span>
               <input
                 type="date"
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
-                className="mt-1 w-full border-0 bg-transparent text-base text-white outline-none [color-scheme:dark]"
+                className="mt-1 w-full min-w-0 border-0 bg-transparent text-[13px] text-white outline-none [color-scheme:dark] md:text-base"
               />
             </label>
-            <label className="bg-black/70 px-4 py-4">
-              <span className="block text-[12px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('property.stayNights')}</span>
+            <label className="min-w-0 bg-black/70 px-2 py-2 md:px-4 md:py-4">
+              <span className="block text-[10px] leading-tight tracking-[0.06em] text-[#d4af6a] uppercase md:text-[12px]">{t('property.nights')}</span>
               <input
                 type="number"
                 min={1}
                 max={365}
                 value={nights}
                 onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
-                className="mt-1 w-full border-0 bg-transparent text-base text-white outline-none"
+                className="mt-1 w-full min-w-0 border-0 bg-transparent text-[13px] text-white outline-none md:text-base"
               />
-              <span className="mt-1 block text-[11px] text-white/50">
+              <span className="mt-1 hidden text-[11px] text-white/50 md:block">
                 {t('property.checkOut')} : {checkOut}
               </span>
             </label>
-            <label className="bg-black/70 px-4 py-4">
-              <span className="block text-[12px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('property.guests')}</span>
+            <label className="min-w-0 bg-black/70 px-2 py-2 md:px-4 md:py-4">
+              <span className="block text-[9px] leading-tight tracking-normal text-[#d4af6a] uppercase md:text-[12px] md:tracking-[0.06em]">{t('property.guests')}</span>
               <input
                 type="number"
                 min={1}
                 value={guests}
                 onChange={(e) => setGuests(Number(e.target.value))}
-                className="mt-1 w-full border-0 bg-transparent text-base text-white outline-none"
+                className="mt-1 w-full min-w-0 border-0 bg-transparent text-[13px] text-white outline-none md:text-base"
               />
             </label>
-            <Button type="submit" className="rounded-none">
+            <Button type="submit" className="rounded-none px-3 text-[11px] md:px-5 md:text-[13px]">
               {t('nav.book')}
             </Button>
           </form>
         </div>
       </section>
 
-      <section className="theme-alt border-y border-[#d4af6a]/20 py-14">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-4 md:px-6 md:divide-x md:divide-[#d4af6a]/25">
+      <section className="theme-alt border-y border-[#d4af6a]/20">
+        <div className="mx-auto grid max-w-6xl grid-cols-4 md:px-6 md:divide-x md:divide-[#d4af6a]/25">
           {pillars.map((p) => (
-            <div key={p.title} className="text-center">
-              <p.icon className="mx-auto mb-3 h-6 w-6 text-[#d4af6a]" strokeWidth={1.4} />
-              <p className="text-[13px] tracking-[0.18em] text-[#d4af6a] uppercase">{p.title}</p>
-              <p className="mt-2 text-sm leading-relaxed theme-muted">{p.text}</p>
+            <div key={p.title} className="px-1 py-4 text-center md:px-4 md:py-10">
+              <p.icon className="mx-auto mb-2 h-5 w-5 text-[#d4af6a] md:h-6 md:w-6" strokeWidth={1.4} />
+              <p className="text-[10px] leading-tight text-[#d4af6a] uppercase md:text-[13px] md:tracking-[0.14em]">{p.title}</p>
+              <p className="mt-2 hidden text-sm leading-relaxed theme-muted md:block">{p.text}</p>
             </div>
           ))}
         </div>
