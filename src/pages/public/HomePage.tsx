@@ -10,6 +10,7 @@ import { usePublishedProperties, usePromotions, useSiteConfig } from '../../hook
 import { whatsappUrl } from '../../lib/whatsapp'
 import { checkOutFromNights, todayIso } from '../../lib/availability'
 import { ImperialMark } from '../../components/brand/Logo'
+import { SocialLinks } from '../../components/layout/SocialLinks'
 import { OptimizedImage } from '../../components/ui/OptimizedImage'
 import { DEFAULT_HOME_HERO_IMAGE } from '../../lib/config'
 import { demoHousingSheet } from '../../lib/housingSheet'
@@ -63,14 +64,21 @@ export function HomePage() {
             {t('hero.title')}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75 md:text-lg">{t('hero.subtitle')}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button to="/properties">{t('hero.cta')}</Button>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button to="/properties" className="w-full sm:w-auto">
+              {t('hero.cta')}
+            </Button>
             <Button
               variant="ghost"
+              className="w-full sm:w-auto"
               onClick={() => window.open(whatsappUrl(config?.whatsapp ?? '237674092263', t('contact.message')), '_blank')}
             >
               {t('hero.ctaSecondary')}
             </Button>
+          </div>
+          <div className="mt-6 max-w-xl">
+            <p className="mb-3 text-[13px] tracking-[0.22em] text-[#d4af6a] uppercase">{t('nav.networks')}</p>
+            <SocialLinks prominent />
           </div>
 
           <form

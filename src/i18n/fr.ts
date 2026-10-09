@@ -17,6 +17,7 @@ export const fr: Messages = {
     copied: 'Lien copié',
     instagram: 'Instagram',
     tiktok: 'TikTok',
+    networks: 'Réseaux',
   },
   hero: {
     kicker: 'Douala · Cameroun',

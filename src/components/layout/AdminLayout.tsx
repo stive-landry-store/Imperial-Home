@@ -105,30 +105,37 @@ export function AdminLayout() {
       </header>
 
       {menuOpen ? (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <button type="button" className="absolute inset-0 bg-black/65" aria-label={t('common.cancel')} onClick={() => setMenuOpen(false)} />
-          <aside className="relative flex h-full w-[min(20rem,88vw)] flex-col overflow-y-auto bg-black text-[#d4af6a] pt-[env(safe-area-inset-top)] shadow-2xl">
-            <div className="flex items-center justify-between px-4 py-4">
-              <p className="font-display text-xl">{t('admin.menu')}</p>
-              <button
-                type="button"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
-                aria-label={t('common.cancel')}
-                onClick={() => setMenuOpen(false)}
-              >
-                <X size={24} />
-              </button>
-            </div>
-            {navLinks}
-            <div className="mt-auto border-t border-[#d4af6a]/20 px-5 py-4 text-sm">
-              <div className="mb-3 flex items-center gap-3">
-                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : null}
-                <p>{profile?.full_name || profile?.email}</p>
-              </div>
+        <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-black text-[#d4af6a] md:hidden">
+          <div className="flex items-center justify-between px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+            <p className="font-display text-2xl">{t('admin.menu')}</p>
+            <button
+              type="button"
+              className="inline-flex min-h-12 min-w-12 items-center justify-center touch-manipulation"
+              aria-label={t('common.cancel')}
+              onClick={() => setMenuOpen(false)}
+            >
+              <X size={28} />
+            </button>
+          </div>
+          <nav className="grid flex-1 grid-cols-2 content-start gap-2 overflow-y-auto px-3 pb-3">
+            <NavLink to="/account/profile" className="menu-choice" onClick={() => setMenuOpen(false)}>
+              {t('account.profile')}
+            </NavLink>
+            {links.map((item) => (
+              <NavLink key={item.to} to={item.to} end={item.to === '/admin'} className="menu-choice" onClick={() => setMenuOpen(false)}>
+                {t(`admin.${item.key}`)}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="shrink-0 border-t border-[#d4af6a]/25 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <div className="mb-3 flex items-center gap-3 text-sm">
+              {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : null}
+              <p className="min-w-0 truncate">{profile?.full_name || profile?.email}</p>
               {admin?.is_verified ? <VerifiedBadge /> : null}
-              <SocialLinks className="mt-4" />
             </div>
-          </aside>
+            <p className="mb-2 text-center text-sm tracking-[0.18em] uppercase">{t('nav.networks')}</p>
+            <SocialLinks prominent />
+          </div>
         </div>
       ) : null}
 

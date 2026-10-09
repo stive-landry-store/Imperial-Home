@@ -62,8 +62,8 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center">
-        <p className="text-[13px] tracking-[0.2em] uppercase">{t('account.social')}</p>
-        <SocialLinks />
+        <p className="text-base tracking-[0.2em] uppercase">{t('nav.networks')}</p>
+        <SocialLinks prominent className="max-w-xl" />
         <button
           type="button"
           className="min-h-11 px-4 text-[13px] tracking-[0.16em] uppercase hover:text-gold-light"

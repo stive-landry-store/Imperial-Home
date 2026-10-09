@@ -16,7 +16,7 @@ export function CustomerLayout() {
     <div className="admin-main theme-page min-h-svh">
       <Header />
       <div className="mx-auto max-w-5xl px-4 pt-28 pb-16">
-        <nav className="admin-nav-rail mb-8 flex snap-x snap-mandatory gap-2 overflow-x-auto border-b border-[#d4af6a]/25 pb-1 md:overflow-visible md:snap-none">
+        <nav className="mb-8 flex flex-wrap gap-2 border-b border-[#d4af6a]/25 pb-2">
           <NavLink to="/account" end className={item}>
             {t('account.title')}
           </NavLink>

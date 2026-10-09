@@ -26,8 +26,8 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
   if (!current) return <div className="aspect-[16/10] bg-black" />
 
   return (
-    <div>
-      <button type="button" className="block aspect-[16/10] w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
+    <div className="w-full min-w-0 max-w-full">
+      <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
         <OptimizedImage
           src={current.url}
           alt={localized(current.alt_en, current.alt_fr, lang) || 'Impérial Home'}

@@ -37,8 +37,8 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
   }
 
   return (
-    <div>
-      <button type="button" className="block aspect-[16/10] w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
+    <div className="w-full min-w-0 max-w-full">
+      <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
         <Frame item={current} />
       </button>
       {items.length > 1 ? (

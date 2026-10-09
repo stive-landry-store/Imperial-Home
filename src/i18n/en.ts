@@ -15,6 +15,7 @@ export const en = {
     copied: 'Link copied',
     instagram: 'Instagram',
     tiktok: 'TikTok',
+    networks: 'Social',
   },
   hero: {
     kicker: 'Douala · Cameroon',

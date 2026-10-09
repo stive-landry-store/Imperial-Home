@@ -53,12 +53,12 @@ export function PaymentDesk({
       <p className="text-sm">
         {t('plus.payRef')} : <span className="font-medium">{reservation.public_code}</span>
       </p>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid gap-2">
         {(['mtn_momo', 'orange_money'] as const).map((item) => (
           <button
             key={item}
             type="button"
-            className={`border px-3 py-3 text-sm ${provider === item ? 'border-[#d4af6a] text-[#d4af6a]' : 'border-line'}`}
+            className={`min-h-12 w-full border px-3 py-3 text-base ${provider === item ? 'border-[#d4af6a] text-[#d4af6a]' : 'border-line'}`}
             onClick={() => setProvider(item)}
           >
             {item === 'mtn_momo' ? t('plus.mtn') : t('plus.orange')}

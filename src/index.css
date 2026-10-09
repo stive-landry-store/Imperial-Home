@@ -35,6 +35,31 @@ body {
   overflow-x: clip;
 }
 
+img,
+video,
+svg,
+canvas,
+select,
+input,
+textarea {
+  max-width: 100%;
+}
+
+.menu-choice {
+  display: flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(212 175 106 / 0.45);
+  padding: 0.6rem 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  touch-action: manipulation;
+}
+
 @media (max-width: 767px) {
   html {
     font-size: 16px;
@@ -86,6 +111,15 @@ body {
 .theme-page {
   background: var(--page);
   color: var(--page-fg);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.theme-page > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .theme-alt {

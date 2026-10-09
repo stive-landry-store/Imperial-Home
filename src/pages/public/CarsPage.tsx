@@ -35,11 +35,11 @@ export function CarsPage() {
                   <h2 className="mt-1 font-display text-2xl">{v.model}</h2>
                   <p className="mt-3 text-sm theme-muted line-clamp-3">{desc}</p>
                   <dl className="mt-4 space-y-1 text-sm">
-                    <div className="flex justify-between">
+                    <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
                       <dt>{t('cars.withoutDriver')}</dt>
                       <dd>{formatXaf(v.daily_rate_no_driver_xaf)}/j</dd>
                     </div>
-                    <div className="flex justify-between text-[#d4af6a]">
+                    <div className="flex flex-wrap justify-between gap-x-3 gap-y-1 text-[#d4af6a]">
                       <dt>{t('cars.withDriver')}</dt>
                       <dd>{formatXaf(v.daily_rate_with_driver_xaf)}/j</dd>
                     </div>

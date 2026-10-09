@@ -107,11 +107,11 @@ export function CarDetailPage() {
 
   return (
     <div className="theme-page min-h-svh">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 pt-32 pb-24 md:grid-cols-[1.3fr_0.9fr] md:px-6">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 pt-32 pb-28 md:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] md:px-6">
         <Helmet>
           <title>{title} | Impérial Home</title>
         </Helmet>
-        <div>
+        <div className="min-w-0 max-w-full">
           <Link to="/cars" className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">
             {t('cars.back')}
           </Link>
@@ -123,7 +123,7 @@ export function CarDetailPage() {
           </div>
         </div>
 
-        <aside className="h-fit border border-[#d4af6a]/40 bg-black/40 p-5">
+        <aside className="h-fit min-w-0 max-w-full border border-[#d4af6a]/40 bg-black/40 p-4 sm:p-5">
           <p className="text-xs tracking-[0.22em] text-[#d4af6a] uppercase">{t('cars.bookAlone')}</p>
           <h2 className="mt-2 font-display text-3xl">{t('cars.bookThis')}</h2>
           <p className="mt-2 text-sm theme-muted">{t('cars.aloneHint')}</p>
@@ -179,17 +179,17 @@ export function CarDetailPage() {
               <p className="text-sm theme-muted">
                 {t('cars.until')} {formatDate(end, i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB')}
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid gap-2">
                 <button
                   type="button"
-                  className={`border px-3 py-3 text-sm ${!withDriver ? 'border-[#d4af6a] text-[#d4af6a]' : 'border-white/15'}`}
+                  className={`min-h-12 w-full border px-3 py-3 text-base ${!withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-white/20'}`}
                   onClick={() => setWithDriver(false)}
                 >
                   {t('cars.withoutDriver')}
                 </button>
                 <button
                   type="button"
-                  className={`border px-3 py-3 text-sm ${withDriver ? 'border-[#d4af6a] text-[#d4af6a]' : 'border-white/15'}`}
+                  className={`min-h-12 w-full border px-3 py-3 text-base ${withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-white/20'}`}
                   onClick={() => setWithDriver(true)}
                 >
                   {t('cars.withDriver')}

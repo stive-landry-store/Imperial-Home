@@ -181,12 +181,12 @@ export function BookingPage() {
                 </Link>
               </div>
             ) : null}
-            <div className="flex gap-4 text-sm">
-              <label className="flex items-center gap-2">
+            <div className="grid gap-2 text-base">
+              <label className="flex min-h-12 items-center gap-3 border border-[#d4af6a]/30 px-3">
                 <input type="radio" checked={!withDriver} onChange={() => setWithDriver(false)} />
                 {t('cars.withoutDriver')}
               </label>
-              <label className="flex items-center gap-2">
+              <label className="flex min-h-12 items-center gap-3 border border-[#d4af6a]/30 px-3">
                 <input type="radio" checked={withDriver} onChange={() => setWithDriver(true)} />
                 {t('cars.withDriver')}
               </label>

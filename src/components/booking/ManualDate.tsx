@@ -24,7 +24,7 @@ export function ManualDate({
   const { year, month, day } = parts(value)
   const locale = i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'
   const months = Array.from({ length: 12 }, (_, index) =>
-    new Date(Date.UTC(2026, index, 1)).toLocaleString(locale, { month: 'long', timeZone: 'UTC' }),
+    new Date(Date.UTC(2026, index, 1)).toLocaleString(locale, { month: 'short', timeZone: 'UTC' }),
   )
   const startYear = Number((min ?? value).slice(0, 4)) || new Date().getUTCFullYear()
   const years = Array.from({ length: 4 }, (_, index) => String(startYear + index))
@@ -42,12 +42,12 @@ export function ManualDate({
     onChange(iso)
   }
 
-  const field = 'min-h-11 border border-[#d4af6a]/40 bg-transparent px-2 text-base outline-none'
+  const field = 'min-h-12 w-full min-w-0 max-w-full border border-[#d4af6a]/40 bg-transparent px-1 text-base outline-none'
 
   return (
-    <fieldset className="min-w-0">
+    <fieldset className="min-w-0 max-w-full">
       <legend className="text-sm uppercase tracking-wider text-[#d4af6a]/80">{label}</legend>
-      <div className="mt-1 grid grid-cols-[4.5rem_1fr_5.5rem] gap-2">
+      <div className="mt-1 grid max-w-full grid-cols-3 gap-2">
         <select
           aria-label={t('property.day')}
           className={field}

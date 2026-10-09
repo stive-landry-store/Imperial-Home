@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Menu, X } from 'lucide-react'
@@ -29,6 +30,15 @@ export function Header() {
   }, [])
 
   useEffect(() => setOpen(false), [location.pathname])
+
+  useEffect(() => {
+    if (!open) return
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previous
+    }
+  }, [open])
 
   const links = [
     { to: '/properties', label: t('nav.residences') },
@@ -100,84 +110,93 @@ export function Header() {
           </Link>
         </nav>
       </div>
-      {open ? (
-        <div className="fixed inset-0 z-50">
-          <button type="button" className="absolute inset-0 bg-black/65" aria-label={t('common.cancel')} onClick={() => setOpen(false)} />
-          <aside
-            className="relative flex h-full w-[min(20rem,88vw)] flex-col overflow-y-auto pt-[env(safe-area-inset-top)] text-[var(--header-fg)] shadow-2xl"
-            style={{ background: 'var(--header-solid)' }}
-          >
-            <div className="flex items-center gap-3 px-4 py-4">
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt="" className="h-12 w-12 rounded-full object-cover" />
-              ) : null}
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-display text-xl">{profile?.full_name || t('nav.menu')}</p>
-                {profile?.email ? <p className="truncate text-sm normal-case text-[#d4af6a]/70">{profile.email}</p> : null}
-              </div>
-              <button type="button" className="inline-flex min-h-11 min-w-11 items-center justify-center" aria-label={t('common.cancel')} onClick={() => setOpen(false)}>
-                <X />
-              </button>
-            </div>
-            <div className="flex flex-col px-4 pb-8 text-base uppercase tracking-[0.16em]">
-              {user ? (
-                <Link to="/account/profile" className="flex min-h-11 items-center">
-                  {t('account.profile')}
-                </Link>
-              ) : null}
-              {links.map((l) => (
-                <Link key={l.to} to={l.to} className="flex min-h-11 items-center">
-                  {l.label}
-                </Link>
-              ))}
-              <Link to={user ? '/account' : '/login'} className="flex min-h-11 items-center">
-                {user ? t('nav.account') : t('nav.login')}
-              </Link>
-              {user ? (
-                <Link to="/account/chat" className="flex min-h-11 items-center">
-                  {t('account.chat')}
-                </Link>
-              ) : null}
-              {isStaff ? (
-                <Link to="/admin" className="flex min-h-11 items-center text-gold-light">
-                  {t('nav.admin')}
-                </Link>
-              ) : null}
-              <Link to="/properties" className="flex min-h-11 items-center text-[#e0c57a]">
-                {t('nav.book')}
-              </Link>
-              <Link to="/fiche" className="flex min-h-11 items-center">
-                {t('account.housing')}
-              </Link>
-              <button
-                type="button"
-                className="flex min-h-11 items-center text-left"
-                onClick={() =>
-                  void shareSite().then((result) => {
-                    if (result === 'copied') {
-                      setCopied(true)
-                      window.setTimeout(() => setCopied(false), 2000)
-                    }
-                  })
-                }
-              >
-                {copied ? t('nav.copied') : t('nav.share')}
-              </button>
-              {user ? (
-                <button type="button" className="flex min-h-11 items-center" onClick={() => void signOut()}>
-                  {t('nav.logout')}
+      {open
+        ? createPortal(
+            <div
+              className="fixed inset-0 z-[80] flex h-dvh w-full flex-col"
+              style={{ background: 'var(--page)', color: 'var(--page-fg)' }}
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('nav.menu')}
+            >
+              <div className="flex items-center gap-3 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+                ) : null}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-display text-2xl">{profile?.full_name || t('nav.menu')}</p>
+                  {profile?.email ? <p className="truncate text-sm text-[#d4af6a]/80">{profile.email}</p> : null}
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex min-h-12 min-w-12 items-center justify-center touch-manipulation"
+                  aria-label={t('common.cancel')}
+                  onClick={() => setOpen(false)}
+                >
+                  <X size={28} />
                 </button>
-              ) : null}
-              <div className="mt-4 normal-case tracking-normal">
-                <SocialLinks />
               </div>
-              <div className="mt-4">
-                <PreferenceBar />
+              <nav className="grid flex-1 grid-cols-2 content-start gap-2 overflow-y-auto px-4 pb-3">
+                {user ? (
+                  <Link to="/account/profile" className="menu-choice">
+                    {t('account.profile')}
+                  </Link>
+                ) : null}
+                {links.map((item) => (
+                  <Link key={item.to} to={item.to} className="menu-choice">
+                    {item.label}
+                  </Link>
+                ))}
+                <Link to={user ? '/account' : '/login'} className="menu-choice">
+                  {user ? t('nav.account') : t('nav.login')}
+                </Link>
+                {user ? (
+                  <Link to="/account/chat" className="menu-choice">
+                    {t('account.chat')}
+                  </Link>
+                ) : null}
+                {isStaff ? (
+                  <Link to="/admin" className="menu-choice">
+                    {t('nav.admin')}
+                  </Link>
+                ) : null}
+                <Link to="/properties" className="menu-choice">
+                  {t('nav.book')}
+                </Link>
+                <Link to="/fiche" className="menu-choice">
+                  {t('account.housing')}
+                </Link>
+                <button
+                  type="button"
+                  className="menu-choice"
+                  onClick={() =>
+                    void shareSite().then((result) => {
+                      if (result === 'copied') {
+                        setCopied(true)
+                        window.setTimeout(() => setCopied(false), 2000)
+                      }
+                    })
+                  }
+                >
+                  {copied ? t('nav.copied') : t('nav.share')}
+                </button>
+                {user ? (
+                  <button type="button" className="menu-choice" onClick={() => void signOut()}>
+                    {t('nav.logout')}
+                  </button>
+                ) : null}
+              </nav>
+              <div className="shrink-0 border-t border-[#d4af6a]/30 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <p className="mb-3 text-center text-sm tracking-[0.22em] text-[#d4af6a] uppercase">{t('nav.networks')}</p>
+                <SocialLinks prominent />
+                <div className="mt-4 flex justify-center">
+                  <PreferenceBar />
+                </div>
               </div>
-            </div>
-          </aside>
-        </div>
-      ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
     </header>
   )
 }
