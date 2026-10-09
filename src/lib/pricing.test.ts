@@ -25,11 +25,11 @@ describe('pricing', () => {
     expect(q.total_amount_xaf).toBe(148_500)
   })
 
-  it('applies a weekly discount when it beats the promotion', () => {
-    const q = quoteStay(10_000, 7, { discount_type: 'percent', discount_value: 5 }, { weeklyPercent: 10 })
-    expect(q.discount_xaf).toBe(7_000)
-    expect(q.long_stay).toBe(true)
-    expect(q.total_amount_xaf).toBe(63_000)
+  it('keeps the nightly price and applies only a promo code', () => {
+    const q = quoteStay(10_000, 7, { discount_type: 'percent', discount_value: 5 }, { weeklyPercent: 10, monthlyPercent: 20 })
+    expect(q.discount_xaf).toBe(3_500)
+    expect(q.long_stay).toBe(false)
+    expect(q.total_amount_xaf).toBe(66_500)
   })
 
   it('adds cleaning, deposit, and extras on top of the stay', () => {

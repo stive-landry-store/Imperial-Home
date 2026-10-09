@@ -18,7 +18,7 @@ export function HomePage() {
   const { data: promotions = [] } = usePromotions()
   const { data: config } = useSiteConfig()
   const featured = properties.slice(0, 3)
-  const offer = promotions.find((p) => p.is_active)
+  const offer = promotions.find((p) => p.is_active && p.code)
   const chosenHero = config?.home_hero_image_url?.trim() || ''
   const place = imperialPlace(config)
 
@@ -99,6 +99,7 @@ export function HomePage() {
             <p className="mt-2 text-sm leading-relaxed theme-muted">
               <Live text={(i18n.language.startsWith('fr') ? offer.description_fr : offer.description_en) || ''} />
             </p>
+            <p className="mt-3 text-sm font-semibold tracking-wide">{offer.code}</p>
             <Button className="mt-4" to="/properties">
               {t('home.viewAll')}
             </Button>

@@ -7,10 +7,7 @@ import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf, localized } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { Live } from '../../components/i18n/Live'
-import { PaymentDesk } from '../../components/booking/PaymentDesk'
-import { useSiteConfig } from '../../hooks/useSite'
 import { useAuth } from '../../hooks/useAuth'
-import { whatsappUrl } from '../../lib/whatsapp'
 import { supabase } from '../../lib/supabase'
 import { Badge } from '../../components/ui/Badge'
 import { publishReview } from '../../lib/guest'
@@ -21,7 +18,6 @@ export function ReservationDetailPage() {
   const { id = '' } = useParams()
   const { t, i18n } = useTranslation()
   const client = useQueryClient()
-  const { data: config } = useSiteConfig()
   const { user } = useAuth()
   const [rating, setRating] = useState(5)
   const [review, setReview] = useState('')
@@ -39,15 +35,7 @@ export function ReservationDetailPage() {
     return <p>{t('common.loading')}</p>
   }
 
-  const payment = reservation.payments?.[0]
   const awaiting = reservation.status === 'pending' || reservation.status === 'payment_processing'
-  const instructions = i18n.language.startsWith('fr')
-    ? config?.payment_instructions_fr
-    : config?.payment_instructions_en
-  const wa = whatsappUrl(
-    config?.whatsapp ?? '237674092263',
-    `Imperial Home reservation ${reservation.public_code} — ${formatXaf(reservation.total_amount_xaf)}`,
-  )
 
   async function download(path: string) {
     if (!supabase) return
@@ -69,7 +57,6 @@ export function ReservationDetailPage() {
         {formatDate(reservation.check_in)} → {formatDate(reservation.check_out)} · {reservation.nights} {t('property.nights')}
       </p>
       <p className="mt-2 text-lg">{formatXaf(reservation.total_amount_xaf)}</p>
-      {payment ? <p className="text-sm theme-muted-soft">{t(`status.${payment.status}`)}</p> : null}
 
       {reservation.status === 'confirmed' || reservation.status === 'completed' ? (
         <div className="theme-card mt-8 border border-[#d4af6a]/50 p-6">
@@ -92,18 +79,8 @@ export function ReservationDetailPage() {
 
       {awaiting ? (
         <div className="theme-card mt-8 p-6">
-          <h2 className="font-display text-2xl">{t('booking.payTitle')}</h2>
-          <p className="mt-2 text-sm theme-muted">{t('booking.payLead')}</p>
-          <p className="mt-4 text-sm">{instructions}</p>
-          <PaymentDesk reservation={reservation} merchantPhone={config?.phone ?? '+237 674 09 22 63'} />
-          {reservation.hold_expires_at ? (
-            <p className="mt-3 text-xs uppercase tracking-wider theme-muted-soft">
-              {t('booking.expires')}: {new Date(reservation.hold_expires_at).toLocaleString()}
-            </p>
-          ) : null}
-          <Button className="mt-6" onClick={() => window.open(wa, '_blank')}>
-            {t('booking.sendReceipt')}
-          </Button>
+          <h2 className="font-display text-2xl">{t('account.awaitingAdmin')}</h2>
+          <p className="mt-2 text-sm theme-muted">{t('account.awaitingAdminLead')}</p>
         </div>
       ) : null}
 

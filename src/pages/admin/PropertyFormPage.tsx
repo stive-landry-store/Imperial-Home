@@ -434,9 +434,9 @@ export function PropertyFormPage() {
 
         security_deposit_xaf: Number(form.security_deposit_xaf) || 0,
 
-        weekly_discount_percent: Number(form.weekly_discount_percent) || 0,
+        weekly_discount_percent: 0,
 
-        monthly_discount_percent: Number(form.monthly_discount_percent) || 0,
+        monthly_discount_percent: 0,
 
         guide_fr: form.guide_fr,
 
@@ -902,14 +902,6 @@ export function PropertyFormPage() {
           <div>
             <Label>{t('admin.depositFee')}</Label>
             <Input type="number" min={0} value={form.security_deposit_xaf} onChange={(e) => setField('security_deposit_xaf', Number(e.target.value))} />
-          </div>
-          <div>
-            <Label>{t('admin.weekly')}</Label>
-            <Input type="number" min={0} max={80} value={form.weekly_discount_percent} onChange={(e) => setField('weekly_discount_percent', Number(e.target.value))} />
-          </div>
-          <div>
-            <Label>{t('admin.monthly')}</Label>
-            <Input type="number" min={0} max={80} value={form.monthly_discount_percent} onChange={(e) => setField('monthly_discount_percent', Number(e.target.value))} />
           </div>
         </div>
         <div>

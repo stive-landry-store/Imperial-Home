@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { cn } from '../../lib/cn'
-import { INSTAGRAM_URL, TIKTOK_URL } from '../../lib/social'
+import { FACEBOOK_URL, INSTAGRAM_URL, TIKTOK_URL } from '../../lib/social'
 
 function InstagramLogo({ className }: { className?: string }) {
   const id = useId().replace(/:/g, '')
@@ -41,6 +41,18 @@ function TikTokLogo({ className }: { className?: string }) {
   )
 }
 
+function FacebookLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+      <rect width="24" height="24" rx="6" fill="#1877F2" />
+      <path
+        d="M13.6 19.5v-6.1h2.05l.3-2.4H13.6V9.45c0-.7.2-1.17 1.2-1.17h1.28V6.15c-.22-.03-.98-.1-1.86-.1-1.84 0-3.1 1.12-3.1 3.18v1.77H8.7v2.4h2.42v6.1h2.48z"
+        fill="#fff"
+      />
+    </svg>
+  )
+}
+
 export function SocialLinks({ className, prominent = false }: { className?: string; prominent?: boolean }) {
   const size = prominent ? 'h-14 w-14' : 'h-12 w-12'
   return (
@@ -50,6 +62,9 @@ export function SocialLinks({ className, prominent = false }: { className?: stri
       </a>
       <a className={cn(size, 'inline-flex shrink-0 touch-manipulation')} href={TIKTOK_URL} target="_blank" rel="noreferrer" aria-label="TikTok">
         <TikTokLogo className="h-full w-full" />
+      </a>
+      <a className={cn(size, 'inline-flex shrink-0 touch-manipulation')} href={FACEBOOK_URL} target="_blank" rel="noreferrer" aria-label="Facebook">
+        <FacebookLogo className="h-full w-full" />
       </a>
     </div>
   )

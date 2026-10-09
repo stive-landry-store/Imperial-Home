@@ -3,27 +3,18 @@ import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
-  BadgePercent,
-  Building2,
   CalendarDays,
   Car,
   FileText,
   Heart,
   Home,
   Info,
-  LayoutDashboard,
   LogOut,
   MapPin,
-  MessageCircle,
   Phone,
-  Settings,
   Share2,
   Shield,
-  Sparkles,
-  Star,
   UserRound,
-  Users,
-  Wallet,
   X,
 } from 'lucide-react'
 import { cn } from '../../lib/cn'
@@ -33,24 +24,6 @@ import { useAuth } from '../../hooks/useAuth'
 import { useTheme } from '../../hooks/useTheme'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
 import { SocialLinks } from './SocialLinks'
-
-const adminLinks = [
-  { to: '/admin', labelKey: 'dashboard', icon: LayoutDashboard, end: true },
-  { to: '/admin/properties', labelKey: 'properties', icon: Building2 },
-  { to: '/admin/reservations', labelKey: 'reservations', icon: CalendarDays },
-  { to: '/admin/calendar', labelKey: 'calendar', icon: CalendarDays },
-  { to: '/admin/customers', labelKey: 'customers', icon: Users },
-  { to: '/admin/promotions', labelKey: 'promotions', icon: BadgePercent },
-  { to: '/admin/vehicles', labelKey: 'vehicles', icon: Car },
-  { to: '/admin/payments', labelKey: 'payments', icon: Wallet },
-  { to: '/admin/turnover', labelKey: 'turnover', icon: Sparkles },
-  { to: '/admin/reviews', labelKey: 'reviewsAdmin', icon: Star },
-  { to: '/admin/chat', labelKey: 'chat', icon: MessageCircle },
-  { to: '/admin/housing-sheet', labelKey: 'fiche', icon: FileText },
-  { to: '/admin/admins', labelKey: 'admins', icon: Shield },
-  { to: '/admin/audit', labelKey: 'audit', icon: FileText },
-  { to: '/admin/settings', labelKey: 'settings', icon: Settings },
-] as const
 
 export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t, i18n } = useTranslation()
@@ -70,6 +43,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
     { to: '/contact', label: t('nav.contact'), icon: Phone },
     { to: '/fiche', label: t('account.housing'), icon: FileText },
     { to: '/', label: t('menu.about'), icon: Info },
+    ...(isStaff ? [{ to: '/admin', label: t('nav.admin'), icon: Shield }] : []),
   ]
 
   useEffect(() => {
@@ -153,19 +127,6 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
             <span>{copied ? t('nav.copied') : t('nav.share')}</span>
           </button>
         </nav>
-        {isStaff ? (
-          <>
-            <p className="mt-6 text-xs font-medium tracking-wide theme-muted uppercase">{t('menu.console')}</p>
-            <nav className="mt-1">
-              {adminLinks.map((item) => (
-                <Link key={item.to} to={item.to} className="flex min-h-12 items-center gap-3 text-base" onClick={onClose}>
-                  <item.icon className="h-5 w-5 text-[#c4a35a]" strokeWidth={1.75} />
-                  <span>{t(`admin.${item.labelKey}`)}</span>
-                </Link>
-              ))}
-            </nav>
-          </>
-        ) : null}
         <div className="mt-4">
           <SocialLinks />
         </div>

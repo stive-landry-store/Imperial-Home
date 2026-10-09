@@ -1,7 +1,7 @@
 import { SITE_DEFAULTS } from './config'
 import { IMPERIAL_HOME } from './house'
 import type { Amenity, DateRange, Promotion, Property, Quote, SiteConfig } from '../types/database'
-import { pickBestPromotion, quoteStay } from './pricing'
+import { quoteStay } from './pricing'
 import { stayIsAvailable } from './availability'
 
 const amenities: Amenity[] = [
@@ -146,16 +146,12 @@ export function demoQuote(property: Property, checkIn: string, checkOut: string,
   const nights = Math.round(
     (Date.parse(checkOut + 'T00:00:00') - Date.parse(checkIn + 'T00:00:00')) / 86_400_000,
   )
-  const promo = pickBestPromotion(
-    property.nightly_rate_xaf * Math.max(nights, 0),
-    demoPromotions.filter((p) => p.promotion_properties?.some((x) => x.property_id === property.id)),
-  )
-  const money = quoteStay(property.nightly_rate_xaf, nights, promo)
+  const money = quoteStay(property.nightly_rate_xaf, nights, null)
   const ranges = demoUnavailable[property.id] ?? []
   return {
     ...money,
     nightly_rate_xaf: property.nightly_rate_xaf,
-    promotion_name: promo?.name ?? null,
+    promotion_name: null,
     capacity: property.capacity,
     available:
       nights >= 1 &&

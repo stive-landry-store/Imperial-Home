@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
@@ -25,6 +26,12 @@ export function AccountReservationsPage() {
     enabled: Boolean(user?.id),
   })
   const locale = i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'
+  const rows = useMemo(() => {
+    const stays = data.map((reservation) => ({ kind: 'stay' as const, at: reservation.created_at, reservation }))
+    const rentals = (cars.data ?? []).map((rental) => ({ kind: 'car' as const, at: rental.created_at, rental }))
+    return [...stays, ...rentals].sort((a, b) => b.at.localeCompare(a.at))
+  }, [data, cars.data])
+  const empty = !isLoading && !cars.isLoading && rows.length === 0
 
   return (
     <div>
@@ -33,53 +40,40 @@ export function AccountReservationsPage() {
       </Helmet>
       <h1 className="font-display text-4xl">{t('account.title')}</h1>
       {isLoading ? <p className="mt-6 theme-muted">{t('common.loading')}</p> : null}
-      {!isLoading && data.length === 0 ? <p className="mt-6 theme-muted">{t('account.empty')}</p> : null}
+      {empty ? <p className="mt-6 theme-muted">{t('account.empty')}</p> : null}
       <ul className="mt-8 space-y-4">
-        {data.map((r) => (
-          <li key={r.id}>
-            <Link to={`/account/reservations/${r.id}`} className="theme-card block p-5 hover:border-[#d4af6a]">
+        {rows.map((row) =>
+          row.kind === 'stay' ? (
+            <li key={row.reservation.id}>
+              <Link to={`/account/reservations/${row.reservation.id}`} className="theme-card block p-5 hover:border-[#d4af6a]">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="font-display text-2xl">{row.reservation.properties?.name ?? row.reservation.public_code}</p>
+                  <Badge variant="dark">{t(`status.${row.reservation.status}`)}</Badge>
+                </div>
+                <p className="mt-2 text-sm theme-muted">
+                  {formatDate(row.reservation.check_in)} → {formatDate(row.reservation.check_out)} · {row.reservation.guest_count}{' '}
+                  {t('property.guests')}
+                </p>
+                <p className="mt-1 text-sm">{formatXaf(row.reservation.total_amount_xaf)}</p>
+              </Link>
+            </li>
+          ) : (
+            <li key={row.rental.id} className="theme-card p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="font-display text-2xl">{r.properties?.name ?? r.public_code}</p>
-                <Badge variant="dark">{t(`status.${r.status}`)}</Badge>
+                <p className="font-display text-2xl">{rentalVehicleName(row.rental)}</p>
+                <Badge variant="dark">{carStatusLabel(row.rental.status, t)}</Badge>
               </div>
               <p className="mt-2 text-sm theme-muted">
-                {formatDate(r.check_in)} → {formatDate(r.check_out)} · {r.guest_count} {t('property.guests')}
+                {row.rental.public_code ? `${row.rental.public_code} · ` : ''}
+                {row.rental.start_date ? formatDate(row.rental.start_date, locale) : ''}
+                {row.rental.end_date ? ` → ${formatDate(row.rental.end_date, locale)}` : ''}
+                {' · '}
+                {row.rental.with_driver ? t('cars.withDriver') : t('cars.withoutDriver')}
               </p>
-              <p className="mt-1 text-sm">{formatXaf(r.total_amount_xaf)}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-14 font-display text-3xl">{t('account.carsTitle')}</h2>
-      {cars.isLoading ? <p className="mt-6 theme-muted">{t('common.loading')}</p> : null}
-      {!cars.isLoading && (cars.data?.length ?? 0) === 0 ? <p className="mt-6 theme-muted">{t('account.carsEmpty')}</p> : null}
-      <ul className="mt-6 space-y-4">
-        {(cars.data ?? []).map((rental) => {
-          const vehicle = Array.isArray(rental.vehicles) ? rental.vehicles[0] : rental.vehicles
-          return (
-          <li key={rental.id} className="theme-card p-5">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              {vehicle?.slug ? (
-                <Link to={`/cars/${vehicle.slug}`} className="font-display text-2xl hover:text-[#d4af6a]">
-                  {rentalVehicleName(rental)}
-                </Link>
-              ) : (
-                <p className="font-display text-2xl">{rentalVehicleName(rental)}</p>
-              )}
-              <Badge variant="dark">{carStatusLabel(rental.status, t)}</Badge>
-            </div>
-            <p className="mt-2 text-sm theme-muted">
-              {rental.public_code ? `${rental.public_code} · ` : ''}
-              {rental.start_date ? formatDate(rental.start_date, locale) : ''}
-              {rental.end_date ? ` → ${formatDate(rental.end_date, locale)}` : ''}
-              {' · '}
-              {rental.with_driver ? t('cars.withDriver') : t('cars.withoutDriver')}
-            </p>
-            <p className="mt-1 text-sm">{formatXaf(rental.total_xaf)}</p>
-          </li>
-          )
-        })}
+              <p className="mt-1 text-sm">{formatXaf(row.rental.total_xaf)}</p>
+            </li>
+          ),
+        )}
       </ul>
     </div>
   )

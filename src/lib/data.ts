@@ -205,7 +205,7 @@ export async function fetchAllReservations(): Promise<Reservation[]> {
   const { data, error } = await supabase
     .from('reservations')
     .select('*, properties ( name, slug ), payments ( status, amount_xaf ), profiles:customer_id ( full_name, email, phone, cni )')
-    .order('check_in', { ascending: true })
+    .order('created_at', { ascending: false })
   if (error) throw error
   return (data as Reservation[]) ?? []
 }

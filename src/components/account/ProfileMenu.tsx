@@ -1,21 +1,18 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { createPortal } from 'react-dom'
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
 import { Button } from '../ui/Button'
 import { Input, Label } from '../ui/Field'
 import { PasswordField } from '../ui/PasswordField'
-import { SocialLinks } from '../layout/SocialLinks'
 import { useAuth } from '../../hooks/useAuth'
-import { shareSite } from '../../lib/social'
 import { supabase } from '../../lib/supabase'
 
 type Section = 'account' | 'phone' | 'email' | 'password' | 'cni' | null
 
 export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useTranslation()
-  const { profile, isStaff, signOut, updatePassword, reloadProfile } = useAuth()
+  const { profile, signOut, updatePassword, reloadProfile } = useAuth()
   const [section, setSection] = useState<Section>(null)
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
@@ -144,32 +141,6 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
           </form>
         ) : null}
 
-        <Link to="/account" className={item} onClick={onClose}>
-          {t('account.title')}
-        </Link>
-        <Link to="/account/chat" className={item} onClick={onClose}>
-          {t('account.chat')}
-        </Link>
-        {isStaff ? (
-          <Link to="/admin" className={item} onClick={onClose}>
-            {t('nav.admin')}
-          </Link>
-        ) : null}
-        <button
-          type="button"
-          className={item}
-          onClick={() =>
-            void shareSite().then((result) => {
-              if (result === 'copied') setNotice(t('nav.copied'))
-            })
-          }
-        >
-          {t('account.share')}
-        </button>
-        <div className="px-4 py-4">
-          <p className="mb-2 text-sm tracking-[0.16em] uppercase">{t('nav.networks')}</p>
-          <SocialLinks prominent />
-        </div>
         <button type="button" className={item} onClick={() => void signOut()}>
           {t('nav.logout')}
         </button>

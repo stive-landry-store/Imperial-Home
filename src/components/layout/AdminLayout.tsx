@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { LogOut, Menu } from 'lucide-react'
+import { LogOut, Menu, X } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
@@ -10,7 +10,6 @@ import { cn } from '../../lib/cn'
 import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
 import { SocialLinks } from './SocialLinks'
-import { SettingsMenu } from './SettingsMenu'
 
 const links = [
   { to: '/admin', key: 'dashboard', end: true },
@@ -43,17 +42,6 @@ export function AdminLayout() {
   function renderNav() {
     return (
     <nav className="flex flex-col gap-1 px-3 pb-4">
-      <NavLink
-        to="/account/profile"
-        className={({ isActive }) =>
-          cn(
-            'inline-flex min-h-12 items-center px-3 py-3 text-base uppercase tracking-[0.12em] touch-manipulation',
-            isActive ? 'bg-white/5 text-[#e0c57a]' : 'text-[#d4af6a]/80 hover:text-[#e0c57a]',
-          )
-        }
-      >
-        {t('account.profile')}
-      </NavLink>
       {links.map((l) => (
         <NavLink
           key={l.to}
@@ -100,9 +88,30 @@ export function AdminLayout() {
         </button>
       </header>
 
-      <div className="md:hidden">
-        <SettingsMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-      </div>
+      {menuOpen ? (
+        <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-black text-[#d4af6a] md:hidden">
+          <div className="flex items-center justify-between px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+            <p className="text-lg font-semibold">{t('admin.menu')}</p>
+            <button
+              type="button"
+              className="inline-flex min-h-12 min-w-12 items-center justify-center touch-manipulation"
+              aria-label={t('common.cancel')}
+              onClick={() => setMenuOpen(false)}
+            >
+              <X size={26} />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto pb-[max(1rem,env(safe-area-inset-bottom))]">
+            {renderNav()}
+            <div className="border-t border-[#d4af6a]/25 px-5 py-4">
+              <SocialLinks />
+              <button type="button" className="mt-4 min-h-11 text-base uppercase tracking-[0.12em]" onClick={() => void signOut()}>
+                {t('nav.logout')}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <aside className="hidden border-r border-[#d4af6a]/20 bg-black text-[#d4af6a] md:flex md:h-svh md:flex-col md:overflow-y-auto">
         <div className="px-5 py-5">
