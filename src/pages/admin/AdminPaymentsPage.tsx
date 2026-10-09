@@ -1,10 +1,33 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { fetchAllReservations } from '../../lib/data'
 import { formatXaf } from '../../lib/format'
+import { receiptUrl } from '../../lib/guest'
 import { Badge } from '../../components/ui/Badge'
+
+function ReceiptLink({ path }: { path: string }) {
+  const [busy, setBusy] = useState(false)
+  return (
+    <button
+      type="button"
+      className="text-sm text-[#d4af6a]"
+      disabled={busy}
+      onClick={() => {
+        setBusy(true)
+        void receiptUrl(path)
+          .then((url) => {
+            if (url) window.open(url, '_blank')
+          })
+          .finally(() => setBusy(false))
+      }}
+    >
+      Reçu
+    </button>
+  )
+}
 
 export function AdminPaymentsPage() {
   const { t } = useTranslation()
@@ -26,6 +49,8 @@ export function AdminPaymentsPage() {
               </Link>
               <span>{formatXaf(r.total_amount_xaf)}</span>
               <Badge>{pay ? t(`status.${pay.status}`) : t(`status.${r.status}`)}</Badge>
+              {pay?.provider ? <span className="text-xs uppercase theme-muted">{pay.provider}</span> : null}
+              {pay?.metadata?.receipt_path ? <ReceiptLink path={pay.metadata.receipt_path} /> : null}
             </li>
           )
         })}

@@ -29,6 +29,7 @@ export function Header() {
 
   const links = [
     { to: '/properties', label: t('nav.residences') },
+    { to: '/properties/map', label: t('nav.map') },
     { to: '/cars', label: t('nav.cars') },
     { to: '/contact', label: t('nav.contact') },
   ]

@@ -5,10 +5,16 @@ import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { PropertyGallery } from '../../components/property/PropertyGallery'
 import { AvailabilityCalendar } from '../../components/booking/AvailabilityCalendar'
+import { PriceBreakdown } from '../../components/property/PriceBreakdown'
+import { ReviewList } from '../../components/property/ReviewList'
+import { StayActions } from '../../components/property/StayActions'
+import { WaitlistForm } from '../../components/booking/WaitlistForm'
 import { Button } from '../../components/ui/Button'
+import { Skeleton } from '../../components/ui/Skeleton'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
 import { checkOutFromNights, nightsBetween, todayIso } from '../../lib/availability'
-import { formatXaf, localized } from '../../lib/format'
+import { coverImage, localized } from '../../lib/format'
+import { whatsappUrl } from '../../lib/whatsapp'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
 
@@ -60,7 +66,11 @@ export function PropertyDetailPage() {
   }
 
   if (isLoading) {
-    return <p className="theme-page px-6 pt-32 text-[#d4af6a]">{t('common.loading')}</p>
+    return (
+      <div className="theme-page mx-auto max-w-6xl px-6 pt-32">
+        <Skeleton className="aspect-[16/10]" />
+      </div>
+    )
   }
   if (!property) {
     return <p className="theme-page px-6 pt-32">{t('properties.notFound')}</p>
@@ -75,14 +85,49 @@ export function PropertyDetailPage() {
     <div className="theme-page">
       <div className="mx-auto max-w-6xl px-4 pt-32 pb-20 md:px-6">
         <Helmet>
-          <title>{property.name} | Impérial Home</title>
+          <title>{property.name} | Impérial Home Douala</title>
           <meta name="description" content={description.slice(0, 160)} />
+          <meta property="og:title" content={`${property.name} | Impérial Home`} />
+          <meta property="og:description" content={description.slice(0, 160)} />
+          {coverImage(property.property_images) ? <meta property="og:image" content={coverImage(property.property_images)} /> : null}
+          <script type="application/ld+json">
+            {JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Apartment',
+              name: property.name,
+              description: description.slice(0, 300),
+              address: {
+                '@type': 'PostalAddress',
+                streetAddress: property.address,
+                addressLocality: property.city || 'Douala',
+                addressCountry: 'CM',
+              },
+            })}
+          </script>
         </Helmet>
         <PropertyGallery images={property.property_images ?? []} lang={i18n.language} />
         <div className="mt-10 grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="text-[13px] tracking-[0.28em] text-[#d4af6a] uppercase">{t('properties.houseLabel')}</p>
             <h1 className="mt-2 font-display text-5xl tracking-[0.04em]">{property.name}</h1>
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <StayActions propertyId={property.id} />
+              <button
+                type="button"
+                className="text-[11px] tracking-[0.14em] text-[#d4af6a] uppercase"
+                onClick={() =>
+                  window.open(
+                    whatsappUrl(
+                      config?.whatsapp ?? '237674092263',
+                      `${property.name} — ${window.location.origin}/properties/${property.slug}`,
+                    ),
+                    '_blank',
+                  )
+                }
+              >
+                {t('plus.share')}
+              </button>
+            </div>
             <p className="mt-4 max-w-2xl theme-muted">{description}</p>
             <p className="mt-4 text-base theme-muted">
               {property.capacity} {t('property.guests')} · {property.bedrooms} bd · {property.bathrooms} ba ·{' '}
@@ -106,6 +151,7 @@ export function PropertyDetailPage() {
                 <p className="mt-3 theme-muted">{localized(property.rules_en, property.rules_fr, i18n.language)}</p>
               </>
             ) : null}
+            <ReviewList propertyId={property.id} />
             {maps ? (
               <>
                 <h2 className="mt-10 font-display text-3xl">{t('property.location')}</h2>
@@ -148,20 +194,12 @@ export function PropertyDetailPage() {
             className="mt-1 w-full border border-[#d4af6a]/40 bg-transparent px-3 py-2 outline-none"
           />
           {quote ? (
-            <div className="mt-4 space-y-1 text-base">
-              {quote.discount_xaf > 0 ? (
-                <p>
-                  <span className="text-stone line-through">{formatXaf(quote.base_amount_xaf)}</span>
-                <span className="ml-2 text-[#d4af6a]">{quote.promotion_name}</span>
-                </p>
+            <div className="mt-4">
+              <PriceBreakdown quote={quote} />
+              {!quote.available ? <p className="mt-2 text-red-700">{t('property.unavailable')}</p> : null}
+              {!quote.available ? (
+                <WaitlistForm propertyId={property.id} checkIn={checkIn} checkOut={checkOut} guests={guests} />
               ) : null}
-              <p className="text-lg">
-                {formatXaf(quote.total_amount_xaf)}{' '}
-                <span className="text-sm theme-muted-soft">
-                  · {quote.nights} {t('property.nights')}
-                </span>
-              </p>
-              {!quote.available ? <p className="text-red-700">{t('property.unavailable')}</p> : null}
             </div>
           ) : null}
           <Button

@@ -44,6 +44,22 @@ type RoomForm = {
 
   nightly_rate_xaf: number
 
+  cleaning_fee_xaf: number
+
+  security_deposit_xaf: number
+
+  weekly_discount_percent: number
+
+  monthly_discount_percent: number
+
+  guide_fr: string
+
+  guide_en: string
+
+  access_notes_fr: string
+
+  access_notes_en: string
+
   rules_en: string
 
   rules_fr: string
@@ -79,6 +95,22 @@ const empty: RoomForm = {
   living_areas: 0,
 
   nightly_rate_xaf: 50_000,
+
+  cleaning_fee_xaf: 0,
+
+  security_deposit_xaf: 0,
+
+  weekly_discount_percent: 0,
+
+  monthly_discount_percent: 0,
+
+  guide_fr: '',
+
+  guide_en: '',
+
+  access_notes_fr: '',
+
+  access_notes_en: '',
 
   rules_en: '',
 
@@ -155,6 +187,22 @@ export function PropertyFormPage() {
         living_areas: p.living_areas,
 
         nightly_rate_xaf: p.nightly_rate_xaf,
+
+        cleaning_fee_xaf: p.cleaning_fee_xaf ?? 0,
+
+        security_deposit_xaf: p.security_deposit_xaf ?? 0,
+
+        weekly_discount_percent: p.weekly_discount_percent ?? 0,
+
+        monthly_discount_percent: p.monthly_discount_percent ?? 0,
+
+        guide_fr: p.guide_fr ?? '',
+
+        guide_en: p.guide_en ?? '',
+
+        access_notes_fr: p.access_notes_fr ?? '',
+
+        access_notes_en: p.access_notes_en ?? '',
 
         rules_en: p.rules_en ?? '',
 
@@ -381,6 +429,22 @@ export function PropertyFormPage() {
         living_areas: Number(form.living_areas),
 
         nightly_rate_xaf: Number(form.nightly_rate_xaf),
+
+        cleaning_fee_xaf: Number(form.cleaning_fee_xaf) || 0,
+
+        security_deposit_xaf: Number(form.security_deposit_xaf) || 0,
+
+        weekly_discount_percent: Number(form.weekly_discount_percent) || 0,
+
+        monthly_discount_percent: Number(form.monthly_discount_percent) || 0,
+
+        guide_fr: form.guide_fr,
+
+        guide_en: form.guide_en,
+
+        access_notes_fr: form.access_notes_fr,
+
+        access_notes_en: form.access_notes_en,
 
         rules_en: form.rules_en,
 
@@ -829,6 +893,41 @@ export function PropertyFormPage() {
         </div>
 
 
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <Label>{t('admin.cleaningFee')}</Label>
+            <Input type="number" min={0} value={form.cleaning_fee_xaf} onChange={(e) => setField('cleaning_fee_xaf', Number(e.target.value))} />
+          </div>
+          <div>
+            <Label>{t('admin.depositFee')}</Label>
+            <Input type="number" min={0} value={form.security_deposit_xaf} onChange={(e) => setField('security_deposit_xaf', Number(e.target.value))} />
+          </div>
+          <div>
+            <Label>{t('admin.weekly')}</Label>
+            <Input type="number" min={0} max={80} value={form.weekly_discount_percent} onChange={(e) => setField('weekly_discount_percent', Number(e.target.value))} />
+          </div>
+          <div>
+            <Label>{t('admin.monthly')}</Label>
+            <Input type="number" min={0} max={80} value={form.monthly_discount_percent} onChange={(e) => setField('monthly_discount_percent', Number(e.target.value))} />
+          </div>
+        </div>
+        <div>
+          <Label>{t('admin.guideFr')}</Label>
+          <Textarea rows={3} value={form.guide_fr} onChange={(e) => setField('guide_fr', e.target.value)} />
+        </div>
+        <div>
+          <Label>{t('admin.guideEn')}</Label>
+          <Textarea rows={3} value={form.guide_en} onChange={(e) => setField('guide_en', e.target.value)} />
+        </div>
+        <div>
+          <Label>{t('admin.accessFr')}</Label>
+          <Textarea rows={2} value={form.access_notes_fr} onChange={(e) => setField('access_notes_fr', e.target.value)} />
+        </div>
+        <div>
+          <Label>{t('admin.accessEn')}</Label>
+          <Textarea rows={2} value={form.access_notes_en} onChange={(e) => setField('access_notes_en', e.target.value)} />
+        </div>
 
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
 

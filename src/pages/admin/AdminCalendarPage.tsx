@@ -17,6 +17,10 @@ import { fetchAllReservations, fetchAllProperties } from '../../lib/data'
 import { cn } from '../../lib/cn'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
+import { Skeleton } from '../../components/ui/Skeleton'
+import { buildIcal } from '../../lib/ical'
+import { downloadText } from '../../lib/files'
+import { fetchIcal } from '../../lib/guest'
 import {
   decisionErrorMessage,
   isPendingReservation,
@@ -35,7 +39,7 @@ export function AdminCalendarPage() {
   const [cursor, setCursor] = useState(new Date())
   const [propertyId, setPropertyId] = useState('all')
   const { confirm, reject } = useAdminReservationActions()
-  const { data: reservations = [] } = useQuery({ queryKey: ['admin-reservations'], queryFn: fetchAllReservations })
+  const { data: reservations = [], isLoading } = useQuery({ queryKey: ['admin-reservations'], queryFn: fetchAllReservations })
   const { data: properties = [] } = useQuery({ queryKey: ['admin-properties'], queryFn: fetchAllProperties })
   const monthStart = startOfMonth(cursor)
   const days = eachDayOfInterval({
@@ -136,6 +140,35 @@ export function AdminCalendarPage() {
             ))}
           </ul>
         )}
+      </section>
+
+      {isLoading ? <Skeleton className="mt-6 h-64" /> : null}
+      <section className="mt-6 border border-line p-4">
+        <h2 className="font-display text-2xl">{t('admin.ical')}</h2>
+        <p className="mt-1 text-sm theme-muted">{t('plus.icalLead')}</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {properties.map((property) => (
+            <Button
+              key={property.id}
+              variant="outline"
+              className="px-3 py-2 text-[11px]"
+              onClick={() => {
+                void (async () => {
+                  const remote = property.ical_token ? await fetchIcal(property.ical_token) : null
+                  const body =
+                    remote ||
+                    buildIcal(
+                      property.name,
+                      reservations.filter((r) => r.property_id === property.id),
+                    )
+                  downloadText(`${property.slug}.ics`, body, 'text/calendar')
+                })()
+              }}
+            >
+              {property.name}
+            </Button>
+          ))}
+        </div>
       </section>
 
       <p className="mt-4 text-sm theme-muted md:hidden">{t('admin.swipeHint')}</p>

@@ -4,6 +4,8 @@ import type { Promotion, Property } from '../../types/database'
 import { coverImage, formatXaf, localized } from '../../lib/format'
 import { pickBestPromotion, quoteStay } from '../../lib/pricing'
 import { Badge } from '../ui/Badge'
+import { OptimizedImage } from '../ui/OptimizedImage'
+import { StayActions } from './StayActions'
 
 export function PropertyCard({
   property,
@@ -28,13 +30,14 @@ export function PropertyCard({
     .slice(0, 3)
 
   return (
-    <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="group block">
+    <article className="group">
+    <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="block">
       <div className="relative aspect-[3/4] overflow-hidden bg-black">
         {image ? (
-          <img
+          <OptimizedImage
             src={image}
             alt={property.name}
-            loading="lazy"
+            width={800}
             className="h-full w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-105"
           />
         ) : null}
@@ -67,5 +70,7 @@ export function PropertyCard({
         </div>
       </div>
     </Link>
+    <StayActions propertyId={property.id} className="mt-3" />
+    </article>
   )
 }

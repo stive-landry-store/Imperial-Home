@@ -32,6 +32,8 @@ export function AdminPromotionsPage() {
 
   const [name, setName] = useState('')
 
+  const [code, setCode] = useState('')
+
   const [value, setValue] = useState(10)
 
   const [propertyId, setPropertyId] = useState('')
@@ -55,6 +57,8 @@ export function AdminPromotionsPage() {
         .insert({
 
           name,
+
+          code: code.trim() || null,
 
           discount_type: 'percent',
 
@@ -85,6 +89,8 @@ export function AdminPromotionsPage() {
     onSuccess: () => {
 
       setName('')
+
+      setCode('')
 
       void invalidateSiteData(client)
 
@@ -125,6 +131,14 @@ export function AdminPromotionsPage() {
           <Label>{t('admin.promoName')}</Label>
 
           <Input value={name} onChange={(e) => setName(e.target.value)} required />
+
+        </div>
+
+        <div>
+
+          <Label>{t('admin.promoCodeAdmin')}</Label>
+
+          <Input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="HOME10" />
 
         </div>
 
@@ -173,6 +187,8 @@ export function AdminPromotionsPage() {
               <p className="font-medium text-[var(--surface-fg)]">{p.name}</p>
 
               <p className="text-sm text-[var(--surface-muted)]">
+
+                {p.code ? `${p.code} · ` : ''}
 
                 {p.discount_value}
 

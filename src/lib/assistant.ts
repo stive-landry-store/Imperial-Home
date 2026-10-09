@@ -26,8 +26,8 @@ export function groundedReply(input: {
     return {
       escalate: false,
       answer: fr
-        ? 'Impérial Home propose une flotte de véhicules (avec ou sans chauffeur). Ouvrez « Location voiture », puis ajoutez un véhicule lors de la réservation d’un appartement. Avec un code promo valide, vous pouvez obtenir 5 % de réduction sur la location.'
-        : 'Imperial Home offers vehicles with or without a driver. Open Car rental, then add a vehicle when booking an apartment. With a valid promo code, you can get 5% off the rental.',
+        ? 'Vous pouvez réserver une voiture seule, sans appartement : ouvrez « Location voiture », choisissez le véhicule, parcourez toutes ses photos, puis les dates. Vous pouvez aussi ajouter une voiture à une réservation d’appartement. Un code promo valide donne 5 % de réduction.'
+        : 'You can book a car on its own, without an apartment: open Car rental, choose the vehicle, browse every photo, then pick the dates. You can also add a car to an apartment booking. A valid promo code gives 5% off.',
     }
   }
 

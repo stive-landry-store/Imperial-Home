@@ -14,6 +14,7 @@ import {
   type Vehicle,
 } from '../../lib/vehicles'
 import { formatXaf } from '../../lib/format'
+import { AdminCarRequests } from './AdminCarRequests'
 
 function slugify(s: string) {
   return s
@@ -279,11 +280,22 @@ export function AdminVehiclesPage() {
 
       <ul className="surface-light mt-10 divide-y divide-line border border-line">
         {vehicles.map((v) => {
+          const media = [...(v.vehicle_media ?? [])].sort((a, b) => a.sort_order - b.sort_order)
           const cover = vehicleCover(v)
           return (
             <li key={v.id} className="flex flex-col gap-3 px-4 py-4 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-4">
-                {cover ? (
+                {media.length > 0 ? (
+                  <div className="flex max-w-[280px] gap-1 overflow-x-auto">
+                    {media.map((item) =>
+                      item.media_type === 'video' ? (
+                        <video key={item.id} src={item.url} className="h-16 w-24 shrink-0 rounded border border-line object-cover" muted />
+                      ) : (
+                        <img key={item.id} src={item.url} alt="" className="h-16 w-24 shrink-0 rounded border border-line object-cover" />
+                      ),
+                    )}
+                  </div>
+                ) : cover ? (
                   <img src={cover} alt="" className="h-16 w-24 rounded border border-line object-cover" />
                 ) : (
                   <div className="flex h-16 w-24 items-center justify-center rounded border border-dashed border-line text-xs text-muted">
@@ -311,6 +323,7 @@ export function AdminVehiclesPage() {
           )
         })}
       </ul>
+      <AdminCarRequests />
     </div>
   )
 }

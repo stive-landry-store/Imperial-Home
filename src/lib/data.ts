@@ -115,14 +115,29 @@ export async function fetchQuote(
   checkIn: string,
   checkOut: string,
   guests: number,
+  promoCode?: string,
+  serviceIds: string[] = [],
 ): Promise<Quote> {
   if (!supabase) return demoQuote(property, checkIn, checkOut, guests)
-  const { data, error } = await supabase.rpc('quote_stay', {
+  const args = {
     p_property_id: property.id,
     p_check_in: checkIn,
     p_check_out: checkOut,
     p_guest_count: guests,
-  })
+    p_promo_code: promoCode?.trim() || null,
+    p_service_ids: serviceIds,
+  }
+  let { data, error } = await supabase.rpc('quote_stay', args)
+  if (error && /could not find the function|PGRST202/i.test(error.message)) {
+    const fallback = await supabase.rpc('quote_stay', {
+      p_property_id: property.id,
+      p_check_in: checkIn,
+      p_check_out: checkOut,
+      p_guest_count: guests,
+    })
+    data = fallback.data
+    error = fallback.error
+  }
   if (error) {
     if (isSchemaMissing(error)) return demoQuote(property, checkIn, checkOut, guests)
     throw error
@@ -130,14 +145,33 @@ export async function fetchQuote(
   return data as Quote
 }
 
-export async function createBooking(propertyId: string, checkIn: string, checkOut: string, guests: number) {
+export async function createBooking(
+  propertyId: string,
+  checkIn: string,
+  checkOut: string,
+  guests: number,
+  promoCode?: string,
+  serviceIds: string[] = [],
+) {
   if (!supabase) throw new Error('Connect Supabase to create a live booking.')
-  const { data, error } = await supabase.rpc('create_booking', {
+  let { data, error } = await supabase.rpc('create_booking', {
     p_property_id: propertyId,
     p_check_in: checkIn,
     p_check_out: checkOut,
     p_guest_count: guests,
+    p_promo_code: promoCode?.trim() || null,
+    p_service_ids: serviceIds,
   })
+  if (error && /could not find the function|PGRST202/i.test(error.message)) {
+    const fallback = await supabase.rpc('create_booking', {
+      p_property_id: propertyId,
+      p_check_in: checkIn,
+      p_check_out: checkOut,
+      p_guest_count: guests,
+    })
+    data = fallback.data
+    error = fallback.error
+  }
   if (error) throw error
   return data as { id: string; public_code: string; status: string; total_amount_xaf: number; hold_expires_at: string }
 }

@@ -5,10 +5,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { Input, Label } from '../../components/ui/Field'
+import { PriceBreakdown } from '../../components/property/PriceBreakdown'
 import { createBooking, fetchPropertyBySlug, fetchQuote } from '../../lib/data'
+import { fetchStayServices } from '../../lib/guest'
 import { formatXaf, localized } from '../../lib/format'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { useSiteConfig } from '../../hooks/useSite'
+import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
 import { addVehicleRental, fetchPublishedVehicles, isVehicleAvailable } from '../../lib/vehicles'
 
 export function BookingPage() {
@@ -28,17 +31,21 @@ export function BookingPage() {
   const [withDriver, setWithDriver] = useState(false)
   const [usePromo, setUsePromo] = useState(false)
   const [carPromo, setCarPromo] = useState('')
+  const [promoDraft, setPromoDraft] = useState('')
+  const [promoCode, setPromoCode] = useState('')
+  const [serviceIds, setServiceIds] = useState<string[]>([])
 
   const { data: property } = useQuery({
     queryKey: ['property', slug],
     queryFn: () => fetchPropertyBySlug(slug),
   })
-  const { data: quote } = useQuery({
-    queryKey: ['quote', property?.id, checkIn, checkOut, guests],
-    queryFn: () => fetchQuote(property!, checkIn, checkOut, guests),
+  const { data: quote, error: quoteError } = useQuery({
+    queryKey: ['quote', property?.id, checkIn, checkOut, guests, promoCode, serviceIds.join(',')],
+    queryFn: () => fetchQuote(property!, checkIn, checkOut, guests, promoCode, serviceIds),
     enabled: Boolean(property && checkIn && checkOut),
   })
   const { data: vehicles = [] } = useQuery({ queryKey: ['vehicles'], queryFn: fetchPublishedVehicles })
+  const { data: services = [] } = useQuery({ queryKey: ['stay-services'], queryFn: fetchStayServices })
 
   const selectedVehicle = useMemo(() => vehicles.find((v) => v.id === vehicleId), [vehicleId, vehicles])
 
@@ -59,7 +66,7 @@ export function BookingPage() {
         const ok = await isVehicleAvailable(vehicleId, checkIn, checkOut)
         if (!ok) throw new Error(t('cars.unavailable'))
       }
-      const result = await createBooking(property.id, checkIn, checkOut, guests)
+      const result = await createBooking(property.id, checkIn, checkOut, guests, promoCode, serviceIds)
       if (wantCar && vehicleId) {
         await addVehicleRental(result.id, vehicleId, withDriver, usePromo ? carPromo : undefined)
       }
@@ -104,11 +111,39 @@ export function BookingPage() {
           <dt>{t('property.guests')}</dt>
           <dd>{guests}</dd>
         </div>
-        <div className="flex justify-between text-lg">
-          <dt>{t('property.total')}</dt>
-          <dd>{quote ? formatXaf(quote.total_amount_xaf) : '—'}</dd>
+        <div className="border-t border-line pt-3">
+          {quote ? <PriceBreakdown quote={quote} /> : <p>—</p>}
+          {quoteError ? <p className="mt-2 text-sm text-red-600">{t('plus.promoInvalid')}</p> : null}
         </div>
       </dl>
+
+      <div className="theme-card mt-6 space-y-3 p-6">
+        <Label>{t('plus.promoCode')}</Label>
+        <div className="flex gap-2">
+          <Input value={promoDraft} onChange={(e) => setPromoDraft(e.target.value)} />
+          <Button type="button" variant="outline" onClick={() => setPromoCode(promoDraft.trim())}>
+            {t('plus.applyCode')}
+          </Button>
+        </div>
+        {services.length > 0 ? <p className="pt-2 text-sm uppercase tracking-wider text-[#d4af6a]">{t('plus.extras')}</p> : null}
+        {services.map((service) => (
+          <label key={service.id} className="flex items-center justify-between gap-3 text-sm">
+            <span className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={serviceIds.includes(service.id)}
+                onChange={(e) =>
+                  setServiceIds((current) =>
+                    e.target.checked ? [...current, service.id] : current.filter((id) => id !== service.id),
+                  )
+                }
+              />
+              {localized(service.name_en, service.name_fr, i18n.language)}
+            </span>
+            <span>{formatXaf(service.price_xaf)}</span>
+          </label>
+        ))}
+      </div>
 
       <div className="theme-card mt-6 space-y-4 p-6">
         <label className="flex items-center gap-2 text-sm">
@@ -133,7 +168,18 @@ export function BookingPage() {
               </select>
             </div>
             {selectedVehicle ? (
-              <p className="text-xs theme-muted">{localized(selectedVehicle.description_en, selectedVehicle.description_fr, i18n.language)}</p>
+              <div>
+                <VehicleGallery
+                  media={selectedVehicle.vehicle_media ?? []}
+                  title={`${selectedVehicle.brand} ${selectedVehicle.model}`}
+                />
+                <p className="mt-2 text-xs theme-muted">
+                  {localized(selectedVehicle.description_en, selectedVehicle.description_fr, i18n.language)}
+                </p>
+                <Link to={`/cars/${selectedVehicle.slug}`} className="mt-2 inline-block text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
+                  {t('cars.bookThis')}
+                </Link>
+              </div>
             ) : null}
             <div className="flex gap-4 text-sm">
               <label className="flex items-center gap-2">

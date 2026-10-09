@@ -73,6 +73,15 @@ export type Property = {
   check_in_time: string
   check_out_time: string
   nightly_rate_xaf: number
+  cleaning_fee_xaf?: number
+  security_deposit_xaf?: number
+  weekly_discount_percent?: number
+  monthly_discount_percent?: number
+  guide_fr?: string | null
+  guide_en?: string | null
+  access_notes_fr?: string | null
+  access_notes_en?: string | null
+  ical_token?: string | null
   recommendations_en: string | null
   recommendations_fr: string | null
   status: PropertyStatus
@@ -87,6 +96,7 @@ export type Promotion = {
   description_fr: string | null
   discount_type: DiscountType
   discount_value: number
+  code?: string | null
   starts_at: string
   ends_at: string
   is_active: boolean
@@ -143,6 +153,7 @@ export type Payment = {
   provider_reference: string | null
   confirmed_at: string | null
   failure_reason: string | null
+  metadata?: { payer_phone?: string; receipt_path?: string } | null
   created_at: string
 }
 
@@ -160,6 +171,50 @@ export type DateRange = {
   kind: string
 }
 
+export type StayService = {
+  id: string
+  slug: string
+  name_en: string
+  name_fr: string
+  price_xaf: number
+  is_active: boolean
+}
+
+export type Review = {
+  id: string
+  property_id: string
+  reservation_id: string
+  customer_id: string
+  rating: number
+  body: string
+  status: 'published' | 'hidden'
+  created_at: string
+}
+
+export type WaitlistEntry = {
+  id: string
+  property_id: string
+  full_name: string
+  email: string
+  phone: string | null
+  check_in: string
+  check_out: string
+  guest_count: number
+  created_at: string
+  properties?: { name: string }
+}
+
+export type TurnoverTask = {
+  id: string
+  reservation_id: string
+  property_id: string
+  title: string
+  due_on: string
+  done_at: string | null
+  reservations?: { public_code: string }
+  properties?: { name: string }
+}
+
 export type Quote = {
   available: boolean
   nights: number
@@ -169,6 +224,10 @@ export type Quote = {
   total_amount_xaf: number
   promotion_name: string | null
   capacity: number
+  cleaning_fee_xaf?: number
+  deposit_xaf?: number
+  services_xaf?: number
+  long_stay?: boolean
 }
 
 export type Conversation = {

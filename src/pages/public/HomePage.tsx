@@ -10,6 +10,7 @@ import { usePublishedProperties, usePromotions, useSiteConfig } from '../../hook
 import { whatsappUrl } from '../../lib/whatsapp'
 import { checkOutFromNights, todayIso } from '../../lib/availability'
 import { ImperialMark } from '../../components/brand/Logo'
+import { OptimizedImage } from '../../components/ui/OptimizedImage'
 import { DEFAULT_HOME_HERO_IMAGE } from '../../lib/config'
 import { demoHousingSheet } from '../../lib/housingSheet'
 
@@ -46,9 +47,11 @@ export function HomePage() {
       </Helmet>
 
       <section className="relative flex min-h-[100svh] items-end overflow-hidden">
-        <img
+        <OptimizedImage
           src={heroImage}
           alt=""
+          priority
+          width={1600}
           className="kenburns absolute inset-0 h-full w-full object-cover opacity-55"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/25" />

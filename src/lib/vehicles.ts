@@ -190,3 +190,113 @@ export function vehicleCover(v: Vehicle): string | undefined {
   const media = [...(v.vehicle_media ?? [])].sort((a, b) => a.sort_order - b.sort_order)
   return media.find((m) => m.media_type === 'image')?.url ?? media[0]?.url
 }
+
+export async function fetchVehicleBySlug(slug: string): Promise<Vehicle | null> {
+  if (!supabase) return demoVehicles.find((v) => v.slug === slug) ?? null
+  const { data, error } = await supabase.from('vehicles').select(vehicleSelect).eq('slug', slug).maybeSingle()
+  if (error) {
+    if (vehicleFetchFailed(error)) return demoVehicles.find((v) => v.slug === slug) ?? null
+    throw error
+  }
+  return (data as Vehicle | null) ?? null
+}
+
+export type VehiclePromo = { code: string; discount_percent: number }
+
+export async function fetchVehiclePromos(): Promise<VehiclePromo[]> {
+  if (!supabase) return [{ code: 'IMPERIAL5', discount_percent: 5 }]
+  const { data, error } = await supabase.from('vehicle_promo_codes').select('code, discount_percent').eq('is_active', true)
+  if (error) {
+    if (vehicleFetchFailed(error)) return []
+    throw error
+  }
+  return (data as VehiclePromo[]) ?? []
+}
+
+export type VehicleBooking = {
+  id: string
+  public_code: string
+  days: number
+  total_xaf: number
+  discount_xaf: number
+  status: string
+}
+
+export async function bookVehicle(input: {
+  vehicleId: string
+  start: string
+  end: string
+  withDriver: boolean
+  promoCode?: string
+}): Promise<VehicleBooking> {
+  if (!supabase) throw new Error('Supabase required')
+  const { data, error } = await supabase.rpc('book_vehicle', {
+    p_vehicle_id: input.vehicleId,
+    p_start: input.start,
+    p_end: input.end,
+    p_with_driver: input.withDriver,
+    p_promo_code: input.promoCode?.trim() || null,
+  })
+  if (error) throw error
+  return data as VehicleBooking
+}
+
+export type VehicleRental = {
+  id: string
+  public_code: string | null
+  customer_id: string | null
+  reservation_id: string | null
+  start_date: string | null
+  end_date: string | null
+  with_driver: boolean
+  days: number
+  total_xaf: number
+  status: 'requested' | 'confirmed' | 'cancelled'
+  created_at: string
+  vehicles?: { brand: string; model: string; slug: string } | { brand: string; model: string; slug: string }[] | null
+}
+
+const rentalSelect =
+  'id, public_code, customer_id, reservation_id, start_date, end_date, with_driver, days, total_xaf, status, created_at, vehicles(brand, model, slug)'
+
+function rentalQueryFailed(error: { code?: string; message?: string } | null) {
+  if (!error) return false
+  if (vehicleFetchFailed(error)) return true
+  return Boolean(error.code === '42703' || error.code === 'PGRST204' || error.message?.includes('start_date') || error.message?.includes('public_code'))
+}
+
+export async function fetchMyVehicleRentals(userId: string): Promise<VehicleRental[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase
+    .from('vehicle_rentals')
+    .select(rentalSelect)
+    .eq('customer_id', userId)
+    .order('created_at', { ascending: false })
+  if (error) {
+    if (rentalQueryFailed(error)) return []
+    throw error
+  }
+  return (data as VehicleRental[]) ?? []
+}
+
+export async function fetchVehicleRentals(): Promise<VehicleRental[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase.from('vehicle_rentals').select(rentalSelect).order('created_at', { ascending: false })
+  if (error) {
+    if (rentalQueryFailed(error)) return []
+    throw error
+  }
+  return (data as VehicleRental[]) ?? []
+}
+
+export async function setVehicleRentalStatus(id: string, status: VehicleRental['status']) {
+  if (!supabase) throw new Error('Supabase required')
+  const { error } = await supabase.rpc('set_vehicle_rental_status', { p_id: id, p_status: status })
+  if (error) throw error
+}
+
+export function rentalVehicleName(rental: VehicleRental) {
+  const vehicle = Array.isArray(rental.vehicles) ? rental.vehicles[0] : rental.vehicles
+  if (!vehicle) return rental.public_code ?? 'Voiture'
+  return `${vehicle.brand} ${vehicle.model}`
+}

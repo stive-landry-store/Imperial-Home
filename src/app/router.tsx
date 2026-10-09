@@ -4,10 +4,13 @@ import { CustomerLayout } from '../components/layout/CustomerLayout'
 import { AdminLayout } from '../components/layout/AdminLayout'
 import { HomePage } from '../pages/public/HomePage'
 import { PropertiesPage } from '../pages/public/PropertiesPage'
+import { MapPage } from '../pages/public/MapPage'
+import { ComparePage } from '../pages/public/ComparePage'
 import { PropertyDetailPage } from '../pages/public/PropertyDetailPage'
 import { BookingPage } from '../pages/public/BookingPage'
 import { ContactPage } from '../pages/public/ContactPage'
 import { CarsPage } from '../pages/public/CarsPage'
+import { CarDetailPage } from '../pages/public/CarDetailPage'
 import { AuthPage } from '../pages/public/AuthPage'
 import { ForgotPasswordPage } from '../pages/public/ForgotPasswordPage'
 import { ResetPasswordPage } from '../pages/public/ResetPasswordPage'
@@ -29,6 +32,8 @@ import { AdminChatPage } from '../pages/admin/AdminChatPage'
 import { AdminAdminsPage } from '../pages/admin/AdminAdminsPage'
 import { AdminAuditPage } from '../pages/admin/AdminAuditPage'
 import { AdminSettingsPage } from '../pages/admin/AdminSettingsPage'
+import { AdminTurnoverPage } from '../pages/admin/AdminTurnoverPage'
+import { AdminReviewsPage } from '../pages/admin/AdminReviewsPage'
 import { AdminVehiclesPage } from '../pages/admin/AdminVehiclesPage'
 import { HousingSheetEditorPage } from '../pages/shared/HousingSheetEditorPage'
 import { RequireAuth, RequireStaff } from './guards'
@@ -46,6 +51,8 @@ export function AppRouter() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/properties" element={<PropertiesPage />} />
+          <Route path="/properties/map" element={<MapPage />} />
+          <Route path="/compare" element={<ComparePage />} />
           <Route path="/properties/:slug" element={<PropertyDetailPage />} />
           <Route
             path="/properties/:slug/book"
@@ -57,6 +64,7 @@ export function AppRouter() {
           />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cars" element={<CarsPage />} />
+          <Route path="/cars/:slug" element={<CarDetailPage />} />
           <Route path="/login" element={<AuthPage mode="login" />} />
           <Route path="/register" element={<AuthPage mode="register" />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -106,6 +114,8 @@ export function AppRouter() {
           <Route path="promotions" element={<AdminPromotionsPage />} />
           <Route path="vehicles" element={<AdminVehiclesPage />} />
           <Route path="payments" element={<AdminPaymentsPage />} />
+          <Route path="turnover" element={<AdminTurnoverPage />} />
+          <Route path="reviews" element={<AdminReviewsPage />} />
           <Route path="chat" element={<AdminChatPage />} />
           <Route path="admins" element={<AdminAdminsPage />} />
           <Route path="audit" element={<AdminAuditPage />} />

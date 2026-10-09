@@ -18,6 +18,8 @@ const links = [
   { to: '/admin/promotions', key: 'promotions' },
   { to: '/admin/vehicles', key: 'vehicles' },
   { to: '/admin/payments', key: 'payments' },
+  { to: '/admin/turnover', key: 'turnover' },
+  { to: '/admin/reviews', key: 'reviewsAdmin' },
   { to: '/admin/chat', key: 'chat' },
   { to: '/admin/housing-sheet', key: 'fiche' },
   { to: '/admin/admins', key: 'admins' },

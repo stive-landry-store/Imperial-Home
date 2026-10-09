@@ -7,6 +7,7 @@ import { fetchAllReservations, fetchPublishedProperties } from '../../lib/data'
 import { supabase } from '../../lib/supabase'
 import { todayIso } from '../../lib/availability'
 import { formatDate, formatXaf } from '../../lib/format'
+import { daysInMonth, nightsInMonth } from '../../lib/occupancy'
 import { Button } from '../../components/ui/Button'
 import { SwipeRail } from '../../components/ui/SwipeRail'
 import { decisionErrorMessage, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
@@ -92,11 +93,27 @@ export function AdminDashboardPage() {
   const active = reservations.filter((r) => r.status === 'confirmed' && r.check_in <= today && r.check_out > today)
   const pendingPay = reservations.filter((r) => r.status === 'pending' || r.status === 'payment_processing')
 
+  const now = new Date()
+  const monthIndex = now.getMonth()
+  const year = now.getFullYear()
+  const monthKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`
+  const occupiedNights = reservations
+    .filter((r) => r.status === 'confirmed' || r.status === 'completed')
+    .reduce((sum, r) => sum + nightsInMonth(r.check_in, r.check_out, year, monthIndex), 0)
+  const occupancyRate = properties.length
+    ? Math.round((occupiedNights / (properties.length * daysInMonth(year, monthIndex))) * 100)
+    : 0
+  const monthRevenue = reservations
+    .filter((r) => (r.status === 'confirmed' || r.status === 'completed') && r.check_in.startsWith(monthKey))
+    .reduce((sum, r) => sum + r.total_amount_xaf, 0)
+
   const cards = [
     { label: t('admin.arrivals'), value: arrivals.length },
     { label: t('admin.departures'), value: departures.length },
     { label: t('admin.occupancy'), value: `${active.length}/${properties.length}` },
     { label: t('admin.unread'), value: unread },
+    { label: t('admin.revenue'), value: formatXaf(monthRevenue) },
+    { label: t('admin.occupancyRate'), value: `${occupancyRate}%` },
   ]
 
   const shortcuts = [

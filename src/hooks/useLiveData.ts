@@ -30,6 +30,9 @@ export function useLiveData() {
       })
     }
     channel.subscribe()
+    void db.rpc('dispatch_stay_reminders').then(() => {
+      void client.invalidateQueries({ queryKey: ['notifications'] })
+    })
 
     return () => {
       void db.removeChannel(channel)
