@@ -126,7 +126,7 @@ export function HomePage() {
                 className="h-full w-full object-cover object-top"
               />
             ) : (
-              <div className="pointer-events-none origin-top-left scale-[0.405]">
+              <div className="pointer-events-none w-[210mm] origin-top-left scale-[0.405]">
                 <HousingSheet data={demoHousingSheet()} onChange={() => undefined} role="view" />
               </div>
             )}

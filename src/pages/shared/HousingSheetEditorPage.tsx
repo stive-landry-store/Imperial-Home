@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { HousingSheet } from '../../components/housing/HousingSheet'
-import { Button } from '../../components/ui/Button'
 import { fetchReservation } from '../../lib/data'
 import {
   demoHousingSheet,
@@ -13,13 +12,15 @@ import {
   type HousingSheetData,
 } from '../../lib/housingSheet'
 import { downloadElementAsA4Pdf } from '../../lib/pdfCapture'
-import { supabase, isSupabaseConfigured } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
 import { WhatsAppFab } from '../../components/layout/WhatsAppFab'
 import { cn } from '../../lib/cn'
 
 const storageKey = (id: string) => `ih-housing-sheet-${id}`
+const tool =
+  'flex min-h-9 items-center justify-center border-t border-r border-[#d4af6a]/20 px-2 text-center text-xs tracking-[0.06em] uppercase disabled:opacity-50'
 
 export function HousingSheetEditorPage({
   role: initialRole,
@@ -123,12 +124,15 @@ export function HousingSheetEditorPage({
     if (!target) return
     setBusy(true)
     setError(null)
+    target.classList.add('housing-export')
     try {
       await save()
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)))
       await downloadElementAsA4Pdf(target, `Imperial-Home-Fiche-${reservation?.public_code ?? 'logement'}.pdf`)
     } catch {
       setError('Le PDF n’a pas pu être généré. Utilisez Imprimer, puis « Enregistrer au format PDF ».')
     } finally {
+      target.classList.remove('housing-export')
       setBusy(false)
     }
   }
@@ -146,72 +150,45 @@ export function HousingSheetEditorPage({
       <Helmet>
         <title>Fiche de logement | Impérial Home</title>
       </Helmet>
-      <div className="fiche-toolbar sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-[#d4af6a]/30 bg-white px-4 py-3 text-[#8b6f32]">
-        <div>
-          <p className="font-display tracking-[0.18em] uppercase">Fiche de logement</p>
-          {preview ? (
-            <p className="mt-1 text-[12px] tracking-[0.12em] text-[#d4af6a]/70 uppercase">Aperçu éditable · client et réception</p>
-          ) : null}
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {preview ? (
-            <div className="mr-2 flex overflow-hidden border border-[#d4af6a]/40">
-              <button
-                type="button"
-                className={cn('px-3 py-2 text-[12px] tracking-[0.14em] uppercase', role === 'guest' ? 'bg-[#c4a35a] text-black' : '')}
-                onClick={() => setRole('guest')}
-              >
-                Client
-              </button>
-              <button
-                type="button"
-                className={cn('px-3 py-2 text-[12px] tracking-[0.14em] uppercase', role === 'admin' ? 'bg-[#c4a35a] text-black' : '')}
-                onClick={() => setRole('admin')}
-              >
-                Réception
-              </button>
-            </div>
-          ) : null}
-          {preview ? (
-            <>
-              <Button variant="ghost" onClick={() => setData(demoHousingSheet())}>
-                Exemple
-              </Button>
-              <Button variant="ghost" onClick={() => setData(emptyHousingSheet())}>
-                Vierge
-              </Button>
-            </>
-          ) : null}
-          <Button variant="ghost" onClick={() => void save()}>
-            Enregistrer
-          </Button>
-          <Button onClick={() => void downloadPdf()} disabled={busy}>
-            {busy ? 'Préparation…' : 'Télécharger PDF'}
-          </Button>
-          <Button variant="ghost" onClick={() => window.print()}>
-            Imprimer
-          </Button>
-          <Link to={backTo} className="px-3 py-2 text-sm tracking-[0.14em] uppercase">
+      <div className="fiche-toolbar sticky top-0 z-20 border-b border-[#d4af6a]/30 bg-white text-[#8b6f32]">
+        <div className="flex items-center justify-between gap-3 px-3 py-2">
+          <p className="text-sm font-semibold tracking-[0.08em] uppercase">Fiche de logement</p>
+          <Link to={backTo} className="shrink-0 text-xs tracking-[0.12em] uppercase">
             Retour
           </Link>
+        </div>
+        <div className="grid grid-cols-2 border-t border-[#d4af6a]/25">
+          {preview ? (
+            <>
+              <button type="button" className={cn(tool, role === 'guest' && 'bg-[#c4a35a] text-black')} onClick={() => setRole('guest')}>
+                Client
+              </button>
+              <button type="button" className={cn(tool, role === 'admin' && 'bg-[#c4a35a] text-black')} onClick={() => setRole('admin')}>
+                Réception
+              </button>
+              <button type="button" className={tool} onClick={() => setData(demoHousingSheet())}>
+                Exemple
+              </button>
+              <button type="button" className={tool} onClick={() => setData(emptyHousingSheet())}>
+                Vierge
+              </button>
+            </>
+          ) : null}
+          <button type="button" className={tool} onClick={() => void save()}>
+            Enregistrer
+          </button>
+          <button type="button" className={tool} disabled={busy} onClick={() => void downloadPdf()}>
+            {busy ? 'Préparation…' : 'PDF'}
+          </button>
+          <button type="button" className={cn(tool, 'col-span-2')} onClick={() => window.print()}>
+            Imprimer
+          </button>
         </div>
       </div>
       {saved ? <p className="py-2 text-center text-sm tracking-wider text-[#d4af6a] uppercase">Enregistré</p> : null}
       {error ? <p className="px-4 py-2 text-center text-sm text-red-300">{error}</p> : null}
-      {!isSupabaseConfigured() || preview ? (
-        <p className="px-4 py-2 text-center text-sm text-[#d4af6a]/80">
-          {preview
-            ? 'Aperçu public — remplissez la fiche, signez, enregistrez sur cet appareil, imprimez ou téléchargez le PDF.'
-            : 'Mode aperçu — la fiche se sauvegarde sur cet appareil. Connectez Supabase pour la partager entre client et réception.'}
-        </p>
-      ) : null}
-      <p className="px-4 text-center text-[13px] text-[#d4af6a]/70">
-        {role === 'guest'
-          ? 'Vous pouvez remplir vos informations et signer. Wi-Fi et cachet de la réception sont réservés à l’équipe.'
-          : 'Mode réception — wifi, téléphone et signatures de l’établissement sont éditables.'}
-      </p>
-      <div className="housing-print-wrap mx-auto flex justify-center overflow-x-auto px-3 py-8">
-        <div ref={sheetRef} className="housing-print-target shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+      <div className="housing-print-wrap mx-auto w-full max-w-[210mm] px-3 py-4">
+        <div ref={sheetRef} className="housing-print-target">
           <HousingSheet data={data} onChange={setData} role={role} />
         </div>
       </div>

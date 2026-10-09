@@ -102,9 +102,9 @@ export function BookingPage() {
           <dt>{t('property.checkOut')}</dt>
           <dd>{checkOut}</dd>
         </div>
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between gap-3">
           <dt>{t('property.stayNights')}</dt>
-          <dd>
+          <dd className="box-border min-h-12 min-w-28 border border-[#d4af6a]/40 px-3 py-2 text-center">
             {quote?.nights ?? '—'} {t('property.nights')}
           </dd>
         </div>

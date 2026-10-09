@@ -61,20 +61,25 @@ export function HousingSheet({
   const thanks = useLiveTranslation('MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !', 'fr')
 
   return (
-    <article className="housing-a4 text-[#111]">
-      <header className="housing-header relative overflow-hidden bg-black px-8 pt-7 pb-8 text-[#d4af6a]">
-        <div className="flex items-start justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <ImperialMark className="h-16 w-auto" />
-            <div>
-              <ImperialWordmark light compact={false} />
+    <article className="housing-a4 @container text-[#111]">
+      <header className="housing-header relative overflow-hidden bg-black px-4 pt-5 pb-6 text-[#d4af6a] @2xl:px-8 @2xl:pt-7 @2xl:pb-8">
+        <div className="flex flex-col gap-4 @2xl:flex-row @2xl:items-start @2xl:justify-between @2xl:gap-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <ImperialMark className="h-14 w-auto shrink-0 @2xl:h-16" />
+            <div className="min-w-0">
+              <div className="@2xl:hidden">
+                <ImperialWordmark light compact />
+              </div>
+              <div className="hidden @2xl:block">
+                <ImperialWordmark light compact={false} />
+              </div>
               <p className="mt-2 text-[0.52rem] tracking-[0.22em] text-[#d4af6a]">
                 L&apos;ART DU SOIN. L&apos;ESPRIT DU DÉTAIL.
               </p>
             </div>
           </div>
-          <div className="text-right">
-            <h1 className="font-display text-[2.15rem] leading-none tracking-[0.06em] text-[#d4af6a]">
+          <div className="@2xl:text-right">
+            <h1 className="font-display text-3xl leading-none tracking-[0.06em] text-[#d4af6a] @2xl:text-[2.15rem]">
               {sheetTitle}
             </h1>
           </div>
@@ -85,8 +90,8 @@ export function HousingSheet({
         </svg>
       </header>
 
-      <div className="space-y-4 bg-white px-7 py-6">
-        <div className="grid gap-4 md:grid-cols-2">
+      <div className="space-y-4 bg-white px-4 py-5 @2xl:px-7 @2xl:py-6">
+        <div className="grid gap-4 @2xl:grid-cols-2">
           <section className="housing-box p-4">
             <SectionCapsule icon={UserRound}>{clientInfo}</SectionCapsule>
             <div className="mt-4 space-y-3">
@@ -119,12 +124,12 @@ export function HousingSheet({
 
         <section className="housing-box p-4">
           <SectionCapsule icon={CalendarDays}>{stayInfo}</SectionCapsule>
-          <div className="mt-5 grid gap-6 md:grid-cols-2 md:divide-x md:divide-dotted md:divide-[#c4a35a]">
-            <div className="space-y-3 md:pr-6">
+          <div className="mt-5 grid gap-6 @2xl:grid-cols-2 @2xl:divide-x @2xl:divide-dotted @2xl:divide-[#c4a35a]">
+            <div className="space-y-3 @2xl:pr-6">
               <DottedField icon={CalendarDays} label="Date d'arrivée :" type="date" value={data.arrival_date} disabled={locked('arrival_date')} onChange={(v) => set('arrival_date', v)} />
               <DottedField label="Heure d'arrivée :" type="time" value={data.arrival_time} disabled={locked('arrival_time')} onChange={(v) => set('arrival_time', v)} />
             </div>
-            <div className="space-y-3 md:pl-6">
+            <div className="space-y-3 @2xl:pl-6">
               <DottedField icon={CalendarDays} label="Date de départ :" type="date" value={data.departure_date} disabled={locked('departure_date')} onChange={(v) => set('departure_date', v)} />
               <DottedField label="Heure de départ :" type="time" value={data.departure_time} disabled={locked('departure_time')} onChange={(v) => set('departure_time', v)} />
             </div>
@@ -138,9 +143,9 @@ export function HousingSheet({
           {role !== 'admin' && !data.wifi_password ? (
             <p className="housing-box px-4 py-6 text-center text-[13px] leading-relaxed text-[#8a7344]">{wifiLocked}</p>
           ) : (
-            <div className="housing-box grid gap-4 p-4 md:grid-cols-2 md:divide-x md:divide-dotted md:divide-[#c4a35a]">
-              <DottedField label="Nom du wifi :" value={data.wifi_name} disabled={locked('wifi_name')} onChange={(v) => set('wifi_name', v)} className="md:pr-4" />
-              <DottedField label="Mot de passe :" value={data.wifi_password} disabled={locked('wifi_password')} onChange={(v) => set('wifi_password', v)} className="md:pl-4" />
+            <div className="housing-box grid gap-4 p-4 @2xl:grid-cols-2 @2xl:divide-x @2xl:divide-dotted @2xl:divide-[#c4a35a]">
+              <DottedField label="Nom du wifi :" value={data.wifi_name} disabled={locked('wifi_name')} onChange={(v) => set('wifi_name', v)} className="@2xl:pr-4" />
+              <DottedField label="Mot de passe :" value={data.wifi_password} disabled={locked('wifi_password')} onChange={(v) => set('wifi_password', v)} className="@2xl:pl-4" />
             </div>
           )}
         </section>
@@ -148,7 +153,7 @@ export function HousingSheet({
         <section className="housing-box p-4">
           <SectionCapsule icon={ShieldCheck}>{pledgeTitle}</SectionCapsule>
           <p className="mt-4 text-center text-[12px] leading-relaxed text-[#333]">{pledge}</p>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div className="mt-4 grid gap-4 @2xl:grid-cols-2">
             <div className="housing-box p-3">
               <p className="mb-2 text-center text-[10px] tracking-[0.16em] text-[#8a7344] uppercase">{guestSign}</p>
               <DottedField label="Nom :" value={data.guest_sign_name} disabled={locked('guest_sign_name')} onChange={(v) => set('guest_sign_name', v)} />
@@ -186,7 +191,7 @@ export function HousingSheet({
       </div>
 
       <footer className="bg-black px-6 pt-5 pb-4 text-[#d4af6a]">
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:divide-x md:divide-[#d4af6a]/40">
+        <div className="grid grid-cols-2 gap-3 @2xl:grid-cols-4 @2xl:divide-x @2xl:divide-[#d4af6a]/40">
           <FooterPill icon={Shield} title="Sécurité 24h/24" text="Votre sécurité est notre priorité." />
           <FooterPill icon={Wifi} title="Wifi haut débit" text="Restez connecté en toute simplicité." />
           <FooterPill icon={Sparkles} title="Service ménage" text="Confort et propreté au quotidien." />

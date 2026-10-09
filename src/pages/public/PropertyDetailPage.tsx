@@ -194,19 +194,22 @@ export function PropertyDetailPage() {
                   })}
                 </p>
               ) : null}
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
                 <ManualDate label={t('property.checkIn')} value={activeCheckIn} min={todayIso()} onChange={onManualCheckIn} />
                 <ManualDate label={t('property.checkOut')} value={checkOut} min={checkOutFromNights(activeCheckIn, 1)} onChange={onManualCheckOut} />
+                <fieldset className="min-w-0 max-w-full sm:col-span-2">
+                  <legend className="text-sm tracking-wider text-[#d4af6a]/80 uppercase">{t('property.stayNights')}</legend>
+                  <input
+                    type="number"
+                    min={1}
+                    max={365}
+                    inputMode="numeric"
+                    value={shownNights}
+                    onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
+                    className="mt-1 box-border min-h-12 w-full max-w-full border border-[#d4af6a]/40 bg-transparent px-3 text-base outline-none"
+                  />
+                </fieldset>
               </div>
-              <label className="mt-4 block text-sm theme-muted">{t('property.stayNights')}</label>
-              <input
-                type="number"
-                min={1}
-                max={365}
-                value={shownNights}
-                onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
-                className="mt-1 w-full rounded-xl border border-black/10 bg-transparent px-3 py-2 outline-none"
-              />
               {quote ? (
                 <div className="mt-4">
                   <PriceBreakdown quote={quote} />
