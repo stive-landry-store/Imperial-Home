@@ -283,6 +283,13 @@ input[type='date']::-webkit-calendar-picker-indicator {
   padding: 0;
 }
 
+.place-map .leaflet-pane { z-index: 1; }
+.place-map .leaflet-overlay-pane { z-index: 2; }
+.place-map .leaflet-marker-pane { z-index: 3; }
+.place-map .leaflet-popup-pane { z-index: 4; }
+.place-map .leaflet-top,
+.place-map .leaflet-bottom { z-index: 5; }
+
 .gold-line {
   height: 1px;
   background: linear-gradient(90deg, transparent, #c4a35a, transparent);

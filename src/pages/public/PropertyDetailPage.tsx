@@ -15,6 +15,9 @@ import { Live, useLiveTranslation } from '../../components/i18n/Live'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
 import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
+import { PlaceActions } from '../../components/property/PlaceActions'
+import { PlaceMap } from '../../components/property/PlaceMap'
+import { imperialPlace } from '../../lib/place'
 import { shareSite } from '../../lib/social'
 import { coverImage, formatDate, localized } from '../../lib/format'
 import { whatsappUrl } from '../../lib/whatsapp'
@@ -40,7 +43,7 @@ export function PropertyDetailPage() {
       : 2
   const [checkIn, setCheckIn] = useState(initialCheckIn)
   const [nights, setNights] = useState(initialNights)
-  const [guests, setGuests] = useState(Number(params.get('guests') ?? 2) || 1)
+  const guests = 1
   const [copied, setCopied] = useState(false)
 
   const { data: ranges = [] } = useQuery({
@@ -107,10 +110,7 @@ export function PropertyDetailPage() {
     return <p className="theme-page px-6 pt-32">{t('properties.notFound')}</p>
   }
 
-  const maps =
-    property.latitude && property.longitude
-      ? `https://www.openstreetmap.org/export/embed.html?bbox=${Number(property.longitude) - 0.03}%2C${Number(property.latitude) - 0.02}%2C${Number(property.longitude) + 0.03}%2C${Number(property.latitude) + 0.02}&layer=mapnik&marker=${property.latitude}%2C${property.longitude}`
-      : null
+  const place = imperialPlace(config)
 
   return (
     <div className="theme-page">
@@ -137,7 +137,7 @@ export function PropertyDetailPage() {
           </script>
         </Helmet>
         <PropertyGallery images={property.property_images ?? []} lang={i18n.language} />
-        <div className="mt-10 grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="mt-8 max-w-3xl">
           <div>
             <p className="text-[13px] tracking-[0.28em] text-[#d4af6a] uppercase">{t('properties.houseLabel')}</p>
             <h1 className="mt-2 font-display text-5xl tracking-[0.04em]">
@@ -182,7 +182,65 @@ export function PropertyDetailPage() {
               {t(property.bathrooms > 1 ? 'properties.baths' : 'properties.bath')} · {property.living_areas}{' '}
               {t(property.living_areas > 1 ? 'properties.livings' : 'properties.living')}
             </p>
-            <h2 className="mt-10 font-display text-3xl">{t('property.amenities')}</h2>
+            <section className="theme-card mt-8 p-5">
+              <h2 className="text-xl font-semibold">{t('property.book')}</h2>
+              <div className="mt-4">
+                <AvailabilityCalendar ranges={ranges} checkIn={activeCheckIn} checkOut={checkOut} onSelect={onSelectDate} />
+              </div>
+              {adjusted.shifted || followsReserved ? (
+                <p className="mt-3 text-sm text-[#d4af6a]">
+                  {t('property.skipReserved', {
+                    date: formatDate(activeCheckIn, i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'),
+                  })}
+                </p>
+              ) : null}
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <ManualDate label={t('property.checkIn')} value={activeCheckIn} min={todayIso()} onChange={onManualCheckIn} />
+                <ManualDate label={t('property.checkOut')} value={checkOut} min={checkOutFromNights(activeCheckIn, 1)} onChange={onManualCheckOut} />
+              </div>
+              <label className="mt-4 block text-sm theme-muted">{t('property.stayNights')}</label>
+              <input
+                type="number"
+                min={1}
+                max={365}
+                value={shownNights}
+                onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
+                className="mt-1 w-full rounded-xl border border-black/10 bg-transparent px-3 py-2 outline-none"
+              />
+              {quote ? (
+                <div className="mt-4">
+                  <PriceBreakdown quote={quote} />
+                  {!quote.available ? <p className="mt-2 text-red-700">{t('property.unavailable')}</p> : null}
+                  {!quote.available ? (
+                    <WaitlistForm propertyId={property.id} checkIn={activeCheckIn} checkOut={checkOut} guests={guests} />
+                  ) : null}
+                </div>
+              ) : null}
+              <Button
+                className="mt-5 w-full"
+                disabled={!quote?.available}
+                onClick={() => {
+                  const q = `checkIn=${activeCheckIn}&checkOut=${checkOut}&nights=${shownNights}&guests=${guests}`
+                  if (!user) {
+                    navigate(`/login?next=/properties/${property.slug}/book?${q}`)
+                    return
+                  }
+                  navigate(`/properties/${property.slug}/book?${q}`)
+                }}
+              >
+                {user ? t('property.continue') : t('property.needAccount')}
+              </Button>
+              <p className="mt-3 text-sm theme-muted-soft">{t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}</p>
+            </section>
+            <section className="mt-8">
+              <h2 className="text-xl font-semibold">{t('property.location')}</h2>
+              <p className="mt-2 text-base">{place.address}</p>
+              <div className="mt-3">
+                <PlaceMap latitude={place.latitude} longitude={place.longitude} label={`${place.label} · ${place.address}`} className="h-72" />
+                <PlaceActions place={place} />
+              </div>
+            </section>
+            <h2 className="mt-10 text-xl font-semibold">{t('property.amenities')}</h2>
             <ul className="mt-3 grid grid-cols-2 gap-2 text-base theme-muted">
               {(property.property_amenities ?? []).map((a) => (
                 <li key={a.amenities.id}>
@@ -207,75 +265,7 @@ export function PropertyDetailPage() {
               </>
             ) : null}
             <ReviewList propertyId={property.id} />
-            {maps ? (
-              <>
-                <h2 className="mt-10 font-display text-3xl">{t('property.location')}</h2>
-                <p className="mt-2 text-base theme-muted">{property.address}</p>
-                <iframe title="map" className="mt-4 h-64 w-full border border-[#d4af6a]/30 grayscale" src={maps} />
-              </>
-            ) : null}
           </div>
-          <aside className="theme-card h-fit p-5">
-            <h2 className="font-display text-2xl text-[#d4af6a]">{t('property.book')}</h2>
-          <div className="mt-4">
-            <AvailabilityCalendar ranges={ranges} checkIn={activeCheckIn} checkOut={checkOut} onSelect={onSelectDate} />
-          </div>
-          {adjusted.shifted || followsReserved ? (
-            <p className="mt-3 text-sm text-[#d4af6a]">
-              {t('property.skipReserved', {
-                date: formatDate(activeCheckIn, i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'),
-              })}
-            </p>
-          ) : null}
-          <div className="mt-4 grid gap-3">
-            <ManualDate label={t('property.checkIn')} value={activeCheckIn} min={todayIso()} onChange={onManualCheckIn} />
-            <ManualDate label={t('property.checkOut')} value={checkOut} min={checkOutFromNights(activeCheckIn, 1)} onChange={onManualCheckOut} />
-          </div>
-          <label className="mt-4 block text-sm uppercase tracking-wider text-[#d4af6a]/80">{t('property.stayNights')}</label>
-          <input
-            type="number"
-            min={1}
-            max={365}
-            value={shownNights}
-            onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
-            className="mt-1 w-full border border-[#d4af6a]/40 bg-transparent px-3 py-2 outline-none"
-          />
-          <label className="mt-4 block text-sm uppercase tracking-wider text-[#d4af6a]/80">{t('property.guests')}</label>
-          <input
-            type="number"
-            min={1}
-            max={property.capacity}
-            value={guests}
-            onChange={(e) => setGuests(Number(e.target.value))}
-            className="mt-1 w-full border border-[#d4af6a]/40 bg-transparent px-3 py-2 outline-none"
-          />
-          {quote ? (
-            <div className="mt-4">
-              <PriceBreakdown quote={quote} />
-              {!quote.available ? <p className="mt-2 text-red-700">{t('property.unavailable')}</p> : null}
-              {!quote.available ? (
-                <WaitlistForm propertyId={property.id} checkIn={activeCheckIn} checkOut={checkOut} guests={guests} />
-              ) : null}
-            </div>
-          ) : null}
-          <Button
-            className="mt-5 w-full"
-            disabled={!quote?.available}
-            onClick={() => {
-              const q = `checkIn=${activeCheckIn}&checkOut=${checkOut}&nights=${shownNights}&guests=${guests}`
-              if (!user) {
-                navigate(`/login?next=/properties/${property.slug}/book?${q}`)
-                return
-              }
-              navigate(`/properties/${property.slug}/book?${q}`)
-            }}
-          >
-            {user ? t('property.continue') : t('property.needAccount')}
-          </Button>
-          <p className="mt-3 text-sm theme-muted-soft">
-            {t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}
-          </p>
-        </aside>
         </div>
       </div>
     </div>

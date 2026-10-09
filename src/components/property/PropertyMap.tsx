@@ -13,13 +13,23 @@ const icon = L.icon({
   iconAnchor: [12, 41],
 })
 
-export function PropertyMap({ properties }: { properties: Property[] }) {
-  const points = properties.map((property, index) => {
-    const lat = Number(property.latitude ?? IMPERIAL_HOME.latitude) + index * 0.00035
-    const lng = Number(property.longitude ?? IMPERIAL_HOME.longitude) + index * 0.00035
-    return { property, lat, lng }
-  })
-  const center = points[0] ?? { lat: IMPERIAL_HOME.latitude, lng: IMPERIAL_HOME.longitude }
+export function PropertyMap({
+  properties,
+  latitude,
+  longitude,
+}: {
+  properties: Property[]
+  latitude?: number
+  longitude?: number
+}) {
+  const baseLat = latitude ?? IMPERIAL_HOME.latitude
+  const baseLng = longitude ?? IMPERIAL_HOME.longitude
+  const points = properties.map((property, index) => ({
+    property,
+    lat: baseLat + index * 0.00035,
+    lng: baseLng + index * 0.00035,
+  }))
+  const center = { lat: baseLat, lng: baseLng }
 
   return (
     <MapContainer center={[center.lat, center.lng]} zoom={15} scrollWheelZoom={false} className="h-[28rem] w-full">

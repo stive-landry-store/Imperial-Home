@@ -1,35 +1,26 @@
-import { useState, type FormEvent } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Phone, Shield, Sparkles, Wifi } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
 import { PropertyCard } from '../../components/property/PropertyCard'
+import { PlaceActions } from '../../components/property/PlaceActions'
+import { PlaceMap } from '../../components/property/PlaceMap'
 import { HousingSheet } from '../../components/housing/HousingSheet'
 import { usePublishedProperties, usePromotions, useSiteConfig } from '../../hooks/useSite'
-import { checkOutFromNights, todayIso } from '../../lib/availability'
 import { SocialLinks } from '../../components/layout/SocialLinks'
 import { Live } from '../../components/i18n/Live'
+import { imperialPlace } from '../../lib/place'
 import { demoHousingSheet } from '../../lib/housingSheet'
 
 export function HomePage() {
   const { t, i18n } = useTranslation()
-  const navigate = useNavigate()
   const { data: properties = [] } = usePublishedProperties()
   const { data: promotions = [] } = usePromotions()
   const { data: config } = useSiteConfig()
   const featured = properties.slice(0, 3)
   const offer = promotions.find((p) => p.is_active)
-  const [checkIn, setCheckIn] = useState(todayIso())
-  const [nights, setNights] = useState(2)
-  const [guests, setGuests] = useState(2)
-  const checkOut = checkOutFromNights(checkIn, nights)
   const chosenHero = config?.home_hero_image_url?.trim() || ''
-
-  function search(e: FormEvent) {
-    e.preventDefault()
-    navigate(`/properties?checkIn=${checkIn}&checkOut=${checkOut}&nights=${nights}&guests=${guests}`)
-  }
+  const place = imperialPlace(config)
 
   const pillars = [
     { icon: Shield, title: t('footer.security'), text: t('footer.securityD') },
@@ -44,58 +35,24 @@ export function HomePage() {
         <title>Impérial Home | L&apos;art du soin. L&apos;esprit du détail.</title>
       </Helmet>
 
-      <div className="pt-[4.5rem]">
-        <div className="relative h-56 w-full overflow-hidden bg-[#ebe6dc] md:h-80">
+      <section className="relative min-h-[100svh] bg-[#1a1612] pt-[4.5rem]">
+        <div className="absolute inset-x-0 top-[4.5rem] bottom-0">
           {chosenHero ? (
             <img key={chosenHero} src={chosenHero} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
           ) : null}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35" />
         </div>
-        <form onSubmit={search} className="theme-card relative z-10 mx-auto -mt-8 max-w-3xl rounded-2xl border border-black/10 p-4 shadow-lg">
-          <h1 className="text-xl font-semibold">{t('home.placeLine')}</h1>
-          <p className="mt-1 text-sm theme-muted">{t('hero.subtitle')}</p>
-          <div className="mt-3 grid grid-cols-[minmax(0,1.45fr)_minmax(0,0.7fr)_minmax(0,0.8fr)] gap-2">
-            <label className="min-w-0 overflow-hidden rounded-xl border border-black/10 px-2 py-2">
-              <span className="block text-[11px] theme-muted">{t('property.checkIn')}</span>
-              <input
-                type="date"
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                className="mt-1 block w-full min-w-0 bg-transparent text-[13px] outline-none"
-              />
-            </label>
-            <label className="min-w-0 rounded-xl border border-black/10 px-2 py-2">
-              <span className="block text-[11px] theme-muted">{t('property.nights')}</span>
-              <input
-                type="number"
-                min={1}
-                max={365}
-                value={nights}
-                onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
-                className="mt-1 w-full bg-transparent text-sm outline-none"
-              />
-            </label>
-            <label className="min-w-0 rounded-xl border border-black/10 px-2 py-2">
-              <span className="block text-[11px] theme-muted">{t('property.guests')}</span>
-              <input
-                type="number"
-                min={1}
-                value={guests}
-                onChange={(e) => setGuests(Number(e.target.value))}
-                className="mt-1 w-full bg-transparent text-sm outline-none"
-              />
-            </label>
+        <div className="relative z-10 flex min-h-[calc(100svh-4.5rem)] flex-col justify-end px-5 pb-24 md:px-10">
+          <div className="mx-auto w-full max-w-3xl">
+            <h1 className="text-3xl font-semibold text-white md:text-5xl">{t('home.placeLine')}</h1>
+            <p className="mt-2 max-w-xl text-sm text-white/85 md:text-base">{t('hero.subtitle')}</p>
+            <Button to="/properties" className="mt-5 w-full max-w-xs">
+              {t('nav.search')}
+            </Button>
+            <SocialLinks className="mt-4" prominent />
           </div>
-          <p className="mt-2 text-xs theme-muted">
-            {t('property.checkOut')} : {checkOut}
-          </p>
-          <Button type="submit" className="mt-3 w-full">
-            {t('nav.search')}
-          </Button>
-          <div className="mt-3">
-            <SocialLinks />
-          </div>
-        </form>
-      </div>
+        </div>
+      </section>
 
       <section className="theme-alt border-y border-black/10">
         <div className="mx-auto grid max-w-6xl grid-cols-4 md:px-6">
@@ -199,11 +156,10 @@ export function HomePage() {
               {t('nav.contact')}
             </Button>
           </div>
-          <iframe
-            title="Douala"
-            className="h-72 w-full rounded-2xl border border-black/10"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=9.73%2C4.05%2C9.78%2C4.09&layer=mapnik&marker=4.0689%2C9.7568"
-          />
+          <div>
+            <PlaceMap latitude={place.latitude} longitude={place.longitude} label={place.label} className="h-72" />
+            <PlaceActions place={place} />
+          </div>
         </div>
       </section>
     </div>

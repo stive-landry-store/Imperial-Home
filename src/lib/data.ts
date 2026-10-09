@@ -39,6 +39,9 @@ export async function fetchSiteConfig(): Promise<SiteConfig> {
     payment_instructions_fr: map.payment_instructions_fr || SITE_DEFAULTS.payment_instructions_fr,
     home_fiche_image_url: map.home_fiche_image_url || SITE_DEFAULTS.home_fiche_image_url,
     home_hero_image_url: map.home_hero_image_url || SITE_DEFAULTS.home_hero_image_url,
+    place_address: map.place_address || SITE_DEFAULTS.place_address,
+    place_latitude: map.place_latitude || SITE_DEFAULTS.place_latitude,
+    place_longitude: map.place_longitude || SITE_DEFAULTS.place_longitude,
   }
 }
 

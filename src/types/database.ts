@@ -274,4 +274,7 @@ export type SiteConfig = {
   payment_instructions_fr: string
   home_fiche_image_url: string
   home_hero_image_url: string
+  place_address: string
+  place_latitude: string
+  place_longitude: string
 }

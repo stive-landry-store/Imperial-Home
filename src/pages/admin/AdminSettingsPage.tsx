@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button'
 import { Input, Label, Textarea } from '../../components/ui/Field'
 import { fetchSiteConfig } from '../../lib/data'
 import { invalidateSiteData } from '../../lib/queryCache'
+import { PlaceMap } from '../../components/property/PlaceMap'
 import { uploadSiteImage } from '../../lib/siteAssets'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -30,6 +31,9 @@ export function AdminSettingsPage() {
   const [fichePreview, setFichePreview] = useState<string | null>(null)
   const [pendingFicheFile, setPendingFicheFile] = useState<File | null>(null)
 
+  const [placeAddress, setPlaceAddress] = useState('Impérial Home, Carrefour Conquête')
+  const [placeLat, setPlaceLat] = useState('4.0689')
+  const [placeLng, setPlaceLng] = useState('9.7568')
   const [bootstrap, setBootstrap] = useState('imperialhome237@gmail.com, stivelandry16@gmail.com')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -48,6 +52,9 @@ export function AdminSettingsPage() {
       if (c.home_hero_image_url) setHeroPreview(c.home_hero_image_url)
       setFicheImageUrl(c.home_fiche_image_url)
       if (c.home_fiche_image_url) setFichePreview(c.home_fiche_image_url)
+      setPlaceAddress(c.place_address)
+      setPlaceLat(c.place_latitude)
+      setPlaceLng(c.place_longitude)
     })
     if (!supabase) return
     void supabase
@@ -118,6 +125,26 @@ export function AdminSettingsPage() {
       }
 
       if (isMainAdmin) {
+        const latitude = Number(placeLat)
+        const longitude = Number(placeLng)
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+          throw new Error(t('admin.placeHint'))
+        }
+        const placeRows = [
+          { key: 'place_address', value: placeAddress.trim() },
+          { key: 'place_latitude', value: String(latitude) },
+          { key: 'place_longitude', value: String(longitude) },
+        ]
+        for (const row of placeRows) {
+          const { error: rowError } = await supabase.from('system_config').upsert({ key: row.key, value: row.value })
+          if (rowError) throw rowError
+        }
+        const { error: placeError } = await supabase
+          .from('properties')
+          .update({ latitude, longitude, address: placeAddress.trim() })
+          .not('id', 'is', null)
+        if (placeError) throw placeError
+
         const emails = bootstrap
           .split(',')
           .map((s) => s.trim().toLowerCase())
@@ -245,6 +272,36 @@ export function AdminSettingsPage() {
           <Label>{t('admin.settingsPayment')}</Label>
           <Textarea rows={5} value={instructions} onChange={(e) => setInstructions(e.target.value)} />
         </div>
+        {isMainAdmin ? (
+          <div className="border-t border-line pt-4">
+            <Label>{t('admin.placeTitle')}</Label>
+            <p className="mb-3 text-sm text-[var(--surface-muted)]">{t('admin.placeHint')}</p>
+            <PlaceMap
+              latitude={Number(placeLat) || 4.0689}
+              longitude={Number(placeLng) || 9.7568}
+              label="Impérial Home"
+              className="h-72"
+              onPick={(latitude, longitude) => {
+                setPlaceLat(latitude.toFixed(6))
+                setPlaceLng(longitude.toFixed(6))
+              }}
+            />
+            <div className="mt-3">
+              <Label>{t('admin.placeAddress')}</Label>
+              <Input value={placeAddress} onChange={(e) => setPlaceAddress(e.target.value)} />
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <div>
+                <Label>Latitude</Label>
+                <Input value={placeLat} onChange={(e) => setPlaceLat(e.target.value)} />
+              </div>
+              <div>
+                <Label>Longitude</Label>
+                <Input value={placeLng} onChange={(e) => setPlaceLng(e.target.value)} />
+              </div>
+            </div>
+          </div>
+        ) : null}
         {isMainAdmin ? (
           <div>
             <Label>{t('admin.settingsBootstrap')}</Label>
