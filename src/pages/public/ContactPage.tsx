@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button'
 import { useSiteConfig } from '../../hooks/useSite'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { ImperialLogo } from '../../components/brand/Logo'
+import { SocialLinks } from '../../components/layout/SocialLinks'
 import { useTheme } from '../../hooks/useTheme'
 
 export function ContactPage() {
@@ -33,6 +34,10 @@ export function ContactPage() {
             </a>
           </div>
           <p className="text-base theme-muted">{config?.city}</p>
+          <div>
+            <p className="text-[13px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('account.social')}</p>
+            <SocialLinks className="mt-3" />
+          </div>
           <Button onClick={() => window.open(wa, '_blank')}>{t('hero.ctaSecondary')}</Button>
         </div>
       </div>

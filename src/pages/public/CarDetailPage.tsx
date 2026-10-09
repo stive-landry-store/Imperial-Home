@@ -3,11 +3,12 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { ManualDate } from '../../components/booking/ManualDate'
 import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
 import { Button } from '../../components/ui/Button'
 import { Input, Label } from '../../components/ui/Field'
 import { useAuth } from '../../hooks/useAuth'
-import { addDaysIso, todayIso } from '../../lib/availability'
+import { addDaysIso, nightsBetween, todayIso } from '../../lib/availability'
 import { formatDate, formatXaf, localized } from '../../lib/format'
 import {
   bookVehicle,
@@ -154,10 +155,16 @@ export function CarDetailPage() {
                 book.mutate()
               }}
             >
-              <div>
-                <Label>{t('cars.start')}</Label>
-                <Input type="date" min={todayIso()} value={start} onChange={(event) => setStart(event.target.value)} required />
-              </div>
+              <ManualDate label={t('cars.start')} value={start} min={todayIso()} onChange={setStart} />
+              <ManualDate
+                label={t('cars.until')}
+                value={end}
+                min={addDaysIso(start, 1)}
+                onChange={(iso) => {
+                  const next = nightsBetween(start, iso)
+                  if (next >= 1) setDays(Math.min(90, next))
+                }}
+              />
               <div>
                 <Label>{t('cars.days')}</Label>
                 <Input

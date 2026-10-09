@@ -39,10 +39,11 @@ export function HousingSheetEditorPage({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const { data: reservation } = useQuery({
+  const needsReservation = !preview && reservationId !== 'template'
+  const { data: reservation, isFetched } = useQuery({
     queryKey: ['reservation', reservationId],
     queryFn: () => fetchReservation(reservationId),
-    enabled: !preview && reservationId !== 'template',
+    enabled: needsReservation,
   })
 
   useEffect(() => {
@@ -52,53 +53,53 @@ export function HousingSheetEditorPage({
         if (!cancelled) setData(demoHousingSheet())
         return
       }
+      if (needsReservation && !isFetched) return
+      const confirmed = reservation?.status === 'confirmed' || reservation?.status === 'completed'
+      const revealWifi = initialRole === 'admin' || confirmed
+      let sheet = emptyHousingSheet()
       if (supabase && reservationId !== 'template') {
         const { data: row } = await supabase.from('housing_sheets').select('*').eq('reservation_id', reservationId).maybeSingle()
-        if (row && !cancelled) {
-          setData(rowToHousingSheet(row as Record<string, string | null>))
-          return
+        if (row) sheet = rowToHousingSheet(row as Record<string, string | null>)
+      }
+      if (!sheet.guest_name) {
+        const local = localStorage.getItem(storageKey(reservationId))
+        if (local) sheet = { ...sheet, ...JSON.parse(local) }
+      }
+      if (reservation) {
+        sheet = {
+          ...sheet,
+          guest_name: sheet.guest_name || reservation.profiles?.full_name || profile?.full_name || '',
+          guest_phone: sheet.guest_phone || reservation.profiles?.phone || profile?.phone || '',
+          guest_cni: sheet.guest_cni || reservation.profiles?.cni || profile?.cni || '',
+          arrival_date: sheet.arrival_date || reservation.check_in,
+          departure_date: sheet.departure_date || reservation.check_out,
+          arrival_time: sheet.arrival_time || reservation.properties?.check_in_time?.slice(0, 5) || '14:00',
+          departure_time: sheet.departure_time || reservation.properties?.check_out_time?.slice(0, 5) || '11:00',
+          reception_phone: (config?.whatsapp || '237674092263').replace(/^237/, ''),
+          guest_sign_name: sheet.guest_sign_name || reservation.profiles?.full_name || profile?.full_name || '',
         }
       }
-      const local = localStorage.getItem(storageKey(reservationId))
-      if (local && !cancelled) {
-        setData({ ...emptyHousingSheet(), ...JSON.parse(local) })
-        return
-      }
-      if (reservation && !local) {
-        let wifiName = ''
-        let wifiPassword = ''
-        if (supabase && reservation.property_id) {
-          const { data: secrets } = await supabase
-            .from('property_welcome_secrets')
-            .select('wifi_name, wifi_password')
-            .eq('property_id', reservation.property_id)
-            .maybeSingle()
-          wifiName = secrets?.wifi_name ?? ''
-          wifiPassword = secrets?.wifi_password ?? ''
-        }
-        if (!cancelled) {
-          setData((prev) => ({
-            ...prev,
-            guest_name: reservation.profiles?.full_name || profile?.full_name || prev.guest_name,
-            guest_phone: reservation.profiles?.phone || profile?.phone || prev.guest_phone,
-            guest_cni: reservation.profiles?.cni || profile?.cni || prev.guest_cni,
-            arrival_date: reservation.check_in,
-            departure_date: reservation.check_out,
-            arrival_time: reservation.properties?.check_in_time?.slice(0, 5) || '14:00',
-            departure_time: reservation.properties?.check_out_time?.slice(0, 5) || '11:00',
-            wifi_name: wifiName,
-            wifi_password: wifiPassword,
-            reception_phone: (config?.whatsapp || '237674092263').replace(/^237/, ''),
-            guest_sign_name: reservation.profiles?.full_name || prev.guest_sign_name,
-          }))
+      if (!revealWifi) {
+        sheet = { ...sheet, wifi_name: '', wifi_password: '' }
+      } else if (!sheet.wifi_password && supabase && reservation?.property_id) {
+        const { data: secrets } = await supabase
+          .from('property_welcome_secrets')
+          .select('wifi_name, wifi_password')
+          .eq('property_id', reservation.property_id)
+          .maybeSingle()
+        sheet = {
+          ...sheet,
+          wifi_name: sheet.wifi_name || secrets?.wifi_name || '',
+          wifi_password: secrets?.wifi_password || '',
         }
       }
+      if (!cancelled) setData(sheet)
     }
     void load()
     return () => {
       cancelled = true
     }
-  }, [reservation, reservationId, profile, config, preview])
+  }, [reservation, reservationId, profile, config, preview, isFetched, needsReservation, initialRole])
 
   async function save() {
     setError(null)

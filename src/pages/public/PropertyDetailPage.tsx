@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { PropertyGallery } from '../../components/property/PropertyGallery'
 import { AvailabilityCalendar } from '../../components/booking/AvailabilityCalendar'
+import { ManualDate } from '../../components/booking/ManualDate'
 import { PriceBreakdown } from '../../components/property/PriceBreakdown'
 import { ReviewList } from '../../components/property/ReviewList'
 import { StayActions } from '../../components/property/StayActions'
@@ -12,8 +13,9 @@ import { WaitlistForm } from '../../components/booking/WaitlistForm'
 import { Button } from '../../components/ui/Button'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
-import { checkOutFromNights, nightsBetween, todayIso } from '../../lib/availability'
-import { coverImage, localized } from '../../lib/format'
+import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
+import { shareSite } from '../../lib/social'
+import { coverImage, formatDate, localized } from '../../lib/format'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
@@ -38,7 +40,7 @@ export function PropertyDetailPage() {
   const [checkIn, setCheckIn] = useState(initialCheckIn)
   const [nights, setNights] = useState(initialNights)
   const [guests, setGuests] = useState(Number(params.get('guests') ?? 2) || 1)
-  const checkOut = checkOutFromNights(checkIn, nights)
+  const [copied, setCopied] = useState(false)
 
   const { data: ranges = [] } = useQuery({
     queryKey: ['unavailable', property?.id],
@@ -46,10 +48,24 @@ export function PropertyDetailPage() {
     enabled: Boolean(property?.id),
   })
 
+  const adjusted = useMemo(
+    () => stayAfterReserved(checkIn, checkOutFromNights(checkIn, nights), ranges),
+    [checkIn, nights, ranges],
+  )
+  const activeCheckIn = adjusted.checkIn
+  const checkOut = adjusted.checkOut
+  const shownNights = Math.max(1, nightsBetween(activeCheckIn, checkOut))
+  const followsReserved = ranges.some((range) => range.end_date === activeCheckIn)
+
+  useEffect(() => {
+    if (adjusted.checkIn !== checkIn) setCheckIn(adjusted.checkIn)
+    if (shownNights !== nights) setNights(shownNights)
+  }, [adjusted.checkIn, checkIn, shownNights, nights])
+
   const { data: quote } = useQuery({
-    queryKey: ['quote', property?.id, checkIn, checkOut, guests],
-    queryFn: () => fetchQuote(property!, checkIn, checkOut, guests),
-    enabled: Boolean(property && checkIn && checkOut),
+    queryKey: ['quote', property?.id, activeCheckIn, checkOut, guests],
+    queryFn: () => fetchQuote(property!, activeCheckIn, checkOut, guests),
+    enabled: Boolean(property && activeCheckIn && checkOut),
   })
 
   const description = useMemo(
@@ -58,11 +74,26 @@ export function PropertyDetailPage() {
   )
 
   function onSelectDate(iso: string) {
-    if (!checkIn || iso <= checkIn) {
+    if (iso < todayIso() || !isDateAvailable(iso, ranges)) return
+    if (!activeCheckIn || iso <= activeCheckIn) {
       setCheckIn(iso)
       return
     }
-    setNights(Math.max(1, nightsBetween(checkIn, iso)))
+    setCheckIn(activeCheckIn)
+    setNights(Math.max(1, nightsBetween(activeCheckIn, iso)))
+  }
+
+  function onManualCheckIn(iso: string) {
+    if (iso < todayIso()) return
+    const nextNights = checkOut > iso ? Math.max(1, nightsBetween(iso, checkOut)) : nights
+    setCheckIn(iso)
+    setNights(nextNights)
+  }
+
+  function onManualCheckOut(iso: string) {
+    if (iso <= activeCheckIn) return
+    setCheckIn(activeCheckIn)
+    setNights(Math.max(1, nightsBetween(activeCheckIn, iso)))
   }
 
   if (isLoading) {
@@ -127,6 +158,20 @@ export function PropertyDetailPage() {
               >
                 {t('plus.share')}
               </button>
+              <button
+                type="button"
+                className="text-[11px] tracking-[0.14em] text-[#d4af6a] uppercase"
+                onClick={() =>
+                  void shareSite(window.location.href).then((result) => {
+                    if (result === 'copied') {
+                      setCopied(true)
+                      window.setTimeout(() => setCopied(false), 2000)
+                    }
+                  })
+                }
+              >
+                {copied ? t('nav.copied') : t('nav.share')}
+              </button>
             </div>
             <p className="mt-4 max-w-2xl theme-muted">{description}</p>
             <p className="mt-4 text-base theme-muted">
@@ -163,24 +208,25 @@ export function PropertyDetailPage() {
           <aside className="theme-card h-fit p-5">
             <h2 className="font-display text-2xl text-[#d4af6a]">{t('property.book')}</h2>
           <div className="mt-4">
-            <AvailabilityCalendar ranges={ranges} checkIn={checkIn} checkOut={checkOut} onSelect={onSelectDate} />
+            <AvailabilityCalendar ranges={ranges} checkIn={activeCheckIn} checkOut={checkOut} onSelect={onSelectDate} />
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-3 text-base">
-            <div>
-              <p className="text-sm uppercase tracking-wider text-[#d4af6a]/80">{t('property.checkIn')}</p>
-              <p>{checkIn}</p>
-            </div>
-            <div>
-              <p className="text-sm uppercase tracking-wider text-[#d4af6a]/80">{t('property.checkOut')}</p>
-              <p>{checkOut}</p>
-            </div>
+          {adjusted.shifted || followsReserved ? (
+            <p className="mt-3 text-sm text-[#d4af6a]">
+              {t('property.skipReserved', {
+                date: formatDate(activeCheckIn, i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'),
+              })}
+            </p>
+          ) : null}
+          <div className="mt-4 grid gap-3">
+            <ManualDate label={t('property.checkIn')} value={activeCheckIn} min={todayIso()} onChange={onManualCheckIn} />
+            <ManualDate label={t('property.checkOut')} value={checkOut} min={checkOutFromNights(activeCheckIn, 1)} onChange={onManualCheckOut} />
           </div>
           <label className="mt-4 block text-sm uppercase tracking-wider text-[#d4af6a]/80">{t('property.stayNights')}</label>
           <input
             type="number"
             min={1}
             max={365}
-            value={nights}
+            value={shownNights}
             onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
             className="mt-1 w-full border border-[#d4af6a]/40 bg-transparent px-3 py-2 outline-none"
           />
@@ -198,7 +244,7 @@ export function PropertyDetailPage() {
               <PriceBreakdown quote={quote} />
               {!quote.available ? <p className="mt-2 text-red-700">{t('property.unavailable')}</p> : null}
               {!quote.available ? (
-                <WaitlistForm propertyId={property.id} checkIn={checkIn} checkOut={checkOut} guests={guests} />
+                <WaitlistForm propertyId={property.id} checkIn={activeCheckIn} checkOut={checkOut} guests={guests} />
               ) : null}
             </div>
           ) : null}
@@ -206,7 +252,7 @@ export function PropertyDetailPage() {
             className="mt-5 w-full"
             disabled={!quote?.available}
             onClick={() => {
-              const q = `checkIn=${checkIn}&checkOut=${checkOut}&nights=${nights}&guests=${guests}`
+              const q = `checkIn=${activeCheckIn}&checkOut=${checkOut}&nights=${shownNights}&guests=${guests}`
               if (!user) {
                 navigate(`/login?next=/properties/${property.slug}/book?${q}`)
                 return

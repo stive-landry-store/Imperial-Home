@@ -46,3 +46,24 @@ export function nightsBetween(checkIn: string, checkOut: string) {
 export function checkOutFromNights(checkIn: string, nights: number) {
   return addDaysIso(checkIn, Math.max(1, nights))
 }
+
+/**
+ * Reserved nights are not part of the stay. If the chosen window overlaps a
+ * reservation, counting starts the day that reservation ends. When the window
+ * ends inside a reserved block, the same number of nights starts after it.
+ */
+export function stayAfterReserved(checkIn: string, checkOut: string, ranges: OccupiedRange[]) {
+  const nights = nightsBetween(checkIn, checkOut)
+  if (nights <= 0) return { checkIn, checkOut, shifted: false }
+  const overlapping = ranges.filter((range) => rangesOverlap(checkIn, checkOut, range.start_date, range.end_date))
+  if (overlapping.length === 0) return { checkIn, checkOut, shifted: false }
+  const lastEnd = overlapping.reduce(
+    (max, range) => (toUtc(range.end_date) > toUtc(max) ? range.end_date : max),
+    overlapping[0].end_date,
+  )
+  if (toUtc(lastEnd) < toUtc(checkOut)) {
+    return { checkIn: lastEnd, checkOut, shifted: lastEnd !== checkIn }
+  }
+  const nextOut = addDaysIso(lastEnd, nights)
+  return { checkIn: lastEnd, checkOut: nextOut, shifted: true }
+}

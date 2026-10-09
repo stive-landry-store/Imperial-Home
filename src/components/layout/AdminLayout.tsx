@@ -8,6 +8,7 @@ import { VerifiedBadge } from '../ui/VerifiedBadge'
 import { ImperialLogo } from '../brand/Logo'
 import { cn } from '../../lib/cn'
 import { PreferenceBar } from './PreferenceBar'
+import { SocialLinks } from './SocialLinks'
 
 const links = [
   { to: '/admin', key: 'dashboard', end: true },
@@ -48,6 +49,17 @@ export function AdminLayout() {
 
   const navLinks = (
     <nav className="flex flex-col gap-1 px-3 pb-4">
+      <NavLink
+        to="/account/profile"
+        className={({ isActive }) =>
+          cn(
+            'inline-flex min-h-12 items-center px-3 py-3 text-base uppercase tracking-[0.12em] touch-manipulation',
+            isActive ? 'bg-white/5 text-[#e0c57a]' : 'text-[#d4af6a]/80 hover:text-[#e0c57a]',
+          )
+        }
+      >
+        {t('account.profile')}
+      </NavLink>
       {links.map((l) => (
         <NavLink
           key={l.to}
@@ -109,8 +121,12 @@ export function AdminLayout() {
             </div>
             {navLinks}
             <div className="mt-auto border-t border-[#d4af6a]/20 px-5 py-4 text-sm">
-              <p>{profile?.full_name || profile?.email}</p>
+              <div className="mb-3 flex items-center gap-3">
+                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : null}
+                <p>{profile?.full_name || profile?.email}</p>
+              </div>
               {admin?.is_verified ? <VerifiedBadge /> : null}
+              <SocialLinks className="mt-4" />
             </div>
           </aside>
         </div>
@@ -125,8 +141,12 @@ export function AdminLayout() {
         {navLinks}
         <div className="mt-auto">
           <div className="flex items-center gap-2 px-5 py-4 text-base">
+            {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-9 w-9 rounded-full object-cover" /> : null}
             <span>{profile?.full_name || profile?.email}</span>
             {admin?.is_verified ? <VerifiedBadge /> : null}
+          </div>
+          <div className="px-5 pb-3">
+            <SocialLinks />
           </div>
           <div className="px-5 pb-3">
             <PreferenceBar compact />

@@ -116,10 +116,16 @@ export function HousingSheet({
           <SectionCapsule icon={Wifi} className="mb-2">
             Informations wifi
           </SectionCapsule>
-          <div className="housing-box grid gap-4 p-4 md:grid-cols-2 md:divide-x md:divide-dotted md:divide-[#c4a35a]">
-            <DottedField label="Nom du wifi :" value={data.wifi_name} disabled={locked('wifi_name')} onChange={(v) => set('wifi_name', v)} className="md:pr-4" />
-            <DottedField label="Mot de passe :" value={data.wifi_password} disabled={locked('wifi_password')} onChange={(v) => set('wifi_password', v)} className="md:pl-4" />
-          </div>
+          {role !== 'admin' && !data.wifi_password ? (
+            <p className="housing-box px-4 py-6 text-center text-[13px] leading-relaxed text-[#8a7344]">
+              Le nom du Wi-Fi et le mot de passe s’affichent ici lorsque la réservation est validée.
+            </p>
+          ) : (
+            <div className="housing-box grid gap-4 p-4 md:grid-cols-2 md:divide-x md:divide-dotted md:divide-[#c4a35a]">
+              <DottedField label="Nom du wifi :" value={data.wifi_name} disabled={locked('wifi_name')} onChange={(v) => set('wifi_name', v)} className="md:pr-4" />
+              <DottedField label="Mot de passe :" value={data.wifi_password} disabled={locked('wifi_password')} onChange={(v) => set('wifi_password', v)} className="md:pl-4" />
+            </div>
+          )}
         </section>
 
         <section className="housing-box p-4">

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { authRedirectUrl } from '../lib/authRedirect'
 import { supabase } from '../lib/supabase'
@@ -22,6 +22,7 @@ type AuthState = {
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
   updatePassword: (password: string) => Promise<void>
+  reloadProfile: () => Promise<void>
   hasPermission: (key: PermissionKey) => boolean
   isStaff: boolean
 }
@@ -87,6 +88,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [session?.user.id])
 
+  const reloadProfile = useCallback(async () => {
+    if (!supabase || !session?.user.id) return
+    setProfile(await fetchProfile(session.user.id))
+  }, [session?.user.id])
+
   const value = useMemo<AuthState>(
     () => ({
       loading,
@@ -138,8 +144,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const { error } = await supabase.auth.updateUser({ password })
         if (error) throw error
       },
+      reloadProfile,
     }),
-    [admin, loading, permissions, profile, session],
+    [admin, loading, permissions, profile, reloadProfile, session],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

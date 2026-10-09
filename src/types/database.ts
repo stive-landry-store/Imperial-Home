@@ -110,6 +110,7 @@ export type Profile = {
   phone: string | null
   email: string | null
   avatar_url: string | null
+  cover_url: string | null
   cni: string | null
 }
 

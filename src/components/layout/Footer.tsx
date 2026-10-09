@@ -1,15 +1,19 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Phone, Shield, Sparkles, Wifi } from 'lucide-react'
 import { useSiteConfig } from '../../hooks/useSite'
+import { shareSite } from '../../lib/social'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { ImperialLogo } from '../brand/Logo'
 import { PreferenceBar } from './PreferenceBar'
+import { SocialLinks } from './SocialLinks'
 
 export function Footer() {
   const { t } = useTranslation()
   const { data: config } = useSiteConfig()
   const year = new Date().getFullYear()
+  const [copied, setCopied] = useState(false)
 
   const pillars = [
     { icon: Shield, title: t('footer.security'), text: t('footer.securityD') },
@@ -56,6 +60,24 @@ export function Footer() {
             {t('nav.login')}
           </Link>
         </div>
+      </div>
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center">
+        <p className="text-[13px] tracking-[0.2em] uppercase">{t('account.social')}</p>
+        <SocialLinks />
+        <button
+          type="button"
+          className="min-h-11 px-4 text-[13px] tracking-[0.16em] uppercase hover:text-gold-light"
+          onClick={() =>
+            void shareSite().then((result) => {
+              if (result === 'copied') {
+                setCopied(true)
+                window.setTimeout(() => setCopied(false), 2000)
+              }
+            })
+          }
+        >
+          {copied ? t('nav.copied') : t('nav.share')}
+        </button>
       </div>
       <p className="pb-4 text-center font-display text-base tracking-[0.18em]">MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !</p>
       <p className="border-t border-[#d4af6a]/15 py-4 text-center text-[12px] tracking-wider text-[#d4af6a]/50">
