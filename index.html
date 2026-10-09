@@ -9,7 +9,7 @@
           document.documentElement.classList.remove('theme-dark', 'theme-light')
           document.documentElement.classList.add(theme === 'light' ? 'theme-light' : 'theme-dark')
           var lang = localStorage.getItem('ih-lang')
-          var known = { en: 1, zh: 1, hi: 1, es: 1, fr: 1, ar: 1, bn: 1, pt: 1, ru: 1, ur: 1 }
+          var known = { en: 1, zh: 1, hi: 1, es: 1, fr: 1, de: 1, ar: 1, bn: 1, pt: 1, ru: 1, ur: 1 }
           if (lang && known[lang]) {
             document.documentElement.lang = lang
             document.documentElement.dir = lang === 'ar' || lang === 'ur' ? 'rtl' : 'ltr'

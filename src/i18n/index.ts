@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next'
 import { en } from './en'
 import { fr } from './fr'
 import ar from './packs/ar'
+import de from './packs/de'
 import bn from './packs/bn'
 import es from './packs/es'
 import hi from './packs/hi'
@@ -35,6 +36,7 @@ void i18n.use(initReactI18next).init({
     hi: { translation: hi },
     es: { translation: es },
     ar: { translation: ar },
+    de: { translation: de },
     bn: { translation: bn },
     pt: { translation: pt },
     ru: { translation: ru },

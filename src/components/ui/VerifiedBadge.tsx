@@ -2,18 +2,15 @@ import { cn } from '../../lib/cn'
 
 export function VerifiedBadge({ title, className }: { title?: string; className?: string }) {
   return (
-    <span
-      title={title ?? 'Impérial Home'}
-      className={cn(
-        'inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1d9bf0] text-white',
-        'shadow-[0_0_0_2px_rgba(255,255,255,0.9)]',
-        className,
-      )}
+    <svg
+      viewBox="0 0 24 24"
+      className={cn('h-6 w-6 shrink-0', className)}
+      role="img"
       aria-label={title ?? 'Impérial Home'}
     >
-      <svg viewBox="0 0 12 12" className="h-[62%] w-[62%]" fill="none">
-        <path d="M2.5 6.2 5 8.5 9.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </span>
+      <title>{title ?? 'Impérial Home'}</title>
+      <circle cx="12" cy="12" r="12" fill="#0866FF" />
+      <path fill="#fff" d="M10.55 17.05 5.7 12.2l2.05-2.05 2.8 2.8 5.7-5.7 2.05 2.05z" />
+    </svg>
   )
 }

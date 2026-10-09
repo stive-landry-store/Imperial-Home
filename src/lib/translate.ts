@@ -10,6 +10,7 @@ const CODES: Record<string, string> = {
   hi: 'hi',
   es: 'es',
   fr: 'fr',
+  de: 'de',
   ar: 'ar',
   bn: 'bn',
   pt: 'pt',

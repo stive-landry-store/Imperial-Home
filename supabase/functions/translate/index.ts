@@ -6,7 +6,7 @@ const CORS = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 }
 
-const ALLOWED = new Set(["en", "zh-CN", "zh", "hi", "es", "fr", "ar", "bn", "pt", "ru", "ur"])
+const ALLOWED = new Set(["en", "zh-CN", "zh", "hi", "es", "fr", "de", "ar", "bn", "pt", "ru", "ur"])
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS })
