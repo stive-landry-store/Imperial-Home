@@ -21,16 +21,7 @@ export function Header() {
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const home = location.pathname === '/'
   const profileMenu = location.pathname === '/account/profile'
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   useEffect(() => setOpen(false), [location.pathname])
 
@@ -53,12 +44,9 @@ export function Header() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-40 transition-colors',
-        scrolled || !home || open
-          ? 'border-b border-[#d4af6a]/25 text-[var(--header-fg)] backdrop-blur-md'
-          : 'bg-transparent text-[#d4af6a]',
+        'fixed inset-x-0 top-0 z-40 border-b border-black/10 text-[var(--header-fg)] backdrop-blur-md',
       )}
-      style={scrolled || !home || open ? { background: 'var(--header-solid)' } : undefined}
+      style={{ background: 'var(--header-solid)' }}
     >
       <SetupBanner />
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-6">
@@ -73,14 +61,14 @@ export function Header() {
             {open ? <X /> : <Menu />}
           </button>
           <Link to="/" className="origin-left scale-90">
-            <ImperialLogo light={theme === 'dark' || (home && !scrolled)} compact />
+            <ImperialLogo light={theme === 'dark'} compact />
           </Link>
         </div>
         <div className="flex items-center gap-1 lg:hidden">
           <NotificationBell />
           <ThemeSwitch compact />
         </div>
-        <nav className="hidden min-w-0 items-center justify-end gap-4 overflow-x-auto text-[12px] uppercase tracking-[0.16em] lg:flex">
+        <nav className="hidden min-w-0 items-center justify-end gap-4 overflow-x-auto text-sm lg:flex">
           {links.map((l) => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'text-gold-light' : 'hover:text-gold-light')}>
               {l.label}

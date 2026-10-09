@@ -7,13 +7,9 @@ import { Button } from '../../components/ui/Button'
 import { PropertyCard } from '../../components/property/PropertyCard'
 import { HousingSheet } from '../../components/housing/HousingSheet'
 import { usePublishedProperties, usePromotions, useSiteConfig } from '../../hooks/useSite'
-import { whatsappUrl } from '../../lib/whatsapp'
 import { checkOutFromNights, todayIso } from '../../lib/availability'
-import { ImperialMark } from '../../components/brand/Logo'
 import { SocialLinks } from '../../components/layout/SocialLinks'
 import { Live } from '../../components/i18n/Live'
-import { OptimizedImage } from '../../components/ui/OptimizedImage'
-import { DEFAULT_HOME_HERO_IMAGE } from '../../lib/config'
 import { demoHousingSheet } from '../../lib/housingSheet'
 
 export function HomePage() {
@@ -28,7 +24,7 @@ export function HomePage() {
   const [nights, setNights] = useState(2)
   const [guests, setGuests] = useState(2)
   const checkOut = checkOutFromNights(checkIn, nights)
-  const heroImage = config?.home_hero_image_url?.trim() || DEFAULT_HOME_HERO_IMAGE
+  const chosenHero = config?.home_hero_image_url?.trim() || ''
 
   function search(e: FormEvent) {
     e.preventDefault()
@@ -48,108 +44,85 @@ export function HomePage() {
         <title>Impérial Home | L&apos;art du soin. L&apos;esprit du détail.</title>
       </Helmet>
 
-      <section className="relative flex min-h-[100svh] items-end overflow-hidden">
-        <OptimizedImage
-          src={heroImage}
-          alt=""
-          priority
-          width={1600}
-          className="absolute inset-0 h-full w-full object-cover opacity-55"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/25" />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-28 pb-8 md:px-6 md:pt-36 md:pb-16">
-          <p className="text-[13px] tracking-[0.16em] text-[#d4af6a]">{t('hero.kicker')}</p>
-          <ImperialMark className="mt-4 h-20 w-auto md:mt-6 md:h-32" />
-          <p className="mt-4 text-[13px] text-[#d4af6a] md:mt-6">{t('hero.tagline')}</p>
-          <h1 className="mt-3 max-w-3xl font-display text-3xl leading-[1.1] text-[#f4eee3] md:mt-4 md:text-6xl">
-            {t('hero.title')}
-          </h1>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/80 md:mt-6 md:text-lg">{t('hero.subtitle')}</p>
-          <div className="mt-5 flex gap-2 md:mt-8">
-            <Button to="/properties" className="min-w-0 flex-1 px-3 text-[11px] sm:flex-none sm:px-5 sm:text-[13px]">
-              {t('hero.cta')}
-            </Button>
-            <Button
-              variant="ghost"
-              className="min-w-0 flex-1 px-3 text-[11px] sm:flex-none sm:px-5 sm:text-[13px]"
-              onClick={() => window.open(whatsappUrl(config?.whatsapp ?? '237674092263', t('contact.message')), '_blank')}
-            >
-              {t('hero.ctaSecondary')}
-            </Button>
-          </div>
-          <div className="mt-4 max-w-xl md:mt-6">
-            <p className="mb-2 text-[12px] text-[#d4af6a]">{t('nav.networks')}</p>
-            <SocialLinks prominent />
-          </div>
-
-          <form
-            onSubmit={search}
-            className="mt-5 grid grid-cols-[minmax(0,1.15fr)_3.4rem_4.8rem_auto] overflow-hidden border border-[#d4af6a]/40 bg-[#d4af6a]/10 backdrop-blur-sm md:mt-10 md:grid-cols-4"
-          >
-            <label className="min-w-0 bg-black/70 px-2 py-2 md:px-4 md:py-4">
-              <span className="block text-[10px] leading-tight tracking-[0.06em] text-[#d4af6a] uppercase md:text-[12px]">{t('property.checkIn')}</span>
+      <div className="pt-[4.5rem]">
+        <div className="relative h-56 w-full overflow-hidden bg-[#ebe6dc] md:h-80">
+          {chosenHero ? (
+            <img key={chosenHero} src={chosenHero} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+          ) : null}
+        </div>
+        <form onSubmit={search} className="theme-card relative z-10 mx-auto -mt-8 max-w-3xl rounded-2xl border border-black/10 p-4 shadow-lg">
+          <h1 className="text-xl font-semibold">{t('home.placeLine')}</h1>
+          <p className="mt-1 text-sm theme-muted">{t('hero.subtitle')}</p>
+          <div className="mt-3 grid grid-cols-[minmax(0,1.45fr)_minmax(0,0.7fr)_minmax(0,0.8fr)] gap-2">
+            <label className="min-w-0 overflow-hidden rounded-xl border border-black/10 px-2 py-2">
+              <span className="block text-[11px] theme-muted">{t('property.checkIn')}</span>
               <input
                 type="date"
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
-                className="mt-1 w-full min-w-0 border-0 bg-transparent text-[13px] text-white outline-none [color-scheme:dark] md:text-base"
+                className="mt-1 block w-full min-w-0 bg-transparent text-[13px] outline-none"
               />
             </label>
-            <label className="min-w-0 bg-black/70 px-2 py-2 md:px-4 md:py-4">
-              <span className="block text-[10px] leading-tight tracking-[0.06em] text-[#d4af6a] uppercase md:text-[12px]">{t('property.nights')}</span>
+            <label className="min-w-0 rounded-xl border border-black/10 px-2 py-2">
+              <span className="block text-[11px] theme-muted">{t('property.nights')}</span>
               <input
                 type="number"
                 min={1}
                 max={365}
                 value={nights}
                 onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
-                className="mt-1 w-full min-w-0 border-0 bg-transparent text-[13px] text-white outline-none md:text-base"
+                className="mt-1 w-full bg-transparent text-sm outline-none"
               />
-              <span className="mt-1 hidden text-[11px] text-white/50 md:block">
-                {t('property.checkOut')} : {checkOut}
-              </span>
             </label>
-            <label className="min-w-0 bg-black/70 px-2 py-2 md:px-4 md:py-4">
-              <span className="block text-[9px] leading-tight tracking-normal text-[#d4af6a] uppercase md:text-[12px] md:tracking-[0.06em]">{t('property.guests')}</span>
+            <label className="min-w-0 rounded-xl border border-black/10 px-2 py-2">
+              <span className="block text-[11px] theme-muted">{t('property.guests')}</span>
               <input
                 type="number"
                 min={1}
                 value={guests}
                 onChange={(e) => setGuests(Number(e.target.value))}
-                className="mt-1 w-full min-w-0 border-0 bg-transparent text-[13px] text-white outline-none md:text-base"
+                className="mt-1 w-full bg-transparent text-sm outline-none"
               />
             </label>
-            <Button type="submit" className="rounded-none px-3 text-[11px] md:px-5 md:text-[13px]">
-              {t('nav.book')}
-            </Button>
-          </form>
-        </div>
-      </section>
+          </div>
+          <p className="mt-2 text-xs theme-muted">
+            {t('property.checkOut')} : {checkOut}
+          </p>
+          <Button type="submit" className="mt-3 w-full">
+            {t('nav.search')}
+          </Button>
+          <div className="mt-3">
+            <SocialLinks />
+          </div>
+        </form>
+      </div>
 
-      <section className="theme-alt border-y border-[#d4af6a]/20">
-        <div className="mx-auto grid max-w-6xl grid-cols-4 md:px-6 md:divide-x md:divide-[#d4af6a]/25">
+      <section className="theme-alt border-y border-black/10">
+        <div className="mx-auto grid max-w-6xl grid-cols-4 md:px-6">
           {pillars.map((p) => (
-            <div key={p.title} className="px-1 py-4 text-center md:px-4 md:py-10">
-              <p.icon className="mx-auto mb-2 h-5 w-5 text-[#d4af6a] md:h-6 md:w-6" strokeWidth={1.4} />
-              <p className="text-[10px] leading-tight text-[#d4af6a] uppercase md:text-[13px] md:tracking-[0.14em]">{p.title}</p>
+            <div key={p.title} className="px-1 py-4 text-center md:px-4 md:py-8">
+              <p.icon className="mx-auto mb-2 h-5 w-5 md:h-6 md:w-6" strokeWidth={1.75} />
+              <p className="text-[11px] leading-tight font-medium md:text-sm">{p.title}</p>
               <p className="mt-2 hidden text-sm leading-relaxed theme-muted md:block">{p.text}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="theme-page py-20">
+      <section className="theme-page py-10">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('home.featured')}</p>
-          <div className="mt-3 flex items-end justify-between gap-4">
-            <h2 className="max-w-xl font-display text-3xl tracking-[0.04em] md:text-5xl">{t('home.featuredLead')}</h2>
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-xl font-semibold">{t('home.featured')}</h2>
             <Button to="/properties" variant="ghost" className="hidden md:inline-flex">
               {t('home.viewAll')}
             </Button>
           </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <p className="mt-1 text-sm theme-muted">{t('home.featuredLead')}</p>
+          <div className="mt-4 flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
             {featured.map((p) => (
-              <PropertyCard key={p.id} property={p} promotions={promotions} lang={i18n.language} />
+              <div key={p.id} className="w-[78%] shrink-0 md:w-auto">
+                <PropertyCard property={p} promotions={promotions} lang={i18n.language} />
+              </div>
             ))}
           </div>
           <div className="mt-10 md:hidden">
@@ -161,34 +134,26 @@ export function HomePage() {
       </section>
 
       {offer ? (
-        <section className="relative overflow-hidden py-20">
-          <img
-            src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=2000&q=80"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-black/70" />
-          <div className="relative mx-auto max-w-3xl px-6 text-center">
-            <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('home.promoTitle')}</p>
-            <h2 className="mt-4 font-display text-4xl text-[#f4eee3] md:text-5xl">
+        <section className="theme-alt py-8">
+          <div className="relative mx-auto max-w-3xl px-4 text-center md:px-6">
+            <h2 className="text-xl font-semibold">
               <Live text={offer.name} />
             </h2>
-            <p className="mt-5 text-base leading-relaxed text-[#f4eee3]/90">
+            <p className="mt-2 text-sm leading-relaxed theme-muted">
               <Live text={(i18n.language.startsWith('fr') ? offer.description_fr : offer.description_en) || ''} />
             </p>
-            <Button className="mt-8" to="/properties">
+            <Button className="mt-4" to="/properties">
               {t('home.viewAll')}
             </Button>
           </div>
         </section>
       ) : null}
 
-      <section className="theme-page overflow-hidden py-20">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 md:grid-cols-2 md:px-6">
+      <section className="theme-page overflow-hidden py-10">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 md:grid-cols-2 md:px-6">
           <div>
-            <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('home.ficheKicker')}</p>
-            <h2 className="mt-4 font-display text-4xl md:text-5xl">{t('home.ficheTitle')}</h2>
-            <p className="mt-5 text-base leading-relaxed theme-muted">{t('home.ficheBody')}</p>
+            <h2 className="text-2xl font-semibold">{t('home.ficheTitle')}</h2>
+            <p className="mt-3 text-base leading-relaxed theme-muted">{t('home.ficheBody')}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button to="/fiche">{t('home.ficheCta')}</Button>
               <Button to="/properties" variant="ghost">
@@ -212,20 +177,19 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="theme-alt border-y border-[#d4af6a]/20 py-20">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('hero.tagline')}</p>
-          <h2 className="mt-4 font-display text-3xl md:text-5xl">{t('home.ritualTitle')}</h2>
-          <p className="mt-6 text-base leading-relaxed theme-muted">{t('home.ritualBody')}</p>
+      <section className="theme-alt border-y border-black/10 py-10">
+        <div className="mx-auto max-w-3xl px-4 text-center md:px-6">
+          <p className="text-sm font-medium">{t('hero.tagline')}</p>
+          <h2 className="mt-2 text-2xl font-semibold">{t('home.ritualTitle')}</h2>
+          <p className="mt-3 text-base leading-relaxed theme-muted">{t('home.ritualBody')}</p>
         </div>
       </section>
 
-      <section className="theme-page py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2 md:px-6">
+      <section className="theme-page py-10">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-2 md:px-6">
           <div>
-            <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('home.locationTitle')}</p>
-            <h2 className="mt-3 font-display text-4xl">{config?.city}</h2>
-            <p className="mt-4 max-w-md theme-muted">{t('home.locationBody')}</p>
+            <h2 className="text-2xl font-semibold">{t('home.placeLine')}</h2>
+            <p className="mt-3 max-w-md theme-muted">{t('home.locationBody')}</p>
             <p className="mt-6 text-base text-[#d4af6a]">
               {config?.phone}
               <br />
@@ -237,8 +201,8 @@ export function HomePage() {
           </div>
           <iframe
             title="Douala"
-            className="h-80 w-full border border-[#d4af6a]/30 grayscale"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=9.65%2C4.00%2C9.82%2C4.10&layer=mapnik&marker=4.0511%2C9.7679"
+            className="h-72 w-full rounded-2xl border border-black/10"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=9.73%2C4.05%2C9.78%2C4.09&layer=mapnik&marker=4.0689%2C9.7568"
           />
         </div>
       </section>

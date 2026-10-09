@@ -177,8 +177,10 @@ export function PropertyDetailPage() {
             </div>
             <p className="mt-4 max-w-2xl theme-muted">{description}</p>
             <p className="mt-4 text-base theme-muted">
-              {property.capacity} {t('property.guests')} · {property.bedrooms} bd · {property.bathrooms} ba ·{' '}
-              {property.living_areas} living
+              {property.capacity} {t('properties.guests')} · {property.bedrooms}{' '}
+              {t(property.bedrooms > 1 ? 'properties.beds' : 'properties.bed')} · {property.bathrooms}{' '}
+              {t(property.bathrooms > 1 ? 'properties.baths' : 'properties.bath')} · {property.living_areas}{' '}
+              {t(property.living_areas > 1 ? 'properties.livings' : 'properties.living')}
             </p>
             <h2 className="mt-10 font-display text-3xl">{t('property.amenities')}</h2>
             <ul className="mt-3 grid grid-cols-2 gap-2 text-base theme-muted">

@@ -20,22 +20,22 @@ export function ContactPage() {
           <title>{t('contact.title')} | Impérial Home</title>
         </Helmet>
         <ImperialLogo light={theme === 'dark'} />
-        <h1 className="mt-10 font-display text-5xl tracking-[0.04em]">{t('contact.title')}</h1>
-        <p className="mt-4 max-w-xl text-base theme-muted">{t('contact.lead')}</p>
-        <div className="theme-card mt-10 space-y-6 p-8">
+        <h1 className="mt-8 text-2xl font-semibold">{t('contact.title')}</h1>
+        <p className="mt-2 max-w-xl text-sm theme-muted">{t('contact.lead')}</p>
+        <div className="theme-card mt-8 space-y-6 rounded-2xl p-6">
           <div>
-            <p className="text-[13px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('contact.phone')}</p>
-            <p className="mt-2 font-display text-2xl">{config?.phone}</p>
+            <p className="text-sm theme-muted">{t('contact.phone')}</p>
+            <p className="mt-1 text-xl font-semibold">{config?.phone}</p>
           </div>
           <div>
-            <p className="text-[13px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('contact.email')}</p>
+            <p className="text-sm theme-muted">{t('contact.email')}</p>
             <a className="mt-2 block text-lg hover:text-[#e0c57a]" href={`mailto:${config?.email}`}>
               {config?.email}
             </a>
           </div>
           <p className="text-base theme-muted">{config?.city}</p>
           <div>
-            <p className="text-[13px] tracking-[0.18em] text-[#d4af6a] uppercase">{t('account.social')}</p>
+            <p className="text-sm theme-muted">{t('account.social')}</p>
             <SocialLinks className="mt-3" />
           </div>
           <Button onClick={() => window.open(wa, '_blank')}>{t('hero.ctaSecondary')}</Button>

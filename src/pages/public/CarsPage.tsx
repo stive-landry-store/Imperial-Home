@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { Heart } from 'lucide-react'
 import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
+import { favoriteCarIds, toggleCarFavorite } from '../../lib/savedStays'
 import { fetchPublishedVehicles } from '../../lib/vehicles'
 import { formatXaf, localized } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
@@ -11,6 +14,13 @@ import { Live } from '../../components/i18n/Live'
 export function CarsPage() {
   const { t, i18n } = useTranslation()
   const { data: vehicles = [], isLoading } = useQuery({ queryKey: ['vehicles'], queryFn: fetchPublishedVehicles })
+  const [savedCars, setSavedCars] = useState<string[]>([])
+  useEffect(() => {
+    const sync = () => setSavedCars(favoriteCarIds())
+    sync()
+    window.addEventListener('ih-saved-stays', sync)
+    return () => window.removeEventListener('ih-saved-stays', sync)
+  }, [])
 
   return (
     <div className="theme-page min-h-svh">
@@ -18,9 +28,8 @@ export function CarsPage() {
         <Helmet>
           <title>{t('cars.title')} | Impérial Home</title>
         </Helmet>
-        <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('cars.kicker')}</p>
-        <h1 className="mt-3 font-display text-5xl tracking-[0.04em]">{t('cars.title')}</h1>
-        <p className="mt-4 max-w-2xl text-base theme-muted">{t('cars.lead')}</p>
+        <h1 className="text-2xl font-semibold">{t('cars.title')}</h1>
+        <p className="mt-2 max-w-2xl text-sm theme-muted">{t('cars.lead')}</p>
         <p className="mt-3 text-sm text-[#d4af6a]">{t('cars.promoHint')}</p>
 
         {isLoading ? <p className="mt-10 theme-muted">{t('common.loading')}</p> : null}
@@ -29,11 +38,19 @@ export function CarsPage() {
           {vehicles.map((v) => {
             const desc = localized(v.description_en, v.description_fr, i18n.language)
             return (
-              <article key={v.id} className="overflow-hidden border border-[#d4af6a]/30 bg-black/40">
+              <article key={v.id} className="theme-card relative overflow-hidden rounded-2xl border border-black/10">
+                <button
+                  type="button"
+                  className="absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white text-neutral-700 shadow"
+                  aria-label={t('nav.favorites')}
+                  onClick={() => toggleCarFavorite(v.id)}
+                >
+                  <Heart className={savedCars.includes(v.id) ? 'h-5 w-5 fill-red-500 text-red-500' : 'h-5 w-5'} />
+                </button>
                 <VehicleGallery media={v.vehicle_media ?? []} title={`${v.brand} ${v.model}`} />
                 <div className="p-5">
-                  <p className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{v.brand}</p>
-                  <h2 className="mt-1 font-display text-2xl">{v.model}</h2>
+                  <p className="text-sm theme-muted">{v.brand}</p>
+                  <h2 className="text-lg font-semibold">{v.model}</h2>
                   <p className="mt-3 text-sm theme-muted line-clamp-3">
                     <Live text={desc} />
                   </p>
@@ -50,7 +67,7 @@ export function CarsPage() {
                   <Button to={`/cars/${v.slug}`} className="mt-5 w-full">
                     {t('cars.bookThis')}
                   </Button>
-                  <Link to="/properties" className="mt-3 block text-center text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
+                  <Link to="/properties" className="mt-3 block text-center text-sm text-[#c4a35a]">
                     {t('cars.bookWithStay')}
                   </Link>
                 </div>

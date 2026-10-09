@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Promotion, Property } from '../../types/database'
 import { Live, useLiveTranslation } from '../i18n/Live'
+import { IMPERIAL_HOME } from '../../lib/house'
 import { coverImage, formatXaf, localized } from '../../lib/format'
 import { pickBestPromotion, quoteStay } from '../../lib/pricing'
 import { Badge } from '../ui/Badge'
@@ -32,53 +33,45 @@ export function PropertyCard({
     .slice(0, 3)
 
   return (
-    <article className="group">
-    <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="block">
-      <div className="relative aspect-[3/4] overflow-hidden bg-black">
-        {image ? (
-          <OptimizedImage
-            src={image}
-            alt={property.name}
-            width={800}
-            className="h-full w-full object-cover transition duration-[1.2s] ease-out group-hover:scale-105"
-          />
-        ) : null}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-        {promo ? (
-          <div className="absolute top-4 left-4">
-            <Badge variant="dark">{promoLabel}</Badge>
-          </div>
-        ) : null}
-        <div className="absolute inset-x-0 bottom-0 p-5 text-[#f4eee3]">
-          <p className="text-[12px] tracking-[0.22em] text-[#d4af6a] uppercase">
-            {t('properties.houseLabel')}
-          </p>
-          <p className="mt-1 font-display text-2xl tracking-[0.06em]">
+    <article className="theme-card relative overflow-hidden rounded-2xl border border-black/10">
+      <StayActions propertyId={property.id} heart />
+      <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="block">
+        <div className="aspect-[16/10] overflow-hidden bg-black/5">
+          {image ? (
+            <OptimizedImage src={image} alt={property.name} width={800} className="h-full w-full object-cover" />
+          ) : null}
+        </div>
+        <div className="p-3">
+          {promo ? <Badge variant="dark">{promoLabel}</Badge> : null}
+          <p className="text-base font-semibold">
             <Live text={property.name} />
           </p>
-          <p className="mt-2 text-sm text-white/70">
-            {property.capacity} {t('properties.guests')} · {property.bedrooms} bd · {property.bathrooms} ba
+          <p className="mt-0.5 text-sm theme-muted">
+            {IMPERIAL_HOME.neighborhood}, {IMPERIAL_HOME.city}
+          </p>
+          <p className="mt-1 text-sm theme-muted">
+            {property.capacity} {t('properties.guests')} · {property.bedrooms}{' '}
+            {t(property.bedrooms > 1 ? 'properties.beds' : 'properties.bed')} · {property.bathrooms}{' '}
+            {t(property.bathrooms > 1 ? 'properties.baths' : 'properties.bath')}
           </p>
           {amenityNames.length ? (
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-1 text-sm theme-muted">
               <Live text={amenityNames.join(' · ')} />
             </p>
           ) : null}
-          <p className="mt-3 text-base">
+          <p className="mt-2 text-sm font-semibold">
             {quoted.discount_xaf > 0 ? (
               <>
-                <span className="mr-2 text-white/40 line-through">{formatXaf(quoted.base_amount_xaf)}</span>
-                <span className="text-[#d4af6a]">{formatXaf(quoted.total_amount_xaf)}</span>
+                <span className="mr-2 font-normal line-through opacity-50">{formatXaf(quoted.base_amount_xaf)}</span>
+                {formatXaf(quoted.total_amount_xaf)}
               </>
             ) : (
-              <span className="text-[#d4af6a]">{formatXaf(property.nightly_rate_xaf)}</span>
+              formatXaf(property.nightly_rate_xaf)
             )}
-            <span className="text-white/50">{t('properties.perNight')}</span>
+            <span className="font-normal theme-muted">{t('properties.perNight')}</span>
           </p>
         </div>
-      </div>
-    </Link>
-    <StayActions propertyId={property.id} className="mt-3" />
+      </Link>
     </article>
   )
 }

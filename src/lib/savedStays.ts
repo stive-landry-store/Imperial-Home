@@ -1,4 +1,5 @@
 const FAVORITES = 'ih-favorites'
+const CAR_FAVORITES = 'ih-favorite-cars'
 const COMPARE = 'ih-compare'
 
 function read(key: string) {
@@ -21,6 +22,15 @@ export function favoriteIds() {
 
 export function compareIds() {
   return read(COMPARE)
+}
+
+export function favoriteCarIds() {
+  return read(CAR_FAVORITES)
+}
+
+export function toggleCarFavorite(id: string) {
+  const current = read(CAR_FAVORITES)
+  write(CAR_FAVORITES, current.includes(id) ? current.filter((item) => item !== id) : [...current, id])
 }
 
 export function toggleFavorite(id: string) {

@@ -21,7 +21,7 @@ export function LanguageDock() {
       className="fixed z-50"
       style={{
         left: 'max(0.75rem, env(safe-area-inset-left))',
-        bottom: 'max(0.75rem, env(safe-area-inset-bottom))',
+        bottom: 'max(5.25rem, calc(env(safe-area-inset-bottom) + 4.5rem))',
       }}
     >
       {open ? (

@@ -1,10 +1,10 @@
 /** Impérial Home — une seule maison, plusieurs appartements thématiques. */
 export const IMPERIAL_HOME = {
   name: 'Impérial Home',
-  address: 'Impérial Home, Bonapriso',
+  address: 'Impérial Home, Carrefour Conquête',
   city: 'Douala',
-  neighborhood: 'Bonapriso',
+  neighborhood: 'Carrefour Conquête',
   country: 'Cameroon',
-  latitude: 4.0128,
-  longitude: 9.7324,
+  latitude: 4.0689,
+  longitude: 9.7568,
 } as const

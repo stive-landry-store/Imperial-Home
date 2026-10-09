@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Heart } from 'lucide-react'
 import { compareIds, favoriteIds, toggleCompare, toggleFavorite } from '../../lib/savedStays'
 import { syncFavorite } from '../../lib/guest'
 import { useAuth } from '../../hooks/useAuth'
 import { cn } from '../../lib/cn'
 
-export function StayActions({ propertyId, className }: { propertyId: string; className?: string }) {
+export function StayActions({
+  propertyId,
+  className,
+  heart = false,
+}: {
+  propertyId: string
+  className?: string
+  heart?: boolean
+}) {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [saved, setSaved] = useState(false)
@@ -24,8 +33,31 @@ export function StayActions({ propertyId, className }: { propertyId: string; cla
     return () => window.removeEventListener('ih-saved-stays', sync)
   }, [propertyId])
 
+  if (heart) {
+    return (
+      <button
+        type="button"
+        className={cn(
+          'absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow',
+          saved ? 'text-red-500' : 'text-neutral-700',
+          className,
+        )}
+        aria-label={saved ? t('plus.saved') : t('plus.favorite')}
+        onClick={(event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          const next = !favoriteIds().includes(propertyId)
+          toggleFavorite(propertyId)
+          if (user) void syncFavorite(user.id, propertyId, next)
+        }}
+      >
+        <Heart className={cn('h-5 w-5', saved && 'fill-current')} />
+      </button>
+    )
+  }
+
   return (
-    <div className={cn('flex flex-wrap gap-2 text-[11px] tracking-[0.14em] uppercase', className)}>
+    <div className={cn('flex flex-wrap gap-2 text-sm', className)}>
       <button
         type="button"
         className="border border-[#d4af6a]/50 px-3 py-2 text-[#d4af6a]"

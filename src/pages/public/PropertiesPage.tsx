@@ -56,11 +56,10 @@ export function PropertiesPage() {
         </Helmet>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('hero.tagline')}</p>
-            <h1 className="mt-3 font-display text-5xl tracking-[0.04em]">{t('properties.title')}</h1>
-            <p className="mt-4 max-w-xl text-base theme-muted">{t('properties.lead')}</p>
+            <h1 className="text-2xl font-semibold">{t('properties.title')}</h1>
+            <p className="mt-2 max-w-xl text-sm theme-muted">{t('properties.lead')}</p>
           </div>
-          <Link to="/properties/map" className="text-sm tracking-[0.16em] text-[#d4af6a] uppercase">
+          <Link to="/properties/map" className="text-sm font-medium text-[#c4a35a]">
             {t('plus.openMap')}
           </Link>
         </div>
@@ -72,8 +71,8 @@ export function PropertiesPage() {
           </p>
         ) : null}
 
-        <form className="mt-8 grid gap-3 border border-[#d4af6a]/25 p-4 md:grid-cols-4">
-          <label className="text-xs uppercase tracking-wider text-[#d4af6a]">
+        <form className="theme-card mt-6 grid gap-3 rounded-2xl border border-black/10 p-4 md:grid-cols-4">
+          <label className="text-sm theme-muted">
             {t('plus.neighborhood')}
             <select
               className="mt-1 w-full border border-line bg-transparent px-2 py-2 text-sm text-[var(--surface-fg)]"
@@ -88,7 +87,7 @@ export function PropertiesPage() {
               ))}
             </select>
           </label>
-          <label className="text-xs uppercase tracking-wider text-[#d4af6a]">
+          <label className="text-sm theme-muted">
             {t('plus.maxPrice')}
             <input
               type="number"
@@ -98,7 +97,7 @@ export function PropertiesPage() {
               onChange={(e) => setFilter('max', e.target.value)}
             />
           </label>
-          <label className="text-xs uppercase tracking-wider text-[#d4af6a]">
+          <label className="text-sm theme-muted">
             {t('plus.bedrooms')}
             <input
               type="number"
@@ -126,9 +125,9 @@ export function PropertiesPage() {
 
         {isLoading ? (
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Skeleton className="aspect-[3/4]" />
-            <Skeleton className="aspect-[3/4]" />
-            <Skeleton className="aspect-[3/4]" />
+            <Skeleton className="aspect-[16/10]" />
+            <Skeleton className="aspect-[16/10]" />
+            <Skeleton className="aspect-[16/10]" />
           </div>
         ) : null}
         {!isLoading && visible.length === 0 ? <p className="mt-10">{t('plus.noMatch')}</p> : null}

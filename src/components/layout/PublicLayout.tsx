@@ -4,10 +4,11 @@ import { Footer } from './Footer'
 import { WhatsAppFab } from './WhatsAppFab'
 import { ImperialAssistantFab } from '../assistant/ImperialAssistantFab'
 import { AssistantNotice } from './AssistantNotice'
+import { AppTabBar } from './AppTabBar'
 
 export function PublicLayout() {
   return (
-    <div className="theme-page flex min-h-svh flex-col">
+    <div className="theme-page flex min-h-svh flex-col pb-20">
       <Header />
       <main className="w-full min-w-0 max-w-full flex-1 overflow-x-clip pb-24 md:pb-8">
         <Outlet />
@@ -16,6 +17,7 @@ export function PublicLayout() {
       <AssistantNotice />
       <ImperialAssistantFab />
       <WhatsAppFab />
+      <AppTabBar />
     </div>
   )
 }

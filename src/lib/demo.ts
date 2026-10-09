@@ -52,8 +52,8 @@ function roomBase(id: string, slug: string, name: string, rate: number, capacity
     check_in_time: '14:00:00',
     check_out_time: '11:00:00',
     nightly_rate_xaf: rate,
-    recommendations_en: 'Bonapriso waterfront restaurants are a short drive away.',
-    recommendations_fr: 'Les restaurants du bord de l’eau à Bonapriso sont à quelques minutes.',
+    recommendations_en: 'Shops and the main road are a few minutes from Carrefour Conquête.',
+    recommendations_fr: 'Les boutiques et la route principale sont à quelques minutes du Carrefour Conquête.',
     status: 'published',
   }
 }

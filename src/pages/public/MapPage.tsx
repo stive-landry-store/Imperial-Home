@@ -15,10 +15,9 @@ export function MapPage() {
           <title>{t('nav.map')} | Impérial Home</title>
           <meta name="description" content={t('plus.mapLead')} />
         </Helmet>
-        <p className="text-[13px] tracking-[0.32em] text-[#d4af6a] uppercase">{t('hero.kicker')}</p>
-        <h1 className="mt-3 font-display text-5xl">{t('nav.map')}</h1>
-        <p className="mt-4 max-w-xl theme-muted">{t('plus.mapLead')}</p>
-        <div className="mt-8 overflow-hidden border border-[#d4af6a]/30">
+        <h1 className="text-2xl font-semibold">{t('nav.map')}</h1>
+        <p className="mt-2 max-w-xl text-sm theme-muted">{t('plus.mapLead')}</p>
+        <div className="mt-6 overflow-hidden rounded-2xl border border-black/10">
           {isLoading ? <Skeleton className="h-[28rem]" /> : <PropertyMap properties={properties} />}
         </div>
       </div>

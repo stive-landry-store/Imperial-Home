@@ -136,7 +136,7 @@ export function ImperialAssistantFab() {
         type="button"
         onClick={() => setOpen(true)}
         className="fixed right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af6a]/50 bg-black text-[#d4af6a] shadow-lg touch-manipulation md:right-6"
-        style={{ bottom: 'max(5.25rem, calc(env(safe-area-inset-bottom) + 4.25rem))' }}
+        style={{ bottom: 'max(9.25rem, calc(env(safe-area-inset-bottom) + 8.5rem))' }}
         aria-label={t('assistant.open')}
       >
         <Bot className="h-7 w-7" />

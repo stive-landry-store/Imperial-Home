@@ -3,6 +3,7 @@ import { PublicLayout } from '../components/layout/PublicLayout'
 import { CustomerLayout } from '../components/layout/CustomerLayout'
 import { AdminLayout } from '../components/layout/AdminLayout'
 import { HomePage } from '../pages/public/HomePage'
+import { FavoritesPage } from '../pages/public/FavoritesPage'
 import { PropertiesPage } from '../pages/public/PropertiesPage'
 import { MapPage } from '../pages/public/MapPage'
 import { ComparePage } from '../pages/public/ComparePage'
@@ -50,6 +51,7 @@ export function AppRouter() {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/favoris" element={<FavoritesPage />} />
           <Route path="/properties" element={<PropertiesPage />} />
           <Route path="/properties/map" element={<MapPage />} />
           <Route path="/compare" element={<ComparePage />} />
