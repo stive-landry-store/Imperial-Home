@@ -1,4 +1,5 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { useLayoutEffect } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import { PublicLayout } from '../components/layout/PublicLayout'
 import { CustomerLayout } from '../components/layout/CustomerLayout'
 import { AdminLayout } from '../components/layout/AdminLayout'
@@ -45,9 +46,19 @@ function routerBasename() {
   return base.replace(/\/$/, '')
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  const navigationType = useNavigationType()
+  useLayoutEffect(() => {
+    if (navigationType !== 'POP') window.scrollTo(0, 0)
+  }, [pathname, navigationType])
+  return null
+}
+
 export function AppRouter() {
   return (
     <BrowserRouter basename={routerBasename()}>
+      <ScrollToTop />
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />

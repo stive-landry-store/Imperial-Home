@@ -174,13 +174,6 @@ export function ProfilePage() {
       </section>
 
       <section className="mx-3 mt-3 overflow-hidden rounded-xl bg-[#ffffff]">
-        <div className="flex min-h-[52px] items-center justify-between gap-3 border-b border-black/[0.06] px-4">
-          <span className="text-[15px] text-[#1b8a4a]">{t('account.openNow')}</span>
-          <span className="inline-flex items-center gap-1 text-[14px] text-[#667781]">
-            {t('account.openAlways')}
-            <ChevronRight className="h-4 w-4 rtl:scale-x-[-1]" />
-          </span>
-        </div>
         <p className="flex min-h-[52px] items-center border-b border-black/[0.06] px-4 text-[15px]">{t('account.houseCategory')}</p>
         <p className="flex min-h-[52px] items-center gap-2 border-b border-black/[0.06] px-4 text-[15px]">
           <MapPin className="h-4 w-4 shrink-0 text-[#c4a35a]" />

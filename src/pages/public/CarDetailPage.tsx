@@ -116,14 +116,14 @@ export function CarDetailPage() {
           <Link to="/cars" className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">
             {t('cars.back')}
           </Link>
-          <p className="mt-4 text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{vehicle.brand}</p>
+          <div className="mt-4 overflow-hidden border border-[#d4af6a]/30">
+            <VehicleGallery media={vehicle.vehicle_media ?? []} title={title} />
+          </div>
+          <p className="mt-6 text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{vehicle.brand}</p>
           <h1 className="mt-1 font-display text-5xl">{vehicle.model}</h1>
           <p className="mt-4 max-w-xl theme-muted">
             <Live text={desc} />
           </p>
-          <div className="mt-6 overflow-hidden border border-[#d4af6a]/30">
-            <VehicleGallery media={vehicle.vehicle_media ?? []} title={title} />
-          </div>
         </div>
 
         <aside className="h-fit min-w-0 max-w-full border border-[#d4af6a]/40 bg-black/40 p-4 sm:p-5">

@@ -9,7 +9,6 @@ import { SetupBanner } from './SetupBanner'
 import { ImperialLogo } from '../brand/Logo'
 import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
-import { ProfileMenu } from '../account/ProfileMenu'
 import { SettingsMenu } from './SettingsMenu'
 
 export function Header() {
@@ -18,7 +17,6 @@ export function Header() {
   const { isStaff, signOut, user } = useAuth()
   const location = useLocation()
   const [open, setOpen] = useState(false)
-  const profileMenu = location.pathname === '/account/profile'
 
   useEffect(() => setOpen(false), [location.pathname])
 
@@ -92,7 +90,7 @@ export function Header() {
           <ThemeSwitch />
         </div>
       </div>
-      {profileMenu ? <ProfileMenu open={open} onClose={() => setOpen(false)} /> : <SettingsMenu open={open} onClose={() => setOpen(false)} />}
+      <SettingsMenu open={open} onClose={() => setOpen(false)} />
     </header>
   )
 }
