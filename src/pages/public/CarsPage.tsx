@@ -10,6 +10,7 @@ import { fetchPublishedVehicles } from '../../lib/vehicles'
 import { formatXaf, localized } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { Live } from '../../components/i18n/Live'
+import { Loader } from '../../components/ui/Loader'
 
 export function CarsPage() {
   const { t, i18n } = useTranslation()
@@ -32,7 +33,7 @@ export function CarsPage() {
         <p className="mt-2 max-w-2xl text-sm theme-muted">{t('cars.lead')}</p>
         <p className="mt-3 text-sm text-[#d4af6a]">{t('cars.promoHint')}</p>
 
-        {isLoading ? <p className="mt-10 theme-muted">{t('common.loading')}</p> : null}
+        {isLoading ? <Loader size="md" /> : null}
 
         <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {vehicles.map((v) => {

@@ -6,6 +6,7 @@ import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
+import { Loader } from '../../components/ui/Loader'
 import {
   decisionErrorMessage,
   isPendingReservation,
@@ -27,7 +28,7 @@ export function AdminReservationDetailPage() {
     },
   })
 
-  if (!r) return <p className="p-10">{t('common.loading')}</p>
+  if (!r) return <Loader size="lg" fill />
   const canDecide = isPendingReservation(r.status)
 
   return (

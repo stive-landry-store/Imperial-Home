@@ -17,6 +17,7 @@ import {
   uploadAndAddPropertyImage,
 } from '../../lib/propertyImages'
 import type { PropertyImage, PropertyStatus } from '../../types/database'
+import { Loader } from '../../components/ui/Loader'
 
 type RoomForm = {
 
@@ -929,7 +930,7 @@ export function PropertyFormPage() {
 
           <Button type="submit" disabled={saving}>
 
-            {saving ? t('common.loading') : t('common.save')}
+            {saving ? <Loader size="xs" /> : t('common.save')}
 
           </Button>
 

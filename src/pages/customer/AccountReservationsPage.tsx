@@ -8,6 +8,7 @@ import { formatDate, formatXaf } from '../../lib/format'
 import { Badge } from '../../components/ui/Badge'
 import { useAuth } from '../../hooks/useAuth'
 import { fetchMyVehicleRentals, rentalVehicleName } from '../../lib/vehicles'
+import { Loader } from '../../components/ui/Loader'
 
 function carStatusLabel(status: string, t: (key: string) => string) {
   if (status === 'requested') return t('cars.pending')
@@ -39,7 +40,7 @@ export function AccountReservationsPage() {
         <title>{t('account.title')} | Imperial Home</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('account.title')}</h1>
-      {isLoading ? <p className="mt-6 theme-muted">{t('common.loading')}</p> : null}
+      {isLoading ? <Loader size="md" /> : null}
       {empty ? <p className="mt-6 theme-muted">{t('account.empty')}</p> : null}
       <ul className="mt-8 space-y-4">
         {rows.map((row) =>

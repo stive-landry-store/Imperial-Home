@@ -11,6 +11,7 @@ import { Input, Label } from '../../components/ui/Field'
 import { useAuth } from '../../hooks/useAuth'
 import { addDaysIso, nightsBetween, todayIso } from '../../lib/availability'
 import { formatDate, formatXaf, localized } from '../../lib/format'
+import { Loader } from '../../components/ui/Loader'
 import {
   bookVehicle,
   fetchVehicleBySlug,
@@ -89,7 +90,11 @@ export function CarDetailPage() {
   })
 
   if (isLoading) {
-    return <p className="theme-page px-6 pt-36 theme-muted">{t('common.loading')}</p>
+    return (
+      <div className="theme-page pt-24">
+        <Loader size="lg" fill />
+      </div>
+    )
   }
 
   if (!vehicle || vehicle.status === 'archived') {
@@ -227,12 +232,12 @@ export function CarDetailPage() {
                   </div>
                 </dl>
               ) : null}
-              {checking ? <p className="text-xs theme-muted">{t('common.loading')}</p> : null}
+              {checking ? <Loader size="sm" className="!py-2" /> : null}
               {available === false ? <p className="text-sm text-red-300">{t('cars.unavailable')}</p> : null}
               {error ? <p className="text-sm text-red-300">{error}</p> : null}
               {user ? (
                 <Button type="submit" className="w-full" disabled={book.isPending || available === false}>
-                  {book.isPending ? t('common.loading') : t('cars.bookThis')}
+                  {book.isPending ? <Loader size="xs" /> : t('cars.bookThis')}
                 </Button>
               ) : (
                 <Button to={loginNext} className="w-full">

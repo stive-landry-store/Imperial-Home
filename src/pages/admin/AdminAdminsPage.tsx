@@ -7,6 +7,7 @@ import { VerifiedBadge } from '../../components/ui/VerifiedBadge'
 import { Button } from '../../components/ui/Button'
 import { Input, Label } from '../../components/ui/Field'
 import { useAuth } from '../../hooks/useAuth'
+import { Loader } from '../../components/ui/Loader'
 import {
   deactivateAdmin,
   promoteUserToAdmin,
@@ -166,7 +167,7 @@ export function AdminAdminsPage() {
 
       <ul className="surface-light mt-8 divide-y divide-line border border-line">
         {isLoading ? (
-          <li className="px-4 py-6 text-muted">{t('common.loading')}</li>
+          <li className="px-4"><Loader size="sm" /></li>
         ) : data.length === 0 ? (
           <li className="px-4 py-6 text-muted">{t('admin.adminListEmpty')}</li>
         ) : (

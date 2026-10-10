@@ -10,6 +10,7 @@ import { invalidateSiteData } from '../../lib/queryCache'
 import { PlaceMap } from '../../components/property/PlaceMap'
 import { uploadSiteImage } from '../../lib/siteAssets'
 import { useAuth } from '../../hooks/useAuth'
+import { Loader } from '../../components/ui/Loader'
 
 export function AdminSettingsPage() {
   const { t } = useTranslation()
@@ -313,7 +314,7 @@ export function AdminSettingsPage() {
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
         {saved ? <p className="text-sm text-green-700">{t('admin.settingsSaved')}</p> : null}
         <Button type="submit" disabled={!canSave || saving}>
-          {saving ? t('common.loading') : t('common.save')}
+          {saving ? <Loader size="xs" /> : t('common.save')}
         </Button>
       </form>
     </div>

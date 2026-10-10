@@ -14,6 +14,7 @@ import { publishReview } from '../../lib/guest'
 import { downloadInvoice } from '../../lib/invoice'
 import { useMatricule } from '../../hooks/useMatricule'
 import { todayIso } from '../../lib/availability'
+import { Loader } from '../../components/ui/Loader'
 
 export function ReservationDetailPage() {
   const { id = '' } = useParams()
@@ -35,7 +36,7 @@ export function ReservationDetailPage() {
   const matricule = useMatricule(reservation?.properties)
 
   if (isLoading || !reservation) {
-    return <p>{t('common.loading')}</p>
+    return <Loader size="lg" fill />
   }
 
   const awaiting = reservation.status === 'pending' || reservation.status === 'payment_processing'

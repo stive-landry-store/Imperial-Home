@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PropertyCard } from '../../components/property/PropertyCard'
-import { Skeleton } from '../../components/ui/Skeleton'
+import { Loader } from '../../components/ui/Loader'
 import { usePublishedProperties, usePromotions } from '../../hooks/useSite'
 import type { Property } from '../../types/database'
 
@@ -124,11 +124,7 @@ export function PropertiesPage() {
         </form>
 
         {isLoading ? (
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Skeleton className="aspect-[16/10]" />
-            <Skeleton className="aspect-[16/10]" />
-            <Skeleton className="aspect-[16/10]" />
-          </div>
+          <Loader size="md" className="mt-14" />
         ) : null}
         {!isLoading && visible.length === 0 ? <p className="mt-10">{t('plus.noMatch')}</p> : null}
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

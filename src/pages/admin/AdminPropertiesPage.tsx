@@ -21,6 +21,7 @@ import { coverImage, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 
 import { Badge } from '../../components/ui/Badge'
+import { Loader } from '../../components/ui/Loader'
 
 
 
@@ -142,7 +143,7 @@ export function AdminPropertiesPage() {
 
                 <td colSpan={6} className="px-4 py-8 text-[var(--surface-muted)]">
 
-                  {t('common.loading')}
+                  <Loader size="sm" />
 
                 </td>
 

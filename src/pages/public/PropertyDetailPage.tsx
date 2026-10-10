@@ -13,7 +13,7 @@ import { StayActions } from '../../components/property/StayActions'
 import { WaitlistForm } from '../../components/booking/WaitlistForm'
 import { Button } from '../../components/ui/Button'
 import { Live, useLiveTranslation } from '../../components/i18n/Live'
-import { Skeleton } from '../../components/ui/Skeleton'
+import { Loader } from '../../components/ui/Loader'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
 import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
 import { PlaceActions } from '../../components/property/PlaceActions'
@@ -104,8 +104,8 @@ export function PropertyDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="theme-page mx-auto max-w-6xl px-6 pt-32">
-        <Skeleton className="aspect-[16/10]" />
+      <div className="theme-page pt-24">
+        <Loader size="lg" fill />
       </div>
     )
   }

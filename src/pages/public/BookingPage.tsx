@@ -14,6 +14,7 @@ import { isSupabaseConfigured } from '../../lib/supabase'
 import { useSiteConfig } from '../../hooks/useSite'
 import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
 import { addVehicleRental, fetchPublishedVehicles, isVehicleAvailable } from '../../lib/vehicles'
+import { Loader } from '../../components/ui/Loader'
 
 export function BookingPage() {
   const { slug = '' } = useParams()
@@ -84,7 +85,7 @@ export function BookingPage() {
     }
   }
 
-  if (!property) return <p className="theme-page px-6 pt-32">{t('common.loading')}</p>
+  if (!property) return <div className="theme-page pt-24"><Loader size="lg" fill /></div>
 
   return (
     <div className="mx-auto max-w-xl px-4 pt-36 pb-20">

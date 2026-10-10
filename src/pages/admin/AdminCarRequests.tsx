@@ -4,6 +4,7 @@ import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
 import { formatDate, formatXaf } from '../../lib/format'
 import { fetchVehicleRentals, rentalVehicleName, setVehicleRentalStatus, type VehicleRental } from '../../lib/vehicles'
+import { Loader } from '../../components/ui/Loader'
 
 function label(status: VehicleRental['status'], t: (key: string) => string) {
   if (status === 'requested') return t('cars.pending')
@@ -27,7 +28,7 @@ export function AdminCarRequests() {
   return (
     <section className="surface-light mt-12 border border-line p-4">
       <h2 className="font-display text-2xl">{t('admin.carRequests')}</h2>
-      {isLoading ? <p className="mt-4 text-sm text-muted">{t('common.loading')}</p> : null}
+      {isLoading ? <Loader size="sm" /> : null}
       {!isLoading && data.length === 0 ? <p className="mt-4 text-sm text-muted">{t('account.carsEmpty')}</p> : null}
       <ul className="mt-4 divide-y divide-line">
         {data.map((rental) => (
