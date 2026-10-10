@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
+import { MapContainer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { MapModeSwitch, MapTiles, useMapMode } from './MapBase'
 
 const icon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -41,19 +42,18 @@ export function PlaceMap({
   onPick?: (latitude: number, longitude: number) => void
   className?: string
 }) {
+  const { mode, setMode } = useMapMode()
   return (
-    <div className={`place-map overflow-hidden rounded-2xl border border-black/10 ${className}`}>
+    <div className={`place-map relative isolate overflow-hidden rounded-2xl border border-black/10 ${className}`}>
       <MapContainer center={[latitude, longitude]} zoom={16} scrollWheelZoom={false} className="h-full w-full">
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <MapTiles mode={mode} />
         <Recenter latitude={latitude} longitude={longitude} />
         {onPick ? <Pick onPick={onPick} /> : null}
         <Marker position={[latitude, longitude]} icon={icon}>
           <Popup>{label}</Popup>
         </Marker>
       </MapContainer>
+      <MapModeSwitch mode={mode} onChange={setMode} />
     </div>
   )
 }

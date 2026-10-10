@@ -502,6 +502,8 @@ export const en = {
     dow: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   },
   common: {
+    mapExplore: 'Explore',
+    mapSatellite: 'Satellite',
     loading: 'Loading…',
     error: 'Something went wrong.',
     back: 'Back',

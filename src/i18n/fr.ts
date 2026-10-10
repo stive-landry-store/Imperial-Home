@@ -505,6 +505,8 @@ export const fr: Messages = {
     dow: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
   },
   common: {
+    mapExplore: 'Explorer',
+    mapSatellite: 'Satellite',
     loading: 'Chargement…',
     error: 'Une erreur est survenue.',
     back: 'Retour',
