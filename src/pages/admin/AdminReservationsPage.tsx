@@ -56,26 +56,34 @@ export function AdminReservationsPage() {
       </Helmet>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-3xl md:text-4xl">{t('admin.reservations')}</h1>
-        <Button
-          variant="outline"
-          className="px-4 py-2 text-[11px]"
-          onClick={() =>
-            downloadCsv('imperial-home-reservations.csv', [
-              ['code', 'apartment', 'guest', 'check_in', 'check_out', 'status', 'total_xaf'],
-              ...data.map((r) => [
-                r.public_code,
-                r.properties?.name ?? '',
-                r.profiles?.full_name || r.profiles?.email || '',
-                r.check_in,
-                r.check_out,
-                r.status,
-                String(r.total_amount_xaf),
-              ]),
-            ])
-          }
-        >
-          {t('admin.exportCsv')}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            className="px-4 py-2 text-[11px]"
+            onClick={() => void import('../../lib/exportExcel').then((m) => m.downloadReservationsExcel(data, cars.data ?? []))}
+          >
+            {t('admin.exportExcel')}
+          </Button>
+          <Button
+            variant="outline"
+            className="px-4 py-2 text-[11px]"
+            onClick={() =>
+              downloadCsv('imperial-home-reservations.csv', [
+                ['Code', 'Appartement', 'Client', 'Arrivée', 'Départ', 'Statut', 'Total (FCFA)'],
+                ...data.map((r) => [
+                  r.public_code,
+                  r.properties?.name ?? '',
+                  r.profiles?.full_name || r.profiles?.email || '',
+                  r.check_in,
+                  r.check_out,
+                  r.status,
+                  String(r.total_amount_xaf),
+                ]),
+              ])
+            }
+          >
+            {t('admin.exportCsv')}
+          </Button>
+        </div>
       </div>
       {confirm.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.approveSuccess')}</p> : null}
       {reject.isSuccess ? <p className="mt-3 text-sm text-emerald-700">{t('admin.rejectSuccess')}</p> : null}

@@ -12,5 +12,5 @@ export function downloadCsv(filename: string, rows: string[][]) {
   const csv = rows
     .map((row) => row.map((cell) => `"${String(cell ?? '').replaceAll('"', '""')}"`).join(','))
     .join('\n')
-  downloadText(filename, csv, 'text/csv;charset=utf-8')
+  downloadText(filename, `\uFEFF${csv}`, 'text/csv;charset=utf-8')
 }
