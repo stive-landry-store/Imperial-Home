@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { CalendarDays, Heart, Search, UserRound } from 'lucide-react'
+import { CalendarDays, Home, Search, UserRound } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { cn } from '../../lib/cn'
 
@@ -13,8 +13,8 @@ export function AppTabBar() {
   const { user, profile } = useAuth()
   const accountTo = user ? '/account/profile' : '/login'
   const staysTo = user ? '/account' : '/login?next=/account'
-  const searchOn = pathname === '/' || pathname.startsWith('/properties') || pathname.startsWith('/cars')
-  const favoritesOn = pathname.startsWith('/favoris')
+  const homeOn = pathname === '/'
+  const searchOn = pathname.startsWith('/properties') || pathname.startsWith('/cars')
   const staysOn = pathname === '/account' || pathname.startsWith('/account/reservations')
   const accountOn = pathname.startsWith('/account/profile') || pathname.startsWith('/login') || pathname.startsWith('/register')
 
@@ -25,13 +25,13 @@ export function AppTabBar() {
       aria-label={t('nav.menu')}
     >
       <div className="mx-auto flex max-w-lg">
-        <NavLink to="/" className={cn(item, searchOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
+        <NavLink to="/" end className={cn(item, homeOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
+          <Home className="h-6 w-6" strokeWidth={homeOn ? 2.25 : 1.75} />
+          <span>{t('nav.home')}</span>
+        </NavLink>
+        <NavLink to="/properties" className={cn(item, searchOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
           <Search className="h-6 w-6" strokeWidth={searchOn ? 2.25 : 1.75} />
           <span>{t('nav.search')}</span>
-        </NavLink>
-        <NavLink to="/favoris" className={cn(item, favoritesOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
-          <Heart className="h-6 w-6" strokeWidth={favoritesOn ? 2.25 : 1.75} />
-          <span>{t('nav.favorites')}</span>
         </NavLink>
         <NavLink to={staysTo} end={Boolean(user)} className={cn(item, staysOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
           <CalendarDays className="h-6 w-6" strokeWidth={staysOn ? 2.25 : 1.75} />

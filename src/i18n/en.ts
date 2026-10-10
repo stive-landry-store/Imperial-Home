@@ -17,6 +17,7 @@ export const en = {
     tiktok: 'TikTok',
     facebook: 'Facebook',
     networks: 'Social',
+    home: 'Home',
     search: 'Search',
     favorites: 'Favorites',
     reservations: 'Reservations',

@@ -19,6 +19,7 @@ export const fr: Messages = {
     tiktok: 'TikTok',
     facebook: 'Facebook',
     networks: 'Réseaux',
+    home: 'Accueil',
     search: 'Rechercher',
     favorites: 'Favoris',
     reservations: 'Réservations',
