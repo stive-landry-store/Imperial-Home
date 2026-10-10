@@ -34,7 +34,7 @@ const RESERVATION_LABEL: Record<string, string> = {
 
 type Ctx = CanvasRenderingContext2D
 
-function loadImage(src: string) {
+export function loadImage(src: string) {
   return new Promise<HTMLImageElement | null>((resolve) => {
     const img = new Image()
     img.onload = () => resolve(img)
@@ -43,7 +43,7 @@ function loadImage(src: string) {
   })
 }
 
-async function loadFonts() {
+export async function loadFonts() {
   if (!document.fonts) return
   try {
     await Promise.all([
@@ -297,25 +297,9 @@ export function invoiceData(reservation: Reservation, matricule: string): Invoic
   }
 }
 
-export async function renderInvoice(data: InvoiceData): Promise<HTMLCanvasElement> {
-  const base = import.meta.env.BASE_URL
-  const [mono, hero] = await Promise.all([loadImage(`${base}brand/imperial-monogram.png`), loadImage(`${base}hero-accueil.jpg`), loadFonts()]).then(
-    ([a, b]) => [a, b] as const,
-  )
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.round(W * SCALE)
-  canvas.height = Math.round(H * SCALE)
-  const ctx = canvas.getContext('2d')!
-  ctx.scale(SCALE, SCALE)
-  ctx.textBaseline = 'alphabetic'
+export type BrandHead = { top: string; bottom: string; tagline: string[] }
 
-  const paper = ctx.createLinearGradient(0, 0, 0, H)
-  paper.addColorStop(0, '#fbf5e6')
-  paper.addColorStop(1, '#f2e8cf')
-  ctx.fillStyle = paper
-  ctx.fillRect(0, 0, W, H)
-
-  // header
+export function drawBrandHeader(ctx: Ctx, mono: HTMLImageElement | null, hero: HTMLImageElement | null, head: BrandHead) {
   const headerPath = () => {
     ctx.beginPath()
     ctx.moveTo(0, 0)
@@ -391,14 +375,108 @@ export async function renderInvoice(data: InvoiceData): Promise<HTMLCanvasElemen
   ctx.stroke()
   ctx.fillStyle = goldGradient(ctx, 420, 700)
   ctx.font = '600 76px Cinzel, Georgia, serif'
-  ctx.fillText('FACTURE', 418, 130)
+  ctx.fillText(head.top, 418, 130)
   ctx.fillStyle = CREAM
   ctx.font = '500 56px Cinzel, Georgia, serif'
-  ctx.fillText('DE LOCATION', 418, 194)
+  ctx.fillText(head.bottom, 418, 194)
   ctx.font = '400 21px Montserrat, system-ui, sans-serif'
   ctx.fillStyle = CREAM
-  ctx.fillText('Un espace, votre confort,', 420, 232)
-  ctx.fillText('notre priorité.', 420, 260)
+  ctx.fillText(head.tagline[0] ?? '', 420, 232)
+  ctx.fillText(head.tagline[1] ?? '', 420, 260)
+
+}
+
+const BANNER_H = 300
+const FOOTER_H = 92
+
+export async function renderBrandBanner(head: BrandHead, scale = 2): Promise<HTMLCanvasElement> {
+  const base = import.meta.env.BASE_URL
+  const [mono, hero] = await Promise.all([loadImage(`${base}brand/imperial-monogram.png`), loadImage(`${base}hero-accueil.jpg`), loadFonts()]).then(
+    ([a, b]) => [a, b] as const,
+  )
+  const canvas = document.createElement('canvas')
+  canvas.width = Math.round(W * scale)
+  canvas.height = Math.round(BANNER_H * scale)
+  const ctx = canvas.getContext('2d')!
+  ctx.scale(scale, scale)
+  ctx.fillStyle = '#fbf5e6'
+  ctx.fillRect(0, 0, W, BANNER_H)
+  drawBrandHeader(ctx, mono, hero, head)
+  return canvas
+}
+
+export async function renderBrandFooter(scale = 2): Promise<HTMLCanvasElement> {
+  await loadFonts()
+  const canvas = document.createElement('canvas')
+  canvas.width = Math.round(W * scale)
+  canvas.height = Math.round(FOOTER_H * scale)
+  const ctx = canvas.getContext('2d')!
+  ctx.scale(scale, scale)
+  ctx.fillStyle = '#fbf5e6'
+  ctx.fillRect(0, 0, W, FOOTER_H)
+  ctx.fillStyle = blackGradient(ctx, 14, FOOTER_H)
+  ctx.beginPath()
+  ctx.moveTo(0, 30)
+  ctx.bezierCurveTo(200, 8, 420, 34, 620, 18)
+  ctx.bezierCurveTo(780, 6, 900, 14, W, 26)
+  ctx.lineTo(W, FOOTER_H)
+  ctx.lineTo(0, FOOTER_H)
+  ctx.closePath()
+  ctx.fill()
+  ctx.strokeStyle = goldGradient(ctx, 0, W)
+  ctx.lineWidth = 4
+  ctx.beginPath()
+  ctx.moveTo(0, 30)
+  ctx.bezierCurveTo(200, 8, 420, 34, 620, 18)
+  ctx.bezierCurveTo(780, 6, 900, 14, W, 26)
+  ctx.stroke()
+  ctx.textBaseline = 'middle'
+  ctx.fillStyle = GOLD_LIGHT
+  ctx.font = '500 12.5px Montserrat, system-ui, sans-serif'
+  const items = ['SÉCURITÉ 24H/24', 'WIFI HAUT DÉBIT', 'SERVICE MÉNAGE', 'ASSISTANCE']
+  items.forEach((label, i) => {
+    const cx = 110 + i * 170
+    spaced(ctx, label, cx, 62, 1, 'center')
+    if (i > 0) {
+      ctx.strokeStyle = 'rgba(212,175,106,0.5)'
+      ctx.lineWidth = 1.5
+      ctx.beginPath()
+      ctx.moveTo(cx - 85, 46)
+      ctx.lineTo(cx - 85, 78)
+      ctx.stroke()
+    }
+  })
+  ctx.strokeStyle = 'rgba(212,175,106,0.5)'
+  ctx.beginPath()
+  ctx.moveTo(785, 46)
+  ctx.lineTo(785, 78)
+  ctx.stroke()
+  ctx.fillStyle = goldGradient(ctx, 800, 980)
+  ctx.font = 'italic 500 24px "Cormorant Garamond", Georgia, serif'
+  ctx.fillText('Votre séjour,', 810, 54)
+  ctx.fillText('notre excellence.', 830, 76)
+  return canvas
+}
+
+export async function renderInvoice(data: InvoiceData): Promise<HTMLCanvasElement> {
+  const base = import.meta.env.BASE_URL
+  const [mono, hero] = await Promise.all([loadImage(`${base}brand/imperial-monogram.png`), loadImage(`${base}hero-accueil.jpg`), loadFonts()]).then(
+    ([a, b]) => [a, b] as const,
+  )
+  const canvas = document.createElement('canvas')
+  canvas.width = Math.round(W * SCALE)
+  canvas.height = Math.round(H * SCALE)
+  const ctx = canvas.getContext('2d')!
+  ctx.scale(SCALE, SCALE)
+  ctx.textBaseline = 'alphabetic'
+
+  const paper = ctx.createLinearGradient(0, 0, 0, H)
+  paper.addColorStop(0, '#fbf5e6')
+  paper.addColorStop(1, '#f2e8cf')
+  ctx.fillStyle = paper
+  ctx.fillRect(0, 0, W, H)
+
+  drawBrandHeader(ctx, mono, hero, { top: 'FACTURE', bottom: 'DE LOCATION', tagline: ['Un espace, votre confort,', 'notre priorité.'] })
 
   // left box
   box(ctx, 24, 336, 470, 384)

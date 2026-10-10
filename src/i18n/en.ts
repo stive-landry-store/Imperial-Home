@@ -367,6 +367,7 @@ export const en = {
     reviewsAdmin: 'Reviews',
     exportCsv: 'Export CSV',
     exportExcel: 'Export Excel',
+    exportPdf: 'Export PDF',
     revenue: 'Month revenue',
     occupancyRate: 'Occupancy',
     ical: 'iCal feed',

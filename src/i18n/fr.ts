@@ -370,6 +370,7 @@ export const fr: Messages = {
     reviewsAdmin: 'Avis',
     exportCsv: 'Exporter CSV',
     exportExcel: 'Exporter Excel',
+    exportPdf: 'Exporter PDF',
     revenue: 'Revenus du mois',
     occupancyRate: 'Occupation',
     ical: 'Calendrier iCal',

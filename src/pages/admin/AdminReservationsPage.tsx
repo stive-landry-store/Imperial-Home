@@ -4,7 +4,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { cancelReservation, fetchAllReservations } from '../../lib/data'
-import { downloadCsv } from '../../lib/files'
 import { formatDate, formatXaf } from '../../lib/format'
 import { Badge } from '../../components/ui/Badge'
 import { Button } from '../../components/ui/Button'
@@ -66,22 +65,9 @@ export function AdminReservationsPage() {
           <Button
             variant="outline"
             className="px-4 py-2 text-[11px]"
-            onClick={() =>
-              downloadCsv('imperial-home-reservations.csv', [
-                ['Code', 'Appartement', 'Client', 'Arrivée', 'Départ', 'Statut', 'Total (FCFA)'],
-                ...data.map((r) => [
-                  r.public_code,
-                  r.properties?.name ?? '',
-                  r.profiles?.full_name || r.profiles?.email || '',
-                  r.check_in,
-                  r.check_out,
-                  r.status,
-                  String(r.total_amount_xaf),
-                ]),
-              ])
-            }
+            onClick={() => void import('../../lib/exportPdf').then((m) => m.downloadReservationsPdf(data, cars.data ?? []))}
           >
-            {t('admin.exportCsv')}
+            {t('admin.exportPdf')}
           </Button>
         </div>
       </div>
