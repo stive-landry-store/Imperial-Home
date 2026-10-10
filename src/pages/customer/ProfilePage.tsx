@@ -1,10 +1,12 @@
-import { useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Camera, ChevronRight, Mail, MapPin, MessageCircle, Phone, Share2 } from 'lucide-react'
 import { ProfileMenu } from '../../components/account/ProfileMenu'
+import { PhotoCropper } from '../../components/account/PhotoCropper'
+import { PhotoViewer } from '../../components/account/PhotoViewer'
 import { PlaceMap } from '../../components/property/PlaceMap'
 import { VerifiedBadge } from '../../components/ui/VerifiedBadge'
 import { useAuth } from '../../hooks/useAuth'
@@ -53,6 +55,10 @@ export function ProfilePage() {
   const [error, setError] = useState<string | null>(null)
   const [editOpen, setEditOpen] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [crop, setCrop] = useState<{ file: File; kind: 'avatar' | 'cover' } | null>(null)
+  const [viewer, setViewer] = useState<'avatar' | 'cover' | null>(null)
+  const avatarInput = useRef<HTMLInputElement>(null)
+  const coverInput = useRef<HTMLInputElement>(null)
   const verified = Boolean(isStaff && (admin?.is_verified || profile?.role === 'admin' || profile?.role === 'main_admin'))
   const stays = useQuery({ queryKey: ['my-reservations'], queryFn: fetchMyReservations })
   const cars = useQuery({
@@ -115,45 +121,64 @@ export function ProfilePage() {
         </button>
       </div>
       <section className="bg-[#ffffff] pb-5">
-        <div className="relative h-36 bg-[#d9d4c8]">
-          <img src={cover} alt="" className="h-full w-full object-cover object-center" />
-          <label className="absolute right-3 bottom-3 grid h-9 w-9 cursor-pointer place-items-center rounded-full bg-black/55 text-white">
+        <div className="relative aspect-[8/3] w-full bg-[#d9d4c8]">
+          <button type="button" className="block h-full w-full" onClick={() => setViewer('cover')} aria-label={t('account.cover')}>
+            <img src={cover} alt="" className="h-full w-full object-cover object-center" />
+          </button>
+          <button
+            type="button"
+            className="absolute right-3 bottom-3 grid h-9 w-9 place-items-center rounded-full bg-black/55 text-white"
+            onClick={() => coverInput.current?.click()}
+          >
             <Camera className="h-4 w-4" />
             <span className="sr-only">{t('account.cover')}</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="sr-only"
-              onChange={(event) => {
-                const file = event.target.files?.[0]
-                if (file) void upload(file, 'cover')
-              }}
-            />
-          </label>
+          </button>
+          <input
+            ref={coverInput}
+            type="file"
+            accept="image/*"
+            className="sr-only"
+            onChange={(event) => {
+              const file = event.target.files?.[0]
+              event.target.value = ''
+              if (file) setCrop({ file, kind: 'cover' })
+            }}
+          />
         </div>
         <div className="flex flex-col items-center px-4">
-          <label className="relative -mt-12 block h-28 w-28 cursor-pointer">
-            <span className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-[#1c1914] ring-[3px] ring-[#d4af6a]">
+          <div className="relative -mt-12 block h-28 w-28">
+            <button
+              type="button"
+              className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-[#1c1914] ring-[3px] ring-[#d4af6a]"
+              onClick={() => (profile?.avatar_url ? setViewer('avatar') : avatarInput.current?.click())}
+              aria-label={t('account.avatar')}
+            >
               {profile?.avatar_url ? (
                 <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
               ) : (
                 <span className="text-4xl font-semibold text-[#e0c57a]">{(profile?.full_name || profile?.email || '?').slice(0, 1).toUpperCase()}</span>
               )}
-            </span>
-            <span className="absolute right-0 bottom-0 grid h-8 w-8 place-items-center rounded-full bg-[#d4af6a] text-black">
+            </button>
+            <button
+              type="button"
+              className="absolute right-0 bottom-0 grid h-8 w-8 place-items-center rounded-full bg-[#d4af6a] text-black"
+              onClick={() => avatarInput.current?.click()}
+            >
               <Camera className="h-4 w-4" />
-            </span>
-            <span className="sr-only">{t('account.avatar')}</span>
+              <span className="sr-only">{t('account.avatar')}</span>
+            </button>
             <input
+              ref={avatarInput}
               type="file"
               accept="image/*"
               className="sr-only"
               onChange={(event) => {
                 const file = event.target.files?.[0]
-                if (file) void upload(file, 'avatar')
+                event.target.value = ''
+                if (file) setCrop({ file, kind: 'avatar' })
               }}
             />
-          </label>
+          </div>
           <p className="mt-3 flex max-w-full items-center gap-1.5 text-center text-[22px] leading-tight font-bold">
             <span className="truncate">{profile?.full_name || t('account.profile')}</span>
             {verified ? <VerifiedBadge className="h-5 w-5" title={t('admin.verified')} /> : null}
@@ -237,6 +262,33 @@ export function ProfilePage() {
       </section>
       {error ? <p className="mx-4 mt-3 text-sm text-red-700">{error}</p> : null}
       <ProfileMenu open={editOpen} onClose={() => setEditOpen(false)} />
+      {crop ? (
+        <PhotoCropper
+          file={crop.file}
+          aspect={crop.kind === 'avatar' ? 1 : 8 / 3}
+          round={crop.kind === 'avatar'}
+          outputWidth={crop.kind === 'avatar' ? 800 : 1600}
+          title={crop.kind === 'avatar' ? t('account.avatar') : t('account.cover')}
+          onCancel={() => setCrop(null)}
+          onDone={(photo) => {
+            const kind = crop.kind
+            setCrop(null)
+            void upload(photo, kind)
+          }}
+        />
+      ) : null}
+      {viewer ? (
+        <PhotoViewer
+          src={viewer === 'avatar' ? (profile?.avatar_url ?? '') : cover}
+          round={viewer === 'avatar'}
+          onClose={() => setViewer(null)}
+          onChange={() => {
+            const target = viewer
+            setViewer(null)
+            ;(target === 'avatar' ? avatarInput : coverInput).current?.click()
+          }}
+        />
+      ) : null}
     </div>
   )
 }

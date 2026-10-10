@@ -503,6 +503,10 @@ export const en = {
     dow: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   },
   common: {
+    cropHint: 'Drag and zoom to frame the photo.',
+    cropApply: 'Apply',
+    changePhoto: 'Change photo',
+    close: 'Close',
     mapExplore: 'Explore',
     mapSatellite: 'Satellite',
     loading: 'Loading…',

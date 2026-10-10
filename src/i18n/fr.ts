@@ -506,6 +506,10 @@ export const fr: Messages = {
     dow: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
   },
   common: {
+    cropHint: 'Déplacez et zoomez pour cadrer la photo.',
+    cropApply: 'Valider',
+    changePhoto: 'Changer la photo',
+    close: 'Fermer',
     mapExplore: 'Explorer',
     mapSatellite: 'Satellite',
     loading: 'Chargement…',
