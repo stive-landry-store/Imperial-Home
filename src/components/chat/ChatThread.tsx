@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
-import { ArrowLeft, Camera, CheckCheck, MessageCircle, Phone, Plus, SendHorizontal } from 'lucide-react'
+import { ArrowLeft, Camera, CheckCheck, Plus, SendHorizontal } from 'lucide-react'
 import { chatDay } from '../../lib/chatText'
-import { whatsappUrl } from '../../lib/whatsapp'
 import { cn } from '../../lib/cn'
 
 export type Bubble = {
@@ -22,15 +21,12 @@ export function ChatThread({
   subtitle,
   avatarUrl,
   mark,
-  phone,
   messages,
   locale,
   body,
   file,
   placeholder,
   sendLabel,
-  callLabel,
-  whatsappLabel,
   cameraLabel,
   attachLabel,
   humanLabel,
@@ -45,15 +41,12 @@ export function ChatThread({
   subtitle: string
   avatarUrl?: string | null
   mark?: boolean
-  phone?: string | null
   messages: Bubble[]
   locale: string
   body: string
   file: File | null
   placeholder: string
   sendLabel: string
-  callLabel: string
-  whatsappLabel: string
   cameraLabel: string
   attachLabel: string
   humanLabel?: string
@@ -128,22 +121,6 @@ export function ChatThread({
           <p className="truncate [font-family:var(--font-display)] text-[17px] leading-tight tracking-wide">{title}</p>
           <p className="truncate text-[12.5px] text-[#d4af6a]/80">{subtitle}</p>
         </div>
-        {phone ? (
-          <>
-            <a className="grid h-10 w-10 place-items-center text-[#d4af6a]" href={`tel:${phone.replace(/\s/g, '')}`} aria-label={callLabel}>
-              <Phone className="h-5 w-5" />
-            </a>
-            <a
-              className="grid h-10 w-10 place-items-center text-[#d4af6a]"
-              href={whatsappUrl(phone)}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={whatsappLabel}
-            >
-              <MessageCircle className="h-5 w-5" />
-            </a>
-          </>
-        ) : null}
       </header>
       <div className="ih-chat-wall min-h-0 flex-1 overflow-y-auto px-3 py-2">
         {messages.map((item, index) => {

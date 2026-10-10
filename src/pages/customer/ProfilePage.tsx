@@ -62,7 +62,6 @@ export function ProfilePage() {
   })
   const place = imperialPlace(config)
   const links = placeLinks(place)
-  const reception = (config?.phone || '237674092263').replace(/\s/g, '')
   const reservations = stays.data ?? []
   const active = reservations.filter((item) => item.status !== 'cancelled' && item.status !== 'expired')
   const nights = active.reduce((sum, item) => sum + (item.nights || 0), 0)
@@ -162,9 +161,6 @@ export function ProfilePage() {
           <p className="mt-1 text-center text-[14px] text-[#667781]">{isStaff ? admin?.title || t('account.adminLine') : t('account.guestLine')}</p>
         </div>
         <div className="mt-5 flex px-6">
-          <RoundAction label={t('account.callHouse')} href={`tel:${reception}`}>
-            <Phone className="h-5 w-5" />
-          </RoundAction>
           <RoundAction label={copied ? t('nav.copied') : t('account.shareAction')} onClick={() => void share()}>
             <Share2 className="h-5 w-5" />
           </RoundAction>

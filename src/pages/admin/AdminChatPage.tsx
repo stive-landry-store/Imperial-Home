@@ -186,15 +186,12 @@ export function AdminChatPage() {
             title={current?.person?.full_name || current?.person?.email || t('chat.guest')}
             subtitle={current?.person?.phone || t('chat.guest')}
             avatarUrl={current?.person?.avatar_url}
-            phone={current?.person?.phone}
             messages={messages}
             locale={i18n.language}
             body={body}
             file={file}
             placeholder={t('chat.compose')}
             sendLabel={t('chat.send')}
-            callLabel={t('chat.call')}
-            whatsappLabel={t('chat.whatsapp')}
             cameraLabel={t('chat.camera')}
             attachLabel={t('chat.attach')}
             backLabel={t('common.back')}

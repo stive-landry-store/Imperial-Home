@@ -233,15 +233,12 @@ export function ChatPage() {
             title="Impérial Home"
             subtitle={t('chat.reception')}
             mark
-            phone={phone}
             messages={messages}
             locale={i18n.language}
             body={body}
             file={file}
             placeholder={t('chat.compose')}
             sendLabel={t('chat.send')}
-            callLabel={t('chat.call')}
-            whatsappLabel={t('chat.whatsapp')}
             cameraLabel={t('chat.camera')}
             attachLabel={t('chat.attach')}
             humanLabel={t('chat.human')}
