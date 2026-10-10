@@ -12,6 +12,7 @@ import { supabase } from '../../lib/supabase'
 import { Badge } from '../../components/ui/Badge'
 import { publishReview } from '../../lib/guest'
 import { downloadInvoice } from '../../lib/invoice'
+import { useMatricule } from '../../hooks/useMatricule'
 import { todayIso } from '../../lib/availability'
 
 export function ReservationDetailPage() {
@@ -30,6 +31,8 @@ export function ReservationDetailPage() {
     queryKey: ['reservation', id],
     queryFn: () => fetchReservation(id),
   })
+
+  const matricule = useMatricule(reservation?.properties)
 
   if (isLoading || !reservation) {
     return <p>{t('common.loading')}</p>
@@ -50,6 +53,7 @@ export function ReservationDetailPage() {
       </Helmet>
       <p className="text-xs uppercase tracking-[0.18em] text-gold">{reservation.public_code}</p>
       <h1 className="mt-2 font-display text-4xl">{reservation.properties?.name}</h1>
+      {matricule ? <p className="mt-1 text-xs tracking-[0.2em] text-gold">{matricule}</p> : null}
       <div className="mt-3">
         <Badge variant="dark">{t(`status.${reservation.status}`)}</Badge>
       </div>
@@ -69,7 +73,7 @@ export function ReservationDetailPage() {
           <p className="mt-2 text-sm">
             <Live text={localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)} />
           </p>
-          <Button className="mt-4" variant="outline" onClick={() => downloadInvoice(reservation)}>
+          <Button className="mt-4" variant="outline" onClick={() => void downloadInvoice(reservation, matricule)}>
             {t('plus.invoice')}
           </Button>
         </div>

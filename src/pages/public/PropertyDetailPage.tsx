@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useMatricule } from '../../hooks/useMatricule'
 import { useTranslation } from 'react-i18next'
 import { PropertyGallery } from '../../components/property/PropertyGallery'
 import { AvailabilityCalendar } from '../../components/booking/AvailabilityCalendar'
@@ -99,6 +100,8 @@ export function PropertyDetailPage() {
     setNights(Math.max(1, nightsBetween(activeCheckIn, iso)))
   }
 
+  const matricule = useMatricule(property)
+
   if (isLoading) {
     return (
       <div className="theme-page mx-auto max-w-6xl px-6 pt-32">
@@ -143,6 +146,7 @@ export function PropertyDetailPage() {
             <h1 className="mt-2 font-display text-5xl tracking-[0.04em]">
               <Live text={property.name} />
             </h1>
+            {matricule ? <p className="mt-2 text-xs tracking-[0.24em] text-[#d4af6a]">{matricule}</p> : null}
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <StayActions propertyId={property.id} />
               <button

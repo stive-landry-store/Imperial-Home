@@ -8,6 +8,10 @@ import { useTranslation } from 'react-i18next'
 
 import { fetchAllProperties } from '../../lib/data'
 
+import { propertyMatricule } from '../../lib/matricule'
+
+import { usePropertyIndex } from '../../hooks/useMatricule'
+
 import { invalidateSiteData } from '../../lib/queryCache'
 
 import { supabase } from '../../lib/supabase'
@@ -25,6 +29,8 @@ export function AdminPropertiesPage() {
   const { t } = useTranslation()
 
   const client = useQueryClient()
+
+  const index = usePropertyIndex().data ?? []
 
   const { data = [], isLoading } = useQuery({ queryKey: ['admin-properties'], queryFn: fetchAllProperties })
 
@@ -187,6 +193,8 @@ export function AdminPropertiesPage() {
                   <td className="px-4 py-4">
 
                     <p className="font-medium text-[var(--surface-fg)]">{p.name}</p>
+
+                    <p className="text-xs tracking-[0.18em] text-[#b8923f]">{propertyMatricule(p, index)}</p>
 
                     <p className="text-sm text-[var(--surface-muted)]">{p.slug}</p>
 
