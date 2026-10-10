@@ -134,14 +134,14 @@ export function ProfilePage() {
         </div>
         <div className="flex flex-col items-center px-4">
           <label className="relative -mt-12 block h-28 w-28 cursor-pointer">
-            <span className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-[#1c1914] ring-[3px] ring-[#25d366]">
+            <span className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-[#1c1914] ring-[3px] ring-[#d4af6a]">
               {profile?.avatar_url ? (
                 <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
               ) : (
                 <span className="text-4xl font-semibold text-[#e0c57a]">{(profile?.full_name || profile?.email || '?').slice(0, 1).toUpperCase()}</span>
               )}
             </span>
-            <span className="absolute right-0 bottom-0 grid h-8 w-8 place-items-center rounded-full bg-[#25d366] text-white">
+            <span className="absolute right-0 bottom-0 grid h-8 w-8 place-items-center rounded-full bg-[#d4af6a] text-black">
               <Camera className="h-4 w-4" />
             </span>
             <span className="sr-only">{t('account.avatar')}</span>

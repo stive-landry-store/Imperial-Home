@@ -162,11 +162,11 @@ export function AdminChatPage() {
   }, [archived, conversations, recent, seenTick, t])
 
   return (
-    <div className="ih-chat flex h-full min-h-0 flex-1 bg-[#ffffff]">
+    <div className="ih-chat flex h-full min-h-0 flex-1 bg-[#0b0b0c]">
       <Helmet>
         <title>{t('chat.discussions')} | Impérial Home</title>
       </Helmet>
-      <aside className={cn('h-full min-h-0 w-full md:w-[340px] md:shrink-0 md:border-r md:border-[#e9edef]', active && 'hidden md:block')}>
+      <aside className={cn('h-full min-h-0 w-full md:w-[340px] md:shrink-0 md:border-r md:border-[#d4af6a]/25', active && 'hidden md:block')}>
         <ChatInbox
           title={t('chat.discussions')}
           rows={rows}
@@ -207,7 +207,7 @@ export function AdminChatPage() {
             onPick={setFile}
           />
         ) : (
-          <div className="hidden h-full place-items-center bg-[#f0f2f5] px-8 text-center text-[#667781] md:grid">
+          <div className="ih-chat-wall hidden h-full place-items-center px-8 text-center text-[#d4af6a] md:grid">
             <p>{t('chat.emptyPick')}</p>
           </div>
         )}

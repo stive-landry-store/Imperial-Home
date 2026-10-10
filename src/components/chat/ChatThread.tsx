@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
-import { ArrowLeft, Camera, CheckCheck, Phone, Plus, Send, Video } from 'lucide-react'
+import { ArrowLeft, Camera, CheckCheck, MessageCircle, Phone, Plus, SendHorizontal } from 'lucide-react'
 import { chatDay } from '../../lib/chatText'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { cn } from '../../lib/cn'
@@ -111,11 +111,11 @@ export function ChatThread({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <header className="flex h-[60px] shrink-0 items-center gap-1 bg-[#f0f2f5] px-1">
+      <header className="flex h-[64px] shrink-0 items-center gap-1 border-b border-[#d4af6a]/30 bg-[#0b0b0c] px-1 text-[#f4ecd9]">
         <button type="button" className="grid h-10 w-10 place-items-center md:hidden" aria-label={backLabel} onClick={onBack}>
-          <ArrowLeft className="h-6 w-6 rtl:scale-x-[-1]" />
+          <ArrowLeft className="h-6 w-6 text-[#d4af6a] rtl:scale-x-[-1]" />
         </button>
-        <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-[#111] ring-2 ring-[#25d366]">
+        <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-[#111] ring-2 ring-[#d4af6a]">
           {mark ? (
             <img src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`} alt="" className="h-6 w-6 object-contain" />
           ) : avatarUrl ? (
@@ -125,22 +125,22 @@ export function ChatThread({
           )}
         </span>
         <div className="min-w-0 flex-1 px-1">
-          <p className="truncate text-[16px] leading-tight font-medium">{title}</p>
-          <p className="truncate text-[12.5px] text-[#667781]">{subtitle}</p>
+          <p className="truncate [font-family:var(--font-display)] text-[17px] leading-tight tracking-wide">{title}</p>
+          <p className="truncate text-[12.5px] text-[#d4af6a]/80">{subtitle}</p>
         </div>
         {phone ? (
           <>
-            <a className="grid h-10 w-10 place-items-center text-[#111b21]" href={`tel:${phone.replace(/\s/g, '')}`} aria-label={callLabel}>
+            <a className="grid h-10 w-10 place-items-center text-[#d4af6a]" href={`tel:${phone.replace(/\s/g, '')}`} aria-label={callLabel}>
               <Phone className="h-5 w-5" />
             </a>
             <a
-              className="grid h-10 w-10 place-items-center text-[#111b21]"
+              className="grid h-10 w-10 place-items-center text-[#d4af6a]"
               href={whatsappUrl(phone)}
               target="_blank"
               rel="noreferrer"
               aria-label={whatsappLabel}
             >
-              <Video className="h-5 w-5" />
+              <MessageCircle className="h-5 w-5" />
             </a>
           </>
         ) : null}
@@ -152,23 +152,28 @@ export function ChatThread({
           return (
             <div key={item.id}>
               {showDay ? (
-                <p className="mx-auto my-2 w-fit rounded-lg bg-[#ffffff]/90 px-3 py-1 text-[12.5px] text-[#54656f] shadow-sm">{chatDay(item.at, locale)}</p>
+                <p className="mx-auto my-2 w-fit rounded-full border border-[#d4af6a]/30 bg-black/55 px-3 py-1 text-[12px] tracking-wide text-[#d4af6a]">{chatDay(item.at, locale)}</p>
               ) : null}
               {item.system ? (
-                <p className="mx-auto my-2 max-w-[88%] rounded-lg bg-[#ffffff]/90 px-3 py-1.5 text-center text-[12.5px] text-[#54656f] shadow-sm">{item.body}</p>
+                <p className="mx-auto my-2 max-w-[88%] rounded-2xl border border-[#d4af6a]/30 bg-black/55 px-3 py-1.5 text-center text-[12.5px] text-[#d4af6a]">{item.body}</p>
               ) : (
                 <div className={cn('mb-1 flex', item.mine ? 'justify-end' : 'justify-start')}>
                   <div
                     className={cn(
-                      'max-w-[82%] rounded-lg px-2 pt-1 pb-1 shadow-[0_1px_0.5px_rgba(11,20,26,0.13)]',
-                      item.mine ? 'rounded-ee-[4px] bg-[#d9fdd3]' : 'rounded-es-[4px] bg-[#ffffff]',
+                      'max-w-[82%] rounded-[18px] px-3 pt-1.5 pb-1.5 shadow-[0_2px_6px_rgba(0,0,0,0.35)]',
+                      item.mine ? 'rounded-ee-[5px] bg-gradient-to-br from-[#2f80ed] to-[#1556c8] text-white' : 'rounded-es-[5px] bg-[#ffffff] text-[#14161a]',
                     )}
                   >
                     {item.imageUrl ? <img src={item.imageUrl} alt="" className="mb-1 max-h-56 rounded-md object-cover" /> : null}
                     {item.body.trim() ? <span className="whitespace-pre-wrap text-[14.5px] leading-[19px]">{item.body}</span> : null}
-                    <span className="float-right mt-1 ms-3 inline-flex translate-y-0.5 items-center gap-0.5 text-[11px] leading-none text-[#667781]">
+                    <span
+                      className={cn(
+                        'float-right mt-1 ms-3 inline-flex translate-y-0.5 items-center gap-0.5 text-[11px] leading-none',
+                        item.mine ? 'text-white/75' : 'text-[#6b7280]',
+                      )}
+                    >
                       {new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(item.at))}
-                      {item.mine ? <CheckCheck className="h-3.5 w-3.5 text-[#53bdeb]" /> : null}
+                      {item.mine ? <CheckCheck className="h-3.5 w-3.5 text-white" /> : null}
                     </span>
                   </div>
                 </div>
@@ -179,16 +184,16 @@ export function ChatThread({
         <div ref={bottom} />
       </div>
       {preview ? (
-        <div className="flex items-center gap-3 bg-[#f0f2f5] px-3 pt-2">
+        <div className="flex items-center gap-3 bg-[#0b0b0c] px-3 pt-2">
           <img src={preview} alt="" className="h-16 w-16 rounded-lg object-cover" />
-          <button type="button" className="text-sm text-[#667781]" onClick={() => onPick(null)}>
+          <button type="button" className="text-lg text-[#d4af6a]" onClick={() => onPick(null)}>
             ×
           </button>
         </div>
       ) : null}
-      <form className="relative flex items-end gap-1.5 bg-[#f0f2f5] px-2 py-2" onSubmit={submit}>
+      <form className="relative flex items-end gap-1.5 border-t border-[#d4af6a]/30 bg-[#0b0b0c] px-2 py-2" onSubmit={submit}>
         {menu ? (
-          <div className="absolute bottom-16 start-2 z-10 w-56 overflow-hidden rounded-xl bg-[#ffffff] py-1 shadow-lg">
+          <div className="absolute bottom-16 start-2 z-10 w-56 overflow-hidden rounded-xl border border-[#d4af6a]/40 bg-[#17181c] py-1 text-[#f4ecd9] shadow-lg">
             <button
               type="button"
               className="block min-h-11 w-full px-4 text-left text-[15px]"
@@ -213,31 +218,31 @@ export function ChatThread({
             ) : null}
           </div>
         ) : null}
-        <button type="button" className="mb-1 grid h-10 w-10 place-items-center text-[#54656f]" aria-label={attachLabel} onClick={() => setMenu((value) => !value)}>
+        <button type="button" className="mb-1 grid h-10 w-10 place-items-center text-[#d4af6a]" aria-label={attachLabel} onClick={() => setMenu((value) => !value)}>
           <Plus className="h-6 w-6" />
         </button>
-        <div className="flex min-w-0 flex-1 items-end rounded-3xl bg-[#ffffff] px-3 py-2">
+        <div className="flex min-w-0 flex-1 items-end rounded-3xl border border-[#d4af6a]/40 bg-[#17181c] px-3 py-2">
           <textarea
             ref={field}
             rows={1}
             value={body}
             placeholder={placeholder}
             enterKeyHint="send"
-            className="max-h-28 min-h-6 w-full resize-none bg-transparent text-[15px] leading-5 text-[#111b21] outline-none placeholder:text-[#8696a0]"
+            className="max-h-28 min-h-6 w-full resize-none bg-transparent text-[15px] leading-5 text-[#f4ecd9] outline-none placeholder:text-[#8d8a80]"
             onChange={(event) => grow(event.target.value)}
             onKeyDown={onKey}
           />
-          <button type="button" className="ms-1 grid h-7 w-7 place-items-center text-[#54656f]" aria-label={cameraLabel} onClick={() => camera.current?.click()}>
+          <button type="button" className="ms-1 grid h-7 w-7 place-items-center text-[#d4af6a]" aria-label={cameraLabel} onClick={() => camera.current?.click()}>
             <Camera className="h-5 w-5" />
           </button>
         </div>
         <button
           type="submit"
-          className="mb-0.5 grid h-11 w-11 place-items-center rounded-full bg-[#25d366] text-white disabled:opacity-40"
+          className="mb-0.5 grid h-11 w-11 place-items-center rounded-full bg-[#d4af6a] text-black disabled:opacity-40"
           aria-label={sendLabel}
           disabled={!ready}
         >
-          <Send className="h-5 w-5" />
+          <SendHorizontal className="h-5 w-5" />
         </button>
         <input
           ref={gallery}

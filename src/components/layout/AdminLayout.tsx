@@ -1,7 +1,27 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { LogOut, Menu, X } from 'lucide-react'
+import {
+  BadgePercent,
+  Building2,
+  CalendarCheck,
+  CalendarDays,
+  Car,
+  CreditCard,
+  FileText,
+  History,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  MessageCircle,
+  Settings,
+  ShieldCheck,
+  Star,
+  Sparkles,
+  Users,
+  X,
+  type LucideIcon,
+} from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
@@ -11,23 +31,23 @@ import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
 import { SocialLinks } from './SocialLinks'
 
-const links = [
-  { to: '/admin', key: 'dashboard', end: true },
-  { to: '/admin/properties', key: 'properties' },
-  { to: '/admin/reservations', key: 'reservations' },
-  { to: '/admin/calendar', key: 'calendar' },
-  { to: '/admin/customers', key: 'customers' },
-  { to: '/admin/promotions', key: 'promotions' },
-  { to: '/admin/vehicles', key: 'vehicles' },
-  { to: '/admin/payments', key: 'payments' },
-  { to: '/admin/turnover', key: 'turnover' },
-  { to: '/admin/reviews', key: 'reviewsAdmin' },
-  { to: '/admin/chat', key: 'chat' },
-  { to: '/admin/housing-sheet', key: 'fiche' },
-  { to: '/admin/admins', key: 'admins' },
-  { to: '/admin/audit', key: 'audit' },
-  { to: '/admin/settings', key: 'settings' },
-] as const
+const links: { to: string; key: string; icon: LucideIcon }[] = [
+  { to: '/admin', key: 'dashboard', icon: LayoutDashboard },
+  { to: '/admin/properties', key: 'properties', icon: Building2 },
+  { to: '/admin/reservations', key: 'reservations', icon: CalendarCheck },
+  { to: '/admin/calendar', key: 'calendar', icon: CalendarDays },
+  { to: '/admin/customers', key: 'customers', icon: Users },
+  { to: '/admin/promotions', key: 'promotions', icon: BadgePercent },
+  { to: '/admin/vehicles', key: 'vehicles', icon: Car },
+  { to: '/admin/payments', key: 'payments', icon: CreditCard },
+  { to: '/admin/turnover', key: 'turnover', icon: Sparkles },
+  { to: '/admin/reviews', key: 'reviewsAdmin', icon: Star },
+  { to: '/admin/chat', key: 'chat', icon: MessageCircle },
+  { to: '/admin/housing-sheet', key: 'fiche', icon: FileText },
+  { to: '/admin/admins', key: 'admins', icon: ShieldCheck },
+  { to: '/admin/audit', key: 'audit', icon: History },
+  { to: '/admin/settings', key: 'settings', icon: Settings },
+]
 
 export function AdminLayout() {
   const { t } = useTranslation()
@@ -49,12 +69,13 @@ export function AdminLayout() {
           end={l.to === '/admin'}
           className={({ isActive }) =>
             cn(
-              'inline-flex min-h-12 items-center px-3 py-3 text-base uppercase tracking-[0.12em] touch-manipulation',
+              'flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-base uppercase tracking-[0.12em] touch-manipulation',
               isActive ? 'bg-white/5 text-[#e0c57a]' : 'text-[#d4af6a]/80 hover:text-[#e0c57a]',
             )
           }
         >
-          {t(`admin.${l.key}`)}
+          <l.icon className="h-6 w-6 shrink-0 text-[#d4af6a]" strokeWidth={1.6} />
+          <span className="min-w-0 truncate">{t(`admin.${l.key}`)}</span>
         </NavLink>
       ))}
     </nav>
@@ -105,7 +126,8 @@ export function AdminLayout() {
             {renderNav()}
             <div className="border-t border-[#d4af6a]/25 px-5 py-4">
               <SocialLinks />
-              <button type="button" className="mt-4 min-h-11 text-base uppercase tracking-[0.12em]" onClick={() => void signOut()}>
+              <button type="button" className="mt-4 flex min-h-11 items-center gap-3 text-base uppercase tracking-[0.12em]" onClick={() => void signOut()}>
+                <LogOut className="h-5 w-5" strokeWidth={1.75} />
                 {t('nav.logout')}
               </button>
             </div>
@@ -134,9 +156,10 @@ export function AdminLayout() {
           </div>
           <button
             type="button"
-            className="min-h-11 px-5 pb-6 text-base uppercase tracking-[0.12em] text-gold"
+            className="flex min-h-11 items-center gap-3 px-5 pb-6 text-base uppercase tracking-[0.12em] text-gold"
             onClick={() => void signOut()}
           >
+            <LogOut className="h-5 w-5" strokeWidth={1.75} />
             {t('nav.logout')}
           </button>
         </div>
