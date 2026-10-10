@@ -24,6 +24,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useTheme } from '../../hooks/useTheme'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
 import { SocialLinks } from './SocialLinks'
+import { AppFeatures } from './AppFeatures'
 
 export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t, i18n } = useTranslation()
@@ -127,6 +128,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
             <span>{copied ? t('nav.copied') : t('nav.share')}</span>
           </button>
         </nav>
+        <AppFeatures />
         <div className="mt-4">
           <SocialLinks />
         </div>

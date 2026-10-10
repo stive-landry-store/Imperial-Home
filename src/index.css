@@ -515,3 +515,52 @@ input[type='date']::-webkit-calendar-picker-indicator {
     animation: none;
   }
 }
+
+.ih-page-in {
+  animation: ih-page-in 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.ih-page-back {
+  animation: ih-page-back 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes ih-page-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ih-page-back {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ih-page-in,
+  .ih-page-back {
+    animation: none;
+  }
+}
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+@media (display-mode: standalone) {
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior-y: none;
+  }
+  input,
+  textarea,
+  [contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}

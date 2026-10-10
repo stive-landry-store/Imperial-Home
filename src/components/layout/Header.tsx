@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Menu, X } from 'lucide-react'
+import { ChevronLeft, Menu, X } from 'lucide-react'
 import { cn } from '../../lib/cn'
 import { useAuth } from '../../hooks/useAuth'
 import { useTheme } from '../../hooks/useTheme'
@@ -16,7 +16,15 @@ export function Header() {
   const { theme } = useTheme()
   const { isStaff, signOut, user } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const isDetail = /^\/(properties\/(?!map$)[^/]+|cars\/[^/]+|account\/reservations\/[^/]+|compare|contact|favoris)/.test(location.pathname)
+  const fallback = location.pathname.startsWith('/cars') ? '/cars' : location.pathname.startsWith('/account') ? '/account' : '/properties'
+  function goBack() {
+    const index = (window.history.state as { idx?: number } | null)?.idx ?? 0
+    if (index > 0) navigate(-1)
+    else navigate(fallback)
+  }
 
   useEffect(() => setOpen(false), [location.pathname])
 
@@ -36,6 +44,16 @@ export function Header() {
       <SetupBanner />
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-6">
         <div className="relative z-10 flex shrink-0 items-center gap-1">
+          {isDetail ? (
+            <button
+              type="button"
+              className="inline-flex min-h-11 min-w-9 items-center justify-center touch-manipulation lg:hidden"
+              onClick={goBack}
+              aria-label={t('common.back')}
+            >
+              <ChevronLeft className="h-6 w-6 rtl:scale-x-[-1]" />
+            </button>
+          ) : null}
           <button
             type="button"
             className="inline-flex min-h-11 min-w-11 items-center justify-center touch-manipulation"

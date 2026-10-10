@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Header } from './Header'
+import { PageTransition } from './PageTransition'
 import { CustomerNotifications } from '../account/CustomerNotifications'
 import { cn } from '../../lib/cn'
 
@@ -20,7 +21,9 @@ export function CustomerLayout() {
       <Header />
       {chatPage ? (
         <div className="fixed inset-x-0 top-[4.5rem] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </div>
       ) : (
       <div className={cn('mx-auto max-w-5xl px-4 pt-28 pb-28', profilePage && 'max-w-lg px-0')}>
@@ -36,7 +39,9 @@ export function CustomerLayout() {
           </NavLink>
         </nav>}
         {profilePage ? null : <CustomerNotifications />}
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </div>
       )}
     </div>

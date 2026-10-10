@@ -1,24 +1,25 @@
 {
+  "id": "/",
   "name": "Impérial Home",
   "short_name": "Impérial",
-  "description": "Résidences meublées à Douala",
-  "start_url": "/",
+  "description": "Résidences meublées et location de voiture à Douala",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#050505",
   "theme_color": "#050505",
   "lang": "fr",
+  "categories": ["travel", "lifestyle"],
   "icons": [
-    {
-      "src": "/brand/imperial-monogram.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "shortcuts": [
+    { "name": "Appartements", "url": "/properties", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Mes réservations", "url": "/account", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Location voiture", "url": "/cars", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
   ]
 }

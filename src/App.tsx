@@ -6,6 +6,8 @@ import { AppRouter } from './app/router'
 import { BrandIntro } from './components/brand/BrandIntro'
 import { LanguageDock } from './components/layout/LanguageDock'
 import { LiveDataSync } from './components/LiveDataSync'
+import { AppLock } from './components/AppLock'
+import { OfflineCache } from './components/OfflineCache'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +21,8 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>
+            <AppLock />
+            <OfflineCache />
             <LiveDataSync />
             <BrandIntro />
             <AppRouter />
