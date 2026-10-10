@@ -1,7 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Header } from './Header'
-import { AppTabBar } from './AppTabBar'
 import { CustomerNotifications } from '../account/CustomerNotifications'
 import { cn } from '../../lib/cn'
 
@@ -40,7 +39,6 @@ export function CustomerLayout() {
         <Outlet />
       </div>
       )}
-      <AppTabBar />
     </div>
   )
 }

@@ -39,6 +39,7 @@ import { AdminReviewsPage } from '../pages/admin/AdminReviewsPage'
 import { AdminVehiclesPage } from '../pages/admin/AdminVehiclesPage'
 import { HousingSheetEditorPage } from '../pages/shared/HousingSheetEditorPage'
 import { RequireAuth, RequireStaff } from './guards'
+import { AppShell } from '../components/layout/AppShell'
 
 function routerBasename() {
   const base = import.meta.env.BASE_URL
@@ -60,52 +61,54 @@ export function AppRouter() {
     <BrowserRouter basename={routerBasename()}>
       <ScrollToTop />
       <Routes>
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/favoris" element={<FavoritesPage />} />
-          <Route path="/properties" element={<PropertiesPage />} />
-          <Route path="/properties/map" element={<MapPage />} />
-          <Route path="/compare" element={<ComparePage />} />
-          <Route path="/properties/:slug" element={<PropertyDetailPage />} />
+        <Route element={<AppShell />}>
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/favoris" element={<FavoritesPage />} />
+            <Route path="/properties" element={<PropertiesPage />} />
+            <Route path="/properties/map" element={<MapPage />} />
+            <Route path="/compare" element={<ComparePage />} />
+            <Route path="/properties/:slug" element={<PropertyDetailPage />} />
+            <Route
+              path="/properties/:slug/book"
+              element={
+                <RequireAuth>
+                  <BookingPage />
+                </RequireAuth>
+              }
+            />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/cars" element={<CarsPage />} />
+            <Route path="/cars/:slug" element={<CarDetailPage />} />
+            <Route path="/login" element={<AuthPage mode="login" />} />
+            <Route path="/register" element={<AuthPage mode="register" />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+          <Route path="/fiche" element={<HousingSheetEditorPage role="guest" preview />} />
+          <Route path="/fiche-logement" element={<HousingSheetEditorPage role="guest" preview />} />
           <Route
-            path="/properties/:slug/book"
+            path="/account/reservations/:id/fiche"
             element={
               <RequireAuth>
-                <BookingPage />
+                <HousingSheetEditorPage role="guest" />
               </RequireAuth>
             }
           />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/cars" element={<CarsPage />} />
-          <Route path="/cars/:slug" element={<CarDetailPage />} />
-          <Route path="/login" element={<AuthPage mode="login" />} />
-          <Route path="/register" element={<AuthPage mode="register" />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-        <Route path="/fiche" element={<HousingSheetEditorPage role="guest" preview />} />
-        <Route path="/fiche-logement" element={<HousingSheetEditorPage role="guest" preview />} />
-        <Route
-          path="/account/reservations/:id/fiche"
-          element={
-            <RequireAuth>
-              <HousingSheetEditorPage role="guest" />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/account"
-          element={
-            <RequireAuth>
-              <CustomerLayout />
-            </RequireAuth>
-          }
-        >
-          <Route index element={<AccountReservationsPage />} />
-          <Route path="reservations/:id" element={<ReservationDetailPage />} />
-          <Route path="chat" element={<ChatPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route
+            path="/account"
+            element={
+              <RequireAuth>
+                <CustomerLayout />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<AccountReservationsPage />} />
+            <Route path="reservations/:id" element={<ReservationDetailPage />} />
+            <Route path="chat" element={<ChatPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
         </Route>
         <Route
           path="/admin"

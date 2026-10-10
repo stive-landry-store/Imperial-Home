@@ -4,7 +4,6 @@ import { Footer } from './Footer'
 import { WhatsAppFab } from './WhatsAppFab'
 import { ImperialAssistantFab } from '../assistant/ImperialAssistantFab'
 import { AssistantNotice } from './AssistantNotice'
-import { AppTabBar } from './AppTabBar'
 
 export function PublicLayout() {
   return (
@@ -17,7 +16,6 @@ export function PublicLayout() {
       <AssistantNotice />
       <ImperialAssistantFab />
       <WhatsAppFab />
-      <AppTabBar />
     </div>
   )
 }

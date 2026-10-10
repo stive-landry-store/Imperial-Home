@@ -20,8 +20,8 @@ export function AppTabBar() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-[45] border-t border-black/10 bg-[var(--tabbar-solid)]"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      className="fixed inset-x-0 bottom-0 z-[45] border-t border-[#d4af6a]/30 bg-[var(--tabbar-solid)]"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)', transform: 'translateZ(0)' }}
       aria-label={t('nav.menu')}
     >
       <div className="mx-auto flex max-w-lg">
