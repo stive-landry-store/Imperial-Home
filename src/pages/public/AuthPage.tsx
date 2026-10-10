@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { Input, Label } from '../../components/ui/Field'
@@ -16,9 +16,6 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const { theme } = useTheme()
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
-  const [params] = useSearchParams()
-  const requested = params.get('next')
-  const next = !requested || requested.startsWith('/account/profile') ? '/' : requested
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -38,10 +35,10 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
     try {
       if (mode === 'login') {
         await signIn(email, password)
-        navigate(next)
+        navigate('/', { replace: true })
       } else {
         await signUp({ email, password, full_name: fullName, phone })
-        navigate('/')
+        navigate('/', { replace: true })
       }
     } catch (err) {
       setError(formatLoginRegisterError(err, t, mode))
@@ -108,7 +105,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
         </Link>
       ) : null}
       <Link
-        to={mode === 'login' ? `/register?next=${encodeURIComponent(next)}` : `/login?next=${encodeURIComponent(next)}`}
+        to={mode === 'login' ? '/register' : '/login'}
         className="mt-3 block text-center text-sm text-[#d4af6a]"
       >
         {mode === 'login' ? t('auth.toRegister') : t('auth.toLogin')}
