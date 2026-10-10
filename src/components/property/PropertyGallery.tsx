@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { PropertyImage } from '../../types/database'
 import { localized } from '../../lib/format'
 import { cn } from '../../lib/cn'
 import { OptimizedImage } from '../ui/OptimizedImage'
+import { ZoomableImage } from '../ui/ZoomableImage'
 
 export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lang: string }) {
   const { t } = useTranslation()
@@ -49,37 +51,42 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
           ))}
         </div>
       ) : null}
-      {open ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" role="dialog">
-          <button type="button" className="absolute top-4 right-4 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={() => setOpen(false)}>
+      {open ? createPortal(
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black" role="dialog">
+          <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={() => setOpen(false)}>
             {t('common.cancel')}
           </button>
           {sorted.length > 1 ? (
             <button
               type="button"
-              className="absolute left-4 text-3xl text-[#d4af6a]"
+              className="absolute left-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]"
               onClick={() => setActive((index) => (index - 1 + sorted.length) % sorted.length)}
             >
               ‹
             </button>
           ) : null}
-          <OptimizedImage
-            src={current.url}
-            alt={localized(current.alt_en, current.alt_fr, lang)}
-            width={1600}
-            priority
-            className="max-h-[85svh] w-auto max-w-full object-contain"
+          <ZoomableImage
+            key={current.id}
+            src={current.url ?? ''}
+            alt={localized(current.alt_en, current.alt_fr, lang) || ''}
+            onSwipe={(direction) => setActive((index) => (index + direction + sorted.length) % sorted.length)}
           />
+          {sorted.length > 1 ? (
+            <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-[#ecd08a]">
+              {active + 1} / {sorted.length}
+            </p>
+          ) : null}
           {sorted.length > 1 ? (
             <button
               type="button"
-              className="absolute right-4 text-3xl text-[#d4af6a]"
+              className="absolute right-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]"
               onClick={() => setActive((index) => (index + 1) % sorted.length)}
             >
               ›
             </button>
           ) : null}
-        </div>
+        </div>,
+        document.body,
       ) : null}
     </div>
   )

@@ -39,6 +39,7 @@ import { AdminReviewsPage } from '../pages/admin/AdminReviewsPage'
 import { AdminVehiclesPage } from '../pages/admin/AdminVehiclesPage'
 import { HousingSheetEditorPage } from '../pages/shared/HousingSheetEditorPage'
 import { RequireAuth, RequireStaff } from './guards'
+import { AdminScanPage } from '../pages/admin/AdminScanPage'
 import { AppShell } from '../components/layout/AppShell'
 
 function routerBasename() {
@@ -133,6 +134,7 @@ export function AppRouter() {
           <Route path="turnover" element={<AdminTurnoverPage />} />
           <Route path="reviews" element={<AdminReviewsPage />} />
           <Route path="chat" element={<AdminChatPage />} />
+          <Route path="scan" element={<AdminScanPage />} />
           <Route path="admins" element={<AdminAdminsPage />} />
           <Route path="audit" element={<AdminAuditPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />

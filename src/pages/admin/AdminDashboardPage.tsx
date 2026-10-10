@@ -8,6 +8,7 @@ import { supabase } from '../../lib/supabase'
 import { todayIso } from '../../lib/availability'
 import { formatDate, formatXaf } from '../../lib/format'
 import { daysInMonth, nightsInMonth } from '../../lib/occupancy'
+import { AdminInsights } from '../../components/admin/AdminInsights'
 import { Button } from '../../components/ui/Button'
 import { SwipeRail } from '../../components/ui/SwipeRail'
 import { decisionErrorMessage, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
@@ -151,6 +152,8 @@ export function AdminDashboardPage() {
           </Link>
         ))}
       </SwipeRail>
+
+      <AdminInsights reservations={reservations} properties={properties} today={today} />
 
       <h2 className="mt-10 font-display text-2xl">{t('admin.pendingQueue')}</h2>
       <p className="mt-1 text-sm theme-muted">{t('admin.pendingQueueLead')}</p>

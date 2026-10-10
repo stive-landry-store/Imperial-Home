@@ -9,6 +9,7 @@ import { AvailabilityCalendar } from '../../components/booking/AvailabilityCalen
 import { ManualDate } from '../../components/booking/ManualDate'
 import { PriceBreakdown } from '../../components/property/PriceBreakdown'
 import { ReviewList } from '../../components/property/ReviewList'
+import { SimilarStays } from '../../components/property/SimilarStays'
 import { StayActions } from '../../components/property/StayActions'
 import { WaitlistForm } from '../../components/booking/WaitlistForm'
 import { Button } from '../../components/ui/Button'
@@ -274,6 +275,7 @@ export function PropertyDetailPage() {
             <ReviewList propertyId={property.id} />
           </div>
         </div>
+        <SimilarStays currentId={property.id} />
       </div>
     </div>
   )

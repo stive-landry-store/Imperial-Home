@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Camera, ChevronRight, Mail, MapPin, MessageCircle, Phone, Share2 } from 'lucide-react'
+import { Camera, ChevronRight, Gift, Mail, MapPin, MessageCircle, Phone, Share2 } from 'lucide-react'
 import { ProfileMenu } from '../../components/account/ProfileMenu'
 import { PhotoCropper } from '../../components/account/PhotoCropper'
 import { PhotoViewer } from '../../components/account/PhotoViewer'
@@ -101,6 +101,14 @@ export function ProfilePage() {
     await reloadProfile()
   }
 
+  async function invite() {
+    const result = await shareSite(window.location.origin, t('app.inviteText'))
+    if (result === 'copied') {
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1600)
+    }
+  }
+
   async function share() {
     const result = await shareSite()
     if (result === 'copied') {
@@ -188,6 +196,9 @@ export function ProfilePage() {
         <div className="mt-5 flex px-6">
           <RoundAction label={copied ? t('nav.copied') : t('account.shareAction')} onClick={() => void share()}>
             <Share2 className="h-5 w-5" />
+          </RoundAction>
+          <RoundAction label={t('app.invite')} onClick={() => void invite()}>
+            <Gift className="h-5 w-5" />
           </RoundAction>
           <Link to="/account/chat" className="flex min-w-0 flex-1 flex-col items-center gap-1 text-[13px] text-[#54656f] touch-manipulation">
             <span className="grid h-12 w-12 place-items-center rounded-full border border-black/10 bg-[#ffffff] text-[#111b21]">

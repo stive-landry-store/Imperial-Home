@@ -12,6 +12,7 @@ import { supabase } from '../../lib/supabase'
 import { Badge } from '../../components/ui/Badge'
 import { publishReview } from '../../lib/guest'
 import { downloadInvoice } from '../../lib/invoice'
+import { ReservationQr } from '../../components/account/ReservationQr'
 import { useMatricule } from '../../hooks/useMatricule'
 import { todayIso } from '../../lib/availability'
 import { Loader } from '../../components/ui/Loader'
@@ -74,6 +75,7 @@ export function ReservationDetailPage() {
           <p className="mt-2 text-sm">
             <Live text={localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)} />
           </p>
+          <ReservationQr reservationId={reservation.id} code={reservation.public_code} />
           <Button className="mt-4" variant="outline" onClick={() => void downloadInvoice(reservation, matricule)}>
             {t('plus.invoice')}
           </Button>
