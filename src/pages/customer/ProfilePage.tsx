@@ -196,7 +196,13 @@ export function ProfilePage() {
             <span className="truncate">{profile?.full_name || t('account.profile')}</span>
             {verified ? <VerifiedBadge className="h-5 w-5" title={t('admin.verified')} /> : null}
           </p>
-          <p className="mt-1 text-center text-[14px] text-[#667781]">{isStaff ? admin?.title || t('account.adminLine') : t('account.guestLine')}</p>
+          <p className="mt-1 text-center text-[14px] text-[#667781]">{profile?.role === 'super_admin'
+              ? t('menu.roleSuper')
+              : profile?.role === 'main_admin'
+                ? t('menu.roleMain')
+                : isStaff
+                  ? admin?.title || t('account.adminLine')
+                  : t('account.guestLine')}</p>
         </div>
         <div className="mt-5 flex px-6">
           <RoundAction label={copied ? t('nav.copied') : t('account.shareAction')} onClick={() => void share()}>

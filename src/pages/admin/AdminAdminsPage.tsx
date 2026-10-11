@@ -283,7 +283,9 @@ export function AdminAdminsPage() {
                     }}
                   />
                 ) : (
-                  <span className="text-sm text-muted">{row.title}</span>
+                  <span className="text-sm text-muted">
+                    {row.profiles.role === "admin" ? row.title : roleName(row.profiles.role)}
+                  </span>
                 )}
                 {canManage(row) ? (
                   <>

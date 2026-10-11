@@ -14,7 +14,7 @@ export async function promoteUserToMainAdmin(email: string, title: string) {
   if (!supabase) throw new Error('Supabase required')
   const { data, error } = await supabase.rpc('promote_user_to_main_admin', {
     p_email: email.trim(),
-    p_title: title.trim() || 'Administrateur principal',
+    p_title: title.trim() || 'Main admin',
   })
   if (error) throw error
   return data as string

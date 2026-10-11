@@ -35,7 +35,7 @@ export const fr: Messages = {
     about: 'À propos',
     roleCustomer: 'Client',
     roleAdmin: 'Compte admin',
-    roleMain: 'Administrateur principal',
+    roleMain: 'Main admin',
     roleSuper: 'Super administrateur',
   },
   place: {
@@ -465,7 +465,7 @@ export const fr: Messages = {
     adminAddMainHint: 'Réservé au super administrateur. Un administrateur principal peut ajouter et retirer les administrateurs simples.',
     adminPromoteMain: 'Nommer administrateur principal',
     roleSuper: 'Super administrateur',
-    roleMain: 'Administrateur principal',
+    roleMain: 'Main admin',
     roleAdmin: 'Administrateur',
     adminProtected: 'Protégé',
     adminAddHint: 'La personne doit déjà avoir un compte client avec cette adresse e-mail.',
