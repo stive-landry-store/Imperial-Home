@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { LANGUAGES, languageCode } from '../../lib/languages'
+import { LANGUAGES, languageCode, languageShort } from '../../lib/languages'
 import { cn } from '../../lib/cn'
 
 export function LanguageDock() {
@@ -57,15 +57,15 @@ export function LanguageDock() {
       ) : null}
       <button
         type="button"
-        className="inline-flex min-h-12 items-center gap-2 border border-[#c4a35a] bg-black/90 px-3 text-sm text-[#d4af6a] shadow-lg touch-manipulation"
+        className="inline-flex min-h-11 items-center gap-1.5 border border-[#c4a35a] bg-black/90 px-2.5 text-sm font-semibold text-[#d4af6a] shadow-lg touch-manipulation"
         aria-expanded={open}
-        aria-label={t('common.language')}
+        aria-label={`${t('common.language')}: ${current.label}`}
         onClick={() => setOpen((value) => !value)}
       >
         <span className="text-lg" aria-hidden>
           {current.flag}
         </span>
-        <span>{current.label}</span>
+        <span>{languageShort(current.code)}</span>
         <ChevronDown className={cn('h-4 w-4 transition', open && 'rotate-180')} />
       </button>
     </div>

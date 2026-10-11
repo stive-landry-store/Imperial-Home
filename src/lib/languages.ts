@@ -14,6 +14,12 @@ export const LANGUAGES = [
 
 export type LanguageCode = (typeof LANGUAGES)[number]['code']
 
+/** Short label for the floating button: "Fr", "En", "Zh". */
+export function languageShort(code: string) {
+  const base = code.toLowerCase().split('-')[0]
+  return base.charAt(0).toUpperCase() + base.slice(1)
+}
+
 export function languageCode(language: string): LanguageCode {
   const base = language.toLowerCase().split('-')[0]
   return LANGUAGES.some((item) => item.code === base) ? (base as LanguageCode) : 'en'
