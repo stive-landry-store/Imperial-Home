@@ -2,6 +2,16 @@ export type InstallEvent = Event & { prompt: () => Promise<void>; userChoice: Pr
 
 let deferred: InstallEvent | null = null
 
+const INSTALLED_KEY = 'ih-app-installed'
+
+function markInstalled() {
+  try {
+    localStorage.setItem(INSTALLED_KEY, '1')
+  } catch {
+    /* ignore */
+  }
+}
+
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault()
@@ -9,10 +19,13 @@ if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event('ih-install-available'))
   })
   window.addEventListener('appinstalled', () => {
+    markInstalled()
     deferred = null
     window.dispatchEvent(new Event('ih-install-available'))
   })
 }
+
+if (typeof window !== 'undefined') isAppInstalled()
 
 export function installEvent() {
   return deferred
@@ -20,6 +33,19 @@ export function installEvent() {
 
 export function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
+}
+
+/** True when the app runs from the home screen, or when it was installed earlier on this device. */
+export function isAppInstalled() {
+  if (isStandalone()) {
+    markInstalled()
+    return true
+  }
+  try {
+    return localStorage.getItem(INSTALLED_KEY) === '1'
+  } catch {
+    return false
+  }
 }
 
 export function isIos() {

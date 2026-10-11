@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom'
 import { ChevronRight, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../lib/cn'
-import { devicePlatform, isStandalone } from '../../lib/installPrompt'
+import { devicePlatform, isAppInstalled } from '../../lib/installPrompt'
 
 export function GetAppCard({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
   const { t } = useTranslation()
+  if (isAppInstalled()) return null
   const platform = devicePlatform()
-  const subtitle = isStandalone() ? t('app.forInstalled') : platform === 'ios' ? t('app.forIphone') : platform === 'android' ? t('app.forAndroid') : t('app.forPhone')
+  const subtitle = platform === 'ios' ? t('app.forIphone') : platform === 'android' ? t('app.forAndroid') : t('app.forPhone')
 
   return (
     <Link

@@ -8,6 +8,7 @@ import { whatsappUrl } from '../../lib/whatsapp'
 import { ImperialLogo } from '../brand/Logo'
 import { SocialLinks } from './SocialLinks'
 import { Live } from '../i18n/Live'
+import { isAppInstalled } from '../../lib/installPrompt'
 
 export function Footer() {
   const { t } = useTranslation()
@@ -37,9 +38,11 @@ export function Footer() {
       <div className="gold-line" />
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-10 md:flex-row md:justify-between md:px-6">
         <ImperialLogo light />
-        <Link to="/installer" className="rounded-full border border-[#d4af6a]/60 px-5 py-2 text-sm tracking-[0.14em] uppercase">
-          {t('app.guideTitle')}
-        </Link>
+        {isAppInstalled() ? null : (
+          <Link to="/installer" className="rounded-full border border-[#d4af6a]/60 px-5 py-2 text-sm tracking-[0.14em] uppercase">
+            {t('app.guideTitle')}
+          </Link>
+        )}
         <div className="text-center text-base md:text-right">
           <a className="block hover:text-gold-light" href={whatsappUrl(config?.whatsapp ?? '237674092263')}>
             {config?.phone}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Download, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { devicePlatform, installEvent, isStandalone } from '../../lib/installPrompt'
+import { devicePlatform, installEvent, isAppInstalled } from '../../lib/installPrompt'
 
 const KEY = 'ih-install-dismissed'
 const DAYS = 14
@@ -15,7 +15,7 @@ export function InstallPrompt() {
   const [native, setNative] = useState(() => Boolean(installEvent()))
 
   useEffect(() => {
-    if (isStandalone()) return
+    if (isAppInstalled()) return
     try {
       const dismissed = Number(localStorage.getItem(KEY) ?? 0)
       if (Date.now() - dismissed < DAYS * 86_400_000) return
