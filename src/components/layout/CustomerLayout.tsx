@@ -21,7 +21,7 @@ export function CustomerLayout() {
       <Header />
       {chatPage ? (
         <div className="fixed inset-x-0 top-[4.5rem] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30">
-          <PageTransition>
+          <PageTransition className="h-full">
             <Outlet />
           </PageTransition>
         </div>

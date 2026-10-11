@@ -31,6 +31,7 @@ export function ImperialAssistantFab() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [pending, setPending] = useState(false)
+  const [sending, setSending] = useState(false)
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       id: 'welcome',
@@ -102,6 +103,8 @@ export function ImperialAssistantFab() {
       navigate('/login')
       return
     }
+    if (sending) return
+    setSending(true)
     const client = supabase
     const { data: existing } = await client
       .from('conversations')
@@ -116,16 +119,33 @@ export function ImperialAssistantFab() {
       const { data: created } = await client.from('conversations').insert({ customer_id: user.id, needs_human: true }).select('id').single()
       id = created?.id
     }
-    if (!id) return
-    await client.from('messages').insert({
-      conversation_id: id,
-      sender_id: user.id,
-      role: 'customer',
-      body: prompt || t('assistant.unknown'),
-    })
-    await client.from('conversations').update({ needs_human: true }).eq('id', id)
+    if (!id) {
+      setSending(false)
+      return
+    }
+    const text = prompt || t('assistant.unknown')
+    const since = new Date(Date.now() - 2 * 60 * 1000).toISOString()
+    const { data: duplicate } = await client
+      .from('messages')
+      .select('id')
+      .eq('conversation_id', id)
+      .eq('role', 'customer')
+      .eq('body', text)
+      .gte('created_at', since)
+      .limit(1)
+      .maybeSingle()
+    if (!duplicate) {
+      await client.from('messages').insert({
+        conversation_id: id,
+        sender_id: user.id,
+        role: 'customer',
+        body: text,
+      })
+      await client.from('conversations').update({ needs_human: true, last_message_at: new Date().toISOString() }).eq('id', id)
+    }
+    setSending(false)
     setOpen(false)
-    navigate('/account/chat')
+    navigate('/account/chat', { state: { open: id } })
   }
 
   function onPick(file: File | null) {
@@ -177,7 +197,8 @@ export function ImperialAssistantFab() {
                     <div className="mt-3 flex flex-col gap-2">
                       <button
                         type="button"
-                        className="min-h-11 bg-[#c4a35a] px-3 text-sm text-black touch-manipulation"
+                        disabled={sending}
+                        className="min-h-11 bg-[#c4a35a] px-3 text-sm text-black touch-manipulation disabled:opacity-60"
                         onClick={() => void writeHuman(m.prompt || '')}
                       >
                         {t('assistant.writeHuman')}

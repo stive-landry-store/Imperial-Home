@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ChatInbox, type InboxRow } from '../../components/chat/ChatInbox'
 import { ChatThread, type Bubble } from '../../components/chat/ChatThread'
@@ -18,10 +19,12 @@ type Recent = Pick<Message, 'id' | 'conversation_id' | 'body' | 'role' | 'create
 }
 
 const opening = new Map<string, Promise<void>>()
+const NEW_ASSISTANCE = '__assistance__'
 
 export function ChatPage() {
   const { t, i18n } = useTranslation()
   const { user } = useAuth()
+  const location = useLocation()
   const { data: config } = useSiteConfig()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [recent, setRecent] = useState<Recent[]>([])
@@ -31,6 +34,10 @@ export function ChatPage() {
   const [body, setBody] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [seenTick, setSeenTick] = useState(0)
+  useEffect(() => {
+    const target = (location.state as { open?: string } | null)?.open
+    if (target) setActive(target)
+  }, [location.state])
   const phone = config?.phone || config?.whatsapp || '237674092263'
 
   useEffect(() => {
@@ -174,7 +181,9 @@ export function ChatPage() {
 
   const rows = useMemo(() => {
     const list = conversations.filter((item) => (archived ? item.status === 'closed' || item.status === 'archived' : item.status !== 'closed' && item.status !== 'archived'))
-    return list.map((item) => {
+    const mainId = archived ? null : list.find((item) => item.status === 'open')?.id ?? null
+    const ordered = mainId ? [...list].sort((a, b) => Number(b.id === mainId) - Number(a.id === mainId)) : list
+    const built = ordered.map((item) => {
       const last = recent.find((note) => note.conversation_id === item.id)
       const seen = chatSeen(item.id)
       const unread = recent.filter(
@@ -182,10 +191,12 @@ export function ChatPage() {
       ).length
       const photo = Boolean(last?.message_attachments?.length)
       const preview = last ? visibleMessage(last.body, t).trim() : ''
+      const main = item.id === mainId
       const row: InboxRow = {
         id: item.id,
-        title: 'Imperial Home',
-        preview: preview || (photo ? t('chat.photo') : t('chat.emptyPreview')),
+        title: main ? t('chat.assistanceTitle') : 'Imperial Home',
+        pinned: main,
+        preview: preview || (photo ? t('chat.photo') : main ? t('chat.assistanceHint') : t('chat.emptyPreview')),
         at: last?.created_at || item.last_message_at || item.created_at,
         mark: true,
         unread,
@@ -194,7 +205,33 @@ export function ChatPage() {
       }
       return row
     })
+    if (!archived && !mainId) {
+      built.unshift({
+        id: NEW_ASSISTANCE,
+        title: t('chat.assistanceTitle'),
+        preview: t('chat.assistanceHint'),
+        at: null,
+        mark: true,
+        unread: 0,
+        ring: true,
+        pinned: true,
+      })
+    }
+    return built
   }, [archived, conversations, recent, seenTick, t])
+
+  async function openRow(id: string) {
+    if (id !== NEW_ASSISTANCE) {
+      setActive(id)
+      return
+    }
+    if (!supabase || !user) return
+    const { data } = await supabase.from('conversations').insert({ customer_id: user.id }).select('id').single()
+    if (data?.id) {
+      setConversations((prev) => [data as Conversation, ...prev])
+      setActive(data.id as string)
+    }
+  }
 
   if (!isSupabaseConfigured()) {
     return (
@@ -224,13 +261,13 @@ export function ChatPage() {
           locale={i18n.language}
           photoLabel={t('chat.photo')}
           onArchived={() => setArchived((value) => !value)}
-          onOpen={setActive}
+          onOpen={(id) => void openRow(id)}
         />
       </aside>
       <section className={cn('h-full min-h-0 min-w-0 flex-1', !active && 'hidden md:block')}>
         {active ? (
           <ChatThread
-            title="Imperial Home"
+            title={t('chat.assistanceTitle')}
             subtitle={t('chat.reception')}
             mark
             messages={messages}
