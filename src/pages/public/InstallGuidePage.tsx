@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { Check, Download, EllipsisVertical, Maximize, Share, SquarePlus, WifiOff, Zap } from 'lucide-react'
 import { cn } from '../../lib/cn'
+import { shareSite } from '../../lib/social'
 import { devicePlatform, installEvent, isStandalone } from '../../lib/installPrompt'
 import { offlineReadyAt, warmOfflineData } from '../../lib/offlinePrefetch'
 
@@ -106,6 +107,14 @@ export function InstallGuidePage() {
             {busy ? '…' : t('app.offlineRefresh')}
           </button>
         </div>
+
+        <button
+          type="button"
+          onClick={() => void shareSite(`${window.location.origin}/installer`, t('app.inviteText'))}
+          className="mt-3 min-h-11 w-full rounded-full border border-[#d4af6a]/60 text-sm text-[#d4af6a]"
+        >
+          {t('app.guideShare')}
+        </button>
 
         <h2 className="mt-8 text-xl font-semibold">{t('app.guideSteps')}</h2>
         <p className="mt-2 text-sm text-[#d4af6a]">

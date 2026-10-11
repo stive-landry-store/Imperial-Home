@@ -6,9 +6,8 @@ import { devicePlatform, isStandalone } from '../../lib/installPrompt'
 
 export function GetAppCard({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
   const { t } = useTranslation()
-  if (isStandalone()) return null
   const platform = devicePlatform()
-  const subtitle = platform === 'ios' ? t('app.forIphone') : platform === 'android' ? t('app.forAndroid') : t('app.forPhone')
+  const subtitle = isStandalone() ? t('app.forInstalled') : platform === 'ios' ? t('app.forIphone') : platform === 'android' ? t('app.forAndroid') : t('app.forPhone')
 
   return (
     <Link

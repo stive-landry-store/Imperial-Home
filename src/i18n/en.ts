@@ -504,6 +504,8 @@ export const en = {
     dow: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   },
   app: {
+    guideShare: "Send the download link to a friend",
+    forInstalled: "Already installed: see the guide and share it with friends",
     forIphone: "For iPhone and iPad: 3 quick steps",
     forAndroid: "For Android: one tap",
     forPhone: "On your phone, like a real app",
@@ -513,7 +515,7 @@ export const en = {
     detectedAndroid: "Android detected",
     detectedDesktop: "Open this site on your phone to install the app.",
     otherPhone: "Another phone?",
-    guideTitle: "Get the app",
+    guideTitle: "Download the app",
     guideSub: "Imperial Home on your home screen",
     guideLead: "Add Imperial Home to your home screen and open it in one tap, like a real app.",
     guideInstalled: "You are already using the app.",

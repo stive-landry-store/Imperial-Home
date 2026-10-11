@@ -507,6 +507,8 @@ export const fr: Messages = {
     dow: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
   },
   app: {
+    guideShare: "Envoyer le lien de téléchargement à un proche",
+    forInstalled: "Déjà installée : voir le guide et le partager à vos proches",
     forIphone: "Pour iPhone et iPad : installation en 3 étapes",
     forAndroid: "Pour Android : installation en 1 geste",
     forPhone: "Sur votre téléphone, comme une vraie application",
@@ -516,7 +518,7 @@ export const fr: Messages = {
     detectedAndroid: "Android détecté",
     detectedDesktop: "Ouvrez ce site sur votre téléphone pour installer l’application.",
     otherPhone: "Vous avez un autre téléphone ?",
-    guideTitle: "Obtenir l’application",
+    guideTitle: "Télécharger l’application",
     guideSub: "Imperial Home sur votre écran d’accueil",
     guideLead: "Ajoutez Imperial Home à votre écran d’accueil et ouvrez-le d’un seul geste, comme une vraie application.",
     guideInstalled: "Vous utilisez déjà l’application.",
