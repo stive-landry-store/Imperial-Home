@@ -47,11 +47,12 @@ export function AppFeatures() {
         disabled={!notifOk}
         onClick={() => {
           if (notif) {
-            disableNotifications()
+            void disableNotifications()
             setNotif(false)
           } else void enableNotifications().then(setNotif)
         }}
       />
+      {notifOk && Notification.permission === 'denied' ? <p className="px-3 pb-2 text-xs theme-muted">{t('app.pushBlocked')}</p> : null}
       <Row
         icon={<Fingerprint className="h-5 w-5" />}
         label={t('app.lockTitle')}

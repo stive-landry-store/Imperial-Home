@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import type { Session, User } from '@supabase/supabase-js'
 import { authRedirectUrl } from '../lib/authRedirect'
 import { supabase } from '../lib/supabase'
+import { forgetPushOnThisDevice } from '../lib/systemNotifications'
 import { fetchProfile } from '../lib/data'
 import type { AdminProfile, PermissionKey, Profile } from '../types/database'
 
@@ -163,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       signOut: async () => {
         await logActivity('logout')
+        await forgetPushOnThisDevice()
         clearSessionStarted()
         await supabase?.auth.signOut()
       },

@@ -35,6 +35,7 @@ import { AdminChatPage } from '../pages/admin/AdminChatPage'
 import { AdminAdminsPage } from '../pages/admin/AdminAdminsPage'
 import { ActivityTracker } from '../components/ActivityTracker'
 import { IncomingToast } from '../components/IncomingToast'
+import { PushPrompt } from '../components/PushPrompt'
 import { AdminActivityPage } from '../pages/admin/AdminActivityPage'
 import { AdminAuditPage } from '../pages/admin/AdminAuditPage'
 import { AdminSettingsPage } from '../pages/admin/AdminSettingsPage'
@@ -67,6 +68,7 @@ export function AppRouter() {
       <ScrollToTop />
       <ActivityTracker />
       <IncomingToast />
+      <PushPrompt />
       <Routes>
         <Route element={<AppShell />}>
           <Route element={<PublicLayout />}>

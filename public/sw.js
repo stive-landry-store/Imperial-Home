@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v4'
+const CACHE = 'imperial-home-v5'
 const IMAGES = 'imperial-home-images-v1'
 const FONTS = 'imperial-home-fonts-v1'
 const KEEP = [CACHE, IMAGES, FONTS]
@@ -159,6 +159,8 @@ self.addEventListener('push', (event) => {
       badge: '/icon-192.png',
       data: { link: data.link || '/' },
       actions: data.actions || [],
+      tag: data.tag || undefined,
+      renotify: Boolean(data.tag),
       vibrate: [80, 40, 80],
     }),
   )
