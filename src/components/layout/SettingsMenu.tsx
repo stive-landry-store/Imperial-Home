@@ -34,7 +34,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
   const [copied, setCopied] = useState(false)
   const currentLanguage = languageCode(i18n.language)
   const roleLabel =
-    profile?.role === 'main_admin' ? t('menu.roleMain') : profile?.role === 'admin' ? t('menu.roleAdmin') : t('menu.roleCustomer')
+    profile?.role === 'super_admin' ? t('menu.roleSuper') : profile?.role === 'main_admin' ? t('menu.roleMain') : profile?.role === 'admin' ? t('menu.roleAdmin') : t('menu.roleCustomer')
   const menuItems = [
     { to: user ? '/account/profile' : '/login', label: t('account.myAccount'), icon: UserRound },
     { to: user ? '/account' : '/login?next=/account', label: t('nav.reservations'), icon: CalendarDays },

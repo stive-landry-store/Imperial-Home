@@ -1,4 +1,4 @@
-export type UserRole = 'customer' | 'admin' | 'main_admin'
+export type UserRole = 'customer' | 'admin' | 'main_admin' | 'super_admin'
 export type PropertyStatus = 'draft' | 'published' | 'unpublished' | 'archived'
 export type ReservationStatus =
   | 'pending'

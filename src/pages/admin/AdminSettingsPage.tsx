@@ -40,7 +40,7 @@ export function AdminSettingsPage() {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const isMainAdmin = profile?.role === 'main_admin'
+  const isMainAdmin = profile?.role === 'main_admin' || profile?.role === 'super_admin'
   const canSave = Boolean(supabase && profile && (profile.role === 'admin' || isMainAdmin))
 
   useEffect(() => {

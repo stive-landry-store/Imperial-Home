@@ -10,6 +10,16 @@ export async function promoteUserToAdmin(email: string, title: string) {
   return data as string
 }
 
+export async function promoteUserToMainAdmin(email: string, title: string) {
+  if (!supabase) throw new Error('Supabase required')
+  const { data, error } = await supabase.rpc('promote_user_to_main_admin', {
+    p_email: email.trim(),
+    p_title: title.trim() || 'Administrateur principal',
+  })
+  if (error) throw error
+  return data as string
+}
+
 export async function deactivateAdmin(userId: string) {
   if (!supabase) throw new Error('Supabase required')
   const { error } = await supabase.rpc('deactivate_admin', { p_user_id: userId })

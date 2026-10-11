@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const nextProfile = await fetchProfile(userId)
       if (cancelled) return
       setProfile(nextProfile)
-      if (nextProfile && (nextProfile.role === 'admin' || nextProfile.role === 'main_admin') && supabase) {
+      if (nextProfile && (nextProfile.role === 'admin' || nextProfile.role === 'main_admin' || nextProfile.role === 'super_admin') && supabase) {
         const { data: adminRow } = await supabase.from('admin_profiles').select('*').eq('id', userId).maybeSingle()
         const { data: perms } = await supabase.from('admin_permissions').select('permission').eq('admin_id', userId)
         if (!cancelled) {
@@ -101,8 +101,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       profile,
       admin,
       permissions,
-      isStaff: profile?.role === 'admin' || profile?.role === 'main_admin',
-      hasPermission: (key) => profile?.role === 'main_admin' || permissions.includes(key),
+      isStaff: profile?.role === 'admin' || profile?.role === 'main_admin' || profile?.role === 'super_admin',
+      hasPermission: (key) => profile?.role === 'main_admin' || profile?.role === 'super_admin' || permissions.includes(key),
       signIn: async (email, password) => {
         if (!supabase) throw new Error('Supabase is not configured')
         const client = supabase

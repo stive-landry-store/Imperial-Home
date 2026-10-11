@@ -61,7 +61,7 @@ export function ProfilePage() {
   const [viewer, setViewer] = useState<'avatar' | 'cover' | null>(null)
   const avatarInput = useRef<HTMLInputElement>(null)
   const coverInput = useRef<HTMLInputElement>(null)
-  const verified = Boolean(isStaff && (admin?.is_verified || profile?.role === 'admin' || profile?.role === 'main_admin'))
+  const verified = Boolean(isStaff && (admin?.is_verified || profile?.role === 'admin' || profile?.role === 'main_admin' || profile?.role === 'super_admin'))
   const { data: referral } = useQuery({ queryKey: ['referral'], queryFn: fetchReferral })
   const stays = useQuery({ queryKey: ['my-reservations'], queryFn: fetchMyReservations })
   const cars = useQuery({
