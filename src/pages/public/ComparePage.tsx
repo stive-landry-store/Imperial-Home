@@ -26,7 +26,7 @@ export function ComparePage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto max-w-6xl px-4 pt-36 pb-24">
         <Helmet>
-          <title>{t('plus.compareTitle')} | Impérial Home</title>
+          <title>{`${t('plus.compareTitle')} | Impérial Home`}</title>
         </Helmet>
         <h1 className="font-display text-5xl">{t('plus.compareTitle')}</h1>
         {isLoading ? <Skeleton className="mt-8 h-40" /> : null}

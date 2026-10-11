@@ -16,7 +16,7 @@ export function AdminReviewsPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('admin.reviewsAdmin')} | Imperial Home</title>
+        <title>{`${t('admin.reviewsAdmin')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.reviewsAdmin')}</h1>
       <ul className="mt-8 space-y-3">

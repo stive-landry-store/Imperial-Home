@@ -168,7 +168,7 @@ export function AdminVehiclesPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('admin.vehicles')} | Impérial Home</title>
+        <title>{`${t('admin.vehicles')} | Impérial Home`}</title>
       </Helmet>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-4xl">{t('admin.vehicles')}</h1>

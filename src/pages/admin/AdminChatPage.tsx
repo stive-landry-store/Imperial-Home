@@ -164,7 +164,7 @@ export function AdminChatPage() {
   return (
     <div className="ih-chat flex h-full min-h-0 flex-1 bg-[#0b0b0c]">
       <Helmet>
-        <title>{t('chat.discussions')} | Impérial Home</title>
+        <title>{`${t('chat.discussions')} | Impérial Home`}</title>
       </Helmet>
       <aside className={cn('h-full min-h-0 w-full md:w-[340px] md:shrink-0 md:border-r md:border-[#d4af6a]/25', active && 'hidden md:block')}>
         <ChatInbox

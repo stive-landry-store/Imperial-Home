@@ -173,7 +173,7 @@ export function AdminSettingsPage() {
   return (
     <div className="p-6 md:p-10">
       <Helmet>
-        <title>{t('admin.settings')} | Impérial Home</title>
+        <title>{`${t('admin.settings')} | Impérial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.settings')}</h1>
       {!isSupabaseConfigured() ? (

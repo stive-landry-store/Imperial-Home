@@ -586,7 +586,7 @@ export function PropertyFormPage() {
 
       <Helmet>
 
-        <title>{isNew ? t('admin.roomNew') : form.name} | Impérial Home</title>
+        <title>{`${isNew ? t('admin.roomNew') : form.name} | Impérial Home`}</title>
 
       </Helmet>
 

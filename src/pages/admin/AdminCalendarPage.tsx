@@ -66,7 +66,7 @@ export function AdminCalendarPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('admin.calendar')} | Imperial Home</title>
+        <title>{`${t('admin.calendar')} | Imperial Home`}</title>
       </Helmet>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>

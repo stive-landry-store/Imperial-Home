@@ -115,7 +115,7 @@ export function CarDetailPage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 pt-32 pb-28 md:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] md:px-6">
         <Helmet>
-          <title>{title} | Impérial Home</title>
+          <title>{`${title} | Impérial Home`}</title>
         </Helmet>
         <div className="min-w-0 max-w-full">
           <Link to="/cars" className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">

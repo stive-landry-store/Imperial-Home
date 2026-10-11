@@ -74,7 +74,7 @@ export function AdminScanPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('app.scanTitle')} | Imperial Home</title>
+        <title>{`${t('app.scanTitle')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-3xl md:text-4xl">{t('app.scanTitle')}</h1>
       <p className="mt-2 text-sm text-muted">{t('app.scanLead')}</p>

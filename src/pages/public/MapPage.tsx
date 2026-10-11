@@ -16,7 +16,7 @@ export function MapPage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto max-w-6xl px-4 pt-36 pb-24">
         <Helmet>
-          <title>{t('nav.map')} | Impérial Home</title>
+          <title>{`${t('nav.map')} | Impérial Home`}</title>
           <meta name="description" content={t('plus.mapLead')} />
         </Helmet>
         <h1 className="text-2xl font-semibold">{t('nav.map')}</h1>

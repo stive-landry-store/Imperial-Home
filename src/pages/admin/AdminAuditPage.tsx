@@ -18,7 +18,7 @@ export function AdminAuditPage() {
   return (
     <div className="p-6 md:p-10">
       <Helmet>
-        <title>{t('admin.audit')} | Imperial Home</title>
+        <title>{`${t('admin.audit')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.audit')}</h1>
       <ul className="surface-light mt-8 divide-y divide-line border border-line text-base">

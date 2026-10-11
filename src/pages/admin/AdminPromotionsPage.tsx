@@ -106,7 +106,7 @@ export function AdminPromotionsPage() {
 
       <Helmet>
 
-        <title>{t('admin.promotions')} | Imperial Home</title>
+        <title>{`${t('admin.promotions')} | Imperial Home`}</title>
 
       </Helmet>
 

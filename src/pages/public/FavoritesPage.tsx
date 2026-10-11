@@ -35,7 +35,7 @@ export function FavoritesPage() {
   return (
     <div className="theme-page mx-auto max-w-6xl px-4 pt-24 pb-8 md:px-6">
       <Helmet>
-        <title>{t('nav.favorites')} | Impérial Home</title>
+        <title>{`${t('nav.favorites')} | Impérial Home`}</title>
       </Helmet>
       <h1 className="text-2xl font-semibold">{t('nav.favorites')}</h1>
       {empty ? <p className="mt-6 text-sm theme-muted">{t('account.favoritesEmpty')}</p> : null}

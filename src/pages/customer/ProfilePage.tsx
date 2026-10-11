@@ -124,7 +124,7 @@ export function ProfilePage() {
   return (
     <div className="ih-profile bg-[#f0f2f5] pb-8 text-[#111b21]">
       <Helmet>
-        <title>{t('account.profile')} | Impérial Home</title>
+        <title>{`${t('account.profile')} | Impérial Home`}</title>
       </Helmet>
       <div className="flex items-center justify-between bg-[#ffffff] px-4 py-3">
         <p className="text-[17px] font-semibold">{t('account.profile')}</p>

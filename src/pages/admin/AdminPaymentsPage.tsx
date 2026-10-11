@@ -36,7 +36,7 @@ export function AdminPaymentsPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('admin.payments')} | Imperial Home</title>
+        <title>{`${t('admin.payments')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.payments')}</h1>
       <ul className="surface-light mt-8 divide-y divide-line border border-line">

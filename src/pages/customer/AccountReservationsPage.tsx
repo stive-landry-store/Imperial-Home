@@ -37,7 +37,7 @@ export function AccountReservationsPage() {
   return (
     <div>
       <Helmet>
-        <title>{t('account.title')} | Imperial Home</title>
+        <title>{`${t('account.title')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('account.title')}</h1>
       {isLoading ? <Loader size="md" /> : null}

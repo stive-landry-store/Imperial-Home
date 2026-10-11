@@ -30,12 +30,10 @@ export function Header() {
 
   const [title, setTitle] = useState('')
   useEffect(() => {
-    const element = document.querySelector('title')
-    if (!element) return
     const read = () => setTitle(document.title.split('|')[0].trim())
     read()
     const observer = new MutationObserver(read)
-    observer.observe(element, { childList: true, characterData: true, subtree: true })
+    observer.observe(document.head, { childList: true, characterData: true, subtree: true })
     return () => observer.disconnect()
   }, [location.pathname])
 

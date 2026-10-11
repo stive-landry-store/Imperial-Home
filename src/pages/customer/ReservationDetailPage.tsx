@@ -50,7 +50,7 @@ export function ReservationDetailPage() {
   return (
     <div>
       <Helmet>
-        <title>{reservation.public_code} | Imperial Home</title>
+        <title>{`${reservation.public_code} | Imperial Home`}</title>
       </Helmet>
       <p className="text-xs uppercase tracking-[0.18em] text-gold">{reservation.public_code}</p>
       <h1 className="mt-2 font-display text-4xl">{reservation.properties?.name}</h1>

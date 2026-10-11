@@ -38,7 +38,7 @@ export function AdminReservationDetailPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{r.public_code} | Imperial Home</title>
+        <title>{`${r.public_code} | Imperial Home`}</title>
       </Helmet>
       {decideNow ? (
         <div className="mb-6 border border-[#d4af6a] p-4">

@@ -22,7 +22,7 @@ export function AdminTurnoverPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('admin.turnover')} | Imperial Home</title>
+        <title>{`${t('admin.turnover')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.turnover')}</h1>
       <p className="mt-2 text-sm theme-muted">{t('plus.turnoverLead')}</p>

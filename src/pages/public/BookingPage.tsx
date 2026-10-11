@@ -90,7 +90,7 @@ export function BookingPage() {
   return (
     <div className="mx-auto max-w-xl px-4 pt-36 pb-20">
       <Helmet>
-        <title>{t('booking.title')} | Imperial Home</title>
+        <title>{`${t('booking.title')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('booking.title')}</h1>
       <p className="mt-2 theme-muted">{property.name}</p>

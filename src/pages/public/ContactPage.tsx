@@ -17,7 +17,7 @@ export function ContactPage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto max-w-3xl px-4 pt-36 pb-24">
         <Helmet>
-          <title>{t('contact.title')} | Impérial Home</title>
+          <title>{`${t('contact.title')} | Impérial Home`}</title>
         </Helmet>
         <ImperialLogo light={theme === 'dark'} />
         <h1 className="mt-8 text-2xl font-semibold">{t('contact.title')}</h1>

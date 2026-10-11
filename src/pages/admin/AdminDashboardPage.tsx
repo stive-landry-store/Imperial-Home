@@ -127,7 +127,7 @@ export function AdminDashboardPage() {
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
-        <title>{t('admin.dashboard')} | Imperial Home</title>
+        <title>{`${t('admin.dashboard')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-3xl md:text-4xl">{t('admin.dashboard')}</h1>
 

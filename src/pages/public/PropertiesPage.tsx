@@ -51,7 +51,7 @@ export function PropertiesPage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto max-w-6xl px-4 pt-36 pb-24 md:px-6">
         <Helmet>
-          <title>{t('properties.title')} | Impérial Home</title>
+          <title>{`${t('properties.title')} | Impérial Home`}</title>
           <meta name="description" content={t('properties.lead')} />
         </Helmet>
         <div className="flex flex-wrap items-end justify-between gap-4">

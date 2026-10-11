@@ -68,7 +68,7 @@ export function ResetPasswordPage() {
   return (
     <div className="theme-page mx-auto max-w-md px-4 pt-36 pb-20">
       <Helmet>
-        <title>{t('auth.resetTitle')} | Imperial Home</title>
+        <title>{`${t('auth.resetTitle')} | Imperial Home`}</title>
       </Helmet>
       <ImperialLogo compact light={theme === 'dark'} />
       <h1 className="mt-8 font-display text-4xl">{t('auth.resetTitle')}</h1>

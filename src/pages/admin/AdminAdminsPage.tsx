@@ -97,7 +97,7 @@ export function AdminAdminsPage() {
   return (
     <div className="p-6 md:p-10">
       <Helmet>
-        <title>{t('admin.admins')} | Imperial Home</title>
+        <title>{`${t('admin.admins')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.admins')}</h1>
       <p className="mt-2 max-w-2xl text-base theme-muted">{t('admin.adminsLead')}</p>
