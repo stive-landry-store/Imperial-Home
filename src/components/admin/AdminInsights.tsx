@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { fetchTurnover } from '../../lib/guest'
 import { useTranslation } from 'react-i18next'
 import { LogIn, LogOut } from 'lucide-react'
 import { formatDate, formatXaf } from '../../lib/format'
@@ -21,6 +23,7 @@ function Person({ r }: { r: Reservation }) {
 
 export function AdminInsights({ reservations, properties, today }: { reservations: Reservation[]; properties: Property[]; today: string }) {
   const { t } = useTranslation()
+  const { data: tasks = [] } = useQuery({ queryKey: ['turnover'], queryFn: fetchTurnover })
   const paid = reservations.filter((r) => r.status === 'confirmed' || r.status === 'completed')
   const arrivals = reservations.filter((r) => r.check_in === today && r.status === 'confirmed')
   const departures = reservations.filter((r) => r.check_out === today && r.status === 'confirmed')
@@ -46,12 +49,34 @@ export function AdminInsights({ reservations, properties, today }: { reservation
     })
     .sort((a, b) => b.revenue - a.revenue)
 
+  const monthKey = today.slice(0, 7)
+  const monthRevenue = paid.filter((r) => r.check_in.startsWith(monthKey)).reduce((sum, r) => sum + r.total_amount_xaf, 0)
+  const monthDays = daysInMonth(now.getFullYear(), now.getMonth())
+  const nightsBooked = paid.reduce((sum, r) => sum + nightsInMonth(r.check_in, r.check_out, now.getFullYear(), now.getMonth()), 0)
+  const occupancyAll = properties.length ? Math.round((nightsBooked / (monthDays * properties.length)) * 100) : 0
+  const pendingCount = reservations.filter((r) => r.status === 'pending' || r.status === 'payment_processing').length
+  const cleaningTodo = tasks.filter((task) => !task.done_at && task.due_on <= today).length
+  const kpis = [
+    { label: t('app.kpiMonth'), value: formatXaf(monthRevenue), to: '/admin/reservations' },
+    { label: t('app.kpiOccupancy'), value: `${Math.min(100, occupancyAll)} %`, to: '/admin/calendar' },
+    { label: t('app.kpiPending'), value: String(pendingCount), to: '/admin/reservations' },
+    { label: t('app.kpiCleaning'), value: String(cleaningTodo), to: '/admin/turnover' },
+  ]
+
   const W = 320
   const H = 140
   const bar = W / revenue.length
 
   return (
     <div className="mt-8 grid gap-5 lg:grid-cols-2">
+      <section className="grid grid-cols-2 gap-3 lg:col-span-2 lg:grid-cols-4">
+        {kpis.map((kpi) => (
+          <Link key={kpi.label} to={kpi.to} className="surface-light border border-line p-4">
+            <p className="text-xs tracking-[0.12em] text-muted uppercase">{kpi.label}</p>
+            <p className="mt-2 font-display text-2xl text-[#8b6f32]">{kpi.value}</p>
+          </Link>
+        ))}
+      </section>
       <section>
         <h2 className="font-display text-2xl">{t('app.today')}</h2>
         <div className="surface-light mt-3 overflow-hidden border border-line">

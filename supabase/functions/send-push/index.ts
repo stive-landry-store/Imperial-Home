@@ -23,7 +23,18 @@ Deno.serve(async (request) => {
   const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
   const { data } = await db.from('push_subscriptions').select('endpoint, subscription').eq('user_id', record.user_id)
 
-  const message = JSON.stringify({ title: record.title, body: record.body ?? '', link: record.link ?? '/account' })
+  const isNewBooking = (record.link ?? '').startsWith('/admin/reservations/') && record.title === 'Nouvelle réservation'
+  const message = JSON.stringify({
+    title: record.title,
+    body: record.body ?? '',
+    link: record.link ?? '/account',
+    actions: isNewBooking
+      ? [
+          { action: 'confirm', title: 'Accepter' },
+          { action: 'decline', title: 'Refuser' },
+        ]
+      : [],
+  })
   await Promise.all(
     (data ?? []).map(async (row) => {
       try {

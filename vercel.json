@@ -5,6 +5,11 @@
       "has": [{ "type": "header", "key": "user-agent", "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview|Googlebot|bingbot).*" }],
       "destination": "/api/og?slug=:slug"
     },
+    {
+      "source": "/cars/:slug",
+      "has": [{ "type": "header", "key": "user-agent", "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview|Googlebot|bingbot).*" }],
+      "destination": "/api/og?kind=car&slug=:slug"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

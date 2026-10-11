@@ -166,3 +166,34 @@ export async function fetchIcal(token: string) {
   if (error) return null
   return typeof data === 'string' ? data : null
 }
+
+export async function scheduleCleaning(input: {
+  reservationId: string
+  date: string
+  time: string
+  note?: string
+  taskId?: string
+}) {
+  if (!supabase) throw new Error('Connect Supabase first.')
+  const { error } = await supabase.rpc('schedule_cleaning', {
+    p_reservation_id: input.reservationId,
+    p_date: input.date,
+    p_time: input.time,
+    p_note: input.note?.trim() || null,
+    p_task_id: input.taskId ?? null,
+  })
+  if (error) throw error
+}
+
+export async function fetchRatings(): Promise<Record<string, { average: number; count: number }>> {
+  if (!supabase) return {}
+  const { data, error } = await supabase.from('reviews').select('property_id, rating').eq('status', 'published')
+  if (error) return {}
+  const totals: Record<string, { sum: number; count: number }> = {}
+  for (const row of (data as { property_id: string; rating: number }[]) ?? []) {
+    const entry = (totals[row.property_id] ??= { sum: 0, count: 0 })
+    entry.sum += row.rating
+    entry.count += 1
+  }
+  return Object.fromEntries(Object.entries(totals).map(([id, v]) => [id, { average: v.sum / v.count, count: v.count }]))
+}

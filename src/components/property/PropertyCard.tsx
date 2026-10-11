@@ -6,6 +6,8 @@ import { IMPERIAL_HOME } from '../../lib/house'
 import { coverImage, formatXaf, localized } from '../../lib/format'
 import { OptimizedImage } from '../ui/OptimizedImage'
 import { StayActions } from './StayActions'
+import { useQuery } from '@tanstack/react-query'
+import { fetchRatings } from '../../lib/guest'
 
 export function PropertyCard({
   property,
@@ -18,6 +20,8 @@ export function PropertyCard({
   query?: string
 }) {
   const { t } = useTranslation()
+  const { data: ratings } = useQuery({ queryKey: ['reviews', 'ratings'], queryFn: fetchRatings, staleTime: 120_000 })
+  const rating = ratings?.[property.id]
   const image = coverImage(property.property_images)
   const amenityNames = (property.property_amenities ?? [])
     .map((a) => localized(a.amenities.name_en, a.amenities.name_fr, lang))
@@ -36,6 +40,11 @@ export function PropertyCard({
           <p className="text-base font-semibold">
             <Live text={property.name} />
           </p>
+          {rating ? (
+            <p className="mt-0.5 text-sm text-[#d4af6a]">
+              ★ {rating.average.toFixed(1)} <span className="theme-muted">({rating.count})</span>
+            </p>
+          ) : null}
           <p className="mt-0.5 text-sm theme-muted">
             {IMPERIAL_HOME.neighborhood}, {IMPERIAL_HOME.city}
           </p>

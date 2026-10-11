@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v2'
+const CACHE = 'imperial-home-v3'
 const SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png', '/brand/imperial-monogram.png']
 
 self.addEventListener('install', (event) => {
@@ -64,6 +64,7 @@ self.addEventListener('push', (event) => {
       icon: '/icon-192.png',
       badge: '/icon-192.png',
       data: { link: data.link || '/' },
+      actions: data.actions || [],
       vibrate: [80, 40, 80],
     }),
   )
@@ -71,7 +72,10 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
-  const link = (event.notification.data && event.notification.data.link) || '/'
+  let link = (event.notification.data && event.notification.data.link) || '/'
+  if (event.action === 'confirm' || event.action === 'decline') {
+    link += (link.includes('?') ? '&' : '?') + 'do=' + event.action
+  }
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
       for (const client of clients) {

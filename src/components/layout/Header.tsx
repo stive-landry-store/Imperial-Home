@@ -28,6 +28,17 @@ export function Header() {
 
   useEffect(() => setOpen(false), [location.pathname])
 
+  const [title, setTitle] = useState('')
+  useEffect(() => {
+    const element = document.querySelector('title')
+    if (!element) return
+    const read = () => setTitle(document.title.split('|')[0].trim())
+    read()
+    const observer = new MutationObserver(read)
+    observer.observe(element, { childList: true, characterData: true, subtree: true })
+    return () => observer.disconnect()
+  }, [location.pathname])
+
   const links = [
     { to: '/properties', label: t('nav.residences') },
     { to: '/properties/map', label: t('nav.map') },
@@ -63,7 +74,10 @@ export function Header() {
           >
             {open ? <X /> : <Menu />}
           </button>
-          <Link to="/" className="origin-left scale-90">
+          {isDetail && title ? (
+            <span className="min-w-0 max-w-[42vw] truncate font-display text-lg tracking-wide lg:hidden">{title}</span>
+          ) : null}
+          <Link to="/" className={cn('origin-left scale-90', isDetail && title ? 'hidden lg:block' : '')}>
             <ImperialLogo light={theme === 'dark'} compact />
           </Link>
         </div>

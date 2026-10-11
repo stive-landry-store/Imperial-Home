@@ -30,6 +30,20 @@ export default async function handler(req, res) {
           .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order)[0]
         if (cover) image = cover.url
       }
+    } else {
+      const { data } = await supabase
+        .from('vehicles')
+        .select('brand, model, description_fr, vehicle_media (url, media_type, sort_order)')
+        .eq('slug', slug)
+        .maybeSingle()
+      if (data) {
+        title = `${data.brand} ${data.model} | Impérial Home`
+        description = (data.description_fr || 'Location de voiture à Douala').slice(0, 180)
+        const photo = [...(data.vehicle_media ?? [])]
+          .filter((m) => m.media_type !== 'video')
+          .sort((a, b) => a.sort_order - b.sort_order)[0]
+        if (photo) image = photo.url
+      }
     }
   }
 

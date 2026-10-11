@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +7,7 @@ import { formatDate, formatXaf } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
 import { Loader } from '../../components/ui/Loader'
+import { CleaningNotice } from '../../components/admin/CleaningNotice'
 import {
   decisionErrorMessage,
   isPendingReservation,
@@ -16,6 +17,7 @@ import {
 export function AdminReservationDetailPage() {
   const { id = '' } = useParams()
   const { t } = useTranslation()
+  const [params] = useSearchParams()
   const client = useQueryClient()
   const { data: r } = useQuery({ queryKey: ['reservation', id], queryFn: () => fetchReservation(id) })
   const { confirm, reject } = useAdminReservationActions()
@@ -30,12 +32,27 @@ export function AdminReservationDetailPage() {
 
   if (!r) return <Loader size="lg" fill />
   const canDecide = isPendingReservation(r.status)
+  const decideNow = canDecide && params.get('do')
+  const canNotifyCleaning = r.status === 'confirmed' || r.status === 'completed'
 
   return (
     <div className="px-4 py-5 md:p-10">
       <Helmet>
         <title>{r.public_code} | Imperial Home</title>
       </Helmet>
+      {decideNow ? (
+        <div className="mb-6 border border-[#d4af6a] p-4">
+          <p className="font-display text-xl">{t('app.newBooking')}</p>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <Button onClick={() => confirm.mutate(id)} disabled={confirm.isPending}>
+              {t('app.acceptNow')}
+            </Button>
+            <Button variant="outline" onClick={() => reject.mutate(id)} disabled={reject.isPending}>
+              {t('app.declineNow')}
+            </Button>
+          </div>
+        </div>
+      ) : null}
       <p className="text-xs uppercase tracking-[0.16em] text-gold">{r.public_code}</p>
       <h1 className="mt-2 font-display text-4xl">{r.properties?.name}</h1>
       <div className="mt-3">
@@ -96,6 +113,7 @@ export function AdminReservationDetailPage() {
           </Button>
         </div>
       ) : null}
+      {canNotifyCleaning ? <CleaningNotice reservationId={id} defaultDate={r.check_out} /> : null}
       {r.status !== 'cancelled' && r.status !== 'completed' ? (
         <div className="mt-6">
           <Button variant="ghost" onClick={() => cancel.mutate()} disabled={cancel.isPending}>

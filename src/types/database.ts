@@ -213,6 +213,8 @@ export type TurnoverTask = {
   property_id: string
   title: string
   due_on: string
+  scheduled_time?: string | null
+  notified_at?: string | null
   done_at: string | null
   reservations?: { public_code: string }
   properties?: { name: string }

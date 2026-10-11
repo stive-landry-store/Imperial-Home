@@ -13,7 +13,7 @@ export function CleaningStatus({ reservationId }: { reservationId: string }) {
       if (!supabase) return []
       const { data, error } = await supabase
         .from('turnover_tasks')
-        .select('id, reservation_id, property_id, title, due_on, done_at')
+        .select('*')
         .eq('reservation_id', reservationId)
         .order('due_on')
       if (error) return []
@@ -30,7 +30,7 @@ export function CleaningStatus({ reservationId }: { reservationId: string }) {
           <li key={task.id} className="flex items-center justify-between gap-3">
             <span>{task.title}</span>
             <span className={task.done_at ? 'text-emerald-600' : 'theme-muted'}>
-              {task.done_at ? t('app.cleaningDone') : `${t('app.cleaningPlanned')} ${formatDate(task.due_on)}`}
+              {task.done_at ? t('app.cleaningDone') : `${t('app.cleaningPlanned')} ${formatDate(task.due_on)}${task.scheduled_time ? ` ${t('app.cleaningAt')} ${task.scheduled_time.slice(0, 5)}` : ''}`}
             </span>
           </li>
         ))}
