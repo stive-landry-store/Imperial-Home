@@ -18,6 +18,7 @@ export function LanguageDock() {
 
   return (
     <div
+      data-lang-dock
       className="fixed z-50"
       style={{
         left: 'max(0.75rem, env(safe-area-inset-left))',

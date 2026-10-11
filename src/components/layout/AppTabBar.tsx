@@ -20,6 +20,7 @@ export function AppTabBar() {
 
   return (
     <nav
+      data-tabbar
       className="fixed inset-x-0 bottom-0 z-[45] border-t border-[#d4af6a]/30 bg-[var(--tabbar-solid)]"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)', transform: 'translateZ(0)' }}
       aria-label={t('nav.menu')}

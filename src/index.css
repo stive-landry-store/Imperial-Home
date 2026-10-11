@@ -564,3 +564,23 @@ html {
     user-select: text;
   }
 }
+
+/* Phones and tablets: 16px fields stop iOS Safari from zooming the page on focus. */
+@media (pointer: coarse) {
+  input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='range']),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+  /* The on-screen keyboard needs the room: floating bars step aside while typing and inside a chat thread. */
+  html.ih-typing [data-tabbar],
+  html.ih-typing [data-lang-dock] {
+    display: none;
+  }
+  html.ih-thread-open [data-lang-dock] {
+    display: none;
+  }
+  html.ih-typing .ih-chat-frame {
+    bottom: 0;
+  }
+}

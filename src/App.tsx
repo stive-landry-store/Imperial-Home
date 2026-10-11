@@ -10,6 +10,7 @@ import { AppLock } from './components/AppLock'
 import { OfflineCache } from './components/OfflineCache'
 import { ReferralTracker } from './components/ReferralTracker'
 import { OfflinePrefetch } from './components/OfflinePrefetch'
+import { TypingState } from './components/TypingState'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,7 @@ export default function App() {
             <OfflineCache />
             <ReferralTracker />
             <OfflinePrefetch />
+            <TypingState />
             <LiveDataSync />
             <BrandIntro />
             <AppRouter />

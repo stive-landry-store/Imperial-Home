@@ -65,6 +65,11 @@ export function ChatThread({
   const [preview, setPreview] = useState<string | null>(null)
 
   useEffect(() => {
+    document.documentElement.classList.add('ih-thread-open')
+    return () => document.documentElement.classList.remove('ih-thread-open')
+  }, [])
+
+  useEffect(() => {
     bottom.current?.scrollIntoView({ block: 'end' })
   }, [messages, file])
 

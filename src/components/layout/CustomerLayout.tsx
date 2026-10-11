@@ -20,7 +20,7 @@ export function CustomerLayout() {
     <div className="admin-main theme-page min-h-svh">
       <Header />
       {chatPage ? (
-        <div className="fixed inset-x-0 top-[4.5rem] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30">
+        <div className="ih-chat-frame fixed inset-x-0 top-[4.5rem] bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30">
           <PageTransition className="h-full">
             <Outlet />
           </PageTransition>
