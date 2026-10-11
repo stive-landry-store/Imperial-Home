@@ -7,6 +7,8 @@ import { markNotificationRead } from '../lib/data'
 import { haptic } from '../lib/haptics'
 import { supabase } from '../lib/supabase'
 
+const TOAST_MS = 1500
+
 type Incoming = { id: string; title: string; body: string | null; link: string | null }
 
 export function IncomingToast() {
@@ -31,7 +33,7 @@ export function IncomingToast() {
         setItem({ id: row.id, title: row.title, body: row.body, link: row.link })
         haptic(30)
         window.clearTimeout(timer.current)
-        timer.current = window.setTimeout(() => setItem(null), 8000)
+        timer.current = window.setTimeout(() => setItem(null), TOAST_MS)
       })
       .subscribe()
     return () => {
