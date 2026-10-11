@@ -507,6 +507,10 @@ export const fr: Messages = {
     dow: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
   },
   app: {
+    wifiTitle: "Wi-Fi du logement",
+    wifiName: "Nom du Wi-Fi",
+    wifiPassword: "Mot de passe",
+    wifiSeeSheet: "Voir ma fiche logement",
     guideShare: "Envoyer le lien de téléchargement à un proche",
     forInstalled: "Déjà installée : voir le guide et le partager à vos proches",
     forIphone: "Pour iPhone et iPad : installation en 3 étapes",

@@ -11,6 +11,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabase'
 import { Badge } from '../../components/ui/Badge'
 import { ReviewForm } from '../../components/property/ReviewForm'
+import { WifiCard } from '../../components/account/WifiCard'
 import { CleaningStatus } from '../../components/account/CleaningStatus'
 import { downloadInvoice } from '../../lib/invoice'
 import { ReservationQr } from '../../components/account/ReservationQr'
@@ -74,6 +75,7 @@ export function ReservationDetailPage() {
           <p className="mt-2 text-sm">
             <Live text={localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)} />
           </p>
+          <WifiCard reservationId={reservation.id} />
           <CleaningStatus reservationId={reservation.id} />
           <ReservationQr reservationId={reservation.id} code={reservation.public_code} />
           <Button className="mt-4" variant="outline" onClick={() => void downloadInvoice(reservation, matricule)}>

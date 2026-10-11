@@ -82,16 +82,21 @@ export function HousingSheetEditorPage({
       }
       if (!revealWifi) {
         sheet = { ...sheet, wifi_name: '', wifi_password: '' }
-      } else if (!sheet.wifi_password && supabase && reservation?.property_id) {
-        const { data: secrets } = await supabase
-          .from('property_welcome_secrets')
-          .select('wifi_name, wifi_password')
-          .eq('property_id', reservation.property_id)
-          .maybeSingle()
+      } else if ((!sheet.wifi_password || !sheet.wifi_name) && supabase && reservationId !== 'template') {
+        const { data: wifi } = await supabase.rpc('guest_wifi', { p_reservation_id: reservationId })
+        let secrets = wifi as { wifi_name?: string; wifi_password?: string } | null
+        if (!secrets && reservation?.property_id) {
+          const { data: row } = await supabase
+            .from('property_welcome_secrets')
+            .select('wifi_name, wifi_password')
+            .eq('property_id', reservation.property_id)
+            .maybeSingle()
+          secrets = row
+        }
         sheet = {
           ...sheet,
           wifi_name: sheet.wifi_name || secrets?.wifi_name || '',
-          wifi_password: secrets?.wifi_password || '',
+          wifi_password: sheet.wifi_password || secrets?.wifi_password || '',
         }
       }
       if (!cancelled) setData(sheet)

@@ -504,6 +504,10 @@ export const en = {
     dow: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
   },
   app: {
+    wifiTitle: "Home Wi-Fi",
+    wifiName: "Wi-Fi name",
+    wifiPassword: "Password",
+    wifiSeeSheet: "See my housing sheet",
     guideShare: "Send the download link to a friend",
     forInstalled: "Already installed: see the guide and share it with friends",
     forIphone: "For iPhone and iPad: 3 quick steps",
