@@ -1,4 +1,5 @@
 import { useRef, useState, type ReactNode } from 'react'
+import { GetAppCard } from '../../components/layout/GetAppCard'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useQuery } from '@tanstack/react-query'
@@ -212,6 +213,8 @@ export function ProfilePage() {
           </Link>
         </div>
       </section>
+
+      <GetAppCard className="mx-3 mt-3" />
 
       {referral && referral.code ? (
         <section className="mx-3 mt-3 rounded-xl bg-[#ffffff] px-4 py-3 text-[#111b21]">

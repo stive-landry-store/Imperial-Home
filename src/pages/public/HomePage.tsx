@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { GetAppCard } from '../../components/layout/GetAppCard'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Phone, Shield, Sparkles, Wifi } from 'lucide-react'
@@ -84,6 +85,10 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      <div className="theme-page px-4 pt-6 empty:hidden md:hidden">
+        <GetAppCard />
+      </div>
 
       <section className="theme-alt border-y border-black/10">
         <div className="mx-auto grid max-w-6xl grid-cols-4 md:px-6">

@@ -25,3 +25,12 @@ export function isStandalone() {
 export function isIos() {
   return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 }
+
+export type DevicePlatform = 'ios' | 'android' | 'desktop'
+
+export function devicePlatform(): DevicePlatform {
+  if (typeof navigator === 'undefined') return 'desktop'
+  if (isIos()) return 'ios'
+  if (/android/i.test(navigator.userAgent)) return 'android'
+  return 'desktop'
+}

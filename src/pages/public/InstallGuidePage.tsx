@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { Check, Download, EllipsisVertical, Maximize, Share, SquarePlus, WifiOff, Zap } from 'lucide-react'
 import { cn } from '../../lib/cn'
-import { installEvent, isIos, isStandalone } from '../../lib/installPrompt'
+import { devicePlatform, installEvent, isStandalone } from '../../lib/installPrompt'
 import { offlineReadyAt, warmOfflineData } from '../../lib/offlinePrefetch'
 
 type Platform = 'ios' | 'android'
@@ -34,7 +34,9 @@ function Benefit({ icon, title, text }: { icon: React.ReactNode; title: string; 
 export function InstallGuidePage() {
   const { t } = useTranslation()
   const client = useQueryClient()
-  const [platform, setPlatform] = useState<Platform>(() => (isIos() ? 'ios' : 'android'))
+  const detected = devicePlatform()
+  const [platform, setPlatform] = useState<Platform>(detected === 'android' ? 'android' : 'ios')
+  const [showOther, setShowOther] = useState(false)
   const [canInstall, setCanInstall] = useState(() => Boolean(installEvent()))
   const [readyAt, setReadyAt] = useState(() => offlineReadyAt())
   const [busy, setBusy] = useState(false)
@@ -106,20 +108,25 @@ export function InstallGuidePage() {
         </div>
 
         <h2 className="mt-8 text-xl font-semibold">{t('app.guideSteps')}</h2>
-        <div className="mt-3 grid grid-cols-2 gap-1 rounded-full border border-[#d4af6a]/30 p-1" role="tablist">
-          {(['ios', 'android'] as const).map((value) => (
-            <button
-              key={value}
-              type="button"
-              role="tab"
-              aria-selected={platform === value}
-              onClick={() => setPlatform(value)}
-              className={cn('min-h-10 rounded-full text-sm', platform === value ? 'bg-[#d4af6a] font-semibold text-black' : 'text-[#d4af6a]')}
-            >
-              {value === 'ios' ? 'iPhone / iPad' : 'Android'}
-            </button>
-          ))}
-        </div>
+        <p className="mt-2 text-sm text-[#d4af6a]">
+          {detected === 'ios' ? t('app.detectedIos') : detected === 'android' ? t('app.detectedAndroid') : t('app.detectedDesktop')}
+        </p>
+        {detected === 'desktop' || showOther ? (
+          <div className="mt-3 grid grid-cols-2 gap-1 rounded-full border border-[#d4af6a]/30 p-1" role="tablist">
+            {(['ios', 'android'] as const).map((value) => (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={platform === value}
+                onClick={() => setPlatform(value)}
+                className={cn('min-h-10 rounded-full text-sm', platform === value ? 'bg-[#d4af6a] font-semibold text-black' : 'text-[#d4af6a]')}
+              >
+                {value === 'ios' ? 'iPhone / iPad' : 'Android'}
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         {platform === 'android' && canInstall ? (
           <button
@@ -148,6 +155,12 @@ export function InstallGuidePage() {
             <Step n={3} text={t('app.androidStep3')} icon={<Check className="h-5 w-5" />} />
           </ol>
         )}
+
+        {detected !== 'desktop' && !showOther ? (
+          <button type="button" className="mt-4 text-sm text-[#d4af6a] underline" onClick={() => setShowOther(true)}>
+            {t('app.otherPhone')}
+          </button>
+        ) : null}
 
         <ul className="theme-card mt-6 divide-y divide-[#d4af6a]/20 overflow-hidden rounded-2xl">
           <Benefit icon={<Zap className="h-5 w-5" />} title={t('app.benefit1')} text={t('app.benefit1Text')} />

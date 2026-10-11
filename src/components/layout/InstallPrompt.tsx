@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Download, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { installEvent, isIos, isStandalone } from '../../lib/installPrompt'
+import { devicePlatform, installEvent, isStandalone } from '../../lib/installPrompt'
 
 const KEY = 'ih-install-dismissed'
 const DAYS = 14
@@ -11,6 +11,7 @@ export function InstallPrompt() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [show, setShow] = useState(false)
+  const platform = devicePlatform()
   const [native, setNative] = useState(() => Boolean(installEvent()))
 
   useEffect(() => {
@@ -23,10 +24,10 @@ export function InstallPrompt() {
     }
     const sync = () => setNative(Boolean(installEvent()))
     window.addEventListener('ih-install-available', sync)
-    const mobile = isIos() || /android/i.test(navigator.userAgent)
+    const mobile = devicePlatform() !== 'desktop'
     const timer = window.setTimeout(() => {
       if (mobile || installEvent()) setShow(true)
-    }, 12_000)
+    }, 6_000)
     const installed = () => setShow(false)
     window.addEventListener('appinstalled', installed)
     return () => {
@@ -71,7 +72,7 @@ export function InstallPrompt() {
       <div className="flex items-center gap-3">
         <img src={`${import.meta.env.BASE_URL}icon-192.png`} alt="" className="h-12 w-12 rounded-xl" />
         <div className="min-w-0">
-          <p className="font-display text-base text-[#ecd08a]">{t('app.installTitle')}</p>
+          <p className="font-display text-base text-[#ecd08a]">{platform === 'ios' ? t('app.installIos') : platform === 'android' ? t('app.installAndroid') : t('app.installTitle')}</p>
           <p className="text-xs text-[#a89f90]">{t('app.installLead')}</p>
         </div>
       </div>
