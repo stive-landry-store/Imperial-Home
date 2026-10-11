@@ -4,6 +4,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useMatricule } from '../../hooks/useMatricule'
 import { useTranslation } from 'react-i18next'
+import { PropertyVideo } from '../../components/property/PropertyVideo'
 import { PropertyGallery } from '../../components/property/PropertyGallery'
 import { AvailabilityCalendar } from '../../components/booking/AvailabilityCalendar'
 import { ManualDate } from '../../components/booking/ManualDate'
@@ -141,6 +142,7 @@ export function PropertyDetailPage() {
           </script>
         </Helmet>
         <PropertyGallery images={property.property_images ?? []} lang={i18n.language} />
+        {property.video_url ? <PropertyVideo url={property.video_url} /> : null}
         <div className="mt-8 max-w-3xl">
           <div>
             <p className="text-[13px] tracking-[0.28em] text-[#d4af6a] uppercase">{t('properties.houseLabel')}</p>

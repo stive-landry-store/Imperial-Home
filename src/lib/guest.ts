@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { compressPhoto } from './compressImage'
 import type { Review, StayService, TurnoverTask, WaitlistEntry } from '../types/database'
 
 function quiet<T>(value: T) {
@@ -16,7 +17,7 @@ export async function fetchPublishedReviews(propertyId: string): Promise<Review[
   if (!supabase) return []
   const { data, error } = await supabase
     .from('reviews')
-    .select('id, property_id, reservation_id, customer_id, rating, body, status, created_at')
+    .select('*')
     .eq('property_id', propertyId)
     .eq('status', 'published')
     .order('created_at', { ascending: false })
@@ -37,9 +38,22 @@ export async function publishReview(input: {
   customerId: string
   rating: number
   body: string
+  photos?: File[]
 }) {
   if (!supabase) throw new Error('Connect Supabase first.')
+  const urls: string[] = []
+  for (const file of (input.photos ?? []).slice(0, 4)) {
+    const photo = await compressPhoto(file, 1400, 0.82)
+    const path = `${input.customerId}/${input.reservationId}-${urls.length}-${Date.now()}.jpg`
+    const { error: uploadError } = await supabase.storage.from('review-photos').upload(path, photo, {
+      contentType: 'image/jpeg',
+      cacheControl: '31536000',
+    })
+    if (uploadError) throw uploadError
+    urls.push(supabase.storage.from('review-photos').getPublicUrl(path).data.publicUrl)
+  }
   const { error } = await supabase.from('reviews').insert({
+    ...(urls.length ? { photos: urls } : {}),
     property_id: input.propertyId,
     reservation_id: input.reservationId,
     customer_id: input.customerId,

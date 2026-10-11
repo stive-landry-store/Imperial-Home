@@ -10,7 +10,8 @@ import { Live } from '../../components/i18n/Live'
 import { useAuth } from '../../hooks/useAuth'
 import { supabase } from '../../lib/supabase'
 import { Badge } from '../../components/ui/Badge'
-import { publishReview } from '../../lib/guest'
+import { ReviewForm } from '../../components/property/ReviewForm'
+import { CleaningStatus } from '../../components/account/CleaningStatus'
 import { downloadInvoice } from '../../lib/invoice'
 import { ReservationQr } from '../../components/account/ReservationQr'
 import { useMatricule } from '../../hooks/useMatricule'
@@ -22,8 +23,6 @@ export function ReservationDetailPage() {
   const { t, i18n } = useTranslation()
   const client = useQueryClient()
   const { user } = useAuth()
-  const [rating, setRating] = useState(5)
-  const [review, setReview] = useState('')
   const [reviewed, setReviewed] = useState(false)
   const cancel = useMutation({
     mutationFn: () => cancelReservation(id, 'Cancelled by customer'),
@@ -75,6 +74,7 @@ export function ReservationDetailPage() {
           <p className="mt-2 text-sm">
             <Live text={localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)} />
           </p>
+          <CleaningStatus reservationId={reservation.id} />
           <ReservationQr reservationId={reservation.id} code={reservation.public_code} />
           <Button className="mt-4" variant="outline" onClick={() => void downloadInvoice(reservation, matricule)}>
             {t('plus.invoice')}
@@ -95,25 +95,12 @@ export function ReservationDetailPage() {
       reservation.check_out <= todayIso() &&
       user &&
       !reviewed ? (
-        <form
-          className="theme-card mt-8 space-y-3 p-6"
-          onSubmit={(event) => {
-            event.preventDefault()
-            void publishReview({
-              propertyId: reservation.property_id,
-              reservationId: reservation.id,
-              customerId: user.id,
-              rating,
-              body: review,
-            }).then(() => setReviewed(true))
-          }}
-        >
-          <h2 className="font-display text-2xl">{t('plus.reviewTitle')}</h2>
-          <p className="text-sm theme-muted">{t('plus.reviewLead')}</p>
-          <input type="number" min={1} max={5} value={rating} onChange={(e) => setRating(Number(e.target.value))} className="w-24 border border-line bg-transparent px-2 py-2" />
-          <textarea required minLength={8} value={review} onChange={(e) => setReview(e.target.value)} className="w-full border border-line bg-transparent px-3 py-2" rows={4} />
-          <Button type="submit">{t('plus.reviewSend')}</Button>
-        </form>
+        <ReviewForm
+          propertyId={reservation.property_id}
+          reservationId={reservation.id}
+          customerId={user.id}
+          onDone={() => setReviewed(true)}
+        />
       ) : null}
       {reviewed ? <p className="mt-4 text-sm text-emerald-700">{t('plus.reviewThanks')}</p> : null}
 

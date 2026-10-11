@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { VehicleMedia } from '../../lib/vehicles'
 import { cn } from '../../lib/cn'
+import { ZoomableImage } from '../ui/ZoomableImage'
 
 function sortedMedia(media: VehicleMedia[]) {
   return [...media].sort((a, b) => a.sort_order - b.sort_order)
@@ -77,33 +79,41 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
       <p className="mt-2 text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
         {items.length} {items.length > 1 ? t('cars.photos') : t('cars.photo')}
       </p>
-      {open ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 p-4"
-          role="dialog"
-          onClick={() => setOpen(false)}
-        >
-          <button type="button" className="absolute top-4 left-4 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={() => setOpen(false)}>
-            {t('common.cancel')}
-          </button>
-          <div className="max-h-[85svh] max-w-5xl" onClick={(event) => event.stopPropagation()}>
-            <Frame item={current} className="max-h-[85svh] object-contain" />
-            {items.length > 1 ? (
-              <div className="mt-4 flex items-center justify-center gap-6">
-                <button type="button" className="text-3xl text-[#d4af6a]" onClick={() => setActive((index) => (index - 1 + items.length) % items.length)}>
+      {open
+        ? createPortal(
+            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black" role="dialog">
+              <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={() => setOpen(false)}>
+                {t('common.cancel')}
+              </button>
+              {items.length > 1 ? (
+                <button type="button" className="absolute left-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]" onClick={() => setActive((index) => (index - 1 + items.length) % items.length)}>
                   ‹
                 </button>
-                <span className="text-sm text-[#d4af6a]">
-                  {active + 1} / {items.length}
-                </span>
-                <button type="button" className="text-3xl text-[#d4af6a]" onClick={() => setActive((index) => (index + 1) % items.length)}>
-                  ›
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      ) : null}
+              ) : null}
+              {current.media_type === 'video' ? (
+                <video key={current.id} src={current.url} className="max-h-[85svh] max-w-full" controls playsInline autoPlay />
+              ) : (
+                <ZoomableImage
+                  key={current.id}
+                  src={current.url}
+                  alt={title}
+                  onSwipe={(direction) => setActive((index) => (index + direction + items.length) % items.length)}
+                />
+              )}
+              {items.length > 1 ? (
+                <>
+                  <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-[#ecd08a]">
+                    {active + 1} / {items.length}
+                  </p>
+                  <button type="button" className="absolute right-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]" onClick={() => setActive((index) => (index + 1) % items.length)}>
+                    ›
+                  </button>
+                </>
+              ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   )
 }

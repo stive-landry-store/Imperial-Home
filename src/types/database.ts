@@ -81,6 +81,7 @@ export type Property = {
   guide_en?: string | null
   access_notes_fr?: string | null
   access_notes_en?: string | null
+  video_url?: string | null
   ical_token?: string | null
   recommendations_en: string | null
   recommendations_fr: string | null
@@ -188,6 +189,7 @@ export type Review = {
   customer_id: string
   rating: number
   body: string
+  photos?: string[] | null
   status: 'published' | 'hidden'
   created_at: string
 }

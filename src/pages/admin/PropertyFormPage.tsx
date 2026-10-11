@@ -18,6 +18,7 @@ import {
 } from '../../lib/propertyImages'
 import type { PropertyImage, PropertyStatus } from '../../types/database'
 import { Loader } from '../../components/ui/Loader'
+import { uploadSiteVideo } from '../../lib/siteAssets'
 
 type RoomForm = {
 
@@ -56,6 +57,8 @@ type RoomForm = {
   guide_fr: string
 
   guide_en: string
+
+  video_url: string
 
   access_notes_fr: string
 
@@ -109,6 +112,8 @@ const empty: RoomForm = {
 
   guide_en: '',
 
+  video_url: '',
+
   access_notes_fr: '',
 
   access_notes_en: '',
@@ -148,6 +153,8 @@ export function PropertyFormPage() {
   const [createPendingFiles, setCreatePendingFiles] = useState<File[]>([])
 
   const [error, setError] = useState<string | null>(null)
+  const [videoBusy, setVideoBusy] = useState(false)
+  const [existingVideo, setExistingVideo] = useState(false)
 
   const [saving, setSaving] = useState(false)
 
@@ -162,6 +169,8 @@ export function PropertyFormPage() {
     void fetchPropertyById(id!).then((p) => {
 
       if (!p) return
+
+      setExistingVideo('video_url' in p)
 
       setForm({
 
@@ -200,6 +209,8 @@ export function PropertyFormPage() {
         guide_fr: p.guide_fr ?? '',
 
         guide_en: p.guide_en ?? '',
+
+        video_url: p.video_url ?? '',
 
         access_notes_fr: p.access_notes_fr ?? '',
 
@@ -442,6 +453,8 @@ export function PropertyFormPage() {
         guide_fr: form.guide_fr,
 
         guide_en: form.guide_en,
+
+        ...(form.video_url || existingVideo ? { video_url: form.video_url || null } : {}),
 
         access_notes_fr: form.access_notes_fr,
 
@@ -912,6 +925,36 @@ export function PropertyFormPage() {
         <div>
           <Label>{t('admin.guideEn')}</Label>
           <Textarea rows={3} value={form.guide_en} onChange={(e) => setField('guide_en', e.target.value)} />
+        </div>
+        <div>
+          <Label>{t('app.videoUrl')}</Label>
+          <Input value={form.video_url} placeholder="https://" onChange={(e) => setField('video_url', e.target.value)} />
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <label className="cursor-pointer border border-[#d4af6a]/50 px-4 py-2 text-xs tracking-[0.16em] text-[#d4af6a] uppercase">
+              {videoBusy ? '…' : t('app.videoUpload')}
+              <input
+                type="file"
+                accept="video/*"
+                className="hidden"
+                disabled={videoBusy}
+                onChange={(event) => {
+                  const file = event.target.files?.[0]
+                  event.target.value = ''
+                  if (!file) return
+                  setVideoBusy(true)
+                  uploadSiteVideo(file, 'videos')
+                    .then((url) => setField('video_url', url))
+                    .catch((err: Error) => setError(err.message))
+                    .finally(() => setVideoBusy(false))
+                }}
+              />
+            </label>
+            {form.video_url ? (
+              <button type="button" className="text-xs text-red-600 underline" onClick={() => setField('video_url', '')}>
+                {t('app.videoRemove')}
+              </button>
+            ) : null}
+          </div>
         </div>
         <div>
           <Label>{t('admin.accessFr')}</Label>

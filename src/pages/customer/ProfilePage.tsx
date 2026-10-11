@@ -16,6 +16,7 @@ import { formatDate } from '../../lib/format'
 import { compressPhoto } from '../../lib/compressImage'
 import { imperialPlace, placeLinks } from '../../lib/place'
 import { shareSite } from '../../lib/social'
+import { fetchReferral } from '../../lib/referral'
 import { supabase } from '../../lib/supabase'
 import { fetchMyVehicleRentals } from '../../lib/vehicles'
 
@@ -60,6 +61,7 @@ export function ProfilePage() {
   const avatarInput = useRef<HTMLInputElement>(null)
   const coverInput = useRef<HTMLInputElement>(null)
   const verified = Boolean(isStaff && (admin?.is_verified || profile?.role === 'admin' || profile?.role === 'main_admin'))
+  const { data: referral } = useQuery({ queryKey: ['referral'], queryFn: fetchReferral })
   const stays = useQuery({ queryKey: ['my-reservations'], queryFn: fetchMyReservations })
   const cars = useQuery({
     queryKey: ['my-car-rentals', user?.id],
@@ -102,7 +104,9 @@ export function ProfilePage() {
   }
 
   async function invite() {
-    const result = await shareSite(window.location.origin, t('app.inviteText'))
+    const { code } = await fetchReferral()
+    const link = code ? `${window.location.origin}/register?ref=${code}` : window.location.origin
+    const result = await shareSite(link, t('app.inviteText'))
     if (result === 'copied') {
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1600)
@@ -208,6 +212,16 @@ export function ProfilePage() {
           </Link>
         </div>
       </section>
+
+      {referral && referral.code ? (
+        <section className="mx-3 mt-3 rounded-xl bg-[#ffffff] px-4 py-3 text-[#111b21]">
+          <p className="text-sm font-semibold">{t('app.referralTitle')}</p>
+          <p className="mt-1 text-xs text-[#54656f]">{t('app.referralLead')}</p>
+          <p className="mt-2 text-sm">
+            {t('app.referralCode')} : <span className="tracking-[0.2em]">{referral.code}</span> · {referral.count} {t('app.referralCount')}
+          </p>
+        </section>
+      ) : null}
 
       <section className="mx-3 mt-3 overflow-hidden rounded-xl bg-[#ffffff]">
         <p className="flex min-h-[52px] items-center border-b border-black/[0.06] px-4 text-[15px]">{t('account.houseCategory')}</p>
