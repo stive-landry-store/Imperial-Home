@@ -584,3 +584,56 @@ html {
     bottom: 0;
   }
 }
+
+/* App feel on phones: the page never drags sideways, never bounces, and shows no scroll lines. */
+@media (pointer: coarse) {
+  html,
+  body {
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    touch-action: pan-y pinch-zoom;
+  }
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+/* Conversation = full screen on phones, sized to the visible area so the keyboard never pushes the app around. */
+@media (pointer: coarse) and (max-width: 767px) {
+  html.ih-thread-open,
+  html.ih-thread-open body {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  html.ih-thread-open .ih-thread {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--vvh, 100dvh);
+    transform: translateY(var(--vvt, 0px));
+    z-index: 90;
+  }
+  html.ih-thread-open .ih-chat-frame {
+    z-index: 100;
+  }
+  html.ih-thread-open [data-tabbar] {
+    display: none;
+  }
+  html.ih-thread-open .ih-thread-head {
+    height: calc(64px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+  }
+  html.ih-thread-open .ih-thread-form {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+  html.ih-thread-open.ih-typing .ih-thread-form {
+    padding-bottom: 0.5rem;
+  }
+}

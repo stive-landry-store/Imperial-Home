@@ -108,8 +108,8 @@ export function ChatThread({
   const ready = Boolean(body.trim() || file)
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      <header className="flex h-[64px] shrink-0 items-center gap-1 border-b border-[#d4af6a]/30 bg-[#0b0b0c] px-1 text-[#f4ecd9]">
+    <div className="ih-thread flex h-full min-h-0 flex-col bg-[#0b0b0c]">
+      <header className="ih-thread-head flex h-[64px] shrink-0 items-center gap-1 border-b border-[#d4af6a]/30 bg-[#0b0b0c] px-1 text-[#f4ecd9]">
         <button type="button" className="grid h-10 w-10 place-items-center md:hidden" aria-label={backLabel} onClick={onBack}>
           <ArrowLeft className="h-6 w-6 text-[#d4af6a] rtl:scale-x-[-1]" />
         </button>
@@ -173,7 +173,7 @@ export function ChatThread({
           </button>
         </div>
       ) : null}
-      <form className="relative flex items-end gap-1.5 border-t border-[#d4af6a]/30 bg-[#0b0b0c] px-2 py-2" onSubmit={submit}>
+      <form className="ih-thread-form relative flex items-end gap-1.5 border-t border-[#d4af6a]/30 bg-[#0b0b0c] px-2 py-2" onSubmit={submit}>
         {menu ? (
           <div className="absolute bottom-16 start-2 z-10 w-56 overflow-hidden rounded-xl border border-[#d4af6a]/40 bg-[#17181c] py-1 text-[#f4ecd9] shadow-lg">
             <button

@@ -26,6 +26,7 @@ export function markChatSeen(id: string) {
   } catch {
     /* ignore private mode */
   }
+  window.dispatchEvent(new Event('ih-chat-seen'))
 }
 
 export function chatWhen(iso: string | null, locale: string) {

@@ -18,6 +18,8 @@ import { compressPhoto } from '../../lib/compressImage'
 import { imperialPlace, placeLinks } from '../../lib/place'
 import { shareSite } from '../../lib/social'
 import { fetchReferral } from '../../lib/referral'
+import { useUnreadChat } from '../../hooks/useUnreadChat'
+import { UnreadBadge } from '../../components/ui/UnreadBadge'
 import { supabase } from '../../lib/supabase'
 import { fetchMyVehicleRentals } from '../../lib/vehicles'
 
@@ -54,6 +56,7 @@ export function ProfilePage() {
   const { t, i18n } = useTranslation()
   const { profile, user, isStaff, admin, reloadProfile } = useAuth()
   const { data: config } = useSiteConfig()
+  const unreadChat = useUnreadChat()
   const [error, setError] = useState<string | null>(null)
   const [editOpen, setEditOpen] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -212,8 +215,9 @@ export function ProfilePage() {
             <Gift className="h-5 w-5" />
           </RoundAction>
           <Link to="/account/chat" className="flex min-w-0 flex-1 flex-col items-center gap-1 text-[13px] text-[#54656f] touch-manipulation">
-            <span className="grid h-12 w-12 place-items-center rounded-full border border-black/10 bg-[#ffffff] text-[#111b21]">
+            <span className="relative grid h-12 w-12 place-items-center rounded-full border border-black/10 bg-[#ffffff] text-[#111b21]">
               <MessageCircle className="h-5 w-5" />
+              <UnreadBadge count={unreadChat} className="absolute -top-1 -right-1" />
             </span>
             {t('account.messagesAction')}
           </Link>

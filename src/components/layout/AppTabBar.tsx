@@ -2,6 +2,8 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CalendarDays, Home, Search, UserRound } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
+import { useUnreadChat } from '../../hooks/useUnreadChat'
+import { UnreadBadge } from '../ui/UnreadBadge'
 import { cn } from '../../lib/cn'
 
 const item =
@@ -11,6 +13,7 @@ export function AppTabBar() {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const { user, profile } = useAuth()
+  const unreadChat = useUnreadChat()
   const accountTo = user ? '/account/profile' : '/login'
   const staysTo = user ? '/account' : '/login?next=/account'
   const homeOn = pathname === '/'
@@ -39,11 +42,14 @@ export function AppTabBar() {
           <span>{t('nav.reservations')}</span>
         </NavLink>
         <NavLink to={accountTo} className={cn(item, accountOn ? 'font-semibold text-[#c4a35a]' : 'theme-muted')}>
-          {profile?.avatar_url ? (
-            <img src={profile.avatar_url} alt="" className="h-6 w-6 rounded-full object-cover" />
-          ) : (
-            <UserRound className="h-6 w-6" strokeWidth={1.75} />
-          )}
+          <span className="relative">
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="" className="h-6 w-6 rounded-full object-cover" />
+            ) : (
+              <UserRound className="h-6 w-6" strokeWidth={1.75} />
+            )}
+            <UnreadBadge count={unreadChat} className="absolute -top-2 -right-3" />
+          </span>
           <span>{t('account.myAccount')}</span>
         </NavLink>
       </div>
