@@ -115,7 +115,7 @@ begin
     p_user_id,
     true,
     true,
-    case v_role when 'super_admin' then 'Super Administrateur' else 'Administrateur principal' end
+    case v_role when 'super_admin' then 'Super administrateur' else 'Main admin' end
   )
   on conflict (id) do update
     set is_active = true,
@@ -313,7 +313,7 @@ $$;
 
 create or replace function public.promote_user_to_main_admin(
   p_email text,
-  p_title text default 'Administrateur principal'
+  p_title text default 'Main admin'
 )
 returns uuid
 language plpgsql
@@ -342,7 +342,7 @@ begin
   update public.profiles set role = 'main_admin' where id = v_user_id;
 
   insert into public.admin_profiles (id, is_verified, is_active, title, created_by)
-  values (v_user_id, true, true, coalesce(nullif(trim(p_title), ''), 'Administrateur principal'), auth.uid())
+  values (v_user_id, true, true, coalesce(nullif(trim(p_title), ''), 'Main admin'), auth.uid())
   on conflict (id) do update
     set is_active = true,
         is_verified = true,
