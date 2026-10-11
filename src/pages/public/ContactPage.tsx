@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { useSiteConfig } from '../../hooks/useSite'
 import { whatsappUrl } from '../../lib/whatsapp'
+import { SITE_DESCRIPTION, SITE_ORIGIN, lodgingJsonLd } from '../../lib/seo'
 import { ImperialLogo } from '../../components/brand/Logo'
 import { SocialLinks } from '../../components/layout/SocialLinks'
 import { useTheme } from '../../hooks/useTheme'
@@ -17,7 +18,10 @@ export function ContactPage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto max-w-3xl px-4 pt-36 pb-24">
         <Helmet>
-          <title>{`${t('contact.title')} | Imperial Home`}</title>
+          <title>{`${t('contact.title')} | Imperial Home Douala`}</title>
+          <meta name="description" content={SITE_DESCRIPTION} />
+          <link rel="canonical" href={`${SITE_ORIGIN}/contact`} />
+          <script type="application/ld+json">{JSON.stringify(lodgingJsonLd())}</script>
         </Helmet>
         <ImperialLogo light={theme === 'dark'} />
         <h1 className="mt-8 text-2xl font-semibold">{t('contact.title')}</h1>

@@ -12,6 +12,7 @@ import { usePublishedProperties, usePromotions, useSiteConfig } from '../../hook
 import { SocialLinks } from '../../components/layout/SocialLinks'
 import { Live } from '../../components/i18n/Live'
 import { imperialPlace } from '../../lib/place'
+import { SITE_DESCRIPTION, SITE_ORIGIN, lodgingJsonLd } from '../../lib/seo'
 import { demoHousingSheet } from '../../lib/housingSheet'
 
 export function HomePage() {
@@ -56,7 +57,13 @@ export function HomePage() {
   return (
     <div className="theme-page">
       <Helmet>
-        <title>Imperial Home | L&apos;art du soin. L&apos;esprit du détail.</title>
+        <title>Imperial Home | Appartements meublés à Douala</title>
+        <meta name="description" content={SITE_DESCRIPTION} />
+        <link rel="canonical" href={`${SITE_ORIGIN}/`} />
+        <meta property="og:title" content="Imperial Home | Appartements meublés à Douala" />
+        <meta property="og:description" content={SITE_DESCRIPTION} />
+        <meta property="og:url" content={`${SITE_ORIGIN}/`} />
+        <script type="application/ld+json">{JSON.stringify(lodgingJsonLd())}</script>
         <link rel="preload" as="image" href={hero} fetchPriority="high" />
       </Helmet>
 

@@ -25,6 +25,7 @@ import { imperialPlace } from '../../lib/place'
 import { shareSite } from '../../lib/social'
 import { coverImage, formatDate, localized } from '../../lib/format'
 import { whatsappUrl } from '../../lib/whatsapp'
+import { SITE_ORIGIN } from '../../lib/seo'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
 
@@ -125,6 +126,7 @@ export function PropertyDetailPage() {
         <Helmet>
           <title>{`${property.name} | Imperial Home Douala`}</title>
           <meta name="description" content={description.slice(0, 160)} />
+          <link rel="canonical" href={`${SITE_ORIGIN}/properties/${property.slug}`} />
           <meta property="og:title" content={`${property.name} | Imperial Home`} />
           <meta property="og:description" content={description.slice(0, 160)} />
           {coverImage(property.property_images) ? <meta property="og:image" content={coverImage(property.property_images)} /> : null}
@@ -134,6 +136,8 @@ export function PropertyDetailPage() {
               '@type': 'Apartment',
               name: property.name,
               description: description.slice(0, 300),
+              url: `${SITE_ORIGIN}/properties/${property.slug}`,
+              telephone: '+237 674 09 22 63',
               address: {
                 '@type': 'PostalAddress',
                 streetAddress: property.address,
