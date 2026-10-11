@@ -6,6 +6,10 @@ create unique index if not exists promotions_code_idx
   on public.promotions (lower(code))
   where code is not null and length(trim(code)) > 0;
 
+drop function if exists public.price_stay(uuid, date, date, integer, text, uuid[]);
+drop function if exists public.quote_stay(uuid, date, date, integer, text, uuid[]);
+drop function if exists public.create_booking(uuid, date, date, integer, text, uuid[]);
+
 create or replace function public.price_stay(
   p_property_id uuid,
   p_check_in date,
