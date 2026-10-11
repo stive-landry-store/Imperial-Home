@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
+  Activity,
   BadgePercent,
   Building2,
   CalendarCheck,
@@ -48,6 +49,7 @@ const links: { to: string; key: string; icon: LucideIcon }[] = [
   { to: '/admin/housing-sheet', key: 'fiche', icon: FileText },
   { to: '/admin/admins', key: 'admins', icon: ShieldCheck },
   { to: '/admin/audit', key: 'audit', icon: History },
+  { to: '/admin/activity', key: 'activity', icon: Activity },
   { to: '/admin/settings', key: 'settings', icon: Settings },
 ]
 
@@ -64,7 +66,7 @@ export function AdminLayout() {
   function renderNav() {
     return (
     <nav className="flex flex-col gap-1 px-3 pb-4">
-      {links.map((l) => (
+      {links.filter((l) => l.to !== '/admin/activity' || profile?.role === 'super_admin').map((l) => (
         <NavLink
           key={l.to}
           to={l.to}

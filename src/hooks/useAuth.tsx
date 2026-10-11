@@ -1,3 +1,4 @@
+import { clearSessionStarted, logActivity, markSessionStarted } from '../lib/activity'
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { authRedirectUrl } from '../lib/authRedirect'
@@ -127,6 +128,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         if (error) throw error
         await client.rpc('ensure_profile')
+        markSessionStarted()
+        void logActivity('login')
       },
       signUp: async ({ email, password, full_name, phone }) => {
         if (!supabase) throw new Error('Supabase is not configured')
@@ -154,9 +157,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         })
         if (error) throw error
         await supabase.rpc('ensure_profile')
+        markSessionStarted()
+        void logActivity('login')
         return { needsEmailConfirmation: false }
       },
       signOut: async () => {
+        await logActivity('logout')
+        clearSessionStarted()
         await supabase?.auth.signOut()
       },
       resetPassword: async (email) => {

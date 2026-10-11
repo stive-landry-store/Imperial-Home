@@ -33,6 +33,8 @@ import { AdminPromotionsPage } from '../pages/admin/AdminPromotionsPage'
 import { AdminPaymentsPage } from '../pages/admin/AdminPaymentsPage'
 import { AdminChatPage } from '../pages/admin/AdminChatPage'
 import { AdminAdminsPage } from '../pages/admin/AdminAdminsPage'
+import { ActivityTracker } from '../components/ActivityTracker'
+import { AdminActivityPage } from '../pages/admin/AdminActivityPage'
 import { AdminAuditPage } from '../pages/admin/AdminAuditPage'
 import { AdminSettingsPage } from '../pages/admin/AdminSettingsPage'
 import { AdminTurnoverPage } from '../pages/admin/AdminTurnoverPage'
@@ -62,6 +64,7 @@ export function AppRouter() {
   return (
     <BrowserRouter basename={routerBasename()}>
       <ScrollToTop />
+      <ActivityTracker />
       <Routes>
         <Route element={<AppShell />}>
           <Route element={<PublicLayout />}>
@@ -139,6 +142,7 @@ export function AppRouter() {
           <Route path="scan" element={<AdminScanPage />} />
           <Route path="admins" element={<AdminAdminsPage />} />
           <Route path="audit" element={<AdminAuditPage />} />
+          <Route path="activity" element={<AdminActivityPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
         </Route>
         <Route
