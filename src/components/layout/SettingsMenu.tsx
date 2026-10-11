@@ -8,6 +8,7 @@ import {
   FileText,
   Heart,
   Home,
+  Download,
   Info,
   LogOut,
   MapPin,
@@ -20,6 +21,7 @@ import {
 import { cn } from '../../lib/cn'
 import { LANGUAGES, languageCode } from '../../lib/languages'
 import { shareSite } from '../../lib/social'
+import { isStandalone } from '../../lib/installPrompt'
 import { useAuth } from '../../hooks/useAuth'
 import { useTheme } from '../../hooks/useTheme'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
@@ -43,6 +45,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
     { to: '/properties/map', label: t('nav.map'), icon: MapPin },
     { to: '/contact', label: t('nav.contact'), icon: Phone },
     { to: '/fiche', label: t('account.housing'), icon: FileText },
+    ...(isStandalone() ? [] : [{ to: '/installer', label: t('app.installGuide'), icon: Download }]),
     { to: '/', label: t('menu.about'), icon: Info },
     ...(isStaff ? [{ to: '/admin', label: t('nav.admin'), icon: Shield }] : []),
   ]

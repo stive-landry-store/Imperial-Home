@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useOnline } from '../../hooks/useOnline'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -23,6 +24,7 @@ export function BookingPage() {
   const checkOut = params.get('checkOut') ?? ''
   const guests = Number(params.get('guests') ?? 1)
   const { t, i18n } = useTranslation()
+  const online = useOnline()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { data: config } = useSiteConfig()
@@ -235,9 +237,10 @@ export function BookingPage() {
       <p className="mt-6 text-sm theme-muted">{t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}</p>
       {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-[#d4af6a]/80">{t('booking.demoBlock')}</p> : null}
       {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
+      {!online ? <p className="mt-4 text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
       <Button
         className="mt-8 w-full"
-        disabled={!quote?.available || pending || !isSupabaseConfigured() || (wantCar && !vehicleId)}
+        disabled={!online || !quote?.available || pending || !isSupabaseConfigured() || (wantCar && !vehicleId)}
         onClick={() => void confirm()}
       >
         {t('booking.confirm')}

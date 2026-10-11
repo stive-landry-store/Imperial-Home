@@ -9,6 +9,7 @@ import { LiveDataSync } from './components/LiveDataSync'
 import { AppLock } from './components/AppLock'
 import { OfflineCache } from './components/OfflineCache'
 import { ReferralTracker } from './components/ReferralTracker'
+import { OfflinePrefetch } from './components/OfflinePrefetch'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +26,7 @@ export default function App() {
             <AppLock />
             <OfflineCache />
             <ReferralTracker />
+            <OfflinePrefetch />
             <LiveDataSync />
             <BrandIntro />
             <AppRouter />

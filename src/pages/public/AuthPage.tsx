@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { useOnline } from '../../hooks/useOnline'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -13,6 +14,7 @@ import { ImperialLogo } from '../../components/brand/Logo'
 
 export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const { t } = useTranslation()
+  const online = useOnline()
   const { theme } = useTheme()
   const { signIn, signUp } = useAuth()
   const navigate = useNavigate()
@@ -95,7 +97,8 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
           </div>
         ) : null}
         {error ? <p className="text-sm text-red-500">{error}</p> : null}
-        <Button type="submit" className="w-full" disabled={pending || !isSupabaseConfigured()}>
+        {!online ? <p className="text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
+        <Button type="submit" className="w-full" disabled={!online || pending || !isSupabaseConfigured()}>
           {mode === 'login' ? t('auth.submitLogin') : t('auth.submitRegister')}
         </Button>
       </form>

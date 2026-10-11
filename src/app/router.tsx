@@ -11,6 +11,7 @@ import { ComparePage } from '../pages/public/ComparePage'
 import { PropertyDetailPage } from '../pages/public/PropertyDetailPage'
 import { BookingPage } from '../pages/public/BookingPage'
 import { ContactPage } from '../pages/public/ContactPage'
+import { InstallGuidePage } from '../pages/public/InstallGuidePage'
 import { CarsPage } from '../pages/public/CarsPage'
 import { CarDetailPage } from '../pages/public/CarDetailPage'
 import { AuthPage } from '../pages/public/AuthPage'
@@ -79,6 +80,7 @@ export function AppRouter() {
               }
             />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/installer" element={<InstallGuidePage />} />
             <Route path="/cars" element={<CarsPage />} />
             <Route path="/cars/:slug" element={<CarDetailPage />} />
             <Route path="/login" element={<AuthPage mode="login" />} />

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useOnline } from '../../hooks/useOnline'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -33,6 +34,7 @@ export function PropertyDetailPage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const { user } = useAuth()
+  const online = useOnline()
   const { data: config } = useSiteConfig()
   const { data: property, isLoading } = useQuery({
     queryKey: ['property', slug],
@@ -228,7 +230,7 @@ export function PropertyDetailPage() {
               ) : null}
               <Button
                 className="mt-5 w-full"
-                disabled={!quote?.available}
+                disabled={!online || !quote?.available}
                 onClick={() => {
                   const q = `checkIn=${activeCheckIn}&checkOut=${checkOut}&nights=${shownNights}&guests=${guests}`
                   if (!user) {
@@ -240,6 +242,7 @@ export function PropertyDetailPage() {
               >
                 {user ? t('property.continue') : t('property.needAccount')}
               </Button>
+              {!online ? <p className="mt-3 text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
               <p className="mt-3 text-sm theme-muted-soft">{t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}</p>
             </section>
             <section className="mt-8">

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useOnline } from '../../hooks/useOnline'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -23,6 +24,7 @@ export function CarDetailPage() {
   const { slug = '' } = useParams()
   const { t, i18n } = useTranslation()
   const { user } = useAuth()
+  const online = useOnline()
   const navigate = useNavigate()
   const { data: vehicle, isLoading } = useQuery({
     queryKey: ['vehicle', slug],
@@ -235,8 +237,9 @@ export function CarDetailPage() {
               {checking ? <Loader size="sm" className="!py-2" /> : null}
               {available === false ? <p className="text-sm text-red-300">{t('cars.unavailable')}</p> : null}
               {error ? <p className="text-sm text-red-300">{error}</p> : null}
+              {!online ? <p className=" text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
               {user ? (
-                <Button type="submit" className="w-full" disabled={book.isPending || available === false}>
+                <Button type="submit" className="w-full" disabled={!online || book.isPending || available === false}>
                   {book.isPending ? <Loader size="xs" /> : t('cars.bookThis')}
                 </Button>
               ) : (
