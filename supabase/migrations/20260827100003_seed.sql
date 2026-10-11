@@ -35,11 +35,11 @@ insert into public.properties (
 (
   'abidjan',
   'Abidjan',
-  'The Abidjan room at Impérial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
-  'La chambre Abidjan à Impérial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
-  'Welcome to the Abidjan room at Impérial Home.',
-  'Bienvenue dans la chambre Abidjan à Impérial Home.',
-  'Impérial Home, Bonapriso', 'Douala', 'Bonapriso', 4.0128, 9.7324,
+  'The Abidjan room at Imperial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
+  'La chambre Abidjan à Imperial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
+  'Welcome to the Abidjan room at Imperial Home.',
+  'Bienvenue dans la chambre Abidjan à Imperial Home.',
+  'Imperial Home, Bonapriso', 'Douala', 'Bonapriso', 4.0128, 9.7324,
   2, 1, 1, 0,
   'Full kitchen with fridge, cooktop, microwave, and coffee maker.',
   'Cuisine complète avec réfrigérateur, plaques, micro-ondes et cafetière.',
@@ -57,11 +57,11 @@ insert into public.properties (
 (
   'singapour',
   'Singapour',
-  'The Singapour room — contemporary lines, city-inspired décor, and a refined stay inside Impérial Home.',
-  'La chambre Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Impérial Home.',
-  'Welcome to the Singapour room at Impérial Home.',
-  'Bienvenue dans la chambre Singapour à Impérial Home.',
-  'Impérial Home, Bonapriso', 'Douala', 'Bonapriso', 4.0128, 9.7324,
+  'The Singapour room — contemporary lines, city-inspired décor, and a refined stay inside Imperial Home.',
+  'La chambre Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Imperial Home.',
+  'Welcome to the Singapour room at Imperial Home.',
+  'Bienvenue dans la chambre Singapour à Imperial Home.',
+  'Imperial Home, Bonapriso', 'Douala', 'Bonapriso', 4.0128, 9.7324,
   2, 1, 1, 0,
   'Kitchenette with fridge, kettle, and induction plate.',
   'Kitchenette avec réfrigérateur, bouilloire et plaque à induction.',
@@ -79,11 +79,11 @@ insert into public.properties (
 (
   'dubai',
   'Dubai',
-  'The Dubai room — our most spacious room at Impérial Home, ideal for small families or longer stays.',
-  'La chambre Dubai — notre chambre la plus spacieuse à Impérial Home, idéale pour les petites familles ou les longs séjours.',
-  'Welcome to the Dubai room at Impérial Home.',
-  'Bienvenue dans la chambre Dubai à Impérial Home.',
-  'Impérial Home, Bonapriso', 'Douala', 'Bonapriso', 4.0128, 9.7324,
+  'The Dubai room — our most spacious room at Imperial Home, ideal for small families or longer stays.',
+  'La chambre Dubai — notre chambre la plus spacieuse à Imperial Home, idéale pour les petites familles ou les longs séjours.',
+  'Welcome to the Dubai room at Imperial Home.',
+  'Bienvenue dans la chambre Dubai à Imperial Home.',
+  'Imperial Home, Bonapriso', 'Douala', 'Bonapriso', 4.0128, 9.7324,
   3, 1, 1, 0,
   'Large kitchen, dining table for 8, dishwasher, and filter coffee.',
   'Grande cuisine, table pour 8, lave-vaisselle et café filtre.',
@@ -139,12 +139,12 @@ where p.slug = 'dubai'
 on conflict do nothing;
 
 insert into public.promotions (name, description_en, description_fr, discount_type, discount_value, starts_at, ends_at, is_active)
-select 'Ouverture Impérial Home', 'Introductory offer on selected rooms at Impérial Home.', 'Offre d’ouverture sur certaines chambres à Impérial Home.', 'percent', 10, current_date - 5, current_date + 60, true
-where not exists (select 1 from public.promotions where name = 'Ouverture Impérial Home');
+select 'Ouverture Imperial Home', 'Introductory offer on selected rooms at Imperial Home.', 'Offre d’ouverture sur certaines chambres à Imperial Home.', 'percent', 10, current_date - 5, current_date + 60, true
+where not exists (select 1 from public.promotions where name = 'Ouverture Imperial Home');
 
 insert into public.promotion_properties (promotion_id, property_id)
 select pr.id, p.id
 from public.promotions pr
 join public.properties p on p.slug in ('abidjan', 'singapour')
-where pr.name = 'Ouverture Impérial Home'
+where pr.name = 'Ouverture Imperial Home'
 on conflict do nothing;

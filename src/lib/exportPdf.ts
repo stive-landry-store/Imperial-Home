@@ -71,7 +71,7 @@ export async function downloadReservationsPdf(stays: Reservation[], rentals: Veh
       doc.setTextColor(212, 175, 106)
       doc.setFont('helvetica', 'bold')
       doc.setFontSize(10)
-      doc.text('IMPÉRIAL HOME', M, 9, { charSpace: 1.2 })
+      doc.text('IMPERIAL HOME', M, 9, { charSpace: 1.2 })
       y = 22
     }
   }

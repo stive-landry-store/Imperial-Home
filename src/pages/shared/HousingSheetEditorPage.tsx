@@ -148,7 +148,7 @@ export function HousingSheetEditorPage({
   return (
     <div className="fiche-page theme-page min-h-svh pb-16">
       <Helmet>
-        <title>Fiche de logement | Impérial Home</title>
+        <title>Fiche de logement | Imperial Home</title>
       </Helmet>
       <div className="fiche-toolbar sticky top-0 z-20 border-b border-[#d4af6a]/30 bg-white text-[#8b6f32]">
         <div className="flex items-center justify-between gap-3 px-3 py-2">

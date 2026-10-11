@@ -18,7 +18,7 @@ export function Loader({
     <span
       role="status"
       aria-live="polite"
-      aria-label="Impérial Home"
+      aria-label="Imperial Home"
       className="ih-loader"
       style={{ width: px, height: px }}
     >

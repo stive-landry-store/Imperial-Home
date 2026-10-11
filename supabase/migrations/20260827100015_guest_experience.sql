@@ -604,7 +604,7 @@ begin
     select
       w.customer_id,
       'Dates disponibles',
-      'Un séjour s''est libéré pour ' || coalesce(v_name, 'Impérial Home')
+      'Un séjour s''est libéré pour ' || coalesce(v_name, 'Imperial Home')
         || ' (' || new.check_in::text || ' → ' || new.check_out::text || ').',
       '/properties/' || coalesce(v_slug, ''),
       'waitlist:' || w.id::text || ':' || new.id::text

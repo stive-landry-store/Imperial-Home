@@ -11,7 +11,7 @@ const DEFAULTS = {
     'Réglez le montant exact de votre réservation via MTN Mobile Money ou Orange Money, puis envoyez le reçu sur WhatsApp au +237 674 09 22 63. Indiquez votre code de réservation. Un administrateur confirmera le paiement.',
   home_fiche_image_url: '',
   home_hero_image_url: '',
-  place_address: 'Impérial Home, Carrefour Conquête',
+  place_address: 'Imperial Home, Carrefour Conquête',
   place_latitude: '4.0689',
   place_longitude: '9.7568',
 }

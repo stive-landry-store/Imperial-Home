@@ -154,7 +154,7 @@ begin
   insert into public.notifications (user_id, title, body, link)
   values (
     auth.uid(),
-    'Bienvenue chez Impérial Home',
+    'Bienvenue chez Imperial Home',
     'Votre ami vous offre 10 % sur votre premier séjour. Code promo : ' || v_friend_code || ' (valable 90 jours).',
     '/properties'
   );

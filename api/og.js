@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const kind = params.get('kind') === 'car' ? 'cars' : 'properties'
   const url = process.env.VITE_SUPABASE_URL
   const key = process.env.VITE_SUPABASE_ANON_KEY
-  let title = 'Impérial Home'
+  let title = 'Imperial Home'
   let description = 'Appartements meublés et location de voiture à Douala'
   let image = `${origin}/icon-512.png`
 
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         .eq('slug', slug)
         .maybeSingle()
       if (data) {
-        title = `${data.name} | Impérial Home`
+        title = `${data.name} | Imperial Home`
         description = (data.description_fr || description).slice(0, 180)
         const cover = [...(data.property_images ?? [])]
           .filter((img) => img.url)
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         .eq('slug', slug)
         .maybeSingle()
       if (data) {
-        title = `${data.brand} ${data.model} | Impérial Home`
+        title = `${data.brand} ${data.model} | Imperial Home`
         description = (data.description_fr || 'Location de voiture à Douala').slice(0, 180)
         const photo = [...(data.vehicle_media ?? [])]
           .filter((m) => m.media_type !== 'video')
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
 <html lang="fr"><head><meta charset="utf-8"><title>${escape(title)}</title>
 <meta name="description" content="${escape(description)}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Impérial Home">
+<meta property="og:site_name" content="Imperial Home">
 <meta property="og:title" content="${escape(title)}">
 <meta property="og:description" content="${escape(description)}">
 <meta property="og:image" content="${escape(image)}">

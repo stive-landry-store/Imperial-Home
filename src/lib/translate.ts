@@ -21,7 +21,7 @@ const CODES: Record<string, string> = {
 export { languageCode }
 
 const PROTECTED = new Set([
-  'Impérial Home',
+  'Imperial Home',
   'Imperial Home',
   "L'art du soin. L'esprit du détail.",
   'The art of care. The spirit of detail.',
@@ -76,14 +76,14 @@ function shield(text: string) {
   return text
     .split("L'art du soin. L'esprit du détail.").join('XHMOTTO')
     .split('The art of care. The spirit of detail.').join('XHMOTTO')
-    .split('IMPÉRIAL HOME').join('XHNAME')
     .split('IMPERIAL HOME').join('XHNAME')
-    .split('Impérial Home').join('XHNAME')
+    .split('IMPERIAL HOME').join('XHNAME')
+    .split('Imperial Home').join('XHNAME')
     .split('Imperial Home').join('XHNAME')
 }
 
 function restore(text: string) {
-  return text.split('XHMOTTO').join("L'art du soin. L'esprit du détail.").split('XHNAME').join('Impérial Home')
+  return text.split('XHMOTTO').join("L'art du soin. L'esprit du détail.").split('XHNAME').join('Imperial Home')
 }
 
 async function flush() {

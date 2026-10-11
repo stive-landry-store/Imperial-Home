@@ -14,7 +14,7 @@ create policy config_public_read on public.system_config
 
 insert into public.system_config (key, value)
 values
-  ('place_address', to_jsonb('Impérial Home, Carrefour Conquête'::text)),
+  ('place_address', to_jsonb('Imperial Home, Carrefour Conquête'::text)),
   ('place_latitude', to_jsonb('4.0689'::text)),
   ('place_longitude', to_jsonb('9.7568'::text))
 on conflict (key) do nothing;

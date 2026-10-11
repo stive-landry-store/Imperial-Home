@@ -47,7 +47,7 @@ function shield(text) {
   let next = text
     .split("L'art du soin. L'esprit du détail.").join('XHMOTTO')
     .split('The art of care. The spirit of detail.').join('XHMOTTO')
-    .split('Impérial Home').join('XHNAME')
+    .split('Imperial Home').join('XHNAME')
     .split('Imperial Home').join('XHNAME')
   next = next.replace(/\{\{[^}]+\}\}/g, (match) => {
     const id = `XHP${tokens.length}X`
@@ -62,7 +62,7 @@ function restore(text, tokens) {
   tokens.forEach((token, index) => {
     next = next.split(`XHP${index}X`).join(token)
   })
-  return next.split('XHMOTTO').join("L'art du soin. L'esprit du détail.").split('XHNAME').join('Impérial Home')
+  return next.split('XHMOTTO').join("L'art du soin. L'esprit du détail.").split('XHNAME').join('Imperial Home')
 }
 
 async function translateOne(text, target) {
@@ -111,9 +111,9 @@ for (const [code, target] of Object.entries(targets)) {
     if (index % 40 === 0) console.log(code, index, '/', leaves.length)
     await new Promise((resolve) => setTimeout(resolve, 350))
   }
-  tree.brand = 'Impérial Home'
+  tree.brand = 'Imperial Home'
   tree.hero.tagline = "L'art du soin. L'esprit du détail."
-  tree.chat.team = 'Impérial Home'
+  tree.chat.team = 'Imperial Home'
   const file = `import type { Messages } from '../en'\n\nconst pack = ${JSON.stringify(tree, null, 2)} as Messages\n\nexport default pack\n`
   fs.writeFileSync(path.join(outDir, `${code}.ts`), file)
   console.log('wrote', code, leaves.length)

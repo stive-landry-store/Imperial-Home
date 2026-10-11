@@ -25,8 +25,8 @@ export async function enableLock(label: string) {
   const credential = (await navigator.credentials.create({
     publicKey: {
       challenge,
-      rp: { name: 'Impérial Home' },
-      user: { id: crypto.getRandomValues(new Uint8Array(16)), name: label || 'imperial-home', displayName: label || 'Impérial Home' },
+      rp: { name: 'Imperial Home' },
+      user: { id: crypto.getRandomValues(new Uint8Array(16)), name: label || 'imperial-home', displayName: label || 'Imperial Home' },
       pubKeyCredParams: [
         { type: 'public-key', alg: -7 },
         { type: 'public-key', alg: -257 },

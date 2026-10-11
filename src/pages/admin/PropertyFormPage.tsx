@@ -412,13 +412,13 @@ export function PropertyFormPage() {
 
         name: form.name,
 
-        description_en: form.description_en || `The ${form.name} apartment at Impérial Home.`,
+        description_en: form.description_en || `The ${form.name} apartment at Imperial Home.`,
 
-        description_fr: form.description_fr || `L'appartement ${form.name} à Impérial Home.`,
+        description_fr: form.description_fr || `L'appartement ${form.name} à Imperial Home.`,
 
-        welcome_message_en: `Welcome to the ${form.name} apartment at Impérial Home.`,
+        welcome_message_en: `Welcome to the ${form.name} apartment at Imperial Home.`,
 
-        welcome_message_fr: `Bienvenue dans l'appartement ${form.name} à Impérial Home.`,
+        welcome_message_fr: `Bienvenue dans l'appartement ${form.name} à Imperial Home.`,
 
         address: form.address,
 
@@ -586,7 +586,7 @@ export function PropertyFormPage() {
 
       <Helmet>
 
-        <title>{`${isNew ? t('admin.roomNew') : form.name} | Impérial Home`}</title>
+        <title>{`${isNew ? t('admin.roomNew') : form.name} | Imperial Home`}</title>
 
       </Helmet>
 

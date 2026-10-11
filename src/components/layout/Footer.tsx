@@ -80,10 +80,10 @@ export function Footer() {
         </button>
       </div>
       <p className="pb-4 text-center font-display text-base tracking-[0.18em]">
-        <Live text="MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !" from="fr" />
+        <Live text="MERCI ET BIENVENUE CHEZ IMPERIAL HOME !" from="fr" />
       </p>
       <p className="border-t border-[#d4af6a]/15 py-4 text-center text-[12px] tracking-wider text-[#d4af6a]/50">
-        © {year} Impérial Home. {t('footer.rights')}
+        © {year} Imperial Home. {t('footer.rights')}
       </p>
     </footer>
   )

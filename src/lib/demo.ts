@@ -29,8 +29,8 @@ function roomBase(id: string, slug: string, name: string, rate: number, capacity
     id,
     slug,
     name,
-    welcome_message_en: `Welcome to the ${name} room at Impérial Home.`,
-    welcome_message_fr: `Bienvenue dans la chambre ${name} à Impérial Home.`,
+    welcome_message_en: `Welcome to the ${name} room at Imperial Home.`,
+    welcome_message_fr: `Bienvenue dans la chambre ${name} à Imperial Home.`,
     address: IMPERIAL_HOME.address,
     city: IMPERIAL_HOME.city,
     neighborhood: IMPERIAL_HOME.neighborhood,
@@ -41,8 +41,8 @@ function roomBase(id: string, slug: string, name: string, rate: number, capacity
     bedrooms: 1,
     bathrooms: 1,
     living_areas: 0,
-    kitchen_info_en: 'Shared kitchen and living areas at Impérial Home.',
-    kitchen_info_fr: 'Cuisine et espaces communs partagés à Impérial Home.',
+    kitchen_info_en: 'Shared kitchen and living areas at Imperial Home.',
+    kitchen_info_fr: 'Cuisine et espaces communs partagés à Imperial Home.',
     rules_en: 'No parties. No smoking indoors. Quiet hours 22:00–07:00. Respect other guests.',
     rules_fr: 'Pas de fêtes. Interdiction de fumer à l’intérieur. Silence 22h00–07h00. Respectez les autres hôtes.',
     safety_info_en: 'Fire extinguisher on each floor. First-aid kit at reception.',
@@ -64,9 +64,9 @@ export const demoProperties: Property[] = [
   {
     ...roomBase('p1', 'abidjan', 'Abidjan', 55_000, 2),
     description_en:
-      'The Abidjan apartment at Impérial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
+      'The Abidjan apartment at Imperial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
     description_fr:
-      'L’appartement Abidjan à Impérial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
+      'L’appartement Abidjan à Imperial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
     property_images: [
       {
         id: 'i1',
@@ -84,9 +84,9 @@ export const demoProperties: Property[] = [
   {
     ...roomBase('p2', 'singapour', 'Singapour', 65_000, 2),
     description_en:
-      'The Singapour apartment — contemporary lines, city-inspired décor, and a refined stay inside Impérial Home.',
+      'The Singapour apartment — contemporary lines, city-inspired décor, and a refined stay inside Imperial Home.',
     description_fr:
-      'L’appartement Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Impérial Home.',
+      'L’appartement Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Imperial Home.',
     property_images: [
       {
         id: 'i2',
@@ -104,9 +104,9 @@ export const demoProperties: Property[] = [
   {
     ...roomBase('p3', 'dubai', 'Dubai', 75_000, 3),
     description_en:
-      'The Dubai apartment — our most spacious unit at Impérial Home, ideal for small families or longer stays.',
+      'The Dubai apartment — our most spacious unit at Imperial Home, ideal for small families or longer stays.',
     description_fr:
-      'L’appartement Dubai — notre appartement le plus spacieux à Impérial Home, idéal pour les petites familles ou les longs séjours.',
+      'L’appartement Dubai — notre appartement le plus spacieux à Imperial Home, idéal pour les petites familles ou les longs séjours.',
     property_images: [
       {
         id: 'i3',
@@ -126,9 +126,9 @@ export const demoProperties: Property[] = [
 export const demoPromotions: Promotion[] = [
   {
     id: 'promo1',
-    name: 'Ouverture Impérial Home',
-    description_en: 'Introductory offer on selected apartments at Impérial Home.',
-    description_fr: 'Offre d’ouverture sur certains appartements à Impérial Home.',
+    name: 'Ouverture Imperial Home',
+    description_en: 'Introductory offer on selected apartments at Imperial Home.',
+    description_fr: 'Offre d’ouverture sur certains appartements à Imperial Home.',
     discount_type: 'percent',
     discount_value: 10,
     starts_at: '2026-01-01',

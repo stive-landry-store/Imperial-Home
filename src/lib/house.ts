@@ -1,7 +1,7 @@
-/** Impérial Home — une seule maison, plusieurs appartements thématiques. */
+/** Imperial Home — une seule maison, plusieurs appartements thématiques. */
 export const IMPERIAL_HOME = {
-  name: 'Impérial Home',
-  address: 'Impérial Home, Carrefour Conquête',
+  name: 'Imperial Home',
+  address: 'Imperial Home, Carrefour Conquête',
   city: 'Douala',
   neighborhood: 'Carrefour Conquête',
   country: 'Cameroon',

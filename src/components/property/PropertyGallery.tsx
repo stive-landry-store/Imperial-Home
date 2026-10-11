@@ -32,7 +32,7 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
       <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
         <OptimizedImage
           src={current.url}
-          alt={localized(current.alt_en, current.alt_fr, lang) || 'Impérial Home'}
+          alt={localized(current.alt_en, current.alt_fr, lang) || 'Imperial Home'}
           priority
           className="h-full w-full object-cover"
         />

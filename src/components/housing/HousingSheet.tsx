@@ -54,7 +54,7 @@ export function HousingSheet({
   const guestSign = useLiveTranslation('Signature du client', 'fr')
   const receptionSign = useLiveTranslation('Signature de la réception', 'fr')
   const signLabel = useLiveTranslation('Signature', 'fr')
-  const thanks = useLiveTranslation('MERCI ET BIENVENUE CHEZ IMPÉRIAL HOME !', 'fr')
+  const thanks = useLiveTranslation('MERCI ET BIENVENUE CHEZ IMPERIAL HOME !', 'fr')
 
   return (
     <article className="housing-a4 text-[#111]">
@@ -103,7 +103,7 @@ export function HousingSheet({
             </div>
             <div className="flex flex-col items-center pt-[0.2em]">
               <ImperialMark className="h-[14cqi] w-auto max-h-16" />
-              <p className="mt-0.5 font-display text-[0.85em] tracking-[0.22em] text-[#c4a35a]">IMPÉRIAL</p>
+              <p className="mt-0.5 font-display text-[0.85em] tracking-[0.22em] text-[#c4a35a]">IMPERIAL</p>
               <p className="text-[0.55em] tracking-[0.32em] text-[#c4a35a]">HOME</p>
               <div className="mt-[0.6em] flex items-center gap-1.5">
                 <span className="flex h-[1.7em] w-[1.7em] items-center justify-center rounded-full border border-[#c4a35a] text-[#c4a35a]">

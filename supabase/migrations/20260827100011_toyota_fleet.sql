@@ -1,4 +1,4 @@
--- Flotte Toyota Impérial Home (Corolla Vert, Avensis) + photos
+-- Flotte Toyota Imperial Home (Corolla Vert, Avensis) + photos
 -- Inclut le schéma véhicules si la migration 20260827100010_platform_features n'a pas encore été appliquée.
 
 create table if not exists public.vehicles (

@@ -42,7 +42,7 @@ export function AppLock() {
   return (
     <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-6 bg-[#050505] p-6 text-center text-[#f4eee3]">
       <img src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`} alt="" className="h-28 w-auto" />
-      <p className="font-display text-xl tracking-[0.2em] text-[#ecd08a] uppercase">Impérial Home</p>
+      <p className="font-display text-xl tracking-[0.2em] text-[#ecd08a] uppercase">Imperial Home</p>
       <button
         type="button"
         className="flex min-h-12 items-center gap-2 rounded-full bg-gradient-to-r from-[#b8893b] to-[#ecd08a] px-6 text-sm font-semibold text-[#17110a]"

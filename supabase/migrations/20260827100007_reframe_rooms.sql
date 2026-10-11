@@ -1,13 +1,13 @@
--- Impérial Home: one guest house, named rooms (not separate apartments)
+-- Imperial Home: one guest house, named rooms (not separate apartments)
 
 update public.properties set
   slug = 'abidjan',
   name = 'Abidjan',
-  description_en = 'The Abidjan room at Impérial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
-  description_fr = 'La chambre Abidjan à Impérial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
-  welcome_message_en = 'Welcome to the Abidjan room at Impérial Home.',
-  welcome_message_fr = 'Bienvenue dans la chambre Abidjan à Impérial Home.',
-  address = 'Impérial Home, Bonapriso',
+  description_en = 'The Abidjan room at Imperial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
+  description_fr = 'La chambre Abidjan à Imperial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
+  welcome_message_en = 'Welcome to the Abidjan room at Imperial Home.',
+  welcome_message_fr = 'Bienvenue dans la chambre Abidjan à Imperial Home.',
+  address = 'Imperial Home, Bonapriso',
   city = 'Douala',
   neighborhood = 'Bonapriso',
   latitude = 4.0128,
@@ -26,11 +26,11 @@ where slug = 'villa-imperiale-bonapriso';
 update public.properties set
   slug = 'singapour',
   name = 'Singapour',
-  description_en = 'The Singapour room — contemporary lines, city-inspired décor, and a refined stay inside Impérial Home.',
-  description_fr = 'La chambre Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Impérial Home.',
-  welcome_message_en = 'Welcome to the Singapour room at Impérial Home.',
-  welcome_message_fr = 'Bienvenue dans la chambre Singapour à Impérial Home.',
-  address = 'Impérial Home, Bonapriso',
+  description_en = 'The Singapour room — contemporary lines, city-inspired décor, and a refined stay inside Imperial Home.',
+  description_fr = 'La chambre Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Imperial Home.',
+  welcome_message_en = 'Welcome to the Singapour room at Imperial Home.',
+  welcome_message_fr = 'Bienvenue dans la chambre Singapour à Imperial Home.',
+  address = 'Imperial Home, Bonapriso',
   city = 'Douala',
   neighborhood = 'Bonapriso',
   latitude = 4.0128,
@@ -49,11 +49,11 @@ where slug = 'residence-akwa-prestige';
 update public.properties set
   slug = 'dubai',
   name = 'Dubai',
-  description_en = 'The Dubai room — our most spacious room at Impérial Home, ideal for small families or longer stays.',
-  description_fr = 'La chambre Dubai — notre chambre la plus spacieuse à Impérial Home, idéale pour les petites familles ou les longs séjours.',
-  welcome_message_en = 'Welcome to the Dubai room at Impérial Home.',
-  welcome_message_fr = 'Bienvenue dans la chambre Dubai à Impérial Home.',
-  address = 'Impérial Home, Bonapriso',
+  description_en = 'The Dubai room — our most spacious room at Imperial Home, ideal for small families or longer stays.',
+  description_fr = 'La chambre Dubai — notre chambre la plus spacieuse à Imperial Home, idéale pour les petites familles ou les longs séjours.',
+  welcome_message_en = 'Welcome to the Dubai room at Imperial Home.',
+  welcome_message_fr = 'Bienvenue dans la chambre Dubai à Imperial Home.',
+  address = 'Imperial Home, Bonapriso',
   city = 'Douala',
   neighborhood = 'Bonapriso',
   latitude = 4.0128,
@@ -70,7 +70,7 @@ update public.properties set
 where slug = 'suite-bonanjo';
 
 update public.promotions set
-  name = 'Ouverture Impérial Home',
-  description_en = 'Introductory offer on selected rooms at Impérial Home.',
-  description_fr = 'Offre d''ouverture sur certaines chambres à Impérial Home.'
-where name in ('Ouverture Douala', 'Ouverture Impérial Home');
+  name = 'Ouverture Imperial Home',
+  description_en = 'Introductory offer on selected rooms at Imperial Home.',
+  description_fr = 'Offre d''ouverture sur certaines chambres à Imperial Home.'
+where name in ('Ouverture Douala', 'Ouverture Imperial Home');

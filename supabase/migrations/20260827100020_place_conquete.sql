@@ -1,6 +1,6 @@
 update public.properties
 set
-  address = 'Impérial Home, Carrefour Conquête',
+  address = 'Imperial Home, Carrefour Conquête',
   neighborhood = 'Carrefour Conquête',
   city = 'Douala',
   latitude = 4.0689,

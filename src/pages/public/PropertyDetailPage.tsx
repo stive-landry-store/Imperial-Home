@@ -121,9 +121,9 @@ export function PropertyDetailPage() {
     <div className="theme-page">
       <div className="mx-auto max-w-6xl px-4 pt-32 pb-20 md:px-6">
         <Helmet>
-          <title>{`${property.name} | Impérial Home Douala`}</title>
+          <title>{`${property.name} | Imperial Home Douala`}</title>
           <meta name="description" content={description.slice(0, 160)} />
-          <meta property="og:title" content={`${property.name} | Impérial Home`} />
+          <meta property="og:title" content={`${property.name} | Imperial Home`} />
           <meta property="og:description" content={description.slice(0, 160)} />
           {coverImage(property.property_images) ? <meta property="og:image" content={coverImage(property.property_images)} /> : null}
           <script type="application/ld+json">

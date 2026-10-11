@@ -27,7 +27,7 @@ export function CarsPage() {
     <div className="theme-page min-h-svh">
       <div className="mx-auto max-w-6xl px-4 pt-36 pb-24 md:px-6">
         <Helmet>
-          <title>{`${t('cars.title')} | Impérial Home`}</title>
+          <title>{`${t('cars.title')} | Imperial Home`}</title>
         </Helmet>
         <h1 className="text-2xl font-semibold">{t('cars.title')}</h1>
         <p className="mt-2 max-w-2xl text-sm theme-muted">{t('cars.lead')}</p>

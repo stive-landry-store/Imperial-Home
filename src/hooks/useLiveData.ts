@@ -35,7 +35,7 @@ export function useLiveData() {
     }
     channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, (payload) => {
       const row = payload.new as { user_id?: string; title?: string; body?: string | null; link?: string | null }
-      if (userId && row.user_id === userId) void notify(row.title ?? 'Impérial Home', row.body ?? '', row.link ?? '/account')
+      if (userId && row.user_id === userId) void notify(row.title ?? 'Imperial Home', row.body ?? '', row.link ?? '/account')
     })
     if (isStaff) {
       channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reservations' }, (payload) => {

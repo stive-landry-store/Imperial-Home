@@ -1,7 +1,7 @@
 import type { Messages } from '../en'
 
 const pack = {
-  "brand": "Impérial Home",
+  "brand": "Imperial Home",
   "nav": {
     "residences": "公寓",
     "book": "预订",
@@ -26,13 +26,13 @@ const pack = {
     "kicker": "杜阿拉·喀麦隆",
     "tagline": "L'art du soin. L'esprit du détail.",
     "title": "一所房子。公寓安静奢华。",
-    "subtitle": "Impérial Home 是一家位于杜阿拉的私人宾馆。每套公寓——阿比让、新加坡等——都有自己的名称、照片、价格和空房情况。",
+    "subtitle": "Imperial Home 是一家位于杜阿拉的私人宾馆。每套公寓——阿比让、新加坡等——都有自己的名称、照片、价格和空房情况。",
     "cta": "探索我们的公寓",
     "ctaSecondary": "WhatsApp 礼宾服务"
   },
   "home": {
     "featured": "我们的公寓",
-    "featuredLead": "Impérial Home 的每间公寓都有自己的特色、照片和每晚房价。",
+    "featuredLead": "Imperial Home 的每间公寓都有自己的特色、照片和每晚房价。",
     "benefitsTitle": "单一事实来源",
     "b1t": "已验证可用性",
     "b1d": "日期保存在数据库中，因此两名客人无法在同一晚确认。",
@@ -45,7 +45,7 @@ const pack = {
     "locationBody": "杜阿拉博纳普里索 — 一个地址，几套公寓。我们欢迎您亲自前来或通过 WhatsApp 联系我们。",
     "viewAll": "所有公寓",
     "ritualTitle": "热情好客，手写。",
-    "ritualBody": "预订确认后，您将收到 Impérial Home 住房表 - 与接待处使用的相同的金色和黑色胶片。填写您的详细信息并签名，剩下的事情由我们来处理。",
+    "ritualBody": "预订确认后，您将收到 Imperial Home 住房表 - 与接待处使用的相同的金色和黑色胶片。填写您的详细信息并签名，剩下的事情由我们来处理。",
     "ficheKicker": "抵达仪式",
     "ficheTitle": "接待处的住房表。",
     "ficheBody": "与您的主人在杜阿拉使用的相同的金黑胶片。客人填写身份、日期和签名。接待处增加了无线网络连接和房屋印章。生成、编辑、打印或下载为 PDF。",
@@ -53,8 +53,8 @@ const pack = {
   },
   "properties": {
     "title": "公寓",
-    "lead": "Impérial Home 的指定公寓 — 选择您的公寓并查看您的日期的空房情况。",
-    "houseLabel": "Impérial Home·杜阿拉",
+    "lead": "Imperial Home 的指定公寓 — 选择您的公寓并查看您的日期的空房情况。",
+    "houseLabel": "Imperial Home·杜阿拉",
     "guests": "客人",
     "from": "来自",
     "perNight": "/ 晚上",
@@ -100,7 +100,7 @@ const pack = {
   },
   "cars": {
     "title": "汽车租赁",
-    "kicker": "Impérial Home移动性",
+    "kicker": "Imperial Home移动性",
     "lead": "带或不带司机的高级车辆。单独预订汽车，或将其添加到公寓住宿中。",
     "promoHint": "使用有效的促销代码：租车可享受 5% 的折扣。",
     "withoutDriver": "无司机",
@@ -119,7 +119,7 @@ const pack = {
     "pending": "待定",
     "loginToBook": "登录预订",
     "requestSent": "请求已发送",
-    "requestLead": "Impérial Home 将确认此租金。您可以在您的帐户中关注它。",
+    "requestLead": "Imperial Home 将确认此租金。您可以在您的帐户中关注它。",
     "seeAccount": "查看我的出租",
     "bookingSoon": "服务器上的汽车预订尚未激活。稍后再试一次。",
     "empty": "舰队即将到来。",
@@ -145,15 +145,15 @@ const pack = {
     "unknown": "我还没有那个信息。",
     "writeHuman": "写信给人工援助",
     "whatsapp": "在 WhatsApp 上写信",
-    "handoff": "您的消息已发送至 Impérial Home 团队。",
+    "handoff": "您的消息已发送至 Imperial Home 团队。",
     "loginToWrite": "登录并给团队写信。"
   },
   "contact": {
     "title": "联系方式",
-    "lead": "Impérial Home 总部位于杜阿拉。我们更喜欢使用 WhatsApp 进行预订和抵达。",
+    "lead": "Imperial Home 总部位于杜阿拉。我们更喜欢使用 WhatsApp 进行预订和抵达。",
     "phone": "电话/WhatsApp",
     "email": "电子邮件",
-    "message": "您好 Impérial Home，我想了解有关杜阿拉住宿的信息。"
+    "message": "您好 Imperial Home，我想了解有关杜阿拉住宿的信息。"
   },
   "auth": {
     "loginTitle": "欢迎回来",
@@ -171,7 +171,7 @@ const pack = {
     "configure": "身份验证需要 Supabase URL 和您环境中的匿名密钥。",
     "forgot": "忘记密码了吗？",
     "forgotTitle": "重置您的密码",
-    "forgotLead": "输入您的 Impérial Home 帐户的电子邮件。我们将发送重置链接。",
+    "forgotLead": "输入您的 Imperial Home 帐户的电子邮件。我们将发送重置链接。",
     "forgotSubmit": "发送重置链接",
     "forgotSent": "如果此电子邮件已注册，则会有一个重置链接。检查您的收件箱和垃圾邮件文件夹。",
     "forgotRedirectError": "Supabase 中不允许重定向 URL。打开身份验证 → URL 配置并添加这些重定向 URL：{{urls}}",
@@ -206,7 +206,7 @@ const pack = {
     "cni": "身份证号码（CNI）",
     "openReservation": "开放预订",
     "bookingValidated": "预订已确认",
-    "bookingValidatedLead": "Impérial Home 已确认您的入住。日期已保留。",
+    "bookingValidatedLead": "Imperial Home 已确认您的入住。日期已保留。",
     "carsTitle": "您的租车",
     "carsEmpty": "还没有租车。",
     "saved": "个人资料已保存",
@@ -216,7 +216,7 @@ const pack = {
     "newPassword": "新密码",
     "changePassword": "更新密码",
     "passwordSaved": "密码已更新",
-    "share": "分享 Impérial Home",
+    "share": "分享 Imperial Home",
     "social": "社交",
     "myAccount": "我的帐户"
   },
@@ -231,7 +231,7 @@ const pack = {
     "assigned": "已分配新助手：{{name}}",
     "write": "写",
     "you": "你",
-    "team": "Impérial Home",
+    "team": "Imperial Home",
     "guest": "嘉宾"
   },
   "admin": {
@@ -327,7 +327,7 @@ const pack = {
     "publish": "发布",
     "archive": "存档",
     "forbidden": "您无权访问管理。",
-    "roomsLead": "管理 Impérial Home 上的每套公寓：名称、照片、价格和位置。",
+    "roomsLead": "管理 Imperial Home 上的每套公寓：名称、照片、价格和位置。",
     "roomsEmpty": "还没有公寓。添加您的第一套公寓。",
     "roomAdd": "添加公寓",
     "roomNew": "新公寓",
@@ -387,7 +387,7 @@ const pack = {
     "settingsSaved": "设置已保存。更改现已在网站上生效。",
     "settingsBootstrapHint": "这些地址在注册时成为管理员。对于现有帐户，请使用管理员页面。",
     "supabaseRequired": "Supabase 未连接：不会保存更改。检查您的 .env 文件并重新启动站点。",
-    "adminsLead": "指定管理员、设置其显示的标题并管理访问权限。蓝色徽章是内部 Impérial Home 验证。",
+    "adminsLead": "指定管理员、设置其显示的标题并管理访问权限。蓝色徽章是内部 Imperial Home 验证。",
     "adminAdd": "指定管理员",
     "adminAddHint": "此人必须已经拥有使用此电子邮件地址的客户帐户。",
     "adminEmail": "账户邮箱",

@@ -220,7 +220,7 @@ async function buildSummarySheet(workbook: Workbook, images: Images, report: Rep
 export async function downloadReservationsExcel(stays: Reservation[], rentals: VehicleRental[]) {
   const [{ default: ExcelJS }, report] = await Promise.all([import('exceljs'), buildReport(stays, rentals)])
   const workbook = new ExcelJS.Workbook()
-  workbook.creator = 'Impérial Home'
+  workbook.creator = 'Imperial Home'
   workbook.created = new Date()
   const images = imageFactory(workbook)
   const today = todayLong()

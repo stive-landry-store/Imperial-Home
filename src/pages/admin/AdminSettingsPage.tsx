@@ -32,7 +32,7 @@ export function AdminSettingsPage() {
   const [fichePreview, setFichePreview] = useState<string | null>(null)
   const [pendingFicheFile, setPendingFicheFile] = useState<File | null>(null)
 
-  const [placeAddress, setPlaceAddress] = useState('Impérial Home, Carrefour Conquête')
+  const [placeAddress, setPlaceAddress] = useState('Imperial Home, Carrefour Conquête')
   const [placeLat, setPlaceLat] = useState('4.0689')
   const [placeLng, setPlaceLng] = useState('9.7568')
   const [bootstrap, setBootstrap] = useState('imperialhome237@gmail.com, stivelandry16@gmail.com')
@@ -173,7 +173,7 @@ export function AdminSettingsPage() {
   return (
     <div className="p-6 md:p-10">
       <Helmet>
-        <title>{`${t('admin.settings')} | Impérial Home`}</title>
+        <title>{`${t('admin.settings')} | Imperial Home`}</title>
       </Helmet>
       <h1 className="font-display text-4xl">{t('admin.settings')}</h1>
       {!isSupabaseConfigured() ? (
@@ -280,7 +280,7 @@ export function AdminSettingsPage() {
             <PlaceMap
               latitude={Number(placeLat) || 4.0689}
               longitude={Number(placeLng) || 9.7568}
-              label="Impérial Home"
+              label="Imperial Home"
               className="h-72"
               onPick={(latitude, longitude) => {
                 setPlaceLat(latitude.toFixed(6))

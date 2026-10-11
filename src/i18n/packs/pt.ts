@@ -1,7 +1,7 @@
 import type { Messages } from '../en'
 
 const pack = {
-  "brand": "Impérial Home",
+  "brand": "Imperial Home",
   "nav": {
     "residences": "Apartamentos",
     "book": "Livro",
@@ -26,13 +26,13 @@ const pack = {
     "kicker": "Douala · Camarões",
     "tagline": "L'art du soin. L'esprit du détail.",
     "title": "Uma casa. Apartamentos compostos com luxo tranquilo.",
-    "subtitle": "Impérial Home é uma pousada privada em Douala. Cada apartamento – Abidjan, Singapura e outros – tem seu próprio nome, foto, preço e disponibilidade.",
+    "subtitle": "Imperial Home é uma pousada privada em Douala. Cada apartamento – Abidjan, Singapura e outros – tem seu próprio nome, foto, preço e disponibilidade.",
     "cta": "Conheça nossos apartamentos",
     "ctaSecondary": "Portaria WhatsApp"
   },
   "home": {
     "featured": "Nossos apartamentos",
-    "featuredLead": "Cada apartamento do Impérial Home tem seu próprio personagem, foto e tarifa por noite.",
+    "featuredLead": "Cada apartamento do Imperial Home tem seu próprio personagem, foto e tarifa por noite.",
     "benefitsTitle": "Uma única fonte de verdade",
     "b1t": "Disponibilidade verificada",
     "b1d": "As datas são mantidas no banco de dados, portanto, dois hóspedes não podem confirmar a mesma noite.",
@@ -46,7 +46,7 @@ const pack = {
     "placeLine": "Carrefour Conquête, Douala",
     "viewAll": "Todos os apartamentos",
     "ritualTitle": "Hospitalidade, escrita à mão.",
-    "ritualBody": "Após a confirmação da sua reserva, você receberá a ficha de habitação Impérial Home – a mesma ficha dourada e preta usada na recepção. Preencha seus dados, assine e nós cuidaremos do resto.",
+    "ritualBody": "Após a confirmação da sua reserva, você receberá a ficha de habitação Imperial Home – a mesma ficha dourada e preta usada na recepção. Preencha seus dados, assine e nós cuidaremos do resto.",
     "ficheKicker": "Ritual de chegada",
     "ficheTitle": "A ficha de habitação, conforme na recepção.",
     "ficheBody": "A mesma ficha dourada e preta que seu anfitrião usa em Douala. Os convidados completam a identidade, datas e assinatura. A recepção adiciona Wi-Fi e carimbo da casa. Gere, edite, imprima ou baixe como PDF.",
@@ -54,8 +54,8 @@ const pack = {
   },
   "properties": {
     "title": "Apartamentos",
-    "lead": "Apartamentos nomeados no Impérial Home — escolha o seu e verifique a disponibilidade para suas datas.",
-    "houseLabel": "Impérial Home · Douala",
+    "lead": "Apartamentos nomeados no Imperial Home — escolha o seu e verifique a disponibilidade para suas datas.",
+    "houseLabel": "Imperial Home · Douala",
     "guests": "convidados",
     "from": "de",
     "perNight": "/ noite",
@@ -101,7 +101,7 @@ const pack = {
   },
   "cars": {
     "title": "Aluguel de carro",
-    "kicker": "Mobilidade Impérial Home",
+    "kicker": "Mobilidade Imperial Home",
     "lead": "Veículos premium com ou sem motorista. Reserve um carro por conta própria ou adicione-o a uma estadia em apartamento.",
     "promoHint": "Com um código promocional válido: 5% de desconto no aluguer de automóveis.",
     "withoutDriver": "Sem motorista",
@@ -120,7 +120,7 @@ const pack = {
     "pending": "Pendente",
     "loginToBook": "Faça login para reservar",
     "requestSent": "Solicitação enviada",
-    "requestLead": "Impérial Home confirmará este aluguel. Você pode acompanhá-lo em sua conta.",
+    "requestLead": "Imperial Home confirmará este aluguel. Você pode acompanhá-lo em sua conta.",
     "seeAccount": "Ver meus aluguéis",
     "bookingSoon": "A reserva de carro ainda não está ativa no servidor. Tente novamente em alguns instantes.",
     "empty": "Frota em breve.",
@@ -146,15 +146,15 @@ const pack = {
     "unknown": "Ainda não tenho essa informação.",
     "writeHuman": "Escreva para assistência humana",
     "whatsapp": "Escreva no WhatsApp",
-    "handoff": "Sua mensagem foi enviada para a equipe Impérial Home.",
+    "handoff": "Sua mensagem foi enviada para a equipe Imperial Home.",
     "loginToWrite": "Faça login para escrever para a equipe."
   },
   "contact": {
     "title": "Contato",
-    "lead": "Impérial Home está baseado em Douala. Preferimos o WhatsApp para reservas e chegadas.",
+    "lead": "Imperial Home está baseado em Douala. Preferimos o WhatsApp para reservas e chegadas.",
     "phone": "Telefone/WhatsApp",
     "email": "E-mail",
-    "message": "Olá Impérial Home, gostaria de informações sobre uma estadia em Douala."
+    "message": "Olá Imperial Home, gostaria de informações sobre uma estadia em Douala."
   },
   "auth": {
     "loginTitle": "Bem vindo de volta",
@@ -172,7 +172,7 @@ const pack = {
     "configure": "A autenticação precisa de URL Supabase e chave anônima em seu ambiente.",
     "forgot": "Esqueceu sua senha?",
     "forgotTitle": "Redefinir sua senha",
-    "forgotLead": "Digite o e-mail da sua conta Impérial Home. Enviaremos um link de redefinição.",
+    "forgotLead": "Digite o e-mail da sua conta Imperial Home. Enviaremos um link de redefinição.",
     "forgotSubmit": "Enviar link de redefinição",
     "forgotSent": "Se este e-mail estiver registrado, um link de redefinição estará a caminho. Verifique sua caixa de entrada e pasta de spam.",
     "forgotRedirectError": "URL de redirecionamento não permitido no Supabase. Abra Autenticação → Configuração de URL e adicione estes URLs de redirecionamento: {{urls}}",
@@ -207,7 +207,7 @@ const pack = {
     "cni": "Número de identificação (CNI)",
     "openReservation": "Reserva aberta",
     "bookingValidated": "Reserva confirmada",
-    "bookingValidatedLead": "Impérial Home confirmou sua estadia. As datas estão reservadas.",
+    "bookingValidatedLead": "Imperial Home confirmou sua estadia. As datas estão reservadas.",
     "carsTitle": "Seu aluguel de carros",
     "carsEmpty": "Ainda não há aluguel de carro.",
     "saved": "Perfil salvo",
@@ -217,7 +217,7 @@ const pack = {
     "newPassword": "Nova senha",
     "changePassword": "Atualizar senha",
     "passwordSaved": "Senha atualizada",
-    "share": "Compartilhar Impérial Home",
+    "share": "Compartilhar Imperial Home",
     "social": "Sociais",
     "myAccount": "Minha conta"
   },
@@ -232,7 +232,7 @@ const pack = {
     "assigned": "Um novo assistente foi atribuído: {{name}}",
     "write": "Escreva",
     "you": "Você",
-    "team": "Impérial Home",
+    "team": "Imperial Home",
     "guest": "Convidado"
   },
   "admin": {
@@ -328,7 +328,7 @@ const pack = {
     "publish": "Publicar",
     "archive": "Arquivo",
     "forbidden": "Você não tem acesso à administração.",
-    "roomsLead": "Gerencie cada apartamento no Impérial Home: nome, foto, preço e localização.",
+    "roomsLead": "Gerencie cada apartamento no Imperial Home: nome, foto, preço e localização.",
     "roomsEmpty": "Ainda não há apartamentos. Adicione seu primeiro apartamento.",
     "roomAdd": "Adicionar um apartamento",
     "roomNew": "Apartamento novo",
@@ -388,7 +388,7 @@ const pack = {
     "settingsSaved": "Configurações salvas. As alterações já estão ativas no site.",
     "settingsBootstrapHint": "Esses endereços tornam-se administradores na inscrição. Para contas existentes, use a página Administradores.",
     "supabaseRequired": "Supabase não está conectado: as alterações não serão salvas. Verifique seu arquivo .env e reinicie o site.",
-    "adminsLead": "Nomeie administradores, defina o título exibido e gerencie o acesso. O emblema azul é a verificação interna do Impérial Home.",
+    "adminsLead": "Nomeie administradores, defina o título exibido e gerencie o acesso. O emblema azul é a verificação interna do Imperial Home.",
     "adminAdd": "Nomeie um administrador",
     "adminAddHint": "A pessoa já deve ter uma conta de cliente com este endereço de e-mail.",
     "adminEmail": "E-mail da conta",

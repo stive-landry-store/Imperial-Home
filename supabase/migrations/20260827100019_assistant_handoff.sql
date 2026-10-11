@@ -158,7 +158,7 @@ security definer
 set search_path = public
 as $$
   select p.id,
-         coalesce(nullif(trim(p.full_name), ''), p.email, 'Impérial Home'),
+         coalesce(nullif(trim(p.full_name), ''), p.email, 'Imperial Home'),
          coalesce(a.is_verified, p.role in ('admin', 'main_admin'))
   from public.profiles p
   left join public.admin_profiles a on a.id = p.id
@@ -214,7 +214,7 @@ begin
   where id = NEW.conversation_id;
 
   if v_prev is distinct from NEW.sender_id then
-    select coalesce(nullif(trim(full_name), ''), email, 'Impérial Home')
+    select coalesce(nullif(trim(full_name), ''), email, 'Imperial Home')
     into v_name
     from public.profiles
     where id = NEW.sender_id;
@@ -223,14 +223,14 @@ begin
     values (
       v_customer,
       'Nouvelle assistance',
-      coalesce(v_name, 'Impérial Home') || ' prend en charge votre demande.',
+      coalesce(v_name, 'Imperial Home') || ' prend en charge votre demande.',
       '/account/chat'
     );
 
     insert into public.notifications (user_id, title, body, link)
     select p.id,
            'Assistance attribuée',
-           coalesce(v_name, 'Impérial Home') || ' répond maintenant à ce client.',
+           coalesce(v_name, 'Imperial Home') || ' répond maintenant à ce client.',
            '/admin/chat'
     from public.profiles p
     where p.role in ('admin', 'main_admin')
@@ -241,7 +241,7 @@ begin
       NEW.conversation_id,
       null,
       'system',
-      '[[assigned]]' || coalesce(v_name, 'Impérial Home')
+      '[[assigned]]' || coalesce(v_name, 'Imperial Home')
     );
   end if;
 

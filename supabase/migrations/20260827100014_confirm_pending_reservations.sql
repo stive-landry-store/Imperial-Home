@@ -32,7 +32,7 @@ declare
 begin
   if p_confirmed then
     v_title := 'Réservation validée';
-    v_body := 'Votre réservation ' || p_public_code || ' a été validée par Impérial Home. Les dates sont confirmées.';
+    v_body := 'Votre réservation ' || p_public_code || ' a été validée par Imperial Home. Les dates sont confirmées.';
   else
     v_title := 'Réservation refusée';
     v_body := 'Votre réservation ' || p_public_code || ' n''a pas été validée. Les dates sont de nouveau disponibles.';

@@ -9,7 +9,7 @@ export function ImperialMark({ className = 'h-16 w-auto', markClassName = '', va
     return (
       <img
         src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`}
-        alt="Impérial Home"
+        alt="Imperial Home"
         className={`object-contain object-center ${className}`}
       />
     )
@@ -53,7 +53,7 @@ export function ImperialWordmark({ light = false, compact = false }: { light?: b
   const gold = light ? 'text-[#d4af6a]' : 'text-gold'
   return (
     <div className="leading-none">
-      <p className={`font-display tracking-[0.28em] ${gold} ${compact ? 'text-[1.15rem]' : 'text-[1.5rem]'}`}>IMPÉRIAL</p>
+      <p className={`font-display tracking-[0.28em] ${gold} ${compact ? 'text-[1.15rem]' : 'text-[1.5rem]'}`}>IMPERIAL</p>
       <p className={`mt-1 flex items-center gap-2 tracking-[0.42em] ${gold} ${compact ? 'text-[0.62rem]' : 'text-[0.72rem]'}`}>
         <span className="h-px flex-1 bg-current opacity-70" />
         HOME

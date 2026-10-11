@@ -20,7 +20,7 @@ export function imperialPlace(config?: {
     latitude: Number.isFinite(latitude) && Math.abs(latitude) > 0.01 ? latitude : IMPERIAL_HOME.latitude,
     longitude: Number.isFinite(longitude) && Math.abs(longitude) > 0.01 ? longitude : IMPERIAL_HOME.longitude,
     address: config?.place_address?.trim() || IMPERIAL_HOME.address,
-    label: 'Impérial Home',
+    label: 'Imperial Home',
   }
 }
 

@@ -184,7 +184,7 @@ export function ChatPage() {
       const preview = last ? visibleMessage(last.body, t).trim() : ''
       const row: InboxRow = {
         id: item.id,
-        title: 'Impérial Home',
+        title: 'Imperial Home',
         preview: preview || (photo ? t('chat.photo') : t('chat.emptyPreview')),
         at: last?.created_at || item.last_message_at || item.created_at,
         mark: true,
@@ -211,7 +211,7 @@ export function ChatPage() {
   return (
     <div className="ih-chat flex h-full min-h-0 bg-[#0b0b0c]">
       <Helmet>
-        <title>{`${t('chat.discussions')} | Impérial Home`}</title>
+        <title>{`${t('chat.discussions')} | Imperial Home`}</title>
       </Helmet>
       <aside className={cn('h-full min-h-0 w-full md:w-[360px] md:shrink-0 md:border-r md:border-[#d4af6a]/25', active && 'hidden md:block')}>
         <ChatInbox
@@ -230,7 +230,7 @@ export function ChatPage() {
       <section className={cn('h-full min-h-0 min-w-0 flex-1', !active && 'hidden md:block')}>
         {active ? (
           <ChatThread
-            title="Impérial Home"
+            title="Imperial Home"
             subtitle={t('chat.reception')}
             mark
             messages={messages}

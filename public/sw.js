@@ -56,10 +56,10 @@ self.addEventListener('push', (event) => {
   try {
     data = event.data ? event.data.json() : {}
   } catch {
-    data = { title: 'Impérial Home', body: event.data ? event.data.text() : '' }
+    data = { title: 'Imperial Home', body: event.data ? event.data.text() : '' }
   }
   event.waitUntil(
-    self.registration.showNotification(data.title || 'Impérial Home', {
+    self.registration.showNotification(data.title || 'Imperial Home', {
       body: data.body || '',
       icon: '/icon-192.png',
       badge: '/icon-192.png',

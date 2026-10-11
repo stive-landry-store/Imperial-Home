@@ -55,7 +55,7 @@ export function HomePage() {
   return (
     <div className="theme-page">
       <Helmet>
-        <title>Impérial Home | L&apos;art du soin. L&apos;esprit du détail.</title>
+        <title>Imperial Home | L&apos;art du soin. L&apos;esprit du détail.</title>
         <link rel="preload" as="image" href={hero} fetchPriority="high" />
       </Helmet>
 

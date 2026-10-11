@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "Impérial Home",
-  "short_name": "Impérial",
+  "name": "Imperial Home",
+  "short_name": "Imperial",
   "description": "Résidences meublées et location de voiture à Douala",
   "start_url": "/?source=pwa",
   "scope": "/",

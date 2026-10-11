@@ -356,7 +356,7 @@ export function drawBrandHeader(ctx: Ctx, mono: HTMLImageElement | null, hero: H
   }
   ctx.fillStyle = goldGradient(ctx, 44, 340)
   ctx.font = '600 33px Cinzel, Georgia, serif'
-  spaced(ctx, 'IMPÉRIAL HOME', 46, 190, 5)
+  spaced(ctx, 'IMPERIAL HOME', 46, 190, 5)
   ctx.strokeStyle = goldGradient(ctx, 44, 340)
   ctx.lineWidth = 2
   ctx.beginPath()
@@ -481,7 +481,7 @@ export async function renderInvoice(data: InvoiceData): Promise<HTMLCanvasElemen
   // left box
   box(ctx, 24, 336, 470, 384)
   badge(ctx, 'house', 82, 346, 40)
-  titlePill(ctx, 100, 318, 372, 'IMPÉRIAL HOME')
+  titlePill(ctx, 100, 318, 372, 'IMPERIAL HOME')
   ctx.fillStyle = INK
   ctx.textBaseline = 'middle'
   ctx.font = '400 22px Montserrat, system-ui, sans-serif'
@@ -696,7 +696,7 @@ export async function renderInvoice(data: InvoiceData): Promise<HTMLCanvasElemen
   ctx.textAlign = 'center'
   ctx.fillStyle = INK
   ctx.font = '600 22px Montserrat, system-ui, sans-serif'
-  ctx.fillText('Impérial Home', 744, by + 62)
+  ctx.fillText('Imperial Home', 744, by + 62)
   if (mono) {
     const mh = 54
     const mw = (mono.width / mono.height) * mh

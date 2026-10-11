@@ -46,7 +46,7 @@ export const demoHousingSheet = (): HousingSheetData => ({
   wifi_password: '',
   guest_sign_name: 'Jean-Paul Mballa',
   guest_signature: '',
-  reception_sign_name: 'Impérial Home',
+  reception_sign_name: 'Imperial Home',
   reception_signature: '',
   receptionist_name: 'Amina Ngo',
   reception_phone: '674092263',

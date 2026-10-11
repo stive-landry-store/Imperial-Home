@@ -17,7 +17,7 @@ export function groundedReply(input: {
     return {
       escalate: true,
       answer: fr
-        ? `Un administrateur Impérial Home peut vous aider. WhatsApp ${input.phone} ou ${input.email}.`
+        ? `Un administrateur Imperial Home peut vous aider. WhatsApp ${input.phone} ou ${input.email}.`
         : `An Imperial Home administrator can help. WhatsApp ${input.phone} or ${input.email}.`,
     }
   }
@@ -69,7 +69,7 @@ export function groundedReply(input: {
     return {
       escalate: false,
       answer: fr
-        ? `${match.name} à Impérial Home · ${match.city}. Capacité ${match.capacity} voyageurs. À partir de ${formatXaf(match.nightly_rate_xaf)}/nuit. ${amenities ? `Équipements : ${amenities}.` : ''} ${desc}`
+        ? `${match.name} à Imperial Home · ${match.city}. Capacité ${match.capacity} voyageurs. À partir de ${formatXaf(match.nightly_rate_xaf)}/nuit. ${amenities ? `Équipements : ${amenities}.` : ''} ${desc}`
         : `${match.name} at Imperial Home · ${match.city}. Capacity ${match.capacity} guests. From ${formatXaf(match.nightly_rate_xaf)}/night. ${amenities ? `Amenities: ${amenities}.` : ''} ${desc}`,
     }
   }
@@ -116,7 +116,7 @@ export function groundedReply(input: {
     return {
       escalate: true,
       answer: fr
-        ? `Je n’ai pas la réponse exacte. Impérial Home à Douala : ${names}. Vous pouvez écrire à l’assistance ou sur WhatsApp.`
+        ? `Je n’ai pas la réponse exacte. Imperial Home à Douala : ${names}. Vous pouvez écrire à l’assistance ou sur WhatsApp.`
         : `I don't have the exact answer. Imperial Home in Douala: ${names}. You can write to the team or on WhatsApp.`,
     }
   }

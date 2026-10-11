@@ -83,7 +83,7 @@ export function AdminPropertiesPage() {
 
       <Helmet>
 
-        <title>{`${t('admin.properties')} | Impérial Home`}</title>
+        <title>{`${t('admin.properties')} | Imperial Home`}</title>
 
       </Helmet>
 

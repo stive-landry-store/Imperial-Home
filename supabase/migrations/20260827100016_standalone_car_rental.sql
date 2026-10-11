@@ -211,7 +211,7 @@ begin
     values (
       v_user,
       'Voiture demandée',
-      'Votre location ' || v_code || ' (' || v_vehicle.brand || ' ' || v_vehicle.model || ') est enregistrée. Impérial Home la confirme.',
+      'Votre location ' || v_code || ' (' || v_vehicle.brand || ' ' || v_vehicle.model || ') est enregistrée. Imperial Home la confirme.',
       '/account'
     );
   exception when others then
