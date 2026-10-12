@@ -11,6 +11,7 @@ import { PlaceMap } from '../../components/property/PlaceMap'
 import { uploadSiteImage } from '../../lib/siteAssets'
 import { useAuth } from '../../hooks/useAuth'
 import { Loader } from '../../components/ui/Loader'
+import { StayExtrasEditor } from '../../components/admin/StayExtrasEditor'
 
 export function AdminSettingsPage() {
   const { t } = useTranslation()
@@ -317,6 +318,7 @@ export function AdminSettingsPage() {
           {saving ? <Loader size="xs" /> : t('common.save')}
         </Button>
       </form>
+      {canSave ? <StayExtrasEditor /> : null}
     </div>
   )
 }

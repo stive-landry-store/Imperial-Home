@@ -16,6 +16,8 @@ import { useSiteConfig } from '../../hooks/useSite'
 import { VehicleGallery } from '../../components/vehicle/VehicleGallery'
 import { addVehicleRental, fetchPublishedVehicles, isVehicleAvailable } from '../../lib/vehicles'
 import { Loader } from '../../components/ui/Loader'
+import { Car } from 'lucide-react'
+import { cn } from '../../lib/cn'
 
 export function BookingPage() {
   const { slug = '' } = useParams()
@@ -121,6 +123,26 @@ export function BookingPage() {
         </div>
       </dl>
 
+      <button
+        type="button"
+        aria-pressed={wantCar}
+        className={cn(
+          'mt-6 flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-[#d4af6a] px-4 py-5 text-center',
+          wantCar ? 'bg-[#d4af6a] text-black' : 'bg-[#0b0b0c] text-[#f4eee3]',
+        )}
+        onClick={() => setWantCar((value) => !value)}
+      >
+        <span
+          className={cn(
+            'grid h-24 w-24 place-items-center rounded-full',
+            wantCar ? 'bg-black text-[#d4af6a]' : 'bg-[#d4af6a] text-black',
+          )}
+        >
+          <Car className="h-14 w-14" strokeWidth={1.75} aria-hidden />
+        </span>
+        <span className="text-[18px] leading-snug font-semibold">{t('cars.addToBooking')}</span>
+      </button>
+
       <div className="theme-card mt-6 space-y-3 p-6">
         <Label>{t('plus.promoCode')}</Label>
         <div className="flex gap-2">
@@ -149,13 +171,8 @@ export function BookingPage() {
         ))}
       </div>
 
-      <div className="theme-card mt-6 space-y-4 p-6">
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={wantCar} onChange={(e) => setWantCar(e.target.checked)} />
-          {t('cars.addToBooking')}
-        </label>
-        {wantCar ? (
-          <>
+      {wantCar ? (
+        <div className="theme-card mt-4 space-y-4 p-6">
             <div>
               <Label>{t('cars.chooseVehicle')}</Label>
               <select
@@ -230,9 +247,8 @@ export function BookingPage() {
                 {carEstimate.discount > 0 ? ` (−${formatXaf(carEstimate.discount)})` : ''}
               </p>
             ) : null}
-          </>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
 
       <p className="mt-6 text-sm theme-muted">{t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}</p>
       {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-[#d4af6a]/80">{t('booking.demoBlock')}</p> : null}

@@ -6,11 +6,54 @@ function quiet<T>(value: T) {
   return value
 }
 
+/** Built-in options the owner asked to take off the booking page. New options added in settings still appear. */
+const RETIRED_EXTRAS = new Set(['airport', 'late-checkout', 'mid-clean', 'baby-bed'])
+
 export async function fetchStayServices(): Promise<StayService[]> {
   if (!supabase) return []
   const { data, error } = await supabase.from('stay_services').select('*').eq('is_active', true).order('sort_order')
   if (error) return []
-  return (data as StayService[]) ?? []
+  return ((data as StayService[]) ?? []).filter((service) => !RETIRED_EXTRAS.has(service.slug))
+}
+
+export async function fetchStayServicesForAdmin(): Promise<StayService[]> {
+  if (!supabase) return []
+  const { data, error } = await supabase.from('stay_services').select('*').eq('is_active', true).order('sort_order')
+  if (error) throw error
+  return ((data as StayService[]) ?? []).filter((service) => !RETIRED_EXTRAS.has(service.slug))
+}
+
+function extraSlug(name: string) {
+  const base = name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 32)
+  return `${base || 'option'}-${Date.now().toString(36)}`
+}
+
+export async function addStayService(name: string, priceXaf: number) {
+  if (!supabase) throw new Error('Connect Supabase first.')
+  const label = name.trim()
+  const { error } = await supabase.from('stay_services').insert({
+    slug: extraSlug(label),
+    name_en: label,
+    name_fr: label,
+    price_xaf: priceXaf,
+    is_active: true,
+    sort_order: 100,
+  })
+  if (error) throw error
+}
+
+export async function removeStayService(id: string) {
+  if (!supabase) throw new Error('Connect Supabase first.')
+  const removed = await supabase.from('stay_services').delete().eq('id', id)
+  if (!removed.error) return
+  const hidden = await supabase.from('stay_services').update({ is_active: false }).eq('id', id)
+  if (hidden.error) throw hidden.error
 }
 
 export async function fetchPublishedReviews(propertyId: string): Promise<Review[]> {
