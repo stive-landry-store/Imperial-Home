@@ -32,7 +32,7 @@ export function PropertiesPage() {
   const visible = properties.filter((property) => {
     if (neighborhood && property.neighborhood !== neighborhood) return false
     if (maxPrice > 0 && property.nightly_rate_xaf > maxPrice) return false
-    if (bedrooms > 0 && property.bedrooms < bedrooms) return false
+    if (bedrooms > 1) return false
     if (guests > 0 && property.capacity < guests) return false
     if (wifi && !hasAmenity(property, 'wi')) return false
     if (parking && !hasAmenity(property, 'park')) return false

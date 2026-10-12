@@ -51,7 +51,7 @@ export function ComparePage() {
                   [
                     [t('plus.neighborhood'), (p: (typeof chosen)[number]) => p.neighborhood || p.city],
                     [t('property.guests'), (p: (typeof chosen)[number]) => String(p.capacity)],
-                    [t('plus.bedrooms'), (p: (typeof chosen)[number]) => String(p.bedrooms)],
+                    [t('plus.bedrooms'), () => t('properties.studioLine')],
                     [t('properties.perNight'), (p: (typeof chosen)[number]) => formatXaf(p.nightly_rate_xaf)],
                     [
                       t('property.amenities'),

@@ -49,9 +49,7 @@ export function PropertyCard({
             {IMPERIAL_HOME.neighborhood}, {IMPERIAL_HOME.city}
           </p>
           <p className="mt-1 text-sm theme-muted">
-            {property.capacity} {t('properties.guests')} · {property.bedrooms}{' '}
-            {t(property.bedrooms > 1 ? 'properties.beds' : 'properties.bed')} · {property.bathrooms}{' '}
-            {t(property.bathrooms > 1 ? 'properties.baths' : 'properties.bath')}
+            {property.capacity} {t('properties.guests')} · {t('properties.studioLine')}
           </p>
           {amenityNames.length ? (
             <p className="mt-1 text-sm theme-muted">

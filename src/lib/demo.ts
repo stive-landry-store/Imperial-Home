@@ -39,10 +39,10 @@ function roomBase(id: string, slug: string, name: string, rate: number, capacity
     longitude: IMPERIAL_HOME.longitude,
     capacity,
     bedrooms: 1,
-    bathrooms: 1,
-    living_areas: 0,
-    kitchen_info_en: 'Shared kitchen and living areas at Imperial Home.',
-    kitchen_info_fr: 'Cuisine et espaces communs partagés à Imperial Home.',
+    bathrooms: 2,
+    living_areas: 1,
+    kitchen_info_en: 'Large kitchen.',
+    kitchen_info_fr: 'Grande cuisine.',
     rules_en: 'No parties. No smoking indoors. Quiet hours 22:00–07:00. Respect other guests.',
     rules_fr: 'Pas de fêtes. Interdiction de fumer à l’intérieur. Silence 22h00–07h00. Respectez les autres hôtes.',
     safety_info_en: 'Fire extinguisher on each floor. First-aid kit at reception.',
@@ -64,9 +64,9 @@ export const demoProperties: Property[] = [
   {
     ...roomBase('p1', 'abidjan', 'Abidjan', 55_000, 2),
     description_en:
-      'The Abidjan apartment at Imperial Home — warm tones, soft light, and a calm atmosphere for couples or solo travellers.',
+      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
     description_fr:
-      'L’appartement Abidjan à Imperial Home — tons chauds, lumière douce et ambiance paisible pour couples ou voyageurs seuls.',
+      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
     property_images: [
       {
         id: 'i1',
@@ -84,9 +84,9 @@ export const demoProperties: Property[] = [
   {
     ...roomBase('p2', 'singapour', 'Singapour', 65_000, 2),
     description_en:
-      'The Singapour apartment — contemporary lines, city-inspired décor, and a refined stay inside Imperial Home.',
+      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
     description_fr:
-      'L’appartement Singapour — lignes contemporaines, décor inspiré de la ville et séjour raffiné à Imperial Home.',
+      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
     property_images: [
       {
         id: 'i2',
@@ -104,9 +104,9 @@ export const demoProperties: Property[] = [
   {
     ...roomBase('p3', 'dubai', 'Dubai', 75_000, 3),
     description_en:
-      'The Dubai apartment — our most spacious unit at Imperial Home, ideal for small families or longer stays.',
+      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
     description_fr:
-      'L’appartement Dubai — notre appartement le plus spacieux à Imperial Home, idéal pour les petites familles ou les longs séjours.',
+      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
     property_images: [
       {
         id: 'i3',

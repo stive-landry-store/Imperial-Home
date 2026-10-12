@@ -62,7 +62,9 @@ export function groundedReply(input: {
     (p) => q.includes(p.slug) || q.includes(p.name.toLowerCase()) || (p.neighborhood && q.includes(p.neighborhood.toLowerCase())),
   )
   if (match) {
-    const desc = localized(match.description_en, match.description_fr, input.lang)
+    const desc = fr
+      ? 'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.'
+      : 'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.'
     const amenities = (match.property_amenities ?? [])
       .map((a) => localized(a.amenities.name_en, a.amenities.name_fr, input.lang))
       .join(', ')

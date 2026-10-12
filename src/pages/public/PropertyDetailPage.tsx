@@ -15,7 +15,7 @@ import { SimilarStays } from '../../components/property/SimilarStays'
 import { StayActions } from '../../components/property/StayActions'
 import { WaitlistForm } from '../../components/booking/WaitlistForm'
 import { Button } from '../../components/ui/Button'
-import { Live, useLiveTranslation } from '../../components/i18n/Live'
+import { Live } from '../../components/i18n/Live'
 import { Loader } from '../../components/ui/Loader'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
 import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
@@ -78,9 +78,7 @@ export function PropertyDetailPage() {
     enabled: Boolean(property && activeCheckIn && checkOut),
   })
 
-  const description = useLiveTranslation(
-    property ? localized(property.description_en, property.description_fr, i18n.language) : '',
-  )
+  const description = t('properties.studioDescription')
 
   function onSelectDate(iso: string) {
     if (iso < todayIso() || !isDateAvailable(iso, ranges)) return
@@ -188,12 +186,9 @@ export function PropertyDetailPage() {
                 {copied ? t('nav.copied') : t('nav.share')}
               </button>
             </div>
-            <p className="mt-4 max-w-2xl theme-muted">{description}</p>
+            <p className="mt-4 max-w-2xl theme-muted">{t('properties.studioDescription')}</p>
             <p className="mt-4 text-base theme-muted">
-              {property.capacity} {t('properties.guests')} · {property.bedrooms}{' '}
-              {t(property.bedrooms > 1 ? 'properties.beds' : 'properties.bed')} · {property.bathrooms}{' '}
-              {t(property.bathrooms > 1 ? 'properties.baths' : 'properties.bath')} · {property.living_areas}{' '}
-              {t(property.living_areas > 1 ? 'properties.livings' : 'properties.living')}
+              {property.capacity} {t('properties.guests')} · {t('properties.studioLine')}
             </p>
             <section className="theme-card mt-8 p-5">
               <h2 className="text-xl font-semibold">{t('property.book')}</h2>

@@ -88,6 +88,9 @@ export const fr: Messages = {
     perNight: '/ nuit',
     bed: 'chambre',
     beds: 'chambres',
+    studioLine: '1 très grande chambre · 2 salles de bain · grand salon · grande cuisine · balcon',
+    studioDescription:
+      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
     bath: 'salle de bain',
     baths: 'salles de bain',
     living: 'salon',

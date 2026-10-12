@@ -86,6 +86,9 @@ export const en = {
     perNight: '/ night',
     bed: 'bedroom',
     beds: 'bedrooms',
+    studioLine: '1 very large bedroom · 2 bathrooms · large living room · large kitchen · balcony',
+    studioDescription:
+      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
     bath: 'bathroom',
     baths: 'bathrooms',
     living: 'living room',

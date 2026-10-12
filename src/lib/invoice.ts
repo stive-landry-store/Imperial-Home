@@ -273,7 +273,6 @@ export function invoiceData(reservation: Reservation, matricule: string): Invoic
   const property = reservation.properties
   const profile = reservation.profiles
   const pay = reservation.payments?.[0]
-  const bedrooms = property?.bedrooms ?? 1
   const capacity = property?.capacity ?? reservation.guest_count
   const nights = Math.max(1, reservation.nights)
   return {
@@ -281,7 +280,7 @@ export function invoiceData(reservation: Reservation, matricule: string): Invoic
     matricule,
     property: property?.name ?? '',
     city: property?.city || 'Douala',
-    rooms: `${bedrooms} chambre${bedrooms > 1 ? 's' : ''} · ${capacity} voyageur${capacity > 1 ? 's' : ''} max`,
+    rooms: `1 très grande chambre · ${capacity} voyageur${capacity > 1 ? 's' : ''} max`,
     checkIn: formatDate(reservation.check_in),
     checkOut: formatDate(reservation.check_out),
     nights,
