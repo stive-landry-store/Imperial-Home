@@ -413,13 +413,31 @@ input[type='date']::-webkit-calendar-picker-indicator {
   letter-spacing: 0.2em;
 }
 
-.housing-a4 input {
+.housing-a4 input,
+.housing-a4 textarea {
+  min-width: 0;
   max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .housing-a4 input[type='date'],
 .housing-a4 input[type='time'] {
   font-size: 0.68em;
+}
+
+/* The phone rule forces every field to 16px. On the housing sheet that size spills out of the cards. */
+@media (pointer: coarse) {
+  .housing-a4 input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='range']),
+  .housing-a4 textarea {
+    font-size: 11px !important;
+    letter-spacing: 0;
+  }
+  .housing-a4 input[type='date'],
+  .housing-a4 input[type='time'] {
+    font-size: 10px !important;
+    padding: 0;
+  }
 }
 
 @media print {
