@@ -12,6 +12,19 @@ export function pushSupported() {
   return notificationsSupported() && 'PushManager' in window
 }
 
+export function isIosDevice() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+}
+
+export function isInstalledApp() {
+  return window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
+}
+
+/** iPhone only shows lock-screen notifications for an app opened from the Home Screen icon. */
+export function needsHomeScreenInstall() {
+  return isIosDevice() && !isInstalledApp()
+}
+
 export function notificationsEnabled() {
   return notificationsSupported() && Notification.permission === 'granted' && localStorage.getItem(FLAG) === '1'
 }
@@ -78,7 +91,26 @@ export async function enableNotifications() {
   localStorage.removeItem(OFF)
   localStorage.setItem(FLAG, '1')
   await registerPush()
+  const french = document.documentElement.lang.startsWith('fr')
+  await showLockScreenNotice(
+    'Imperial Home',
+    french
+      ? 'Les messages arriveront sur cet écran, même si l’application est fermée.'
+      : 'Messages will arrive on this screen, even when the app is closed.',
+  )
   return true
+}
+
+export async function showLockScreenNotice(title: string, body: string, link = '/') {
+  if (!notificationsSupported() || Notification.permission !== 'granted') return
+  const registration = await navigator.serviceWorker.ready
+  await registration.showNotification(title, {
+    body,
+    icon: '/icon-192.png',
+    badge: '/apple-touch-icon.png',
+    data: { link },
+    tag: 'imperial-home',
+  })
 }
 
 export async function forgetPushOnThisDevice() {

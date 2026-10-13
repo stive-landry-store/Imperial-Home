@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Bell, Fingerprint } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { disableLock, enableLock, lockEnabled, lockSupported } from '../../lib/appLock'
-import { disableNotifications, enableNotifications, notificationsEnabled, notificationsSupported } from '../../lib/systemNotifications'
+import { disableNotifications, enableNotifications, needsHomeScreenInstall, notificationsEnabled, notificationsSupported } from '../../lib/systemNotifications'
 import { cn } from '../../lib/cn'
 
 function Row({ icon, label, on, onClick, disabled }: { icon: React.ReactNode; label: string; on: boolean; onClick: () => void; disabled?: boolean }) {
@@ -26,6 +27,7 @@ function Row({ icon, label, on, onClick, disabled }: { icon: React.ReactNode; la
 
 export function AppFeatures() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { user, profile } = useAuth()
   const [notif, setNotif] = useState(() => notificationsEnabled())
   const [lock, setLock] = useState(() => lockEnabled())
@@ -46,6 +48,10 @@ export function AppFeatures() {
         on={notif}
         disabled={!notifOk}
         onClick={() => {
+          if (needsHomeScreenInstall()) {
+            navigate('/installer')
+            return
+          }
           if (notif) {
             void disableNotifications()
             setNotif(false)

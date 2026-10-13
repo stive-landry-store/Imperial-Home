@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { BellRing, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
-import { enableNotifications, pushSupported, syncPush } from '../lib/systemNotifications'
+import { enableNotifications, needsHomeScreenInstall, pushSupported, syncPush } from '../lib/systemNotifications'
 
 const DISMISSED = 'ih-push-prompt-dismissed'
 const WAIT_MS = 3 * 24 * 3600 * 1000
@@ -15,15 +16,19 @@ function recentlyDismissed() {
 export function PushPrompt() {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
+  const [iosInstall, setIosInstall] = useState(false)
   const userId = user?.id
 
   useEffect(() => {
     if (!userId) return
     void syncPush()
+    const installFirst = needsHomeScreenInstall()
+    setIosInstall(installFirst)
     const canAsk = typeof Notification !== 'undefined' && Notification.permission === 'default' && pushSupported()
-    if (canAsk && !recentlyDismissed()) {
-      const timer = window.setTimeout(() => setVisible(true), 4000)
+    if ((installFirst || canAsk) && !recentlyDismissed()) {
+      const timer = window.setTimeout(() => setVisible(true), 1500)
       return () => window.clearTimeout(timer)
     }
   }, [userId])
@@ -52,15 +57,20 @@ export function PushPrompt() {
           <BellRing className="h-6 w-6" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-[16px] leading-snug font-semibold">{t('app.pushTitle')}</p>
-          <p className="mt-1 text-[14px] leading-snug text-white/80">{t('app.pushBody')}</p>
+          <p className="text-[16px] leading-snug font-semibold">{iosInstall ? t('app.pushIosTitle') : t('app.pushTitle')}</p>
+          <p className="mt-1 text-[14px] leading-snug text-white/80">{iosInstall ? t('app.pushIosBody') : t('app.pushBody')}</p>
           <div className="mt-3 flex gap-2">
             <button
               type="button"
               className="min-h-11 rounded-full bg-[#d4af6a] px-5 text-[15px] font-semibold text-black"
-              onClick={() => void enable()}
+              onClick={() => {
+                if (iosInstall) {
+                  setVisible(false)
+                  navigate('/installer')
+                } else void enable()
+              }}
             >
-              {t('app.pushEnable')}
+              {iosInstall ? t('app.pushIosHow') : t('app.pushEnable')}
             </button>
             <button type="button" className="min-h-11 rounded-full px-4 text-[15px] text-white/75" onClick={later}>
               {t('app.pushLater')}

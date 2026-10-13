@@ -6,6 +6,7 @@ import { Check, Download, EllipsisVertical, Maximize, Share, SquarePlus, WifiOff
 import { cn } from '../../lib/cn'
 import { shareSite } from '../../lib/social'
 import { devicePlatform, installEvent, isStandalone } from '../../lib/installPrompt'
+import { enableNotifications, notificationsEnabled } from '../../lib/systemNotifications'
 import { offlineReadyAt, warmOfflineData } from '../../lib/offlinePrefetch'
 
 type Platform = 'ios' | 'android'
@@ -41,6 +42,7 @@ export function InstallGuidePage() {
   const [canInstall, setCanInstall] = useState(() => Boolean(installEvent()))
   const [readyAt, setReadyAt] = useState(() => offlineReadyAt())
   const [busy, setBusy] = useState(false)
+  const [notifsOn, setNotifsOn] = useState(() => notificationsEnabled())
   const installed = isStandalone()
 
   useEffect(() => {
@@ -86,10 +88,21 @@ export function InstallGuidePage() {
         </div>
 
         {installed ? (
-          <p className="theme-card mt-6 flex items-center justify-center gap-2 rounded-2xl p-4 text-sm text-emerald-600">
-            <Check className="h-4 w-4" />
-            {t('app.guideInstalled')}
-          </p>
+          <div className="mt-6 space-y-3">
+            <p className="theme-card flex items-center justify-center gap-2 rounded-2xl p-4 text-sm text-emerald-600">
+              <Check className="h-4 w-4" />
+              {t('app.guideInstalled')}
+            </p>
+            {notifsOn ? null : (
+              <button
+                type="button"
+                className="min-h-12 w-full rounded-full bg-[#d4af6a] text-[16px] font-semibold text-black"
+                onClick={() => void enableNotifications().then(setNotifsOn)}
+              >
+                {t('app.pushEnableScreen')}
+              </button>
+            )}
+          </div>
         ) : null}
 
         <div className="theme-card mt-6 flex items-center gap-3 rounded-2xl p-4">
@@ -155,6 +168,7 @@ export function InstallGuidePage() {
               <Step n={1} text={t('app.iosStep1')} icon={<Share className="h-5 w-5" />} />
               <Step n={2} text={t('app.iosStep2')} icon={<SquarePlus className="h-5 w-5" />} />
               <Step n={3} text={t('app.iosStep3')} icon={<Check className="h-5 w-5" />} />
+              <Step n={4} text={t('app.iosStep4')} icon={<Check className="h-5 w-5" />} />
             </ol>
           </>
         ) : (

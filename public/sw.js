@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v5'
+const CACHE = 'imperial-home-v6'
 const IMAGES = 'imperial-home-images-v1'
 const FONTS = 'imperial-home-fonts-v1'
 const KEEP = [CACHE, IMAGES, FONTS]
@@ -152,17 +152,16 @@ self.addEventListener('push', (event) => {
   } catch {
     data = { title: 'Imperial Home', body: event.data ? event.data.text() : '' }
   }
+  const title = data.title || 'Imperial Home'
+  const options = {
+    body: data.body || '',
+    icon: '/icon-192.png',
+    badge: '/apple-touch-icon.png',
+    data: { link: data.link || '/' },
+    tag: data.tag || 'imperial-home',
+  }
   event.waitUntil(
-    self.registration.showNotification(data.title || 'Imperial Home', {
-      body: data.body || '',
-      icon: '/icon-192.png',
-      badge: '/icon-192.png',
-      data: { link: data.link || '/' },
-      actions: data.actions || [],
-      tag: data.tag || undefined,
-      renotify: Boolean(data.tag),
-      vibrate: [80, 40, 80],
-    }),
+    self.registration.showNotification(title, options).catch(() => self.registration.showNotification(title, { body: options.body, data: options.data })),
   )
 })
 
