@@ -13,7 +13,7 @@ export function AppTabBar() {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const { user, profile } = useAuth()
-  const unreadChat = useUnreadChat()
+  const { count: unreadChat } = useUnreadChat()
   const accountTo = user ? '/account/profile' : '/login'
   const staysTo = user ? '/account' : '/login?next=/account'
   const homeOn = pathname === '/'

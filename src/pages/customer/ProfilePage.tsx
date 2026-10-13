@@ -56,7 +56,7 @@ export function ProfilePage() {
   const { t, i18n } = useTranslation()
   const { profile, user, isStaff, admin, reloadProfile } = useAuth()
   const { data: config } = useSiteConfig()
-  const unreadChat = useUnreadChat()
+  const { count: unreadChat } = useUnreadChat()
   const [error, setError] = useState<string | null>(null)
   const [editOpen, setEditOpen] = useState(false)
   const [copied, setCopied] = useState(false)

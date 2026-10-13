@@ -708,6 +708,8 @@ export const fr: Messages = {
     pushTryOk: 'Une alerte vient de partir. Regardez en haut de l’écran, puis l’icône Imperial Home : un chiffre doit s’afficher. Si vous ne voyez rien, ouvrez Réglages → Notifications → Imperial Home, et activez Autoriser, Écran verrouillé et Bannières.',
     pushTryFail: 'Le téléphone a bloqué l’alerte. Ouvrez Réglages → Notifications → Imperial Home, puis activez Autoriser.',
     pushUnlinked: 'Le téléphone n’est pas encore relié. Touchez la ligne ci-dessus pour réessayer.',
+    unreadOnPhone_one: '{{count}} message non lu',
+    unreadOnPhone_other: '{{count}} messages non lus',
     lockTitle: 'Verrouillage Face ID / empreinte',
     on: 'Activé',
     off: 'Désactivé',

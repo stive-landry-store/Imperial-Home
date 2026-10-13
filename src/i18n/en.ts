@@ -705,6 +705,8 @@ export const en = {
     pushTryOk: 'An alert was just sent. Look at the top of the screen, then at the Imperial Home icon: a number should appear. If you see nothing, open Settings → Notifications → Imperial Home and turn on Allow, Lock Screen and Banners.',
     pushTryFail: 'The phone blocked the alert. Open Settings → Notifications → Imperial Home and turn on Allow.',
     pushUnlinked: 'This phone is not linked yet. Tap the line above to try again.',
+    unreadOnPhone_one: '{{count}} unread message',
+    unreadOnPhone_other: '{{count}} unread messages',
     lockTitle: 'Face ID / fingerprint lock',
     on: 'On',
     off: 'Off',

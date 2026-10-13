@@ -51,13 +51,31 @@ type BadgeNavigator = Navigator & {
   clearAppBadge?: () => Promise<void>
 }
 
+const STORED_BADGE = 'ih-icon-badge'
+
+export function storedBadge() {
+  const count = Number(localStorage.getItem(STORED_BADGE) || 0)
+  return Number.isFinite(count) && count > 0 ? Math.round(count) : 0
+}
+
 export async function paintBadge(count: number) {
+  const total = Math.max(0, Math.round(count))
+  try {
+    localStorage.setItem(STORED_BADGE, String(total))
+  } catch {
+    /* ignore private mode */
+  }
   const nav = navigator as BadgeNavigator
   try {
-    if (count > 0) await nav.setAppBadge?.(count)
+    if (total > 0) await nav.setAppBadge?.(total)
     else await nav.clearAppBadge?.()
   } catch {
     /* this phone does not show a number on the icon */
+  }
+  try {
+    navigator.serviceWorker?.controller?.postMessage({ type: 'badge', count: total })
+  } catch {
+    /* the icon is updated from the page */
   }
 }
 
