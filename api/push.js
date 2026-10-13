@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   if (!job) return res.status(200).json({ sent: 0 })
 
   webpush.setVapidDetails(SUBJECT, job.publicKey, job.privateKey)
-  const payload = JSON.stringify({ title: job.title, body: job.body, link: job.link, tag: 'imperial-home' })
+  const payload = JSON.stringify({ title: job.title, body: job.body, link: job.link, tag: job.link || id })
   const list = Array.isArray(job.subscriptions) ? job.subscriptions : []
   let sent = 0
   await Promise.all(
@@ -52,5 +52,6 @@ export default async function handler(req, res) {
       }
     }),
   )
+  if (sent === 0 && list.length > 0) await supabase.rpc('release_push', { p_id: id })
   return res.status(200).json({ sent })
 }

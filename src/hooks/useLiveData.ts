@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './useAuth'
-import { notify } from '../lib/systemNotifications'
+import { deliverPush, notify } from '../lib/systemNotifications'
 
 const TABLES = [
   'reservations',
@@ -34,8 +34,11 @@ export function useLiveData() {
       })
     }
     channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, (payload) => {
-      const row = payload.new as { user_id?: string; title?: string; body?: string | null; link?: string | null }
-      if (userId && row.user_id === userId) void notify(row.title ?? 'Imperial Home', row.body ?? '', row.link ?? '/account')
+      const row = payload.new as { user_id?: string; title?: string; body?: string | null; link?: string | null; push_job?: string | null }
+      if (userId && row.user_id === userId) {
+        void notify(row.title ?? 'Imperial Home', row.body ?? '', row.link ?? '/account')
+        if (row.push_job) void deliverPush(row.push_job)
+      }
     })
     if (isStaff) {
       channel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reservations' }, (payload) => {

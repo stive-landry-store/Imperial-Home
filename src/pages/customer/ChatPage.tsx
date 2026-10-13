@@ -55,10 +55,12 @@ export function ChatPage() {
       if (createIfMissing && !rows.some((row) => row.status === 'open')) {
         let job = opening.get(user!.id)
         if (!job) {
-          job = client
-            .from('conversations')
-            .insert({ customer_id: user!.id })
-            .then(() => undefined)
+          job = Promise.resolve(
+            client
+              .from('conversations')
+              .insert({ customer_id: user!.id })
+              .then(() => undefined),
+          )
           opening.set(user!.id, job)
         }
         try {

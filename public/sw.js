@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v7'
+const CACHE = 'imperial-home-v9'
 const IMAGES = 'imperial-home-images-v1'
 const FONTS = 'imperial-home-fonts-v1'
 const KEEP = [CACHE, IMAGES, FONTS]
@@ -142,7 +142,28 @@ self.addEventListener('fetch', (event) => {
 })
 
 self.addEventListener('message', (event) => {
-  if (event.data === 'skip-waiting') self.skipWaiting()
+  if (event.data === 'skip-waiting') {
+    self.skipWaiting()
+    return
+  }
+  const data = event.data || {}
+  if (data.type === 'badge') {
+    const count = Number(data.count) || 0
+    const nav = self.navigator
+    event.waitUntil(
+      count > 0 && nav.setAppBadge ? nav.setAppBadge(count) : nav.clearAppBadge ? nav.clearAppBadge() : Promise.resolve(),
+    )
+    return
+  }
+  if (data.type !== 'notice') return
+  const title = data.title || 'Imperial Home'
+  const tag = data.tag || data.link || 'imperial-home'
+  const link = data.link || '/'
+  event.waitUntil(
+    self.registration
+      .showNotification(title, { body: data.body || '', icon: '/icon-192.png', data: { link }, tag })
+      .catch(() => self.registration.showNotification(title, { body: data.body || '', data: { link }, tag })),
+  )
 })
 
 self.addEventListener('push', (event) => {
@@ -164,9 +185,6 @@ self.addEventListener('push', (event) => {
     self.registration
       .showNotification(title, options)
       .catch(() => self.registration.showNotification(title, { body: options.body, data: options.data }))
-      .then(() => {
-        if (navigator.setAppBadge) return navigator.setAppBadge(1)
-      })
       .catch(() => undefined),
   )
 })

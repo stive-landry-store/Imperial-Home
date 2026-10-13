@@ -97,7 +97,7 @@ export function InstallGuidePage() {
               <button
                 type="button"
                 className="min-h-12 w-full rounded-full bg-[#d4af6a] text-[16px] font-semibold text-black"
-                onClick={() => void enableNotifications().then(setNotifsOn)}
+                onClick={() => void enableNotifications().then((result) => setNotifsOn(result === 'on' || result === 'unlinked'))}
               >
                 {t('app.pushEnableScreen')}
               </button>
