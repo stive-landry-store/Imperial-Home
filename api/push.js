@@ -37,10 +37,11 @@ export default async function handler(req, res) {
   if (!job) return res.status(200).json({ sent: 0 })
 
   webpush.setVapidDetails(SUBJECT, job.publicKey, job.privateKey)
-  const payload = JSON.stringify({ title: job.title, body: job.body, link: job.link, tag: `${job.title}|${job.link}` })
+  const payload = JSON.stringify({ title: job.title, body: job.body, link: job.link, tag: 'imperial-home' })
+  const list = Array.isArray(job.subscriptions) ? job.subscriptions : []
   let sent = 0
   await Promise.all(
-    job.subscriptions.map(async (item) => {
+    list.map(async (item) => {
       try {
         await webpush.sendNotification(item.subscription, payload, { TTL: 86400, urgency: 'high' })
         sent += 1

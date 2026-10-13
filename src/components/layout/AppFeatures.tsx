@@ -35,6 +35,11 @@ export function AppFeatures() {
 
   useEffect(() => {
     void lockSupported().then(setLockOk)
+    if (!notificationsSupported() || Notification.permission !== 'granted' || !('serviceWorker' in navigator)) return
+    void navigator.serviceWorker.ready.then(async (registration) => {
+      const subscription = 'pushManager' in registration ? await registration.pushManager.getSubscription() : null
+      setNotif(Boolean(subscription))
+    })
   }, [])
 
   if (!user) return null

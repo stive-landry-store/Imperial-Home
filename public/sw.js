@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v6'
+const CACHE = 'imperial-home-v7'
 const IMAGES = 'imperial-home-images-v1'
 const FONTS = 'imperial-home-fonts-v1'
 const KEEP = [CACHE, IMAGES, FONTS]
@@ -161,7 +161,13 @@ self.addEventListener('push', (event) => {
     tag: data.tag || 'imperial-home',
   }
   event.waitUntil(
-    self.registration.showNotification(title, options).catch(() => self.registration.showNotification(title, { body: options.body, data: options.data })),
+    self.registration
+      .showNotification(title, options)
+      .catch(() => self.registration.showNotification(title, { body: options.body, data: options.data }))
+      .then(() => {
+        if (navigator.setAppBadge) return navigator.setAppBadge(1)
+      })
+      .catch(() => undefined),
   )
 })
 

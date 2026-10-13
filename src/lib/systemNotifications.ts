@@ -48,14 +48,6 @@ async function vapidKey() {
   }
 }
 
-function sameKey(subscription: PushSubscription, key: string) {
-  const current = subscription.options?.applicationServerKey
-  if (!current) return true
-  const wanted = urlBase64ToUint8Array(key)
-  const have = new Uint8Array(current)
-  return have.length === wanted.length && have.every((byte, index) => byte === wanted[index])
-}
-
 export async function registerPush(registration?: ServiceWorkerRegistration) {
   if (!supabase || !pushSupported() || Notification.permission !== 'granted') return false
   try {
@@ -63,14 +55,13 @@ export async function registerPush(registration?: ServiceWorkerRegistration) {
     if (!key) return false
     const reg = registration ?? (await navigator.serviceWorker.ready)
     let subscription = await reg.pushManager.getSubscription()
-    if (subscription && !sameKey(subscription, key)) {
-      await subscription.unsubscribe()
-      subscription = null
+    if (!subscription) {
+      subscription = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(key) })
     }
-    subscription ??= await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(key) })
     const { error } = await supabase.rpc('register_push', { p_endpoint: subscription.endpoint, p_subscription: subscription.toJSON() })
     if (error) return false
     localStorage.setItem(ACTIVE, '1')
+    void deliverQueuedPushes()
     return true
   } catch {
     return false
@@ -99,6 +90,30 @@ export async function enableNotifications() {
       : 'Messages will arrive on this screen, even when the app is closed.',
   )
   return true
+}
+
+async function postPush(id: string) {
+  const response = await fetch('/api/push', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+  if (!response.ok) return 0
+  const data = (await response.json()) as { sent?: number }
+  return data.sent ?? 0
+}
+
+/** Sends anything the phone has not received yet, including a first test the next time the app opens. */
+export async function deliverQueuedPushes() {
+  if (!supabase || Notification.permission !== 'granted') return
+  const pending = await supabase.rpc('pending_pushes')
+  const ids = Array.isArray(pending.data) ? (pending.data as string[]) : []
+  for (const id of ids) await postPush(id)
+  if (localStorage.getItem('ih-push-proved') === '1') return
+  const ping = await supabase.rpc('push_ping')
+  if (ping.error || typeof ping.data !== 'string') return
+  const sent = await postPush(ping.data)
+  if (sent > 0) localStorage.setItem('ih-push-proved', '1')
 }
 
 export async function showLockScreenNotice(title: string, body: string, link = '/') {
