@@ -35,6 +35,42 @@ function urlBase64ToUint8Array(base64: string) {
   return Uint8Array.from([...raw].map((c) => c.charCodeAt(0)))
 }
 
+let badgeHoldUntil = 0
+
+export function holdAppBadge(ms = 60_000) {
+  badgeHoldUntil = Date.now() + ms
+  window.dispatchEvent(new Event('ih-badge-hold'))
+}
+
+export function badgeHoldActive() {
+  return Date.now() < badgeHoldUntil
+}
+
+type BadgeNavigator = Navigator & {
+  setAppBadge?: (count?: number) => Promise<void>
+  clearAppBadge?: () => Promise<void>
+}
+
+export async function paintBadge(count: number) {
+  const nav = navigator as BadgeNavigator
+  try {
+    if (count > 0) await nav.setAppBadge?.(count)
+    else await nav.clearAppBadge?.()
+  } catch {
+    /* this phone does not show a number on the icon */
+  }
+}
+
+function sameServerKey(subscription: PushSubscription, key: string) {
+  const current = subscription.options?.applicationServerKey
+  if (!current) return true
+  const bytes = new Uint8Array(current)
+  const next = urlBase64ToUint8Array(key)
+  if (bytes.length !== next.length) return false
+  for (let index = 0; index < bytes.length; index += 1) if (bytes[index] !== next[index]) return false
+  return true
+}
+
 async function vapidKey() {
   const fromEnv = import.meta.env.VITE_VAPID_PUBLIC_KEY as string | undefined
   if (fromEnv) return fromEnv
@@ -55,6 +91,10 @@ export async function registerPush(registration?: ServiceWorkerRegistration) {
     if (!key) return false
     const reg = registration ?? (await navigator.serviceWorker.ready)
     let subscription = await reg.pushManager.getSubscription()
+    if (subscription && !sameServerKey(subscription, key)) {
+      await subscription.unsubscribe()
+      subscription = null
+    }
     if (!subscription) {
       subscription = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(key) })
     }
@@ -75,21 +115,24 @@ export async function syncPush() {
   await registerPush()
 }
 
-export async function enableNotifications() {
-  if (!notificationsSupported()) return false
+export type NoticeState = 'on' | 'blocked' | 'unlinked'
+
+export async function enableNotifications(): Promise<NoticeState> {
+  if (!notificationsSupported()) return 'blocked'
   const permission = await Notification.requestPermission()
-  if (permission !== 'granted') return false
+  if (permission !== 'granted') return 'blocked'
   localStorage.removeItem(OFF)
   localStorage.setItem(FLAG, '1')
-  await registerPush()
+  const saved = await registerPush()
   const french = document.documentElement.lang.startsWith('fr')
-  await showLockScreenNotice(
+  const shown = await showLockScreenNotice(
     'Imperial Home',
     french
       ? 'Les messages arriveront sur cet écran, même si l’application est fermée.'
       : 'Messages will arrive on this screen, even when the app is closed.',
   )
-  return true
+  if (!shown) return 'blocked'
+  return saved ? 'on' : 'unlinked'
 }
 
 async function postPush(id: string) {
@@ -101,6 +144,12 @@ async function postPush(id: string) {
   if (!response.ok) return 0
   const data = (await response.json()) as { sent?: number }
   return data.sent ?? 0
+}
+
+/** Ask the server to deliver one queued alert to this phone. */
+export async function deliverPush(id: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return 0
+  return postPush(id)
 }
 
 /** Sends anything the phone has not received yet, including a first test the next time the app opens. */
@@ -116,16 +165,52 @@ export async function deliverQueuedPushes() {
   if (sent > 0) localStorage.setItem('ih-push-proved', '1')
 }
 
+async function readyRegistration() {
+  return await Promise.race([
+    navigator.serviceWorker.ready,
+    new Promise<ServiceWorkerRegistration>((_, reject) => {
+      window.setTimeout(() => reject(new Error('sw')), 8000)
+    }),
+  ])
+}
+
 export async function showLockScreenNotice(title: string, body: string, link = '/') {
-  if (!notificationsSupported() || Notification.permission !== 'granted') return
-  const registration = await navigator.serviceWorker.ready
-  await registration.showNotification(title, {
-    body,
-    icon: '/icon-192.png',
-    badge: '/apple-touch-icon.png',
-    data: { link },
-    tag: 'imperial-home',
-  })
+  if (!notificationsSupported() || Notification.permission !== 'granted') return false
+  let registration: ServiceWorkerRegistration
+  try {
+    registration = await readyRegistration()
+  } catch {
+    return false
+  }
+  const tag = link || `ih-${Date.now()}`
+  const payload = { type: 'notice', title, body, link, tag }
+  try {
+    await registration.showNotification(title, { body, icon: '/icon-192.png', data: { link }, tag })
+  } catch {
+    try {
+      await registration.showNotification(title, { body, data: { link }, tag })
+    } catch {
+      if (!registration.active) return false
+      registration.active.postMessage(payload)
+    }
+  }
+  holdAppBadge()
+  await paintBadge(1)
+  return true
+}
+
+/** Puts one alert on the phone screen and a number on the home-screen icon. */
+export async function previewOnScreen() {
+  const saved = Notification.permission === 'granted' ? await registerPush() : false
+  const french = document.documentElement.lang.startsWith('fr')
+  const shown = await showLockScreenNotice(
+    'Imperial Home',
+    french
+      ? 'Essai : cette alerte doit apparaître sur l’écran du téléphone.'
+      : 'Test: this alert should appear on your phone screen.',
+  )
+  void deliverQueuedPushes()
+  return { shown, saved }
 }
 
 export async function forgetPushOnThisDevice() {
@@ -144,16 +229,10 @@ export async function disableNotifications() {
   localStorage.removeItem(FLAG)
   localStorage.setItem(OFF, '1')
   await forgetPushOnThisDevice()
+  await paintBadge(0)
 }
 
 export async function notify(title: string, body: string, link = '/') {
-  if (!notificationsEnabled() || !document.hidden || localStorage.getItem(ACTIVE) === '1') return
-  const registration = await navigator.serviceWorker.ready
-  await registration.showNotification(title, {
-    body,
-    icon: '/icon-192.png',
-    badge: '/icon-192.png',
-    data: { link },
-    tag: `${title}|${link}`,
-  })
+  if (!notificationsEnabled()) return
+  await showLockScreenNotice(title, body, link)
 }

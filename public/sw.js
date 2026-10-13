@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v7'
+const CACHE = 'imperial-home-v8'
 const IMAGES = 'imperial-home-images-v1'
 const FONTS = 'imperial-home-fonts-v1'
 const KEEP = [CACHE, IMAGES, FONTS]
@@ -143,6 +143,16 @@ self.addEventListener('fetch', (event) => {
 
 self.addEventListener('message', (event) => {
   if (event.data === 'skip-waiting') self.skipWaiting()
+  const data = event.data || {}
+  if (data.type !== 'notice') return
+  const title = data.title || 'Imperial Home'
+  const tag = data.tag || data.link || 'imperial-home'
+  const link = data.link || '/'
+  event.waitUntil(
+    self.registration
+      .showNotification(title, { body: data.body || '', icon: '/icon-192.png', data: { link }, tag })
+      .catch(() => self.registration.showNotification(title, { body: data.body || '', data: { link }, tag })),
+  )
 })
 
 self.addEventListener('push', (event) => {
