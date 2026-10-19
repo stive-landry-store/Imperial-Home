@@ -747,6 +747,7 @@ export const en = {
     loading: 'Loading…',
     error: 'Something went wrong.',
     back: 'Back',
+    next: 'Next',
     save: 'Save',
     cancel: 'Cancel',
     language: 'Language',

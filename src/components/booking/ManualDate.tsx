@@ -42,7 +42,8 @@ export function ManualDate({
     onChange(iso)
   }
 
-  const field = 'min-h-12 w-full min-w-0 max-w-full border border-[#d4af6a]/40 bg-transparent px-1 text-base outline-none'
+  const field =
+    'min-h-12 w-full min-w-0 max-w-full appearance-none rounded-2xl border border-[var(--page-fg)]/15 bg-[var(--page-fg)]/5 px-2 text-center text-base outline-none'
 
   return (
     <fieldset className="min-w-0 max-w-full">

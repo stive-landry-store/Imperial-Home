@@ -120,7 +120,7 @@ export function PropertyDetailPage() {
 
   return (
     <div className="theme-page">
-      <div className="mx-auto max-w-6xl px-4 pt-32 pb-20 md:px-6">
+      <div className="mx-auto max-w-6xl px-4 pt-32 pb-32 md:px-6">
         <Helmet>
           <title>{`${property.name} | Imperial Home Douala`}</title>
           <meta name="description" content={summary.slice(0, 160)} />
@@ -211,7 +211,7 @@ export function PropertyDetailPage() {
                     inputMode="numeric"
                     value={shownNights}
                     onChange={(e) => setNights(Math.max(1, Math.min(365, Number(e.target.value) || 1)))}
-                    className="mt-1 box-border min-h-12 w-full max-w-full border border-[#d4af6a]/40 bg-transparent px-3 text-base outline-none"
+                    className="mt-1 box-border min-h-12 w-full max-w-full rounded-2xl border border-[var(--page-fg)]/15 bg-[var(--page-fg)]/5 px-3 text-base outline-none"
                   />
                 </fieldset>
               </div>
@@ -225,7 +225,7 @@ export function PropertyDetailPage() {
                 </div>
               ) : null}
               <Button
-                className="mt-5 w-full"
+                className="mt-5 w-full rounded-full"
                 disabled={!online || !quote?.available}
                 onClick={() => {
                   const q = `checkIn=${activeCheckIn}&checkOut=${checkOut}&nights=${shownNights}&guests=${guests}`

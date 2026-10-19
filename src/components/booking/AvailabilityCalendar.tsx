@@ -42,11 +42,11 @@ export function AvailabilityCalendar({
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
-        <button type="button" onClick={() => setCursor(addMonths(cursor, -1))} className="px-2 text-lg text-[#d4af6a]">
+        <button type="button" onClick={() => setCursor(addMonths(cursor, -1))} className="grid h-10 w-10 place-items-center rounded-full border border-[var(--page-fg)]/15 text-lg text-[#d4af6a]" aria-label={t('common.back')}>
           ‹
         </button>
         <p className="font-display text-xl capitalize">{format(cursor, 'MMMM yyyy', { locale })}</p>
-        <button type="button" onClick={() => setCursor(addMonths(cursor, 1))} className="px-2 text-lg text-[#d4af6a]">
+        <button type="button" onClick={() => setCursor(addMonths(cursor, 1))} className="grid h-10 w-10 place-items-center rounded-full border border-[var(--page-fg)]/15 text-lg text-[#d4af6a]" aria-label={t('common.next')}>
           ›
         </button>
       </div>
@@ -78,10 +78,10 @@ export function AvailabilityCalendar({
               onClick={() => onSelect(day)}
               title={label ?? undefined}
               className={cn(
-                'flex min-h-[3.4rem] flex-col items-center justify-center px-0.5 py-1 text-sm',
+                'flex min-h-12 flex-col items-center justify-center rounded-2xl px-0.5 py-1 text-sm',
                 !inMonth && 'opacity-30',
                 past && !reserved && 'cursor-not-allowed opacity-40',
-                reserved && 'cursor-not-allowed bg-[#8a1c1c]/20 text-[#c9a070]',
+                reserved && 'cursor-not-allowed bg-[#8a1c1c]/25 text-[#c9a070]',
                 !past && free && 'hover:bg-[#c4a35a]/20',
                 selected && !reserved && 'bg-[#c4a35a]/25',
                 isStart && !reserved && 'bg-[#c4a35a] text-black',
@@ -90,11 +90,7 @@ export function AvailabilityCalendar({
               <span className={cn('leading-none', reserved && 'font-medium line-through decoration-[#c4a35a] decoration-2')}>
                 {date.getDate()}
               </span>
-              {label ? (
-                <span className="mt-1 max-w-full truncate text-[8px] leading-none font-medium tracking-[0.08em] uppercase text-[#d4af6a]">
-                  {label}
-                </span>
-              ) : null}
+              {label ? <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#d4af6a]" /> : null}
             </button>
           )
         })}
@@ -109,7 +105,7 @@ export function AvailabilityCalendar({
           <span className="line-through decoration-[#c4a35a]">{t('cal.reserved')}</span>
         </li>
         <li className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 border border-[#d4af6a]/50" />
+          <span className="inline-block h-2 w-2 rounded-full border border-[#d4af6a]/50" />
           {t('cal.unavailable')}
         </li>
       </ul>

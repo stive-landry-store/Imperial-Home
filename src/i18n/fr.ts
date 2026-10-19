@@ -750,6 +750,7 @@ export const fr: Messages = {
     loading: 'Chargement…',
     error: 'Une erreur est survenue.',
     back: 'Retour',
+    next: 'Suivant',
     save: 'Enregistrer',
     cancel: 'Annuler',
     language: 'Langue',

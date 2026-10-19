@@ -60,7 +60,7 @@ export function StayActions({
     <div className={cn('flex flex-wrap gap-2 text-sm', className)}>
       <button
         type="button"
-        className="border border-[#d4af6a]/50 px-3 py-2 text-[#d4af6a]"
+        className="rounded-full border border-[#d4af6a]/50 px-4 py-2 text-[#d4af6a]"
         onClick={(event) => {
           event.preventDefault()
           event.stopPropagation()
@@ -73,7 +73,7 @@ export function StayActions({
       </button>
       <button
         type="button"
-        className="border border-[#d4af6a]/50 px-3 py-2 text-[#d4af6a]"
+        className="rounded-full border border-[#d4af6a]/50 px-4 py-2 text-[#d4af6a]"
         onClick={(event) => {
           event.preventDefault()
           event.stopPropagation()
