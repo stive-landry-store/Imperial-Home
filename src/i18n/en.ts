@@ -467,6 +467,15 @@ export const en = {
     departures: 'Departures',
     occupancy: 'Active stays',
     unread: 'Unread conversations',
+    resetStats: 'Reset all statistics',
+    resetStatsLead:
+      'This clears the trial activity: reserved nights, stays, car bookings, messages, reviews, and customer accounts. Apartments, cars, prices, photos, and administrators stay.',
+    resetStatsButton: 'Reset all statistics',
+    resetStatsConfirm:
+      'Erase every reservation, message, and trial customer account? Apartments and administrators will stay.',
+    resetStatsConfirmAgain: 'This cannot be undone. Reset all statistics now?',
+    resetStatsDone: 'Statistics are back to zero. The site is ready for real clients.',
+    resetStatsError: 'The statistics could not be reset.',
     confirmPay: 'Confirm payment',
     rejectPay: 'Reject',
     verified: 'Verified',

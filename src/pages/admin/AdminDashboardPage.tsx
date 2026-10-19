@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { CalendarDays, Car, Building2, ClipboardList, ChevronRight } from 'lucide-react'
@@ -10,6 +11,7 @@ import { formatDate, formatXaf } from '../../lib/format'
 import { daysInMonth, nightsInMonth } from '../../lib/occupancy'
 import { AdminInsights } from '../../components/admin/AdminInsights'
 import { Button } from '../../components/ui/Button'
+import { useAuth } from '../../hooks/useAuth'
 import { SwipeRail } from '../../components/ui/SwipeRail'
 import { decisionErrorMessage, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
 import type { Reservation } from '../../types/database'
@@ -76,6 +78,11 @@ function PendingSwipeCard({
 
 export function AdminDashboardPage() {
   const { t } = useTranslation()
+  const { profile } = useAuth()
+  const queryClient = useQueryClient()
+  const [resetting, setResetting] = useState(false)
+  const [resetDone, setResetDone] = useState(false)
+  const [resetError, setResetError] = useState<string | null>(null)
   const today = todayIso()
   const { confirm, reject } = useAdminReservationActions()
   const { data: reservations = [] } = useQuery({ queryKey: ['admin-reservations'], queryFn: fetchAllReservations })
@@ -116,6 +123,23 @@ export function AdminDashboardPage() {
     { label: t('admin.revenue'), value: formatXaf(monthRevenue) },
     { label: t('admin.occupancyRate'), value: `${occupancyRate}%` },
   ]
+
+  async function resetStatistics() {
+    if (!supabase || profile?.role !== 'main_admin' || resetting) return
+    if (!window.confirm(t('admin.resetStatsConfirm'))) return
+    if (!window.confirm(t('admin.resetStatsConfirmAgain'))) return
+    setResetting(true)
+    setResetError(null)
+    setResetDone(false)
+    const { error } = await supabase.rpc('reset_client_statistics')
+    setResetting(false)
+    if (error) {
+      setResetError(error.message || t('admin.resetStatsError'))
+      return
+    }
+    setResetDone(true)
+    await queryClient.invalidateQueries()
+  }
 
   const shortcuts = [
     { to: '/admin/calendar', label: t('admin.calendar'), icon: CalendarDays },
@@ -180,6 +204,18 @@ export function AdminDashboardPage() {
         ))}
         {pendingPay.length === 0 ? <li className="px-4 py-6 text-muted">{t('admin.noPending')}</li> : null}
       </ul>
+
+      {profile?.role === 'main_admin' ? (
+        <section className="mt-12 border border-red-900/40 bg-black/40 p-5">
+          <h2 className="font-display text-2xl">{t('admin.resetStats')}</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed theme-muted">{t('admin.resetStatsLead')}</p>
+          {resetDone ? <p className="mt-3 text-sm text-emerald-700">{t('admin.resetStatsDone')}</p> : null}
+          {resetError ? <p className="mt-3 text-sm text-red-600">{resetError}</p> : null}
+          <Button className="mt-4 bg-red-800 text-white hover:bg-red-700" onClick={() => void resetStatistics()} disabled={resetting}>
+            {resetting ? t('common.loading') : t('admin.resetStatsButton')}
+          </Button>
+        </section>
+      ) : null}
     </div>
   )
 }
