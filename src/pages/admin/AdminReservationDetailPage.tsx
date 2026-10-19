@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf } from '../../lib/format'
+import { downloadInvoice } from '../../lib/invoice'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
 import { Loader } from '../../components/ui/Loader'
@@ -21,6 +23,7 @@ export function AdminReservationDetailPage() {
   const client = useQueryClient()
   const { data: r } = useQuery({ queryKey: ['reservation', id], queryFn: () => fetchReservation(id) })
   const { confirm, reject } = useAdminReservationActions()
+  const [receiptBusy, setReceiptBusy] = useState(false)
   const cancel = useMutation({
     mutationFn: () => cancelReservation(id, 'Cancelled by administrator'),
     onSuccess: () => {
@@ -31,6 +34,8 @@ export function AdminReservationDetailPage() {
   })
 
   if (!r) return <Loader size="lg" fill />
+  const payments = r.payments ?? []
+  const paid = payments.some((payment) => payment.status === 'successful') || r.status === 'confirmed' || r.status === 'completed'
   const canDecide = isPendingReservation(r.status)
   const decideNow = canDecide && params.get('do')
   const canNotifyCleaning = r.status === 'confirmed' || r.status === 'completed'
@@ -86,11 +91,32 @@ export function AdminReservationDetailPage() {
           <dt>{t('property.guests')}</dt>
           <dd>{r.guest_count}</dd>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-3">
           <dt>{t('property.total')}</dt>
           <dd>{formatXaf(r.total_amount_xaf)}</dd>
         </div>
+        <div className="flex justify-between gap-3">
+          <dt>{t('admin.payment')}</dt>
+          <dd className={paid ? 'font-semibold text-emerald-700' : 'font-semibold text-red-700'}>
+            {paid ? t('admin.paid') : t('admin.unpaid')}
+          </dd>
+        </div>
       </dl>
+      <div className="surface-light mt-6 max-w-xl border border-[#d4af6a]/40 p-5">
+        <h2 className="font-display text-2xl">{t('admin.receipt')}</h2>
+        <p className="mt-2 text-sm theme-muted">{paid ? t('admin.paidLead') : t('admin.unpaidLead')}</p>
+        <Button
+          className="mt-4"
+          variant="outline"
+          disabled={receiptBusy}
+          onClick={() => {
+            setReceiptBusy(true)
+            void downloadInvoice(r).finally(() => setReceiptBusy(false))
+          }}
+        >
+          {receiptBusy ? t('common.loading') : t('admin.receiptDownload')}
+        </Button>
+      </div>
       <div className="mt-8 flex flex-wrap gap-3">
         <Button to={`/admin/reservations/${id}/fiche`}>{t('account.openFiche')}</Button>
         <Button variant="ghost" to="/admin/calendar">
