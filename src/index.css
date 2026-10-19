@@ -325,10 +325,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .ih-chat {
-  color: #f4ecd9;
-  color-scheme: dark;
+  color: #1c1914;
+  color-scheme: light;
   font-size: 15px;
-  line-height: 1.35;
+  line-height: 1.45;
+  background: #f6f1e8;
 }
 
 .ih-profile {
@@ -345,21 +346,20 @@ input[type='date']::-webkit-calendar-picker-indicator {
   color: inherit;
 }
 
-.ih-chat h1 {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1.15;
+.ih-chat h1,
+.admin-main .ih-chat h1 {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   text-transform: none;
-  color: #d4af6a;
+  color: #1c1914;
 }
 
 .ih-chat-wall {
-  background-color: #101216;
-  background-image:
-    radial-gradient(120% 70% at 50% 0%, rgba(212, 175, 106, 0.1), transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' fill='none' stroke='%23d4af6a' stroke-width='1'%3E%3Cpath d='M48 14l7 14-7 14-7-14z' opacity='.16'/%3E%3Cpath d='M0 62l7 14-7 14M96 62l-7 14 7 14' opacity='.1'/%3E%3C/svg%3E");
+  background-color: #efe8da;
+  background-image: none;
 }
 
 .housing-a4 {

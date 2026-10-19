@@ -48,24 +48,43 @@ Deno.serve(async (req) => {
     contact: { phone: cfg.phone, email: cfg.email },
   })
 
-  let answer =
-    'I can only answer from Imperial Home records. Use the residence calendar for availability — I will not invent dates.'
-  let escalate = false
   const q = String(message).toLowerCase()
-  if (/human|person|agent|whatsapp|parler/.test(q)) {
+  const fr = /[àâçéèêëîïôùûü]|\b(bonjour|salut|prix|appartement|reservation|réserv|disponible|voiture|wifi|nuit|séjour)\b/i.test(String(message))
+  const phone = cfg.phone || '+237 674 09 22 63'
+  let answer = fr
+    ? 'Je passe votre message à la réception.'
+    : 'I’ll pass your message to reception.'
+  let escalate = false
+  if (/human|person|agent|whatsapp|parler|quelqu/.test(q)) {
     escalate = true
-    answer = `An administrator will continue. WhatsApp ${cfg.phone ?? '+237 674 09 22 63'}.`
-  } else if (/book|reserv|available|disponib/.test(q)) {
-    answer =
-      'Availability is confirmed only in the booking calendar on each residence page. I will not invent free nights.'
-  } else if (/price|tarif|xaf/.test(q)) {
-    answer = (properties ?? []).map((p) => `${p.name}: ${p.nightly_rate_xaf} XAF / night`).join('\n')
+    answer = fr
+      ? `Bien sûr. Écrivez ici, ou sur WhatsApp au ${phone}. Quelqu’un de la maison vous répond.`
+      : `Of course. Write here, or on WhatsApp at ${phone}. Someone from the house will reply.`
+  } else if (/voiture|car|chauffeur|driver/.test(q)) {
+    answer = fr
+      ? 'Oui, la voiture se réserve seule. Ouvrez Location voiture, choisissez le modèle et les dates.'
+      : 'Yes, the car can be booked on its own. Open Car rental and choose the car and the dates.'
+  } else if (/book|reserv|available|disponib|calendrier/.test(q)) {
+    answer = fr
+      ? 'Sur la fiche de l’appartement, choisissez le jour d’arrivée et le nombre de nuits. Si c’est libre, la demande part.'
+      : 'On the apartment page, choose the arrival day and the number of nights. If it’s free, the request goes through.'
+  } else if (/price|tarif|prix|xaf/.test(q)) {
+    const list = (properties ?? []).map((p) => `${p.name} : ${p.nightly_rate_xaf} FCFA la nuit`).join('\n')
+    answer = fr ? `Les prix à la nuit :\n${list}` : `Nightly prices:\n${list}`
+  } else if (/wifi|wi-fi|arrivée|depart|départ/.test(q)) {
+    answer = fr
+      ? 'Le mot de passe Wi-Fi est dans l’appartement, une fois le séjour confirmé. Arrivée vers 14 h, départ vers 11 h.'
+      : 'The Wi-Fi password is in the apartment once the stay is confirmed. Arrival around 2 pm, departure around 11 am.'
   } else {
     const match = (properties ?? []).find(
       (p) => q.includes(String(p.name).toLowerCase()) || q.includes(String(p.neighborhood ?? '').toLowerCase()),
     )
     if (match) {
-      answer = `${match.name} in ${match.neighborhood}, ${match.city}. Capacity ${match.capacity}. From ${match.nightly_rate_xaf} XAF / night. ${match.description_en}`
+      answer = fr
+        ? `${match.name}, à ${match.city}. ${match.capacity} personnes, ${match.nightly_rate_xaf} FCFA la nuit.`
+        : `${match.name}, in ${match.city}. ${match.capacity} people, ${match.nightly_rate_xaf} FCFA a night.`
+    } else {
+      escalate = true
     }
   }
 
@@ -81,7 +100,7 @@ Deno.serve(async (req) => {
           {
             role: 'system',
             content:
-              'You are the Imperial Home assistant. Use ONLY the JSON facts provided. Never invent availability, prices, amenities, promotions, or reservation status. If unknown, say so and suggest WhatsApp. Currency is XAF. Company is in Douala, Cameroon.',
+              'You write like the person at the Imperial Home reception desk in Douala. Short texts, warm, in the guest language. No essays, no bullet lists, no "I am an assistant". Use ONLY the JSON facts. Never invent availability, prices, or reservation status. If you do not know, say you will pass it to the team. Currency is FCFA.',
           },
           { role: 'user', content: `FACTS:\n${facts}\n\nQUESTION:\n${message}` },
         ],
