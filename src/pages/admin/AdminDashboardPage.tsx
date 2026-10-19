@@ -12,7 +12,6 @@ import { daysInMonth, nightsInMonth } from '../../lib/occupancy'
 import { AdminInsights } from '../../components/admin/AdminInsights'
 import { Button } from '../../components/ui/Button'
 import { useAuth } from '../../hooks/useAuth'
-import { SwipeRail } from '../../components/ui/SwipeRail'
 import { decisionErrorMessage, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
 import type { Reservation } from '../../types/database'
 
@@ -153,29 +152,29 @@ export function AdminDashboardPage() {
       <Helmet>
         <title>{`${t('admin.dashboard')} | Imperial Home`}</title>
       </Helmet>
-      <h1 className="font-display text-3xl md:text-4xl">{t('admin.dashboard')}</h1>
+      <h1 className="font-display text-3xl break-words md:text-4xl">{t('admin.dashboard')}</h1>
 
-      <SwipeRail className="mt-6 md:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
         {cards.map((c) => (
-          <div key={c.label} className="surface-light h-full border border-[#d4af6a]/30 p-5">
-            <p className="text-sm uppercase tracking-[0.14em] text-muted">{c.label}</p>
-            <p className="mt-2 font-display text-4xl text-[var(--surface-fg)]">{c.value}</p>
+          <div key={c.label} className="surface-light h-full min-w-0 border border-[#d4af6a]/30 p-4">
+            <p className="text-[0.68rem] leading-snug font-medium tracking-[0.06em] text-muted uppercase">{c.label}</p>
+            <p className="mt-2 font-display text-[1.65rem] leading-none break-words text-[var(--surface-fg)]">{c.value}</p>
           </div>
         ))}
-      </SwipeRail>
+      </div>
 
-      <SwipeRail className="mt-5 md:grid-cols-4">
+      <div className="mt-3 grid grid-cols-2 gap-3">
         {shortcuts.map((s) => (
           <Link
             key={s.to}
             to={s.to}
-            className="surface-light flex min-h-14 items-center gap-3 border border-[#d4af6a]/30 px-4 py-3 text-sm uppercase tracking-[0.12em] text-[var(--surface-fg)] touch-manipulation"
+            className="surface-light flex min-h-14 min-w-0 items-center gap-3 border border-[#d4af6a]/30 px-4 py-3 text-[0.72rem] leading-snug font-medium tracking-[0.06em] text-[var(--surface-fg)] uppercase touch-manipulation"
           >
             <s.icon size={20} className="shrink-0 text-[#c4a35a]" />
-            {s.label}
+            <span className="min-w-0 break-words">{s.label}</span>
           </Link>
         ))}
-      </SwipeRail>
+      </div>
 
       <AdminInsights reservations={reservations} properties={properties} today={today} />
 
@@ -206,7 +205,7 @@ export function AdminDashboardPage() {
       </ul>
 
       {profile?.role === 'main_admin' ? (
-        <section className="mt-12 border border-red-900/40 bg-black/40 p-5">
+        <section className="mt-12 rounded-[1.35rem] border border-red-900/40 bg-black/40 p-5">
           <h2 className="font-display text-2xl">{t('admin.resetStats')}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed theme-muted">{t('admin.resetStatsLead')}</p>
           {resetDone ? <p className="mt-3 text-sm text-emerald-700">{t('admin.resetStatsDone')}</p> : null}

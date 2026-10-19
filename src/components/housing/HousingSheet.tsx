@@ -103,8 +103,8 @@ export function HousingSheet({
             </div>
             <div className="flex flex-col items-center pt-[0.2em]">
               <ImperialMark className="h-[14cqi] w-auto max-h-16" />
-              <p className="mt-0.5 font-display text-[0.85em] tracking-[0.22em] text-[#c4a35a]">IMPERIAL</p>
-              <p className="text-[0.55em] tracking-[0.32em] text-[#c4a35a]">HOME</p>
+              <p className="mt-0.5 font-display text-[0.85em] tracking-[0.14em] text-[#c4a35a]">IMPERIAL</p>
+              <p className="text-[0.55em] tracking-[0.16em] text-[#c4a35a]">HOME</p>
               <div className="mt-[0.6em] flex items-center gap-1.5">
                 <span className="flex h-[1.7em] w-[1.7em] items-center justify-center rounded-full border border-[#c4a35a] text-[#c4a35a]">
                   <Phone className="h-[0.9em] w-[0.9em]" />
@@ -113,7 +113,7 @@ export function HousingSheet({
                   value={data.reception_phone}
                   disabled={locked('reception_phone')}
                   onChange={(e) => set('reception_phone', e.target.value)}
-                  className="w-[7.2em] border-0 bg-transparent text-[1.05em] font-semibold tracking-wide text-[#111] outline-none"
+                  className="w-full min-w-0 max-w-[8.5em] border-0 bg-transparent text-[0.95em] font-semibold tracking-wide text-[#111] outline-none"
                 />
               </div>
             </div>
@@ -207,10 +207,10 @@ function FooterPill({ icon: Icon, title, text }: { icon: typeof Shield; title: s
   const shownTitle = useLiveTranslation(title, 'fr')
   const shownText = useLiveTranslation(text, 'fr')
   return (
-    <div className="px-0.5 text-center">
+    <div className="min-w-0 px-0.5 text-center">
       <Icon className="mx-auto mb-0.5 h-[1.1em] w-[1.1em]" strokeWidth={1.4} />
-      <p className="text-[0.58em] leading-tight tracking-[0.04em] uppercase">{shownTitle}</p>
-      <p className="mt-0.5 text-[0.52em] leading-tight text-[#d4af6a]/80">{shownText}</p>
+      <p className="text-[0.56em] leading-tight break-words tracking-[0.02em] uppercase">{shownTitle}</p>
+      <p className="mt-0.5 text-[0.5em] leading-tight break-words text-[#d4af6a]/80">{shownText}</p>
     </div>
   )
 }

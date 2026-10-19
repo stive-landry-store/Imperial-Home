@@ -71,9 +71,9 @@ export function AdminInsights({ reservations, properties, today }: { reservation
     <div className="mt-8 grid gap-5 lg:grid-cols-2">
       <section className="grid grid-cols-2 gap-3 lg:col-span-2 lg:grid-cols-4">
         {kpis.map((kpi) => (
-          <Link key={kpi.label} to={kpi.to} className="surface-light border border-line p-4">
-            <p className="text-xs tracking-[0.12em] text-muted uppercase">{kpi.label}</p>
-            <p className="mt-2 font-display text-2xl text-[#8b6f32]">{kpi.value}</p>
+          <Link key={kpi.label} to={kpi.to} className="surface-light min-w-0 border border-line p-4">
+            <p className="text-[0.68rem] leading-snug tracking-[0.06em] text-muted uppercase">{kpi.label}</p>
+            <p className="mt-2 font-display text-2xl leading-none break-words text-[#8b6f32]">{kpi.value}</p>
           </Link>
         ))}
       </section>

@@ -131,8 +131,11 @@ body {
 
 .theme-card {
   border: 1px solid rgba(212, 175, 106, 0.35);
+  border-radius: 1.35rem;
   background: var(--card-bg);
   color: var(--page-fg);
+  box-shadow: 0 10px 28px rgba(20, 17, 12, 0.05);
+  min-width: 0;
 }
 
 .theme-muted {
@@ -149,6 +152,18 @@ body {
 .theme-page .bg-cream {
   background: #fffdf8;
   color: var(--surface-fg);
+}
+
+.surface-light {
+  border-radius: 1.35rem;
+  box-shadow: 0 10px 28px rgba(20, 17, 12, 0.05);
+  min-width: 0;
+}
+
+.surface-light :where(p, a, h1, h2, h3, li, td, th, label, span),
+.theme-card :where(p, a, h1, h2, h3, li, span) {
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .surface-light .text-muted,
@@ -348,6 +363,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   margin-inline: auto;
   min-height: 0;
   overflow: hidden;
+  border-radius: 1.5rem;
   background: #ffffff;
   color: #111111;
   font-family: "Montserrat", sans-serif;
@@ -355,6 +371,12 @@ input[type='date']::-webkit-calendar-picker-indicator {
   line-height: 1.35;
   color-scheme: light;
   container-type: inline-size;
+  box-shadow: 0 16px 40px rgba(20, 17, 12, 0.12);
+}
+
+.housing-a4 :where(p, span, h1, label) {
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .housing-a4.housing-export {
@@ -456,6 +478,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   .housing-print-target,
   .housing-a4 {
     box-shadow: none !important;
+    border-radius: 0 !important;
     width: 210mm;
     max-width: none;
     min-height: 297mm;

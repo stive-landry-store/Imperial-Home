@@ -20,7 +20,7 @@ import { cn } from '../../lib/cn'
 
 const storageKey = (id: string) => `ih-housing-sheet-${id}`
 const tool =
-  'flex min-h-9 items-center justify-center border-t border-r border-[#d4af6a]/20 px-2 text-center text-xs tracking-[0.06em] uppercase disabled:opacity-50'
+  'inline-flex min-h-9 items-center justify-center rounded-full border border-[#d4af6a]/45 px-3 text-center text-[11px] leading-tight tracking-[0.04em] uppercase disabled:opacity-50'
 
 export function HousingSheetEditorPage({
   role: initialRole,
@@ -162,7 +162,7 @@ export function HousingSheetEditorPage({
             Retour
           </Link>
         </div>
-        <div className="grid grid-cols-2 border-t border-[#d4af6a]/25">
+        <div className="flex flex-wrap gap-2 px-3 pb-3">
           {preview ? (
             <>
               <button type="button" className={cn(tool, role === 'guest' && 'bg-[#c4a35a] text-black')} onClick={() => setRole('guest')}>
@@ -185,7 +185,7 @@ export function HousingSheetEditorPage({
           <button type="button" className={tool} disabled={busy} onClick={() => void downloadPdf()}>
             {busy ? 'Préparation…' : 'PDF'}
           </button>
-          <button type="button" className={cn(tool, 'col-span-2')} onClick={() => window.print()}>
+          <button type="button" className={tool} onClick={() => window.print()}>
             Imprimer
           </button>
         </div>

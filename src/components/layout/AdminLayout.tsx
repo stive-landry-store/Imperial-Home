@@ -31,6 +31,7 @@ import { ImperialLogo } from '../brand/Logo'
 import { cn } from '../../lib/cn'
 import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
+import { LanguageDock } from './LanguageDock'
 import { SocialLinks } from './SocialLinks'
 
 const links: { to: string; key: string; icon: LucideIcon }[] = [
@@ -73,7 +74,7 @@ export function AdminLayout() {
           end={l.to === '/admin'}
           className={({ isActive }) =>
             cn(
-              'flex min-h-12 items-center gap-3 rounded-lg px-3 py-3 text-base uppercase tracking-[0.12em] touch-manipulation',
+              'flex min-h-12 items-center gap-3 rounded-2xl px-3 py-3 text-base uppercase tracking-[0.08em] touch-manipulation',
               isActive ? 'bg-white/5 text-[#e0c57a]' : 'text-[#d4af6a]/80 hover:text-[#e0c57a]',
             )
           }
@@ -102,6 +103,7 @@ export function AdminLayout() {
           <ImperialLogo light compact />
         </NavLink>
         <NotificationBell />
+        <LanguageDock placement="header" />
         <ThemeSwitch compact />
         <button
           type="button"
@@ -155,7 +157,8 @@ export function AdminLayout() {
           <div className="px-5 pb-3">
             <SocialLinks />
           </div>
-          <div className="px-5 pb-3">
+          <div className="flex items-center gap-3 px-5 pb-3">
+            <LanguageDock placement="header" />
             <ThemeSwitch compact />
           </div>
           <button
