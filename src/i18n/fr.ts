@@ -472,7 +472,7 @@ export const fr: Messages = {
     unread: 'Conversations non lues',
     resetStats: 'Remettre toutes les statistiques à zéro',
     resetStatsLead:
-      'Cela efface les essais : nuits réservées, séjours, locations de voiture, messages, avis et comptes clients. Les appartements, les voitures, les prix, les photos et les administrateurs restent.',
+      'Réservé au super administrateur. Cela efface les essais : réservations, nuits, messages, comptes clients, historique et analyses. Les appartements, les voitures, les prix, les photos et les administrateurs restent.',
     resetStatsButton: 'Reset all the statistics',
     resetStatsConfirm:
       'Effacer toutes les réservations, les messages et les comptes clients d’essai ? Les appartements et les administrateurs restent.',

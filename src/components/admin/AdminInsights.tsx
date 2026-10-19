@@ -73,7 +73,7 @@ export function AdminInsights({ reservations, properties, today }: { reservation
         {kpis.map((kpi) => (
           <Link key={kpi.label} to={kpi.to} className="surface-light min-w-0 border border-line p-4">
             <p className="text-[0.68rem] leading-snug tracking-[0.06em] text-muted uppercase">{kpi.label}</p>
-            <p className="mt-2 font-display text-2xl leading-none break-words text-[#8b6f32]">{kpi.value}</p>
+            <p className="stat-figure mt-2 font-display text-2xl leading-tight text-[#8b6f32]">{kpi.value}</p>
           </Link>
         ))}
       </section>

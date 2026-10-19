@@ -469,7 +469,7 @@ export const en = {
     unread: 'Unread conversations',
     resetStats: 'Reset all statistics',
     resetStatsLead:
-      'This clears the trial activity: reserved nights, stays, car bookings, messages, reviews, and customer accounts. Apartments, cars, prices, photos, and administrators stay.',
+      'Only the super administrator can use this. It clears trial reservations, messages, customer accounts, history, and site analysis. Apartments, cars, prices, photos, and administrators stay.',
     resetStatsButton: 'Reset all statistics',
     resetStatsConfirm:
       'Erase every reservation, message, and trial customer account? Apartments and administrators will stay.',

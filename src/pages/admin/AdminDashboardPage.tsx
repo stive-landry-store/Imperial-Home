@@ -123,8 +123,10 @@ export function AdminDashboardPage() {
     { label: t('admin.occupancyRate'), value: `${occupancyRate}%` },
   ]
 
+  const canReset = profile?.role === 'super_admin'
+
   async function resetStatistics() {
-    if (!supabase || profile?.role !== 'main_admin' || resetting) return
+    if (!supabase || !canReset || resetting) return
     if (!window.confirm(t('admin.resetStatsConfirm'))) return
     if (!window.confirm(t('admin.resetStatsConfirmAgain'))) return
     setResetting(true)
@@ -154,11 +156,23 @@ export function AdminDashboardPage() {
       </Helmet>
       <h1 className="font-display text-3xl break-words md:text-4xl">{t('admin.dashboard')}</h1>
 
+      {canReset ? (
+        <section id="reset" className="mt-5 rounded-[1.35rem] border border-red-900/40 bg-black/40 p-5">
+          <h2 className="font-display text-2xl">{t('admin.resetStats')}</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed theme-muted">{t('admin.resetStatsLead')}</p>
+          {resetDone ? <p className="mt-3 text-sm text-emerald-700">{t('admin.resetStatsDone')}</p> : null}
+          {resetError ? <p className="mt-3 text-sm text-red-600">{resetError}</p> : null}
+          <Button className="mt-4 bg-red-800 text-white hover:bg-red-700" onClick={() => void resetStatistics()} disabled={resetting}>
+            {resetting ? t('common.loading') : t('admin.resetStatsButton')}
+          </Button>
+        </section>
+      ) : null}
+
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
         {cards.map((c) => (
           <div key={c.label} className="surface-light h-full min-w-0 border border-[#d4af6a]/30 p-4">
             <p className="text-[0.68rem] leading-snug font-medium tracking-[0.06em] text-muted uppercase">{c.label}</p>
-            <p className="mt-2 font-display text-[1.65rem] leading-none break-words text-[var(--surface-fg)]">{c.value}</p>
+            <p className="stat-figure mt-2 font-display text-[1.35rem] leading-tight text-[var(--surface-fg)]">{c.value}</p>
           </div>
         ))}
       </div>
@@ -204,17 +218,6 @@ export function AdminDashboardPage() {
         {pendingPay.length === 0 ? <li className="px-4 py-6 text-muted">{t('admin.noPending')}</li> : null}
       </ul>
 
-      {profile?.role === 'main_admin' ? (
-        <section className="mt-12 rounded-[1.35rem] border border-red-900/40 bg-black/40 p-5">
-          <h2 className="font-display text-2xl">{t('admin.resetStats')}</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed theme-muted">{t('admin.resetStatsLead')}</p>
-          {resetDone ? <p className="mt-3 text-sm text-emerald-700">{t('admin.resetStatsDone')}</p> : null}
-          {resetError ? <p className="mt-3 text-sm text-red-600">{resetError}</p> : null}
-          <Button className="mt-4 bg-red-800 text-white hover:bg-red-700" onClick={() => void resetStatistics()} disabled={resetting}>
-            {resetting ? t('common.loading') : t('admin.resetStatsButton')}
-          </Button>
-        </section>
-      ) : null}
     </div>
   )
 }

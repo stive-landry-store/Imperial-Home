@@ -12,8 +12,8 @@ declare
   v_customers integer := 0;
   v_ids uuid[];
 begin
-  if public.current_role() is distinct from 'main_admin' then
-    raise exception 'Only the main administrator can reset statistics';
+  if public.actor_role() is distinct from 'super_admin' then
+    raise exception 'Only the super administrator can reset statistics';
   end if;
 
   foreach v_table in array array[
@@ -30,6 +30,9 @@ begin
     'waitlist',
     'favorites',
     'notifications',
+    'referral_rewards',
+    'push_outbox',
+    'activity_log',
     'audit_logs',
     'reservations'
   ]

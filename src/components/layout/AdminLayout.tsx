@@ -14,6 +14,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  RotateCcw,
   MessageCircle,
   Settings,
   ScanLine,
@@ -27,7 +28,7 @@ import {
 import { useAuth } from '../../hooks/useAuth'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
-import { ImperialLogo } from '../brand/Logo'
+import { ImperialLogo, ImperialMark } from '../brand/Logo'
 import { cn } from '../../lib/cn'
 import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
@@ -67,6 +68,15 @@ export function AdminLayout() {
   function renderNav() {
     return (
     <nav className="flex flex-col gap-1 px-3 pb-4">
+      {profile?.role === 'super_admin' ? (
+        <NavLink
+          to="/admin#reset"
+          className="flex min-h-12 items-center gap-3 rounded-2xl px-3 py-3 text-base uppercase tracking-[0.08em] text-[#e0c57a] touch-manipulation"
+        >
+          <RotateCcw className="h-6 w-6 shrink-0 text-[#d4af6a]" strokeWidth={1.6} />
+          <span className="min-w-0 break-words">{t('admin.resetStatsButton')}</span>
+        </NavLink>
+      ) : null}
       {links.filter((l) => l.to !== '/admin/activity' || profile?.role === 'super_admin').map((l) => (
         <NavLink
           key={l.to}
@@ -89,30 +99,33 @@ export function AdminLayout() {
 
   return (
     <div className={cn('theme-page min-h-svh md:grid md:h-dvh md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr]', location.pathname.startsWith('/admin/chat') && 'flex h-dvh flex-col md:grid')}>
-      <header className="sticky top-0 z-40 flex items-center gap-2 border-b border-[#d4af6a]/20 bg-black px-3 py-2 text-[#d4af6a] pt-[max(0.5rem,env(safe-area-inset-top))] md:hidden">
+      <header className="sticky top-0 z-40 flex items-center gap-1 border-b border-[#d4af6a]/20 bg-black px-2 py-2 text-[#d4af6a] pt-[max(0.5rem,env(safe-area-inset-top))] md:hidden">
         <button
           type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center touch-manipulation"
           aria-label={t('admin.menu')}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(true)}
         >
-          <Menu size={26} strokeWidth={2} />
+          <Menu size={24} strokeWidth={2} />
         </button>
-        <NavLink to="/" className="min-w-0 flex-1 origin-left scale-90">
-          <ImperialLogo light compact />
+        <NavLink to="/" className="flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden">
+          <ImperialMark className="h-8 w-auto shrink-0" />
+          <span className="truncate font-display text-[0.95rem] tracking-[0.14em]">IMPERIAL</span>
         </NavLink>
-        <NotificationBell />
-        <LanguageDock placement="header" />
-        <ThemeSwitch compact />
-        <button
-          type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center touch-manipulation"
-          onClick={() => void signOut()}
-          aria-label={t('nav.logout')}
-        >
-          <LogOut size={20} />
-        </button>
+        <div className="flex shrink-0 items-center">
+          <NotificationBell />
+          <LanguageDock placement="header" />
+          <ThemeSwitch compact />
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center touch-manipulation"
+            onClick={() => void signOut()}
+            aria-label={t('nav.logout')}
+          >
+            <LogOut size={18} />
+          </button>
+        </div>
       </header>
 
       {menuOpen ? (
