@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { usePublishedProperties } from '../../hooks/useSite'
 import { compareIds } from '../../lib/savedStays'
 import { formatXaf, localized } from '../../lib/format'
+import { apartmentSummary } from '../../lib/apartmentCopy'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { Live } from '../../components/i18n/Live'
 
@@ -51,7 +52,7 @@ export function ComparePage() {
                   [
                     [t('plus.neighborhood'), (p: (typeof chosen)[number]) => p.neighborhood || p.city],
                     [t('property.guests'), (p: (typeof chosen)[number]) => String(p.capacity)],
-                    [t('plus.bedrooms'), () => t('properties.studioLine')],
+                    [t('plus.bedrooms'), (p: (typeof chosen)[number]) => apartmentSummary(p, i18n.language)],
                     [t('properties.perNight'), (p: (typeof chosen)[number]) => formatXaf(p.nightly_rate_xaf)],
                     [
                       t('property.amenities'),

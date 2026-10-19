@@ -2,22 +2,36 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { fetchTurnover } from '../../lib/guest'
 import { useTranslation } from 'react-i18next'
-import { LogIn, LogOut } from 'lucide-react'
+import { LogIn, LogOut, Phone } from 'lucide-react'
 import { formatDate, formatXaf } from '../../lib/format'
+import { whatsappUrl } from '../../lib/whatsapp'
 import { daysInMonth, nightsInMonth } from '../../lib/occupancy'
 import type { Property, Reservation } from '../../types/database'
 
 const MONTHS_FR = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
 
 function Person({ r }: { r: Reservation }) {
+  const { t } = useTranslation()
+  const phone = r.profiles?.phone?.replace(/\s/g, '')
+  const name = r.profiles?.full_name || r.public_code
+  const note = `Bonjour ${name}, c’est Impérial Home pour votre séjour ${r.public_code}.`
   return (
-    <Link to={`/admin/reservations/${r.id}`} className="flex items-center justify-between gap-3 border-b border-line px-4 py-3 last:border-b-0">
-      <span className="min-w-0">
+    <div className="flex items-center gap-3 border-b border-line px-4 py-3 last:border-b-0">
+      <Link to={`/admin/reservations/${r.id}`} className="min-w-0 flex-1">
         <span className="block truncate font-medium">{r.profiles?.full_name || r.profiles?.email || r.public_code}</span>
         <span className="block truncate text-sm text-muted">{r.properties?.name}</span>
-      </span>
-      <span className="shrink-0 text-xs text-[#8b6f32]">{r.public_code}</span>
-    </Link>
+      </Link>
+      {phone ? (
+        <a className="shrink-0 rounded-full border border-black/10 px-3 py-1.5 text-xs" href={`tel:${phone}`}>
+          {t('admin.callGuest')}
+        </a>
+      ) : null}
+      {phone ? (
+        <a className="shrink-0 rounded-full bg-[#1c1914] px-3 py-1.5 text-xs text-[#f6f1e8]" href={whatsappUrl(phone, note)} target="_blank" rel="noreferrer">
+          {t('admin.writeGuest')}
+        </a>
+      ) : null}
+    </div>
   )
 }
 
@@ -49,47 +63,41 @@ export function AdminInsights({ reservations, properties, today }: { reservation
     })
     .sort((a, b) => b.revenue - a.revenue)
 
-  const monthKey = today.slice(0, 7)
-  const monthRevenue = paid.filter((r) => r.check_in.startsWith(monthKey)).reduce((sum, r) => sum + r.total_amount_xaf, 0)
-  const monthDays = daysInMonth(now.getFullYear(), now.getMonth())
-  const nightsBooked = paid.reduce((sum, r) => sum + nightsInMonth(r.check_in, r.check_out, now.getFullYear(), now.getMonth()), 0)
-  const occupancyAll = properties.length ? Math.round((nightsBooked / (monthDays * properties.length)) * 100) : 0
-  const pendingCount = reservations.filter((r) => r.status === 'pending' || r.status === 'payment_processing').length
-  const cleaningTodo = tasks.filter((task) => !task.done_at && task.due_on <= today).length
-  const kpis = [
-    { label: t('app.kpiMonth'), value: formatXaf(monthRevenue), to: '/admin/reservations' },
-    { label: t('app.kpiOccupancy'), value: `${Math.min(100, occupancyAll)} %`, to: '/admin/calendar' },
-    { label: t('app.kpiPending'), value: String(pendingCount), to: '/admin/reservations' },
-    { label: t('app.kpiCleaning'), value: String(cleaningTodo), to: '/admin/turnover' },
-  ]
+  const cleaningTodo = tasks.filter((task) => !task.done_at && task.due_on <= today)
 
   const W = 320
   const H = 140
   const bar = W / revenue.length
 
   return (
-    <div className="mt-8 grid gap-5 lg:grid-cols-2">
-      <section className="grid grid-cols-2 gap-3 lg:col-span-2 lg:grid-cols-4">
-        {kpis.map((kpi) => (
-          <Link key={kpi.label} to={kpi.to} className="surface-light min-w-0 border border-line p-4">
-            <p className="text-[0.68rem] leading-snug tracking-[0.06em] text-muted uppercase">{kpi.label}</p>
-            <p className="stat-figure mt-2 font-display text-2xl leading-tight text-[#8b6f32]">{kpi.value}</p>
-          </Link>
-        ))}
-      </section>
-      <section>
+    <div className="mt-6 grid gap-5 lg:grid-cols-2">
+      <section className="lg:col-span-2">
         <h2 className="font-display text-2xl">{t('app.today')}</h2>
         <div className="surface-light mt-3 overflow-hidden border border-line">
-          <p className="flex items-center gap-2 border-b border-line bg-[#d4af6a]/10 px-4 py-2 text-xs tracking-[0.14em] uppercase">
-            <LogIn size={14} className="text-[#c4a35a]" />
+          <p className="flex items-center gap-2 border-b border-line bg-black/[0.03] px-4 py-2 text-sm">
+            <LogIn size={14} />
             {t('admin.arrivals')} ({arrivals.length})
           </p>
           {arrivals.length ? arrivals.map((r) => <Person key={r.id} r={r} />) : <p className="px-4 py-3 text-sm text-muted">{t('app.nobody')}</p>}
-          <p className="flex items-center gap-2 border-y border-line bg-[#d4af6a]/10 px-4 py-2 text-xs tracking-[0.14em] uppercase">
-            <LogOut size={14} className="text-[#c4a35a]" />
+          <p className="flex items-center gap-2 border-y border-line bg-black/[0.03] px-4 py-2 text-sm">
+            <LogOut size={14} />
             {t('admin.departures')} ({departures.length})
           </p>
           {departures.length ? departures.map((r) => <Person key={r.id} r={r} />) : <p className="px-4 py-3 text-sm text-muted">{t('app.nobody')}</p>}
+          <p className="flex items-center gap-2 border-y border-line bg-black/[0.03] px-4 py-2 text-sm">
+            <Phone size={14} />
+            {t('admin.cleaningToday')} ({cleaningTodo.length})
+          </p>
+          {cleaningTodo.length ? (
+            cleaningTodo.map((task) => (
+              <Link key={task.id} to="/admin/turnover" className="block border-b border-line px-4 py-3 text-sm last:border-b-0">
+                <span className="font-medium">{task.properties?.name || task.title}</span>
+                <span className="mt-0.5 block text-muted">{task.title}</span>
+              </Link>
+            ))
+          ) : (
+            <p className="px-4 py-3 text-sm text-muted">{t('app.nobody')}</p>
+          )}
         </div>
       </section>
 

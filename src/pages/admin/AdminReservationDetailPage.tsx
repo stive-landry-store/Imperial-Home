@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf } from '../../lib/format'
 import { downloadInvoice } from '../../lib/invoice'
+import { whatsappUrl } from '../../lib/whatsapp'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
 import { Loader } from '../../components/ui/Loader'
@@ -102,7 +103,30 @@ export function AdminReservationDetailPage() {
           </dd>
         </div>
       </dl>
-      <div className="surface-light mt-6 max-w-xl border border-[#d4af6a]/40 p-5">
+      {r.profiles?.phone ? (
+        <div className="mt-5 flex max-w-xl flex-wrap gap-2">
+          <a className="rounded-full border border-black/15 px-4 py-2 text-sm" href={`tel:${r.profiles.phone.replace(/\s/g, '')}`}>
+            {t('admin.callGuest')}
+          </a>
+          <a
+            className="rounded-full bg-[#1c1914] px-4 py-2 text-sm text-[#f6f1e8]"
+            href={whatsappUrl(
+              r.profiles.phone,
+              `Bonjour ${r.profiles.full_name || ''}, c’est Impérial Home pour votre séjour ${r.public_code}.`,
+            )}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t('admin.writeGuest')}
+          </a>
+          <Button to={`/admin/reservations/${id}/fiche`}>{t('account.openFiche')}</Button>
+        </div>
+      ) : (
+        <div className="mt-5">
+          <Button to={`/admin/reservations/${id}/fiche`}>{t('account.openFiche')}</Button>
+        </div>
+      )}
+      <div className="surface-light mt-6 max-w-xl border border-black/10 p-5">
         <h2 className="font-display text-2xl">{t('admin.receipt')}</h2>
         <p className="mt-2 text-sm theme-muted">{paid ? t('admin.paidLead') : t('admin.unpaidLead')}</p>
         <Button
@@ -118,7 +142,6 @@ export function AdminReservationDetailPage() {
         </Button>
       </div>
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button to={`/admin/reservations/${id}/fiche`}>{t('account.openFiche')}</Button>
         <Button variant="ghost" to="/admin/calendar">
           {t('admin.calendar')}
         </Button>

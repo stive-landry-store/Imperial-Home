@@ -8,7 +8,6 @@ import { fetchAllReservations, fetchPublishedProperties } from '../../lib/data'
 import { supabase } from '../../lib/supabase'
 import { todayIso } from '../../lib/availability'
 import { formatDate, formatXaf } from '../../lib/format'
-import { daysInMonth, nightsInMonth } from '../../lib/occupancy'
 import { AdminInsights } from '../../components/admin/AdminInsights'
 import { Button } from '../../components/ui/Button'
 import { useAuth } from '../../hooks/useAuth'
@@ -86,42 +85,7 @@ export function AdminDashboardPage() {
   const { confirm, reject } = useAdminReservationActions()
   const { data: reservations = [] } = useQuery({ queryKey: ['admin-reservations'], queryFn: fetchAllReservations })
   const { data: properties = [] } = useQuery({ queryKey: ['properties', 'published'], queryFn: fetchPublishedProperties })
-  const { data: unread = 0 } = useQuery({
-    queryKey: ['unread-chats'],
-    queryFn: async () => {
-      if (!supabase) return 0
-      const { count } = await supabase.from('conversations').select('*', { count: 'exact', head: true }).eq('needs_human', true)
-      return count ?? 0
-    },
-  })
-
-  const arrivals = reservations.filter((r) => r.check_in === today && r.status === 'confirmed')
-  const departures = reservations.filter((r) => r.check_out === today && r.status === 'confirmed')
-  const active = reservations.filter((r) => r.status === 'confirmed' && r.check_in <= today && r.check_out > today)
   const pendingPay = reservations.filter((r) => r.status === 'pending' || r.status === 'payment_processing')
-
-  const now = new Date()
-  const monthIndex = now.getMonth()
-  const year = now.getFullYear()
-  const monthKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`
-  const occupiedNights = reservations
-    .filter((r) => r.status === 'confirmed' || r.status === 'completed')
-    .reduce((sum, r) => sum + nightsInMonth(r.check_in, r.check_out, year, monthIndex), 0)
-  const occupancyRate = properties.length
-    ? Math.round((occupiedNights / (properties.length * daysInMonth(year, monthIndex))) * 100)
-    : 0
-  const monthRevenue = reservations
-    .filter((r) => (r.status === 'confirmed' || r.status === 'completed') && r.check_in.startsWith(monthKey))
-    .reduce((sum, r) => sum + r.total_amount_xaf, 0)
-
-  const cards = [
-    { label: t('admin.arrivals'), value: arrivals.length },
-    { label: t('admin.departures'), value: departures.length },
-    { label: t('admin.occupancy'), value: `${active.length}/${properties.length}` },
-    { label: t('admin.unread'), value: unread },
-    { label: t('admin.revenue'), value: formatXaf(monthRevenue) },
-    { label: t('admin.occupancyRate'), value: `${occupancyRate}%` },
-  ]
 
   const canReset = profile?.role === 'super_admin'
 
@@ -168,29 +132,20 @@ export function AdminDashboardPage() {
         </section>
       ) : null}
 
-      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3">
-        {cards.map((c) => (
-          <div key={c.label} className="surface-light h-full min-w-0 border border-[#d4af6a]/30 p-4">
-            <p className="text-[0.68rem] leading-snug font-medium tracking-[0.06em] text-muted uppercase">{c.label}</p>
-            <p className="stat-figure mt-2 font-display text-[1.35rem] leading-tight text-[var(--surface-fg)]">{c.value}</p>
-          </div>
-        ))}
-      </div>
+      <AdminInsights reservations={reservations} properties={properties} today={today} />
 
-      <div className="mt-3 grid grid-cols-2 gap-3">
+      <div className="mt-5 grid grid-cols-2 gap-3">
         {shortcuts.map((s) => (
           <Link
             key={s.to}
             to={s.to}
-            className="surface-light flex min-h-14 min-w-0 items-center gap-3 border border-[#d4af6a]/30 px-4 py-3 text-[0.72rem] leading-snug font-medium tracking-[0.06em] text-[var(--surface-fg)] uppercase touch-manipulation"
+            className="surface-light flex min-h-14 min-w-0 items-center gap-3 border border-black/10 px-4 py-3 text-sm text-[var(--surface-fg)] touch-manipulation"
           >
-            <s.icon size={20} className="shrink-0 text-[#c4a35a]" />
+            <s.icon size={20} className="shrink-0 text-[#6f675c]" />
             <span className="min-w-0 break-words">{s.label}</span>
           </Link>
         ))}
       </div>
-
-      <AdminInsights reservations={reservations} properties={properties} today={today} />
 
       <h2 className="mt-10 font-display text-2xl">{t('admin.pendingQueue')}</h2>
       <p className="mt-1 text-sm theme-muted">{t('admin.pendingQueueLead')}</p>

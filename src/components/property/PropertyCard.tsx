@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Promotion, Property } from '../../types/database'
 import { Live } from '../i18n/Live'
+import { apartmentSummary } from '../../lib/apartmentCopy'
 import { IMPERIAL_HOME } from '../../lib/house'
 import { coverImage, formatXaf, localized } from '../../lib/format'
 import { OptimizedImage } from '../ui/OptimizedImage'
@@ -48,9 +49,7 @@ export function PropertyCard({
           <p className="mt-0.5 text-sm theme-muted">
             {IMPERIAL_HOME.neighborhood}, {IMPERIAL_HOME.city}
           </p>
-          <p className="mt-1 text-sm theme-muted">
-            {property.capacity} {t('properties.guests')} · {t('properties.studioLine')}
-          </p>
+          <p className="mt-1 text-sm theme-muted">{apartmentSummary(property, lang)}</p>
           {amenityNames.length ? (
             <p className="mt-1 text-sm theme-muted">
               <Live text={amenityNames.join(' · ')} />

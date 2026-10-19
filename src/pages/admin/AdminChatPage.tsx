@@ -115,12 +115,15 @@ export function AdminChatPage() {
     setParams({ c: id })
   }
 
-  async function send() {
+  async function send(preset?: string) {
     if (!user || !active) return
-    const current = body
-    const currentFile = file
-    setBody('')
-    setFile(null)
+    const current = preset ?? body
+    const currentFile = preset ? null : file
+    if (!current.trim() && !currentFile) return
+    if (!preset) {
+      setBody('')
+      setFile(null)
+    }
     const error = await sendChatMessage({
       conversationId: active,
       senderId: user.id,
@@ -128,7 +131,7 @@ export function AdminChatPage() {
       body: current,
       file: currentFile,
     })
-    if (error) {
+    if (error && !preset) {
       setBody(current)
       setFile(currentFile)
     }
@@ -197,6 +200,8 @@ export function AdminChatPage() {
             backLabel={t('common.back')}
             onBody={setBody}
             onSend={() => void send()}
+            quickReplies={[t('admin.replyReady'), t('admin.replyArrival'), t('admin.replyCode')]}
+            onQuick={(text) => void send(text)}
             onBack={() => {
               setActive(null)
               setParams({})

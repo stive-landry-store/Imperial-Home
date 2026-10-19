@@ -36,6 +36,8 @@ export function ChatThread({
   onBack,
   onPick,
   onHuman,
+  quickReplies,
+  onQuick,
 }: {
   title: string
   subtitle: string
@@ -56,6 +58,8 @@ export function ChatThread({
   onBack: () => void
   onPick: (file: File | null) => void
   onHuman?: () => void
+  quickReplies?: string[]
+  onQuick?: (text: string) => void
 }) {
   const bottom = useRef<HTMLDivElement>(null)
   const field = useRef<HTMLTextAreaElement>(null)
@@ -170,6 +174,20 @@ export function ChatThread({
           <button type="button" className="text-lg text-[#6f675c]" onClick={() => onPick(null)}>
             ×
           </button>
+        </div>
+      ) : null}
+      {quickReplies?.length && onQuick ? (
+        <div className="flex gap-2 overflow-x-auto border-t border-[#e4d8c4] bg-[#f6f1e8] px-3 py-2">
+          {quickReplies.map((text) => (
+            <button
+              key={text}
+              type="button"
+              className="shrink-0 rounded-full border border-[#e4d8c4] bg-[#ffffff] px-3 py-1.5 text-left text-[13px] text-[#1c1914]"
+              onClick={() => onQuick(text)}
+            >
+              {text}
+            </button>
+          ))}
         </div>
       ) : null}
       <form className="ih-thread-form relative flex items-end gap-1.5 border-t border-[#e4d8c4] bg-[#f6f1e8] px-2 py-2" onSubmit={submit}>

@@ -280,7 +280,7 @@ export function invoiceData(reservation: Reservation, matricule: string): Invoic
     matricule,
     property: property?.name ?? '',
     city: property?.city || 'Douala',
-    rooms: `1 très grande chambre · ${capacity} voyageur${capacity > 1 ? 's' : ''} max`,
+    rooms: `${capacity} voyageur${capacity > 1 ? 's' : ''}`,
     checkIn: formatDate(reservation.check_in),
     checkOut: formatDate(reservation.check_out),
     nights,

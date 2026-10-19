@@ -18,6 +18,7 @@ import { Button } from '../../components/ui/Button'
 import { Live } from '../../components/i18n/Live'
 import { Loader } from '../../components/ui/Loader'
 import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../lib/data'
+import { apartmentSummary } from '../../lib/apartmentCopy'
 import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
 import { PlaceActions } from '../../components/property/PlaceActions'
 import { PlaceMap } from '../../components/property/PlaceMap'
@@ -78,8 +79,6 @@ export function PropertyDetailPage() {
     enabled: Boolean(property && activeCheckIn && checkOut),
   })
 
-  const description = t('properties.studioDescription')
-
   function onSelectDate(iso: string) {
     if (iso < todayIso() || !isDateAvailable(iso, ranges)) return
     if (!activeCheckIn || iso <= activeCheckIn) {
@@ -117,23 +116,24 @@ export function PropertyDetailPage() {
   }
 
   const place = imperialPlace(config)
+  const summary = apartmentSummary(property, i18n.language)
 
   return (
     <div className="theme-page">
       <div className="mx-auto max-w-6xl px-4 pt-32 pb-20 md:px-6">
         <Helmet>
           <title>{`${property.name} | Imperial Home Douala`}</title>
-          <meta name="description" content={description.slice(0, 160)} />
+          <meta name="description" content={summary.slice(0, 160)} />
           <link rel="canonical" href={`${SITE_ORIGIN}/properties/${property.slug}`} />
           <meta property="og:title" content={`${property.name} | Imperial Home`} />
-          <meta property="og:description" content={description.slice(0, 160)} />
+          <meta property="og:description" content={summary.slice(0, 160)} />
           {coverImage(property.property_images) ? <meta property="og:image" content={coverImage(property.property_images)} /> : null}
           <script type="application/ld+json">
             {JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Apartment',
               name: property.name,
-              description: description.slice(0, 300),
+              description: summary.slice(0, 300),
               url: `${SITE_ORIGIN}/properties/${property.slug}`,
               telephone: '+237 674 09 22 63',
               address: {
@@ -186,10 +186,7 @@ export function PropertyDetailPage() {
                 {copied ? t('nav.copied') : t('nav.share')}
               </button>
             </div>
-            <p className="mt-4 max-w-2xl theme-muted">{t('properties.studioDescription')}</p>
-            <p className="mt-4 text-base theme-muted">
-              {property.capacity} {t('properties.guests')} · {t('properties.studioLine')}
-            </p>
+            <p className="mt-4 max-w-2xl theme-muted">{summary}</p>
             <section className="theme-card mt-8 p-5">
               <h2 className="text-xl font-semibold">{t('property.book')}</h2>
               <div className="mt-4">

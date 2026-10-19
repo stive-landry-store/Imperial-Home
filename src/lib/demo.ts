@@ -63,10 +63,8 @@ export const demoConfig: SiteConfig = { ...SITE_DEFAULTS }
 export const demoProperties: Property[] = [
   {
     ...roomBase('p1', 'abidjan', 'Abidjan', 55_000, 2),
-    description_en:
-      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
-    description_fr:
-      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
+    description_en: 'Abidjan, at Carrefour Conquête. 2 people, 55 000 FCFA a night.',
+    description_fr: 'Abidjan, au Carrefour Conquête. 2 personnes, 55 000 FCFA la nuit.',
     property_images: [
       {
         id: 'i1',
@@ -83,10 +81,8 @@ export const demoProperties: Property[] = [
   },
   {
     ...roomBase('p2', 'singapour', 'Singapour', 65_000, 2),
-    description_en:
-      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
-    description_fr:
-      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
+    description_en: 'Singapour, at Carrefour Conquête. 2 people, 65 000 FCFA a night.',
+    description_fr: 'Singapour, au Carrefour Conquête. 2 personnes, 65 000 FCFA la nuit.',
     property_images: [
       {
         id: 'i2',
@@ -103,10 +99,8 @@ export const demoProperties: Property[] = [
   },
   {
     ...roomBase('p3', 'dubai', 'Dubai', 75_000, 3),
-    description_en:
-      'Furnished studio: one very large bedroom, two bathrooms, a large living room, a large kitchen and a balcony.',
-    description_fr:
-      'Studio meublé : une très grande chambre, deux salles de bain, un grand salon, une grande cuisine et un balcon.',
+    description_en: 'Dubai, at Carrefour Conquête. 3 people, 75 000 FCFA a night.',
+    description_fr: 'Dubai, au Carrefour Conquête. 3 personnes, 75 000 FCFA la nuit.',
     property_images: [
       {
         id: 'i3',
