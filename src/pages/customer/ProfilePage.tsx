@@ -137,7 +137,7 @@ export function ProfilePage() {
         </button>
       </div>
       <section className="bg-[#ffffff] pb-5">
-        <div className="relative aspect-[8/3] w-full bg-[#d9d4c8]">
+        <div className="relative aspect-[8/3] w-full overflow-hidden rounded-b-[1.35rem] bg-[#d9d4c8]">
           <button type="button" className="block h-full w-full" onClick={() => setViewer('cover')} aria-label={t('account.cover')}>
             <img src={cover} alt="" className="h-full w-full object-cover object-center" />
           </button>

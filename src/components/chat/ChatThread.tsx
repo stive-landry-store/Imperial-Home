@@ -150,7 +150,7 @@ export function ChatThread({
                       item.mine ? 'rounded-ee-[5px] bg-[#1c1914] text-[#f6f1e8]' : 'rounded-es-[5px] bg-[#ffffff] text-[#1c1914]',
                     )}
                   >
-                    {item.imageUrl ? <img src={item.imageUrl} alt="" className="mb-1 max-h-56 rounded-md object-cover" /> : null}
+                    {item.imageUrl ? <img src={item.imageUrl} alt="" className="mb-1 max-h-56 rounded-2xl object-cover" /> : null}
                     {item.body.trim() ? <span className="whitespace-pre-wrap text-[14.5px] leading-[19px]">{item.body}</span> : null}
                     <span
                       className={cn(
@@ -170,7 +170,7 @@ export function ChatThread({
       </div>
       {preview ? (
         <div className="flex items-center gap-3 bg-[#f6f1e8] px-3 pt-2">
-          <img src={preview} alt="" className="h-16 w-16 rounded-lg object-cover" />
+          <img src={preview} alt="" className="h-16 w-16 rounded-2xl object-cover" />
           <button type="button" className="text-lg text-[#6f675c]" onClick={() => onPick(null)}>
             ×
           </button>

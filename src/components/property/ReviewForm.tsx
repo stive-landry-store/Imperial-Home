@@ -75,7 +75,7 @@ export function ReviewForm({
         {previews.length ? (
           <div className="mt-3 flex gap-2">
             {previews.map((url, index) => (
-              <div key={url} className="relative h-16 w-16">
+              <div key={url} className="relative h-16 w-16 overflow-hidden rounded-2xl">
                 <img src={url} alt="" className="h-full w-full object-cover" />
                 <button
                   type="button"

@@ -177,7 +177,7 @@ export function AdminPropertiesPage() {
 
                     {photo ? (
 
-                      <img src={photo} alt="" className="h-14 w-20 rounded border border-line object-cover" />
+                      <img src={photo} alt="" className="h-14 w-20 rounded-2xl border border-line object-cover" />
 
                     ) : (
 

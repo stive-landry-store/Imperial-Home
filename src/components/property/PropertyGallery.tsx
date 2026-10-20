@@ -25,11 +25,11 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
     return () => window.removeEventListener('keydown', onKey)
   }, [open, sorted.length])
 
-  if (!current) return <div className="aspect-[16/10] bg-black" />
+  if (!current) return <div className="aspect-[16/10] rounded-[1.35rem] bg-black" />
 
   return (
     <div className="w-full min-w-0 max-w-full">
-      <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
+      <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden rounded-[1.35rem] bg-black" onClick={() => setOpen(true)}>
         <OptimizedImage
           src={current.url}
           alt={localized(current.alt_en, current.alt_fr, lang) || 'Imperial Home'}
@@ -44,7 +44,7 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
               key={img.id}
               type="button"
               onClick={() => setActive(i)}
-              className={cn('h-16 w-24 shrink-0 overflow-hidden border', i === active ? 'border-[#d4af6a]' : 'border-transparent')}
+              className={cn('h-16 w-24 shrink-0 overflow-hidden rounded-2xl border', i === active ? 'border-[#d4af6a]' : 'border-transparent')}
             >
               <OptimizedImage src={img.url} alt="" width={200} className="h-full w-full object-cover" />
             </button>

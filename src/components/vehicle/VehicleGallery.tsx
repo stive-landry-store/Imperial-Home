@@ -44,12 +44,12 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
   }, [open, items.length])
 
   if (!current) {
-    return <div className="flex aspect-[16/10] items-center justify-center bg-black text-[#d4af6a]/40">{title}</div>
+    return <div className="flex aspect-[16/10] items-center justify-center rounded-[1.35rem] bg-black text-[#d4af6a]/40">{title}</div>
   }
 
   return (
     <div className="w-full min-w-0 max-w-full">
-      <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden bg-black" onClick={() => setOpen(true)}>
+      <button type="button" className="block aspect-[16/10] w-full max-w-full overflow-hidden rounded-[1.35rem] bg-black" onClick={() => setOpen(true)}>
         <Frame item={current} />
       </button>
       {items.length > 1 ? (
@@ -63,7 +63,7 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
                 setOpen(true)
               }}
               className={cn(
-                'h-16 w-24 shrink-0 overflow-hidden border',
+                'h-16 w-24 shrink-0 overflow-hidden rounded-2xl border',
                 index === active ? 'border-[#d4af6a]' : 'border-transparent',
               )}
             >

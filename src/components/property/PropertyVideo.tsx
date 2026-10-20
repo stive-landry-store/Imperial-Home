@@ -14,7 +14,7 @@ export function PropertyVideo({ url }: { url: string }) {
   return (
     <section className="mt-8 max-w-3xl">
       <h2 className="font-display text-3xl">{t('app.videoTour')}</h2>
-      <div className="mt-3 aspect-video overflow-hidden bg-black">
+      <div className="mt-3 aspect-video overflow-hidden rounded-[1.35rem] bg-black">
         {embed ? (
           <iframe src={embed} title={t('app.videoTour')} className="h-full w-full" allow="fullscreen; picture-in-picture" loading="lazy" />
         ) : (

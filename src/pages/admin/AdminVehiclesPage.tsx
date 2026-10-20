@@ -256,7 +256,7 @@ export function AdminVehiclesPage() {
           {mediaError ? <p className="mt-2 text-sm text-red-600">{mediaError}</p> : null}
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {editingMedia.map((m) => (
-              <div key={m.id} className="relative overflow-hidden rounded border border-line">
+              <div key={m.id} className="relative overflow-hidden rounded-2xl border border-line">
                 {m.media_type === 'video' ? (
                   <video src={m.url} className="aspect-video w-full object-cover" controls muted />
                 ) : (
@@ -289,14 +289,14 @@ export function AdminVehiclesPage() {
                   <div className="flex max-w-[280px] gap-1 overflow-x-auto">
                     {media.map((item) =>
                       item.media_type === 'video' ? (
-                        <video key={item.id} src={item.url} className="h-16 w-24 shrink-0 rounded border border-line object-cover" muted />
+                        <video key={item.id} src={item.url} className="h-16 w-24 shrink-0 rounded-2xl border border-line object-cover" muted />
                       ) : (
-                        <img key={item.id} src={item.url} alt="" className="h-16 w-24 shrink-0 rounded border border-line object-cover" />
+                        <img key={item.id} src={item.url} alt="" className="h-16 w-24 shrink-0 rounded-2xl border border-line object-cover" />
                       ),
                     )}
                   </div>
                 ) : cover ? (
-                  <img src={cover} alt="" className="h-16 w-24 rounded border border-line object-cover" />
+                  <img src={cover} alt="" className="h-16 w-24 rounded-2xl border border-line object-cover" />
                 ) : (
                   <div className="flex h-16 w-24 items-center justify-center rounded border border-dashed border-line text-xs text-muted">
                     {t('admin.vehicleNoPhoto')}

@@ -778,7 +778,7 @@ export function PropertyFormPage() {
 
             {images.map((img) => (
 
-              <div key={img.id} className="relative overflow-hidden rounded border border-line">
+              <div key={img.id} className="relative overflow-hidden rounded-2xl border border-line">
 
                 <img src={img.url ?? ''} alt="" className="aspect-video w-full object-cover" />
 
@@ -834,7 +834,7 @@ export function PropertyFormPage() {
 
             {createPendingFiles.map((file, i) => (
 
-              <div key={`${file.name}-${i}`} className="relative overflow-hidden rounded border border-dashed border-line">
+              <div key={`${file.name}-${i}`} className="relative overflow-hidden rounded-2xl border border-dashed border-line">
 
                 <img src={URL.createObjectURL(file)} alt="" className="aspect-video w-full object-cover" />
 

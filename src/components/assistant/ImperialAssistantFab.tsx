@@ -189,7 +189,7 @@ export function ImperialAssistantFab() {
                     m.role === 'user' ? 'ml-auto bg-[#d4af6a]/20 text-white' : 'bg-white/5 text-white/90',
                   )}
                 >
-                  {m.imageUrl ? <img src={m.imageUrl} alt="" className="mb-2 max-h-32 rounded object-cover" /> : null}
+                  {m.imageUrl ? <img src={m.imageUrl} alt="" className="mb-2 max-h-32 rounded-2xl object-cover" /> : null}
                   <p className="whitespace-pre-wrap">
                     {m.id === 'welcome' ? t('assistant.welcome') : <Live text={m.text} from={m.source ?? 'en'} />}
                   </p>
@@ -218,7 +218,7 @@ export function ImperialAssistantFab() {
             </div>
             {preview ? (
               <div className="border-t border-[#d4af6a]/20 px-4 py-2">
-                <img src={preview} alt="" className="h-20 rounded object-cover" />
+                <img src={preview} alt="" className="h-20 rounded-2xl object-cover" />
               </div>
             ) : null}
             <div className="flex gap-2 border-t border-[#d4af6a]/25 p-3">

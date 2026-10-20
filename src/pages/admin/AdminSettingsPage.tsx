@@ -185,7 +185,7 @@ export function AdminSettingsPage() {
         <div>
           <Label>{t('admin.heroHomeImage')}</Label>
           <p className="mb-3 text-sm text-[var(--surface-muted)]">{t('admin.heroHomeImageHint')}</p>
-          {heroPreview ? <img src={heroPreview} alt="" className="mb-3 h-40 w-full max-w-md rounded border border-line object-cover" /> : null}
+          {heroPreview ? <img src={heroPreview} alt="" className="mb-3 h-40 w-full max-w-md rounded-2xl border border-line object-cover" /> : null}
           <div className="flex flex-wrap gap-3">
             <Button type="button" variant="outline" onClick={() => heroFileRef.current?.click()}>
               {t('admin.heroHomeUpload')}
@@ -223,7 +223,7 @@ export function AdminSettingsPage() {
           <Label>{t('admin.ficheHomeImage')}</Label>
           <p className="mb-3 text-sm text-[var(--surface-muted)]">{t('admin.ficheHomeImageHint')}</p>
           {fichePreview ? (
-            <img src={fichePreview} alt="" className="mb-3 h-56 w-full max-w-xs rounded border border-line object-cover object-top" />
+            <img src={fichePreview} alt="" className="mb-3 h-56 w-full max-w-xs rounded-2xl border border-line object-cover object-top" />
           ) : null}
           <div className="flex flex-wrap gap-3">
             <Button type="button" variant="outline" onClick={() => ficheFileRef.current?.click()}>
