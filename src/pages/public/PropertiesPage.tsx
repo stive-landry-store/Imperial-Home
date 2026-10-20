@@ -75,7 +75,7 @@ export function PropertiesPage() {
           <label className="text-sm theme-muted">
             {t('plus.neighborhood')}
             <select
-              className="mt-1 w-full border border-line bg-transparent px-2 py-2 text-sm text-[var(--surface-fg)]"
+              className="mt-1 w-full rounded-2xl border border-line bg-transparent px-3 py-2 text-sm text-[var(--surface-fg)]"
               value={neighborhood}
               onChange={(e) => setFilter('neighborhood', e.target.value)}
             >
@@ -92,7 +92,7 @@ export function PropertiesPage() {
             <input
               type="number"
               min={0}
-              className="mt-1 w-full border border-line bg-transparent px-2 py-2 text-sm"
+              className="mt-1 w-full rounded-2xl border border-line bg-transparent px-3 py-2 text-sm"
               value={maxPrice || ''}
               onChange={(e) => setFilter('max', e.target.value)}
             />
@@ -102,7 +102,7 @@ export function PropertiesPage() {
             <input
               type="number"
               min={0}
-              className="mt-1 w-full border border-line bg-transparent px-2 py-2 text-sm"
+              className="mt-1 w-full rounded-2xl border border-line bg-transparent px-3 py-2 text-sm"
               value={bedrooms || ''}
               onChange={(e) => setFilter('beds', e.target.value)}
             />

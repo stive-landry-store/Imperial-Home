@@ -123,7 +123,7 @@ export function CarDetailPage() {
           <Link to="/cars" className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">
             {t('cars.back')}
           </Link>
-          <div className="mt-4 overflow-hidden border border-[#d4af6a]/30">
+          <div className="mt-4 overflow-hidden rounded-[1.35rem] border border-[#d4af6a]/30">
             <VehicleGallery media={vehicle.vehicle_media ?? []} title={title} />
           </div>
           <p className="mt-6 text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{vehicle.brand}</p>
@@ -133,7 +133,7 @@ export function CarDetailPage() {
           </p>
         </div>
 
-        <aside className="h-fit min-w-0 max-w-full border border-[#d4af6a]/40 bg-black/40 p-4 sm:p-5">
+        <aside className="theme-card h-fit min-w-0 max-w-full p-4 sm:p-5">
           <p className="text-xs tracking-[0.22em] text-[#d4af6a] uppercase">{t('cars.bookAlone')}</p>
           <h2 className="mt-2 font-display text-3xl">{t('cars.bookThis')}</h2>
           <p className="mt-2 text-sm theme-muted">{t('cars.aloneHint')}</p>
@@ -144,7 +144,7 @@ export function CarDetailPage() {
               <p className="font-display text-3xl">{booked.code}</p>
               <p className="text-sm theme-muted">{t('cars.requestLead')}</p>
               <p className="text-sm">{formatXaf(booked.total)}</p>
-              <Button to="/account" className="w-full">
+              <Button to="/account" className="w-full rounded-full">
                 {t('cars.seeAccount')}
               </Button>
             </div>
@@ -192,14 +192,14 @@ export function CarDetailPage() {
               <div className="grid gap-2">
                 <button
                   type="button"
-                  className={`min-h-12 w-full border px-3 py-3 text-base ${!withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-white/20'}`}
+                  className={`min-h-12 w-full rounded-2xl border px-3 py-3 text-base ${!withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-[var(--page-fg)]/15'}`}
                   onClick={() => setWithDriver(false)}
                 >
                   {t('cars.withoutDriver')}
                 </button>
                 <button
                   type="button"
-                  className={`min-h-12 w-full border px-3 py-3 text-base ${withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-white/20'}`}
+                  className={`min-h-12 w-full rounded-2xl border px-3 py-3 text-base ${withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-[var(--page-fg)]/15'}`}
                   onClick={() => setWithDriver(true)}
                 >
                   {t('cars.withDriver')}
@@ -239,11 +239,11 @@ export function CarDetailPage() {
               {error ? <p className="text-sm text-red-300">{error}</p> : null}
               {!online ? <p className=" text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
               {user ? (
-                <Button type="submit" className="w-full" disabled={!online || book.isPending || available === false}>
+                <Button type="submit" className="w-full rounded-full" disabled={!online || book.isPending || available === false}>
                   {book.isPending ? <Loader size="xs" /> : t('cars.bookThis')}
                 </Button>
               ) : (
-                <Button to={loginNext} className="w-full">
+                <Button to={loginNext} className="w-full rounded-full">
                   {t('cars.loginToBook')}
                 </Button>
               )}

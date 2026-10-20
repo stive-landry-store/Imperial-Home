@@ -5,7 +5,7 @@ export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElem
   return (
     <input
       className={cn(
-        'w-full border border-[#d4af6a]/40 bg-[var(--input-bg)] px-3 py-3 text-base text-[var(--input-fg)] outline-none focus:border-[#c4a35a]',
+        'w-full rounded-2xl border border-[#d4af6a]/40 bg-[var(--input-bg)] px-3 py-3 text-base text-[var(--input-fg)] outline-none focus:border-[#c4a35a]',
         className,
       )}
       {...props}
@@ -17,7 +17,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={cn(
-        'w-full border border-[#d4af6a]/40 bg-[var(--input-bg)] px-3 py-3 text-base text-[var(--input-fg)] outline-none focus:border-[#c4a35a]',
+        'w-full rounded-2xl border border-[#d4af6a]/40 bg-[var(--input-bg)] px-3 py-3 text-base text-[var(--input-fg)] outline-none focus:border-[#c4a35a]',
         className,
       )}
       {...props}
@@ -37,7 +37,7 @@ export function Select({ className, ...props }: SelectHTMLAttributes<HTMLSelectE
   return (
     <select
       className={cn(
-        'w-full border border-[#d4af6a]/40 bg-[var(--input-bg,#fffdf8)] px-3 py-3 text-base text-[var(--surface-fg,#14110c)] outline-none focus:border-[#c4a35a]',
+        'w-full rounded-2xl border border-[#d4af6a]/40 bg-[var(--input-bg,#fffdf8)] px-3 py-3 text-base text-[var(--surface-fg,#14110c)] outline-none focus:border-[#c4a35a]',
         className,
       )}
       {...props}

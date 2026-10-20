@@ -109,7 +109,7 @@ export function BookingPage() {
         </div>
         <div className="flex items-center justify-between gap-3">
           <dt>{t('property.stayNights')}</dt>
-          <dd className="box-border min-h-12 min-w-28 border border-[#d4af6a]/40 px-3 py-2 text-center">
+          <dd className="box-border min-h-12 min-w-28 rounded-2xl border border-[var(--page-fg)]/15 px-3 py-2 text-center">
             {quote?.nights ?? '—'} {t('property.nights')}
           </dd>
         </div>
@@ -176,7 +176,7 @@ export function BookingPage() {
             <div>
               <Label>{t('cars.chooseVehicle')}</Label>
               <select
-                className="mt-1 w-full border border-[#d4af6a]/40 bg-transparent px-3 py-2"
+                className="mt-1 w-full rounded-2xl border border-[var(--page-fg)]/15 bg-[var(--page-fg)]/5 px-3 py-3"
                 value={vehicleId}
                 onChange={(e) => setVehicleId(e.target.value)}
               >
@@ -203,11 +203,11 @@ export function BookingPage() {
               </div>
             ) : null}
             <div className="grid gap-2 text-base">
-              <label className="flex min-h-12 items-center gap-3 border border-[#d4af6a]/30 px-3">
+              <label className="flex min-h-12 items-center gap-3 rounded-2xl border border-[var(--page-fg)]/15 px-3">
                 <input type="radio" checked={!withDriver} onChange={() => setWithDriver(false)} />
                 {t('cars.withoutDriver')}
               </label>
-              <label className="flex min-h-12 items-center gap-3 border border-[#d4af6a]/30 px-3">
+              <label className="flex min-h-12 items-center gap-3 rounded-2xl border border-[var(--page-fg)]/15 px-3">
                 <input type="radio" checked={withDriver} onChange={() => setWithDriver(true)} />
                 {t('cars.withDriver')}
               </label>
@@ -255,7 +255,7 @@ export function BookingPage() {
       {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
       {!online ? <p className="mt-4 text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
       <Button
-        className="mt-8 w-full"
+        className="mt-8 w-full rounded-full"
         disabled={!online || !quote?.available || pending || !isSupabaseConfigured() || (wantCar && !vehicleId)}
         onClick={() => void confirm()}
       >

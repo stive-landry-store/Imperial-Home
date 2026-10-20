@@ -65,7 +65,7 @@ export function CarsPage() {
                       <dd>{formatXaf(v.daily_rate_with_driver_xaf)}/j</dd>
                     </div>
                   </dl>
-                  <Button to={`/cars/${v.slug}`} className="mt-5 w-full">
+                  <Button to={`/cars/${v.slug}`} className="mt-5 w-full rounded-full">
                     {t('cars.bookThis')}
                   </Button>
                   <Link to="/properties" className="mt-3 block text-center text-sm text-[#c4a35a]">
