@@ -227,7 +227,7 @@ export function ProfilePage() {
       <GetAppCard className="mx-3 mt-3" />
 
       {referral && referral.code ? (
-        <section className="mx-3 mt-3 rounded-xl bg-[#ffffff] px-4 py-3 text-[#111b21]">
+        <section className="mx-3 mt-3 rounded-2xl bg-[#ffffff] px-4 py-3 text-[#111b21]">
           <p className="text-sm font-semibold">{t('app.referralTitle')}</p>
           <p className="mt-1 text-xs text-[#54656f]">{t('app.referralLead')}</p>
           <p className="mt-2 text-sm">
@@ -236,14 +236,14 @@ export function ProfilePage() {
         </section>
       ) : null}
 
-      <section className="mx-3 mt-3 overflow-hidden rounded-xl bg-[#ffffff]">
-        <p className="flex min-h-[52px] items-center border-b border-black/[0.06] px-4 text-[15px]">{t('account.houseCategory')}</p>
-        <p className="flex min-h-[52px] items-center gap-2 border-b border-black/[0.06] px-4 text-[15px]">
+      <section className="mx-3 mt-3 space-y-2">
+        <p className="flex min-h-14 items-center rounded-2xl bg-[#ffffff] px-4 text-[15px]">{t('account.houseCategory')}</p>
+        <p className="flex min-h-14 items-center gap-2 rounded-2xl bg-[#ffffff] px-4 text-[15px]">
           <MapPin className="h-4 w-4 shrink-0 text-[#c4a35a]" />
           {place.address}
         </p>
         {next ? (
-          <Link to={`/account/reservations/${next.id}`} className="flex min-h-[52px] items-center justify-between gap-3 border-b border-black/[0.06] px-4">
+          <Link to={`/account/reservations/${next.id}`} className="flex min-h-14 items-center justify-between gap-3 rounded-2xl bg-[#ffffff] px-4">
             <span>
               <span className="block text-[15px]">{next.properties?.name ?? next.public_code}</span>
               <span className="block text-[13px] text-[#667781]">
@@ -253,49 +253,51 @@ export function ProfilePage() {
             <ChevronRight className="h-4 w-4 text-[#8696a0] rtl:scale-x-[-1]" />
           </Link>
         ) : (
-          <p className="border-b border-black/[0.06] px-4 py-3 text-[14px] text-[#667781]">{t('account.emptyNext')}</p>
+          <p className="rounded-2xl bg-[#ffffff] px-4 py-3 text-[14px] text-[#667781]">{t('account.emptyNext')}</p>
         )}
-        <PlaceMap latitude={place.latitude} longitude={place.longitude} label={place.label} className="h-40 rounded-none border-0" />
-        <a className="flex min-h-[48px] items-center justify-between px-4 text-[15px]" href={links.directions} target="_blank" rel="noreferrer">
+        <div className="overflow-hidden rounded-2xl bg-[#ffffff]">
+          <PlaceMap latitude={place.latitude} longitude={place.longitude} label={place.label} className="h-40 rounded-none border-0" />
+        </div>
+        <a className="flex min-h-14 items-center justify-between rounded-2xl bg-[#ffffff] px-4 text-[15px]" href={links.directions} target="_blank" rel="noreferrer">
           {t('place.directions')}
           <ChevronRight className="h-4 w-4 text-[#8696a0] rtl:scale-x-[-1]" />
         </a>
       </section>
 
-      <section className="mx-3 mt-3 overflow-hidden rounded-xl bg-[#ffffff]">
-        <p className="px-4 pt-3 text-[13px] text-[#667781]">{t('account.contact')}</p>
+      <section className="mx-3 mt-3 space-y-2">
+        <p className="px-1 text-[13px] text-[#667781]">{t('account.contact')}</p>
         {profile?.phone ? (
-          <a href={`tel:${profile.phone}`} className="flex min-h-[48px] items-center gap-3 px-4">
+          <a href={`tel:${profile.phone}`} className="flex min-h-14 items-center gap-3 rounded-2xl bg-[#ffffff] px-4">
             <Phone className="h-4 w-4 text-[#8696a0]" />
             {profile.phone}
           </a>
         ) : null}
         {profile?.email ? (
-          <a href={`mailto:${profile.email}`} className="flex min-h-[48px] items-center gap-3 px-4">
+          <a href={`mailto:${profile.email}`} className="flex min-h-14 items-center gap-3 rounded-2xl bg-[#ffffff] px-4">
             <Mail className="h-4 w-4 text-[#8696a0]" />
             <span className="min-w-0 truncate">{profile.email}</span>
           </a>
         ) : null}
         {profile?.cni ? (
-          <p className="flex min-h-[48px] items-center justify-between gap-3 px-4">
+          <p className="flex min-h-14 items-center justify-between gap-3 rounded-2xl bg-[#ffffff] px-4">
             <span className="text-[13px] text-[#667781]">{t('account.cni')}</span>
             <span>{profile.cni}</span>
           </p>
         ) : null}
       </section>
 
-      <section className="mx-3 mt-3 overflow-hidden rounded-xl bg-[#ffffff]">
-        <Link to="/account" className="flex min-h-[52px] items-center justify-between border-b border-black/[0.06] px-4">
+      <section className="mx-3 mt-3 space-y-2">
+        <Link to="/account" className="flex min-h-14 items-center justify-between rounded-2xl bg-[#ffffff] px-4">
           <span>{t('account.statsStays')}</span>
-          <span className="text-[#667781]">{active.length}</span>
+          <span className="flex items-center gap-2 text-[#667781]">{active.length}<ChevronRight className="h-4 w-4 rtl:scale-x-[-1]" /></span>
         </Link>
-        <p className="flex min-h-[52px] items-center justify-between border-b border-black/[0.06] px-4">
+        <p className="flex min-h-14 items-center justify-between rounded-2xl bg-[#ffffff] px-4">
           <span>{t('account.statsNights')}</span>
           <span className="text-[#667781]">{nights}</span>
         </p>
-        <Link to="/account" className="flex min-h-[52px] items-center justify-between px-4">
+        <Link to="/account" className="flex min-h-14 items-center justify-between rounded-2xl bg-[#ffffff] px-4">
           <span>{t('account.statsCars')}</span>
-          <span className="text-[#667781]">{cars.data?.length ?? 0}</span>
+          <span className="flex items-center gap-2 text-[#667781]">{cars.data?.length ?? 0}<ChevronRight className="h-4 w-4 rtl:scale-x-[-1]" /></span>
         </Link>
       </section>
       {error ? <p className="mx-4 mt-3 text-sm text-red-700">{error}</p> : null}

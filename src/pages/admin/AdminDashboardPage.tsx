@@ -132,14 +132,23 @@ export function AdminDashboardPage() {
         </section>
       ) : null}
 
-      <AdminInsights reservations={reservations} properties={properties} today={today} />
+      <Link
+        to="/admin/today"
+        className="mt-5 flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-[var(--page-fg)] touch-manipulation"
+      >
+        <CalendarDays size={20} className="shrink-0" />
+        <span className="min-w-0 flex-1 font-medium">{t('admin.openToday')}</span>
+        <ChevronRight size={18} className="shrink-0 rtl:scale-x-[-1]" />
+      </Link>
+
+      <AdminInsights reservations={reservations} properties={properties} today={today} view="board" />
 
       <div className="mt-5 grid grid-cols-2 gap-3">
         {shortcuts.map((s) => (
           <Link
             key={s.to}
             to={s.to}
-            className="surface-light flex min-h-14 min-w-0 items-center gap-3 border border-black/10 px-4 py-3 text-sm text-[var(--surface-fg)] touch-manipulation"
+            className="surface-light flex min-h-14 min-w-0 items-center gap-3 rounded-2xl border border-black/10 px-4 py-3 text-sm text-[var(--surface-fg)] touch-manipulation"
           >
             <s.icon size={20} className="shrink-0 text-[#6f675c]" />
             <span className="min-w-0 break-words">{s.label}</span>
@@ -158,7 +167,7 @@ export function AdminDashboardPage() {
         <p className="mt-2 text-sm text-red-600">{decisionErrorMessage(reject.error, t('admin.rejectError'))}</p>
       ) : null}
       <p className="mt-1 text-sm text-[#c4a35a] md:hidden">{t('admin.swipeToApprove')}</p>
-      <ul className="surface-light mt-4 overflow-hidden border border-line">
+      <ul className="surface-light mt-4 overflow-hidden rounded-2xl border border-line">
         {pendingPay.slice(0, 8).map((r) => (
           <PendingSwipeCard
             key={r.id}

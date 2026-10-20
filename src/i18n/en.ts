@@ -379,6 +379,7 @@ export const en = {
   admin: {
     scan: 'Scan',
     dashboard: 'Dashboard',
+    openToday: 'See today’s activity',
     swipeHint: 'Swipe left or right',
     swipeToApprove: 'Swipe right to approve or reject',
     menu: 'Menu',

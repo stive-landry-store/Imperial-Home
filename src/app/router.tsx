@@ -23,6 +23,7 @@ import { ReservationDetailPage } from '../pages/customer/ReservationDetailPage'
 import { ProfilePage } from '../pages/customer/ProfilePage'
 import { ChatPage } from '../pages/customer/ChatPage'
 import { AdminDashboardPage } from '../pages/admin/AdminDashboardPage'
+import { AdminTodayPage } from '../pages/admin/AdminTodayPage'
 import { AdminPropertiesPage } from '../pages/admin/AdminPropertiesPage'
 import { PropertyFormPage } from '../pages/admin/PropertyFormPage'
 import { AdminReservationsPage } from '../pages/admin/AdminReservationsPage'
@@ -133,6 +134,7 @@ export function AppRouter() {
           }
         >
           <Route index element={<AdminDashboardPage />} />
+          <Route path="today" element={<AdminTodayPage />} />
           <Route path="properties" element={<AdminPropertiesPage />} />
           <Route path="properties/:id" element={<PropertyFormPage />} />
           <Route path="reservations" element={<AdminReservationsPage />} />

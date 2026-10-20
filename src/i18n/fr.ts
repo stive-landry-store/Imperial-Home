@@ -382,6 +382,7 @@ export const fr: Messages = {
   admin: {
     scan: 'Scanner',
     dashboard: 'Tableau de bord',
+    openToday: 'Voir les activités d’aujourd’hui',
     swipeHint: 'Glissez vers la gauche ou la droite',
     swipeToApprove: 'Glissez vers la droite pour valider ou rejeter',
     menu: 'Menu',

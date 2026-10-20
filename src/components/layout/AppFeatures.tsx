@@ -14,7 +14,7 @@ function Row({ icon, label, on, onClick, disabled }: { icon: React.ReactNode; la
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="flex min-h-12 w-full items-center gap-3 rounded-xl px-3 text-left disabled:opacity-50"
+      className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-left disabled:opacity-50"
     >
       <span className="text-[#c4a35a]">{icon}</span>
       <span className="flex-1 text-[15px]">{label}</span>
@@ -46,7 +46,7 @@ export function AppFeatures() {
   const notifOk = notificationsSupported()
 
   return (
-    <div className="mt-4 rounded-2xl border border-black/10 p-1">
+    <div className="mt-4 flex flex-col gap-2">
       <Row
         icon={<Bell className="h-5 w-5" />}
         label={t('app.notifications')}

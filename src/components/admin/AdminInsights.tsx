@@ -35,7 +35,17 @@ function Person({ r }: { r: Reservation }) {
   )
 }
 
-export function AdminInsights({ reservations, properties, today }: { reservations: Reservation[]; properties: Property[]; today: string }) {
+export function AdminInsights({
+  reservations,
+  properties,
+  today,
+  view = 'all',
+}: {
+  reservations: Reservation[]
+  properties: Property[]
+  today: string
+  view?: 'all' | 'board' | 'today'
+}) {
   const { t } = useTranslation()
   const { data: tasks = [] } = useQuery({ queryKey: ['turnover'], queryFn: fetchTurnover })
   const paid = reservations.filter((r) => r.status === 'confirmed' || r.status === 'completed')
@@ -69,8 +79,7 @@ export function AdminInsights({ reservations, properties, today }: { reservation
   const H = 140
   const bar = W / revenue.length
 
-  return (
-    <div className="mt-6 grid gap-5 lg:grid-cols-2">
+  const todayBlock = (
       <section className="lg:col-span-2">
         <h2 className="font-display text-2xl">{t('app.today')}</h2>
         <div className="surface-light mt-3 overflow-hidden border border-line">
@@ -100,6 +109,13 @@ export function AdminInsights({ reservations, properties, today }: { reservation
           )}
         </div>
       </section>
+  )
+
+  if (view === 'today') return <div className="mt-6">{todayBlock}</div>
+
+  return (
+    <div className="mt-6 grid gap-5 lg:grid-cols-2">
+      {view === 'all' ? todayBlock : null}
 
       <section>
         <h2 className="font-display text-2xl">{t('app.revenue6')}</h2>

@@ -15,6 +15,7 @@ import {
   Share2,
   Shield,
   UserRound,
+  ChevronRight,
   X,
 } from 'lucide-react'
 import { cn } from '../../lib/cn'
@@ -107,16 +108,22 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
           </div>
         </div>
         <p className="mt-6 text-xs font-medium tracking-wide theme-muted uppercase">{t('menu.settings')}</p>
-        <nav className="mt-1">
+        <nav className="mt-2 flex flex-col gap-2">
           {menuItems.map((item) => (
-            <Link key={item.label} to={item.to} className="flex min-h-12 items-center gap-3 text-base" onClick={onClose}>
-              <item.icon className="h-5 w-5 text-[#c4a35a]" strokeWidth={1.75} />
-              <span>{item.label}</span>
+            <Link
+              key={item.label}
+              to={item.to}
+              className="flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-base"
+              onClick={onClose}
+            >
+              <item.icon className="h-5 w-5 shrink-0 text-[#c4a35a]" strokeWidth={1.75} />
+              <span className="min-w-0 flex-1">{item.label}</span>
+              <ChevronRight className="h-4 w-4 shrink-0 opacity-50 rtl:scale-x-[-1]" />
             </Link>
           ))}
           <button
             type="button"
-            className="flex min-h-12 w-full items-center gap-3 text-left text-base"
+            className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-left text-base"
             onClick={() =>
               void shareSite().then((result) => {
                 if (result === 'copied') {
@@ -126,8 +133,9 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
               })
             }
           >
-            <Share2 className="h-5 w-5 text-[#c4a35a]" strokeWidth={1.75} />
-            <span>{copied ? t('nav.copied') : t('nav.share')}</span>
+            <Share2 className="h-5 w-5 shrink-0 text-[#c4a35a]" strokeWidth={1.75} />
+            <span className="min-w-0 flex-1">{copied ? t('nav.copied') : t('nav.share')}</span>
+            <ChevronRight className="h-4 w-4 shrink-0 opacity-50 rtl:scale-x-[-1]" />
           </button>
         </nav>
         <AppFeatures />
@@ -156,7 +164,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
             </Link>
             <button
               type="button"
-              className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-black/15 text-sm font-medium"
+              className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/15 text-sm font-medium"
               onClick={() => void signOut()}
             >
               <LogOut className="h-4 w-4" />
@@ -166,7 +174,7 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
         ) : (
           <Link
             to="/login"
-            className="flex min-h-11 w-full items-center justify-center rounded-xl border border-black/15 text-sm font-semibold"
+            className="flex min-h-12 w-full items-center justify-center rounded-full border border-black/15 text-sm font-semibold"
             onClick={onClose}
           >
             {t('nav.login')}

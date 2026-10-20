@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import { X } from 'lucide-react'
+import { ChevronRight, X } from 'lucide-react'
 import { Button } from '../ui/Button'
 import { Input, Label } from '../ui/Field'
 import { PasswordField } from '../ui/PasswordField'
@@ -74,7 +74,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
     }
   }
 
-  const item = 'flex min-h-12 w-full items-center px-4 text-left text-base uppercase tracking-[0.12em] touch-manipulation'
+  const item =
+    'mx-3 mt-2 flex min-h-14 w-[calc(100%-1.5rem)] items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-left text-base touch-manipulation'
 
   return createPortal(
     <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-black text-[#d4af6a]" role="dialog" aria-modal="true" aria-label={t('account.profile')}>
@@ -86,7 +87,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         <button type="button" className={item} onClick={() => toggle('account')}>
-          {t('account.myAccount')}
+          <span className="flex-1">{t('account.myAccount')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'account' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void saveProfile(event)}>
@@ -97,7 +99,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
         ) : null}
 
         <button type="button" className={item} onClick={() => toggle('phone')}>
-          {t('auth.phone')}
+          <span className="flex-1">{t('auth.phone')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'phone' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void saveProfile(event)}>
@@ -108,7 +111,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
         ) : null}
 
         <button type="button" className={item} onClick={() => toggle('email')}>
-          {t('auth.email')}
+          <span className="flex-1">{t('auth.email')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'email' ? (
           <div className="space-y-3 px-4 pb-4">
@@ -118,7 +122,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
         ) : null}
 
         <button type="button" className={item} onClick={() => toggle('password')}>
-          {t('account.password')}
+          <span className="flex-1">{t('account.password')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'password' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void savePassword(event)}>
@@ -131,7 +136,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
         ) : null}
 
         <button type="button" className={item} onClick={() => toggle('cni')}>
-          {t('account.cni')}
+          <span className="flex-1">{t('account.cni')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'cni' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void saveProfile(event)}>
@@ -142,7 +148,8 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
         ) : null}
 
         <button type="button" className={item} onClick={() => void signOut()}>
-          {t('nav.logout')}
+          <span className="flex-1">{t('nav.logout')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </button>
         {notice ? <p className="px-4 text-sm">{notice}</p> : null}
         {error ? <p className="px-4 text-sm text-red-300">{error}</p> : null}

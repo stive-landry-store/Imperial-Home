@@ -15,6 +15,7 @@ import {
   LogOut,
   Menu,
   RotateCcw,
+  ChevronRight,
   MessageCircle,
   Settings,
   ScanLine,
@@ -65,16 +66,17 @@ export function AdminLayout() {
     setMenuOpen(false)
   }, [location.pathname])
 
+  const row =
+    'flex min-h-14 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[15px] touch-manipulation'
+
   function renderNav() {
     return (
-    <nav className="flex flex-col gap-1 px-3 pb-4">
+    <nav className="flex flex-col gap-2 px-3 pb-4">
       {profile?.role === 'super_admin' ? (
-        <NavLink
-          to="/admin#reset"
-          className="flex min-h-12 items-center gap-3 rounded-2xl px-3 py-3 text-base uppercase tracking-[0.08em] text-[#e0c57a] touch-manipulation"
-        >
-          <RotateCcw className="h-6 w-6 shrink-0 text-[#d4af6a]" strokeWidth={1.6} />
-          <span className="min-w-0 break-words">{t('admin.resetStatsButton')}</span>
+        <NavLink to="/admin#reset" className={cn(row, 'text-[#e0c57a]')}>
+          <RotateCcw className="h-5 w-5 shrink-0 text-[#d4af6a]" strokeWidth={1.75} />
+          <span className="min-w-0 flex-1 break-words">{t('admin.resetStatsButton')}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </NavLink>
       ) : null}
       {links.filter((l) => l.to !== '/admin/activity' || profile?.role === 'super_admin').map((l) => (
@@ -83,14 +85,12 @@ export function AdminLayout() {
           to={l.to}
           end={l.to === '/admin'}
           className={({ isActive }) =>
-            cn(
-              'flex min-h-12 items-center gap-3 rounded-2xl px-3 py-3 text-base uppercase tracking-[0.08em] touch-manipulation',
-              isActive ? 'bg-white/5 text-[#e0c57a]' : 'text-[#d4af6a]/80 hover:text-[#e0c57a]',
-            )
+            cn(row, isActive ? 'border-[#d4af6a]/50 bg-white/10 text-[#e0c57a]' : 'text-[#d4af6a]/90')
           }
         >
-          <l.icon className="h-6 w-6 shrink-0 text-[#d4af6a]" strokeWidth={1.6} />
-          <span className="min-w-0 truncate">{t(`admin.${l.key}`)}</span>
+          <l.icon className="h-5 w-5 shrink-0 text-[#d4af6a]" strokeWidth={1.75} />
+          <span className="min-w-0 flex-1 truncate">{t(`admin.${l.key}`)}</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </NavLink>
       ))}
     </nav>
@@ -145,9 +145,10 @@ export function AdminLayout() {
             {renderNav()}
             <div className="border-t border-[#d4af6a]/25 px-5 py-4">
               <SocialLinks />
-              <button type="button" className="mt-4 flex min-h-11 items-center gap-3 text-base uppercase tracking-[0.12em]" onClick={() => void signOut()}>
+              <button type="button" className={cn(row, 'mt-4 w-full text-[#d4af6a]')} onClick={() => void signOut()}>
                 <LogOut className="h-5 w-5" strokeWidth={1.75} />
-                {t('nav.logout')}
+                <span className="flex-1 text-left">{t('nav.logout')}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
               </button>
             </div>
           </div>
@@ -174,13 +175,10 @@ export function AdminLayout() {
             <LanguageDock placement="header" />
             <ThemeSwitch compact />
           </div>
-          <button
-            type="button"
-            className="flex min-h-11 items-center gap-3 px-5 pb-6 text-base uppercase tracking-[0.12em] text-gold"
-            onClick={() => void signOut()}
-          >
+          <button type="button" className={cn(row, 'mx-3 mb-6 text-[#d4af6a]')} onClick={() => void signOut()}>
             <LogOut className="h-5 w-5" strokeWidth={1.75} />
-            {t('nav.logout')}
+            <span className="flex-1 text-left">{t('nav.logout')}</span>
+            <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
           </button>
         </div>
       </aside>

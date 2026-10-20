@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { CalendarDays, ChevronRight, MessageCircle, UserRound } from 'lucide-react'
 import { Header } from './Header'
 import { PageTransition } from './PageTransition'
 import { CustomerNotifications } from '../account/CustomerNotifications'
@@ -10,10 +11,15 @@ export function CustomerLayout() {
   const { pathname } = useLocation()
   const profilePage = pathname === '/account/profile'
   const chatPage = pathname === '/account/chat'
+  const tabs = [
+    { to: '/account', label: t('account.title'), icon: CalendarDays, end: true },
+    { to: '/account/chat', label: t('account.chat'), icon: MessageCircle, end: false },
+    { to: '/account/profile', label: t('account.profile'), icon: UserRound, end: false },
+  ]
   const item = ({ isActive }: { isActive: boolean }) =>
     cn(
-      'inline-flex min-h-11 shrink-0 snap-start items-center px-3 py-2 text-sm font-medium touch-manipulation',
-      isActive ? 'text-[#d4af6a]' : 'opacity-50 hover:opacity-100',
+      'flex min-h-14 items-center gap-3 rounded-2xl px-4 text-sm font-medium touch-manipulation',
+      isActive ? 'bg-[#1c1914] text-[#f6f1e8]' : 'border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/6 text-[var(--page-fg)]',
     )
 
   return (
@@ -27,17 +33,17 @@ export function CustomerLayout() {
         </div>
       ) : (
       <div className={cn('mx-auto max-w-5xl px-4 pt-28 pb-28', profilePage && 'max-w-lg px-0')}>
-        {profilePage ? null : <nav className="mb-8 flex flex-wrap gap-2 border-b border-[#d4af6a]/25 pb-2">
-          <NavLink to="/account" end className={item}>
-            {t('account.title')}
-          </NavLink>
-          <NavLink to="/account/chat" className={item}>
-            {t('account.chat')}
-          </NavLink>
-          <NavLink to="/account/profile" className={item}>
-            {t('account.profile')}
-          </NavLink>
-        </nav>}
+        {profilePage ? null : (
+          <nav className="mb-6 grid gap-2">
+            {tabs.map((tab) => (
+              <NavLink key={tab.to} to={tab.to} end={tab.end} className={item}>
+                <tab.icon className="h-5 w-5 shrink-0" strokeWidth={1.75} />
+                <span className="min-w-0 flex-1">{tab.label}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 opacity-60 rtl:scale-x-[-1]" />
+              </NavLink>
+            ))}
+          </nav>
+        )}
         {profilePage ? null : <CustomerNotifications />}
         <PageTransition>
           <Outlet />
