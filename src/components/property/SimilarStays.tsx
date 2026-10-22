@@ -17,23 +17,23 @@ export function SimilarStays({ currentId }: { currentId: string }) {
       {others.length ? (
         <>
           <h2 className="font-display text-2xl">{t('app.similar')}</h2>
-          <div className="-mx-4 mt-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2" data-no-swipe>
+          <div className="-mx-4 mt-4 flex snap-x items-stretch gap-3 overflow-x-auto px-4 pb-2" data-no-swipe>
             {others.map((p) => {
               const image = coverImage(p.property_images)
               return (
                 <Link
                   key={p.id}
                   to={`/properties/${encodeURIComponent(p.slug)}`}
-                  className="theme-card w-64 shrink-0 snap-start overflow-hidden rounded-2xl border border-black/10"
+                  className="theme-card flex h-full w-64 shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-black/10"
                 >
                   <div className="aspect-[16/10] bg-black/5">
                     {image ? <OptimizedImage src={image} alt={p.name} width={500} className="h-full w-full object-cover" /> : null}
                   </div>
-                  <div className="p-3">
-                    <p className="font-semibold">
+                  <div className="flex flex-1 flex-col p-3">
+                    <p className="line-clamp-1 font-semibold">
                       <Live text={p.name} />
                     </p>
-                    <p className="mt-1 text-sm font-semibold">
+                    <p className="mt-auto pt-2 text-sm font-semibold">
                       {formatXaf(p.nightly_rate_xaf)}
                       <span className="font-normal theme-muted">{t('properties.perNight')}</span>
                     </p>

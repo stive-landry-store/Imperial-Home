@@ -29,33 +29,33 @@ export function PropertyCard({
     .slice(0, 3)
 
   return (
-    <article className="theme-card relative overflow-hidden rounded-2xl border border-black/10">
+    <article className="theme-card relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-black/10">
       <StayActions propertyId={property.id} heart />
-      <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="block">
-        <div className="aspect-[16/10] overflow-hidden bg-black/5">
+      <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="flex h-full flex-col">
+        <div className="aspect-[16/10] shrink-0 overflow-hidden bg-black/5">
           {image ? (
             <OptimizedImage src={image} alt={property.name} width={800} className="h-full w-full object-cover" />
           ) : null}
         </div>
-        <div className="p-3">
-          <p className="text-base font-semibold">
+        <div className="flex flex-1 flex-col p-3">
+          <p className="line-clamp-1 text-base font-semibold">
             <Live text={property.name} />
           </p>
-          {rating ? (
-            <p className="mt-0.5 text-sm text-[#d4af6a]">
-              ★ {rating.average.toFixed(1)} <span className="theme-muted">({rating.count})</span>
-            </p>
-          ) : null}
-          <p className="mt-0.5 text-sm theme-muted">
+          <p className="mt-0.5 min-h-5 text-sm leading-5 text-[#d4af6a]">
+            {rating ? (
+              <>
+                ★ {rating.average.toFixed(1)} <span className="theme-muted">({rating.count})</span>
+              </>
+            ) : null}
+          </p>
+          <p className="line-clamp-1 text-sm theme-muted">
             {IMPERIAL_HOME.neighborhood}, {IMPERIAL_HOME.city}
           </p>
-          <p className="mt-1 text-sm theme-muted">{apartmentSummary(property, lang)}</p>
-          {amenityNames.length ? (
-            <p className="mt-1 text-sm theme-muted">
-              <Live text={amenityNames.join(' · ')} />
-            </p>
-          ) : null}
-          <p className="mt-2 text-sm font-semibold">
+          <p className="mt-1 line-clamp-2 min-h-10 text-sm leading-5 theme-muted">{apartmentSummary(property, lang)}</p>
+          <p className="mt-1 line-clamp-1 min-h-5 text-sm leading-5 theme-muted">
+            {amenityNames.length ? <Live text={amenityNames.join(' · ')} /> : null}
+          </p>
+          <p className="mt-auto pt-2 text-sm font-semibold">
             {formatXaf(property.nightly_rate_xaf)}
             <span className="font-normal theme-muted">{t('properties.perNight')}</span>
           </p>

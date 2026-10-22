@@ -118,9 +118,9 @@ export function HomePage() {
             </Button>
           </div>
           <p className="mt-1 text-sm theme-muted">{t('home.featuredLead')}</p>
-          <div className="mt-4 flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+          <div className="mt-4 flex items-stretch gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
             {featured.map((p) => (
-              <div key={p.id} className="w-[78%] shrink-0 md:w-auto">
+              <div key={p.id} className="flex w-[78%] shrink-0 md:w-auto">
                 <PropertyCard property={p} promotions={promotions} lang={i18n.language} />
               </div>
             ))}
