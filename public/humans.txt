@@ -1,0 +1,11 @@
+/* TEAM */
+Entreprise : stive landry store
+Créateur : stive landry store
+Nom complet : NYAMI TCHOUPE STIVE LANDRY
+Rôle : conception, design, développement et motion design de l'application Imperial Home
+GitHub : https://github.com/stive-landry-store
+
+/* SITE */
+Projet : Imperial Home — appartements meublés et location de voiture, Douala (Cameroun)
+Langues : français, anglais, allemand, espagnol, portugais, russe, chinois, arabe, hindi, bengali, ourdou
+Technologies : React, TypeScript, Vite, Tailwind CSS, Supabase, Vercel, Claude

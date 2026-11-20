@@ -102,13 +102,33 @@ walk(en, [], leaves)
 const outDir = path.join(root, 'src/i18n/packs')
 fs.mkdirSync(outDir, { recursive: true })
 
+function existingPack(code) {
+  const file = path.join(outDir, `${code}.ts`)
+  if (!fs.existsSync(file)) return null
+  const text = fs.readFileSync(file, 'utf8')
+  const body = text.replace(/^import[^\n]*\n/gm, '').replace(/^const pack = /m, '').replace(/\nexport default[\s\S]*$/, '').replace(/\} as Messages\s*$/, '}')
+  return Function(`"use strict"; return (${body});`)()
+}
+
+function getAt(root, trail) {
+  return trail.reduce((node, key) => (node == null ? undefined : node[key]), root)
+}
+
+// Only texts missing from a pack are translated; existing, reviewed translations are kept.
 for (const [code, target] of Object.entries(targets)) {
+  const current = existingPack(code)
   const tree = clone(en)
-  for (let index = 0; index < leaves.length; index += 4) {
-    const slice = leaves.slice(index, index + 4)
+  const todo = []
+  for (const item of leaves) {
+    const kept = current ? getAt(current, item.trail) : undefined
+    if (typeof kept === 'string') setAt(tree, item.trail, kept)
+    else todo.push(item)
+  }
+  for (let index = 0; index < todo.length; index += 4) {
+    const slice = todo.slice(index, index + 4)
     const translated = await translateBatch(slice.map((item) => item.text), target)
     slice.forEach((item, offset) => setAt(tree, item.trail, translated[offset] || item.text))
-    if (index % 40 === 0) console.log(code, index, '/', leaves.length)
+    if (index % 40 === 0) console.log(code, index, '/', todo.length)
     await new Promise((resolve) => setTimeout(resolve, 350))
   }
   tree.brand = 'Imperial Home'
