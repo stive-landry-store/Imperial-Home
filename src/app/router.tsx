@@ -1,53 +1,60 @@
-import { useLayoutEffect } from 'react'
+import { lazy, Suspense, useLayoutEffect, type ReactNode } from 'react'
+import { Loader } from '../components/ui/Loader'
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import { PublicLayout } from '../components/layout/PublicLayout'
 import { CustomerLayout } from '../components/layout/CustomerLayout'
 import { AdminLayout } from '../components/layout/AdminLayout'
 import { HomePage } from '../pages/public/HomePage'
-import { FavoritesPage } from '../pages/public/FavoritesPage'
-import { PropertiesPage } from '../pages/public/PropertiesPage'
-import { MapPage } from '../pages/public/MapPage'
-import { ComparePage } from '../pages/public/ComparePage'
-import { PropertyDetailPage } from '../pages/public/PropertyDetailPage'
-import { BookingPage } from '../pages/public/BookingPage'
-import { ContactPage } from '../pages/public/ContactPage'
-import { InstallGuidePage } from '../pages/public/InstallGuidePage'
-import { CarsPage } from '../pages/public/CarsPage'
-import { CarDetailPage } from '../pages/public/CarDetailPage'
-import { AuthPage } from '../pages/public/AuthPage'
-import { ForgotPasswordPage } from '../pages/public/ForgotPasswordPage'
-import { ResetPasswordPage } from '../pages/public/ResetPasswordPage'
 import { NotFoundPage } from '../pages/public/NotFoundPage'
-import { AccountReservationsPage } from '../pages/customer/AccountReservationsPage'
-import { ReservationDetailPage } from '../pages/customer/ReservationDetailPage'
-import { ProfilePage } from '../pages/customer/ProfilePage'
-import { ChatPage } from '../pages/customer/ChatPage'
-import { AdminDashboardPage } from '../pages/admin/AdminDashboardPage'
-import { AdminTodayPage } from '../pages/admin/AdminTodayPage'
-import { AdminPropertiesPage } from '../pages/admin/AdminPropertiesPage'
-import { PropertyFormPage } from '../pages/admin/PropertyFormPage'
-import { AdminReservationsPage } from '../pages/admin/AdminReservationsPage'
-import { AdminReservationDetailPage } from '../pages/admin/AdminReservationDetailPage'
-import { AdminCalendarPage } from '../pages/admin/AdminCalendarPage'
-import { AdminCustomersPage } from '../pages/admin/AdminCustomersPage'
-import { AdminPromotionsPage } from '../pages/admin/AdminPromotionsPage'
-import { AdminPaymentsPage } from '../pages/admin/AdminPaymentsPage'
-import { AdminChatPage } from '../pages/admin/AdminChatPage'
-import { AdminAdminsPage } from '../pages/admin/AdminAdminsPage'
 import { ActivityTracker } from '../components/ActivityTracker'
 import { IncomingToast } from '../components/IncomingToast'
 import { HomeScreenBadge } from '../components/HomeScreenBadge'
 import { PushPrompt } from '../components/PushPrompt'
-import { AdminActivityPage } from '../pages/admin/AdminActivityPage'
-import { AdminAuditPage } from '../pages/admin/AdminAuditPage'
-import { AdminSettingsPage } from '../pages/admin/AdminSettingsPage'
-import { AdminTurnoverPage } from '../pages/admin/AdminTurnoverPage'
-import { AdminReviewsPage } from '../pages/admin/AdminReviewsPage'
-import { AdminVehiclesPage } from '../pages/admin/AdminVehiclesPage'
-import { HousingSheetEditorPage } from '../pages/shared/HousingSheetEditorPage'
 import { RequireAuth, RequireStaff } from './guards'
-import { AdminScanPage } from '../pages/admin/AdminScanPage'
 import { AppShell } from '../components/layout/AppShell'
+
+// Pages load on demand: the first visit only downloads the home page and the layout.
+const FavoritesPage = lazy(() => import('../pages/public/FavoritesPage').then((m) => ({ default: m.FavoritesPage })))
+const PropertiesPage = lazy(() => import('../pages/public/PropertiesPage').then((m) => ({ default: m.PropertiesPage })))
+const MapPage = lazy(() => import('../pages/public/MapPage').then((m) => ({ default: m.MapPage })))
+const ComparePage = lazy(() => import('../pages/public/ComparePage').then((m) => ({ default: m.ComparePage })))
+const PropertyDetailPage = lazy(() => import('../pages/public/PropertyDetailPage').then((m) => ({ default: m.PropertyDetailPage })))
+const BookingPage = lazy(() => import('../pages/public/BookingPage').then((m) => ({ default: m.BookingPage })))
+const ContactPage = lazy(() => import('../pages/public/ContactPage').then((m) => ({ default: m.ContactPage })))
+const InstallGuidePage = lazy(() => import('../pages/public/InstallGuidePage').then((m) => ({ default: m.InstallGuidePage })))
+const CarsPage = lazy(() => import('../pages/public/CarsPage').then((m) => ({ default: m.CarsPage })))
+const CarDetailPage = lazy(() => import('../pages/public/CarDetailPage').then((m) => ({ default: m.CarDetailPage })))
+const AuthPage = lazy(() => import('../pages/public/AuthPage').then((m) => ({ default: m.AuthPage })))
+const ForgotPasswordPage = lazy(() => import('../pages/public/ForgotPasswordPage').then((m) => ({ default: m.ForgotPasswordPage })))
+const ResetPasswordPage = lazy(() => import('../pages/public/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })))
+const AccountReservationsPage = lazy(() => import('../pages/customer/AccountReservationsPage').then((m) => ({ default: m.AccountReservationsPage })))
+const ReservationDetailPage = lazy(() => import('../pages/customer/ReservationDetailPage').then((m) => ({ default: m.ReservationDetailPage })))
+const ProfilePage = lazy(() => import('../pages/customer/ProfilePage').then((m) => ({ default: m.ProfilePage })))
+const ChatPage = lazy(() => import('../pages/customer/ChatPage').then((m) => ({ default: m.ChatPage })))
+const AdminDashboardPage = lazy(() => import('../pages/admin/AdminDashboardPage').then((m) => ({ default: m.AdminDashboardPage })))
+const AdminTodayPage = lazy(() => import('../pages/admin/AdminTodayPage').then((m) => ({ default: m.AdminTodayPage })))
+const AdminPropertiesPage = lazy(() => import('../pages/admin/AdminPropertiesPage').then((m) => ({ default: m.AdminPropertiesPage })))
+const PropertyFormPage = lazy(() => import('../pages/admin/PropertyFormPage').then((m) => ({ default: m.PropertyFormPage })))
+const AdminReservationsPage = lazy(() => import('../pages/admin/AdminReservationsPage').then((m) => ({ default: m.AdminReservationsPage })))
+const AdminReservationDetailPage = lazy(() => import('../pages/admin/AdminReservationDetailPage').then((m) => ({ default: m.AdminReservationDetailPage })))
+const AdminCalendarPage = lazy(() => import('../pages/admin/AdminCalendarPage').then((m) => ({ default: m.AdminCalendarPage })))
+const AdminCustomersPage = lazy(() => import('../pages/admin/AdminCustomersPage').then((m) => ({ default: m.AdminCustomersPage })))
+const AdminPromotionsPage = lazy(() => import('../pages/admin/AdminPromotionsPage').then((m) => ({ default: m.AdminPromotionsPage })))
+const AdminPaymentsPage = lazy(() => import('../pages/admin/AdminPaymentsPage').then((m) => ({ default: m.AdminPaymentsPage })))
+const AdminChatPage = lazy(() => import('../pages/admin/AdminChatPage').then((m) => ({ default: m.AdminChatPage })))
+const AdminAdminsPage = lazy(() => import('../pages/admin/AdminAdminsPage').then((m) => ({ default: m.AdminAdminsPage })))
+const AdminActivityPage = lazy(() => import('../pages/admin/AdminActivityPage').then((m) => ({ default: m.AdminActivityPage })))
+const AdminAuditPage = lazy(() => import('../pages/admin/AdminAuditPage').then((m) => ({ default: m.AdminAuditPage })))
+const AdminSettingsPage = lazy(() => import('../pages/admin/AdminSettingsPage').then((m) => ({ default: m.AdminSettingsPage })))
+const AdminTurnoverPage = lazy(() => import('../pages/admin/AdminTurnoverPage').then((m) => ({ default: m.AdminTurnoverPage })))
+const AdminReviewsPage = lazy(() => import('../pages/admin/AdminReviewsPage').then((m) => ({ default: m.AdminReviewsPage })))
+const AdminVehiclesPage = lazy(() => import('../pages/admin/AdminVehiclesPage').then((m) => ({ default: m.AdminVehiclesPage })))
+const HousingSheetEditorPage = lazy(() => import('../pages/shared/HousingSheetEditorPage').then((m) => ({ default: m.HousingSheetEditorPage })))
+const AdminScanPage = lazy(() => import('../pages/admin/AdminScanPage').then((m) => ({ default: m.AdminScanPage })))
+
+function Page({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<div className="theme-page ih-fade-in pt-28"><Loader size="lg" fill /></div>}>{children}</Suspense>
+}
 
 function routerBasename() {
   const base = import.meta.env.BASE_URL
@@ -72,6 +79,7 @@ export function AppRouter() {
       <IncomingToast />
       <HomeScreenBadge />
       <PushPrompt />
+      <Page>
       <Routes>
         <Route element={<AppShell />}>
           <Route element={<PublicLayout />}>
@@ -175,6 +183,7 @@ export function AppRouter() {
         />
         <Route path="/book" element={<Navigate to="/properties" replace />} />
       </Routes>
+      </Page>
     </BrowserRouter>
   )
 }

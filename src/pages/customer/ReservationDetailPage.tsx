@@ -13,7 +13,6 @@ import { Badge } from '../../components/ui/Badge'
 import { ReviewForm } from '../../components/property/ReviewForm'
 import { WifiCard } from '../../components/account/WifiCard'
 import { CleaningStatus } from '../../components/account/CleaningStatus'
-import { downloadInvoice } from '../../lib/invoice'
 import { ReservationQr } from '../../components/account/ReservationQr'
 import { useMatricule } from '../../hooks/useMatricule'
 import { todayIso } from '../../lib/availability'
@@ -78,7 +77,7 @@ export function ReservationDetailPage() {
           <WifiCard reservationId={reservation.id} />
           <CleaningStatus reservationId={reservation.id} />
           <ReservationQr reservationId={reservation.id} code={reservation.public_code} />
-          <Button className="mt-4" variant="outline" onClick={() => void downloadInvoice(reservation, matricule)}>
+          <Button className="mt-4" variant="outline" onClick={() => void import('../../lib/invoice').then((m) => m.downloadInvoice(reservation, matricule))}>
             {t('plus.invoice')}
           </Button>
         </div>

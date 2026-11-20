@@ -11,7 +11,6 @@ import {
   rowToHousingSheet,
   type HousingSheetData,
 } from '../../lib/housingSheet'
-import { downloadElementAsA4Pdf } from '../../lib/pdfCapture'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
@@ -133,6 +132,7 @@ export function HousingSheetEditorPage({
     try {
       await save()
       await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)))
+      const { downloadElementAsA4Pdf } = await import('../../lib/pdfCapture')
       await downloadElementAsA4Pdf(target, `Imperial-Home-Fiche-${reservation?.public_code ?? 'logement'}.pdf`)
     } catch {
       setError('Le PDF n’a pas pu être généré. Utilisez Imprimer, puis « Enregistrer au format PDF ».')

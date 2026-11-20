@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { cancelReservation, fetchReservation } from '../../lib/data'
 import { formatDate, formatXaf } from '../../lib/format'
-import { downloadInvoice } from '../../lib/invoice'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
@@ -135,7 +134,7 @@ export function AdminReservationDetailPage() {
           disabled={receiptBusy}
           onClick={() => {
             setReceiptBusy(true)
-            void downloadInvoice(r).finally(() => setReceiptBusy(false))
+            void import('../../lib/invoice').then((m) => m.downloadInvoice(r)).finally(() => setReceiptBusy(false))
           }}
         >
           {receiptBusy ? t('common.loading') : t('admin.receiptDownload')}

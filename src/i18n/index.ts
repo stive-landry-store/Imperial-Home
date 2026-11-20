@@ -2,18 +2,38 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { en } from './en'
 import { fr } from './fr'
-import ar from './packs/ar'
-import de from './packs/de'
-import bn from './packs/bn'
-import es from './packs/es'
-import hi from './packs/hi'
-import pt from './packs/pt'
-import ru from './packs/ru'
-import ur from './packs/ur'
-import zh from './packs/zh'
+import type { BackendModule, ResourceKey } from 'i18next'
 import { languageCode, type LanguageCode } from '../lib/languages'
 
 const RTL = new Set(['ar', 'ur'])
+
+// English and French ship with the first page; the nine other languages download only when chosen.
+const packs: Record<string, () => Promise<{ default: ResourceKey }>> = {
+  ar: () => import('./packs/ar'),
+  bn: () => import('./packs/bn'),
+  de: () => import('./packs/de'),
+  es: () => import('./packs/es'),
+  hi: () => import('./packs/hi'),
+  pt: () => import('./packs/pt'),
+  ru: () => import('./packs/ru'),
+  ur: () => import('./packs/ur'),
+  zh: () => import('./packs/zh'),
+}
+
+const lazyPacks: BackendModule = {
+  type: 'backend',
+  init: () => undefined,
+  read: (language, _namespace, callback) => {
+    const load = packs[language]
+    if (!load) {
+      callback(null, {})
+      return
+    }
+    load()
+      .then((module) => callback(null, module.default))
+      .catch((error: Error) => callback(error, null))
+  },
+}
 
 function detect(): LanguageCode {
   if (typeof navigator === 'undefined') return 'fr'
@@ -28,20 +48,13 @@ function applyDocument(code: LanguageCode) {
   document.documentElement.dir = RTL.has(code) ? 'rtl' : 'ltr'
 }
 
-void i18n.use(initReactI18next).init({
+void i18n.use(lazyPacks).use(initReactI18next).init({
   resources: {
     en: { translation: en },
     fr: { translation: fr },
-    zh: { translation: zh },
-    hi: { translation: hi },
-    es: { translation: es },
-    ar: { translation: ar },
-    de: { translation: de },
-    bn: { translation: bn },
-    pt: { translation: pt },
-    ru: { translation: ru },
-    ur: { translation: ur },
   },
+  partialBundledLanguages: true,
+  react: { useSuspense: false },
   lng: initial,
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
