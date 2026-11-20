@@ -12,6 +12,7 @@ import { HomeScreenBadge } from '../components/HomeScreenBadge'
 import { PushPrompt } from '../components/PushPrompt'
 import { RequireAuth, RequireStaff } from './guards'
 import { AppShell } from '../components/layout/AppShell'
+import { MotionDirector } from '../components/motion/MotionDirector'
 
 // Pages load on demand: the first visit only downloads the home page and the layout.
 const FavoritesPage = lazy(() => import('../pages/public/FavoritesPage').then((m) => ({ default: m.FavoritesPage })))
@@ -75,6 +76,7 @@ export function AppRouter() {
   return (
     <BrowserRouter basename={routerBasename()}>
       <ScrollToTop />
+      <MotionDirector />
       <ActivityTracker />
       <IncomingToast />
       <HomeScreenBadge />

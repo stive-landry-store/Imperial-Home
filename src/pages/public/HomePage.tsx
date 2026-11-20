@@ -69,8 +69,8 @@ export function HomePage() {
         <link rel="preload" as="image" href={hero} fetchPriority="high" />
       </Helmet>
 
-      <section className="relative min-h-[100svh] bg-[#1a1612] pt-[4.5rem]">
-        <div className="absolute inset-x-0 top-[4.5rem] bottom-0">
+      <section className="ih-hero relative min-h-[100svh] overflow-hidden bg-[#1a1612] pt-[4.5rem]">
+        <div className="ih-hero-parallax absolute inset-x-0 top-[4.5rem] bottom-0">
           <img
             key={hero}
             src={hero}
@@ -79,20 +79,36 @@ export function HomePage() {
             height={1600}
             decoding="async"
             fetchPriority="high"
-            className="hero-still absolute inset-0 h-full w-full"
+            className="hero-still ih-hero-media absolute inset-0 h-full w-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40" />
+          <div className="ih-fade-in ih-delay-3 pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_80%,rgba(196,163,90,0.22),transparent_55%)]" />
         </div>
         <div className="relative z-10 flex min-h-[calc(100svh-4.5rem)] flex-col justify-end px-5 pb-24 md:px-10">
           <div className="mx-auto w-full max-w-3xl">
-            <h1 className="text-3xl font-semibold text-white md:text-5xl">{t('home.placeLine')}</h1>
-            <p className="mt-2 max-w-xl text-sm text-white/85 md:text-base">{t('hero.subtitle')}</p>
-            <Button to="/properties" className="mt-5 w-full max-w-xs">
-              {t('nav.search')}
-            </Button>
-            <SocialLinks className="mt-4" prominent />
+            <span className="ih-hero-line" aria-hidden />
+            <p className="ih-fade-up ih-delay-1 mb-3 text-xs font-semibold tracking-[0.35em] uppercase">
+              <span className="ih-gold-text">Imperial Home</span>
+            </p>
+            <h1 className="text-3xl font-semibold text-white md:text-5xl" aria-label={t('home.placeLine')}>
+              {t('home.placeLine')
+                .split(' ')
+                .map((word, index) => (
+                  <span key={`${word}-${index}`} className="ih-hero-word" style={{ ['--ih-w' as string]: index }} aria-hidden>
+                    {word}{' '}
+                  </span>
+                ))}
+            </h1>
+            <p className="ih-fade-up ih-delay-4 mt-2 max-w-xl text-sm text-white/85 md:text-base">{t('hero.subtitle')}</p>
+            <div className="ih-fade-up ih-delay-5">
+              <Button to="/properties" className="mt-5 w-full max-w-xs">
+                {t('nav.search')}
+              </Button>
+              <SocialLinks className="mt-4" prominent />
+            </div>
           </div>
         </div>
+        <span className="ih-scroll-cue hidden md:block" aria-hidden />
       </section>
 
       <div className="theme-page px-4 pt-6 empty:hidden md:hidden">

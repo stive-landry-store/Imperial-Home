@@ -29,12 +29,12 @@ export function PropertyCard({
     .slice(0, 3)
 
   return (
-    <article className="theme-card relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-black/10">
+    <article className="ih-card theme-card relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-black/10">
       <StayActions propertyId={property.id} heart />
       <Link to={`/properties/${encodeURIComponent(property.slug)}${query}`} className="flex h-full flex-col">
-        <div className="aspect-[16/10] shrink-0 overflow-hidden bg-black/5">
+        <div className="ih-card-media aspect-[16/10] shrink-0 overflow-hidden bg-black/5">
           {image ? (
-            <OptimizedImage src={image} alt={property.name} width={800} className="h-full w-full object-cover" />
+            <OptimizedImage src={image} alt={property.name} width={800} sizes="(max-width: 768px) 80vw, 33vw" className="h-full w-full object-cover" />
           ) : null}
         </div>
         <div className="flex flex-1 flex-col p-3">

@@ -16,7 +16,8 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export function Button({ className, variant = 'primary', to, type = 'button', ...props }: Props) {
   const classes = cn(
-    'inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors touch-manipulation',
+    'ih-btn inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold touch-manipulation',
+    variant === 'primary' && 'ih-btn-primary',
     variants[variant],
     className,
   )

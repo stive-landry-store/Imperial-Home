@@ -1,0 +1,500 @@
+/*
+ * Imperial Home — Motion design system.
+ * Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
+ *
+ * One vocabulary of movement for the whole site: gold, slow, precise.
+ *  - Reveal on scroll (applied automatically by <MotionDirector />)
+ *  - Staggered lists and grids
+ *  - Page transitions, hero choreography, card and button micro-interactions
+ *  - Everything turns off with prefers-reduced-motion
+ */
+
+:root {
+  --ih-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ih-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ih-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ih-dur-xs: 160ms;
+  --ih-dur-sm: 280ms;
+  --ih-dur-md: 560ms;
+  --ih-dur-lg: 900ms;
+  --ih-dur-xl: 1400ms;
+  --ih-gold: #c4a35a;
+  --ih-gold-light: #ecd08a;
+  --ih-stagger: 70ms;
+}
+
+/* ------------------------------------------------------------------ keyframes */
+
+@keyframes ih-fade-up {
+  from { opacity: 0; transform: translate3d(0, 28px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-fade-down {
+  from { opacity: 0; transform: translate3d(0, -18px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ih-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-blur-in {
+  from { opacity: 0; filter: blur(14px); transform: scale(1.03); }
+  to { opacity: 1; filter: blur(0); transform: none; }
+}
+@keyframes ih-slide-left {
+  from { opacity: 0; transform: translate3d(40px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-slide-right {
+  from { opacity: 0; transform: translate3d(-40px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-pop {
+  0% { opacity: 0; transform: scale(0.85); }
+  60% { opacity: 1; transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes ih-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+@keyframes ih-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes ih-ken-burns {
+  0% { transform: scale(1.12) translate3d(0, 0, 0); }
+  100% { transform: scale(1) translate3d(0, -1.5%, 0); }
+}
+@keyframes ih-sheen {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(220%) skewX(-20deg); }
+}
+@keyframes ih-gold-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes ih-draw-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes ih-pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgb(196 163 90 / 0.55); }
+  100% { box-shadow: 0 0 0 16px rgb(196 163 90 / 0); }
+}
+@keyframes ih-word-in {
+  from { opacity: 0; transform: translate3d(0, 0.6em, 0) rotate(2deg); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes ih-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+@keyframes ih-scroll-cue {
+  0% { opacity: 0; transform: translateY(-6px); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+@keyframes ih-tab-bounce {
+  0% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-5px) scale(1.12); }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes ih-spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------------------------------------------------------- one-shot utilities */
+
+.ih-fade-in { animation: ih-fade-in var(--ih-dur-md) var(--ih-ease-out) both; }
+.ih-fade-up { animation: ih-fade-up var(--ih-dur-lg) var(--ih-ease-out) both; }
+.ih-scale-in { animation: ih-scale-in var(--ih-dur-md) var(--ih-ease-out) both; }
+.ih-pop { animation: ih-pop var(--ih-dur-md) var(--ih-ease-spring) both; }
+.ih-shake { animation: ih-shake 420ms var(--ih-ease-in-out); }
+.ih-float { animation: ih-float 3.6s var(--ih-ease-in-out) infinite; }
+.ih-spin-slow { animation: ih-spin-slow 18s linear infinite; }
+.ih-delay-1 { animation-delay: 120ms; }
+.ih-delay-2 { animation-delay: 240ms; }
+.ih-delay-3 { animation-delay: 360ms; }
+.ih-delay-4 { animation-delay: 480ms; }
+.ih-delay-5 { animation-delay: 600ms; }
+
+/* ------------------------------------------------------------ scroll reveal */
+
+/* Elements are hidden only once JS confirmed it can reveal them (html.ih-motion). */
+html.ih-motion [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+}
+html.ih-motion [data-reveal].is-revealed {
+  animation-duration: var(--ih-dur-lg);
+  animation-timing-function: var(--ih-ease-out);
+  animation-fill-mode: both;
+  animation-delay: calc(var(--ih-i, 0) * var(--ih-stagger));
+}
+html.ih-motion [data-reveal='up'].is-revealed { animation-name: ih-fade-up; }
+html.ih-motion [data-reveal='down'].is-revealed { animation-name: ih-fade-down; }
+html.ih-motion [data-reveal='fade'].is-revealed { animation-name: ih-fade-in; }
+html.ih-motion [data-reveal='scale'].is-revealed { animation-name: ih-scale-in; }
+html.ih-motion [data-reveal='blur'].is-revealed { animation-name: ih-blur-in; }
+html.ih-motion [data-reveal='left'].is-revealed { animation-name: ih-slide-left; }
+html.ih-motion [data-reveal='right'].is-revealed { animation-name: ih-slide-right; }
+
+/* Headings get a gold line that draws itself under them. */
+html.ih-motion h2[data-reveal] {
+  position: relative;
+}
+html.ih-motion h2[data-reveal]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  width: 2.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--ih-gold), var(--ih-gold-light));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+html.ih-motion h2[data-reveal].is-revealed::after {
+  animation: ih-draw-line var(--ih-dur-lg) var(--ih-ease-out) both;
+  animation-delay: calc(var(--ih-i, 0) * var(--ih-stagger) + 250ms);
+}
+html.ih-motion .text-center > h2[data-reveal]::after,
+html.ih-motion h2.text-center[data-reveal]::after {
+  left: 50%;
+  margin-left: -1.25rem;
+}
+
+/* ------------------------------------------------------------ page transitions */
+
+.ih-page-in {
+  animation: ih-page-enter var(--ih-dur-md) var(--ih-ease-out) backwards;
+}
+.ih-page-back {
+  animation: ih-page-return var(--ih-dur-md) var(--ih-ease-out) backwards;
+}
+@keyframes ih-page-enter {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes ih-page-return {
+  from { opacity: 0; transform: translate3d(-22px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+/* View Transitions API (Chrome, Edge, Safari 18+): cross-fade between routes. */
+::view-transition-old(root) {
+  animation: 220ms var(--ih-ease-in-out) both ih-vt-out;
+}
+::view-transition-new(root) {
+  animation: 420ms var(--ih-ease-out) both ih-vt-in;
+}
+@keyframes ih-vt-out {
+  to { opacity: 0; transform: scale(0.985); }
+}
+@keyframes ih-vt-in {
+  from { opacity: 0; transform: scale(1.01); }
+}
+
+/* ------------------------------------------------------------ scroll progress */
+
+.ih-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 140;
+  height: 2px;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--ih-scroll, 0));
+  background: linear-gradient(90deg, #8b6f32, var(--ih-gold), var(--ih-gold-light), var(--ih-gold));
+  background-size: 200% 100%;
+  animation: ih-gold-flow 3s linear infinite;
+  box-shadow: 0 0 12px rgb(196 163 90 / 0.6);
+}
+
+/* Header condenses and gains depth once the page scrolls. */
+html.ih-scrolled header.ih-header {
+  box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.65);
+  backdrop-filter: saturate(140%) blur(14px);
+}
+header.ih-header {
+  transition: box-shadow var(--ih-dur-sm) var(--ih-ease-out), backdrop-filter var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-out);
+}
+html.ih-scroll-down header.ih-header.ih-header-hide {
+  transform: translateY(-110%);
+}
+
+/* ------------------------------------------------------------ hero */
+
+.ih-hero-media {
+  animation: ih-ken-burns 9s var(--ih-ease-out) both;
+  will-change: transform;
+}
+.ih-hero-parallax {
+  transform: translate3d(0, calc(var(--ih-scroll-px, 0) * 0.25px), 0);
+}
+.ih-hero-word {
+  display: inline-block;
+  white-space: pre;
+  animation: ih-word-in 900ms var(--ih-ease-out) both;
+  animation-delay: calc(350ms + var(--ih-w, 0) * 80ms);
+}
+.ih-hero-line {
+  display: block;
+  height: 1px;
+  width: 6rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, var(--ih-gold), transparent);
+  transform-origin: left;
+  animation: ih-draw-line 1.2s var(--ih-ease-out) 200ms both;
+}
+.ih-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  width: 22px;
+  height: 36px;
+  margin-left: -11px;
+  border: 1.5px solid rgb(255 255 255 / 0.55);
+  border-radius: 999px;
+}
+.ih-scroll-cue::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 3px;
+  height: 7px;
+  margin-left: -1.5px;
+  border-radius: 3px;
+  background: var(--ih-gold-light);
+  animation: ih-scroll-cue 1.8s var(--ih-ease-in-out) infinite;
+}
+
+/* Gold text that slowly flows. */
+.ih-gold-text {
+  background: linear-gradient(90deg, #a7843d, var(--ih-gold-light), #f6e3ad, var(--ih-gold), #a7843d);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ih-gold-flow 6s linear infinite;
+}
+
+/* ------------------------------------------------------------ buttons */
+
+.ih-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform var(--ih-dur-xs) var(--ih-ease-out),
+    box-shadow var(--ih-dur-sm) var(--ih-ease-out),
+    background-color var(--ih-dur-sm) var(--ih-ease-out),
+    color var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  z-index: -1;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .ih-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -14px rgb(196 163 90 / 0.75);
+  }
+  .ih-btn:hover:not(:disabled)::before {
+    animation: ih-sheen 900ms var(--ih-ease-out);
+  }
+}
+.ih-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 80ms;
+}
+.ih-btn-primary {
+  background-image: linear-gradient(120deg, #b8934b, var(--ih-gold) 40%, #d8b96f 60%, #b8934b);
+  background-size: 200% 100%;
+}
+@media (hover: hover) {
+  .ih-btn-primary:hover:not(:disabled) {
+    animation: ih-gold-flow 2.4s linear infinite;
+  }
+}
+
+/* Ripple left by a tap (set by MotionDirector). */
+.ih-ripple {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  background: rgb(255 255 255 / 0.35);
+  transform: scale(0);
+  animation: ih-ripple 600ms var(--ih-ease-out) forwards;
+}
+@keyframes ih-ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ------------------------------------------------------------ cards */
+
+.ih-card {
+  position: relative;
+  transition:
+    transform var(--ih-dur-md) var(--ih-ease-out),
+    box-shadow var(--ih-dur-md) var(--ih-ease-out),
+    border-color var(--ih-dur-md) var(--ih-ease-out);
+  transform: perspective(900px) rotateX(var(--ih-rx, 0deg)) rotateY(var(--ih-ry, 0deg));
+  will-change: transform;
+}
+.ih-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--ih-mx, 50%) var(--ih-my, 50%), rgb(236 208 138 / 0.16), transparent 45%);
+  transition: opacity var(--ih-dur-sm) var(--ih-ease-out);
+}
+@media (hover: hover) {
+  .ih-card:hover {
+    transform: perspective(900px) rotateX(var(--ih-rx, 0deg)) rotateY(var(--ih-ry, 0deg)) translateY(-6px);
+    box-shadow: 0 26px 50px -28px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(196 163 90 / 0.35);
+  }
+  .ih-card:hover::after {
+    opacity: 1;
+  }
+  .ih-card:hover .ih-card-media img,
+  .ih-card:hover img.ih-card-img {
+    transform: scale(1.07);
+  }
+}
+.ih-card-media {
+  overflow: hidden;
+}
+.ih-card-media img,
+img.ih-card-img {
+  transition: transform 1.1s var(--ih-ease-out);
+}
+
+/* Theme cards and panels: a soft lift on hover. */
+@media (hover: hover) {
+  .theme-card {
+    transition: transform var(--ih-dur-md) var(--ih-ease-out), box-shadow var(--ih-dur-md) var(--ih-ease-out);
+  }
+}
+
+/* Images fade in once decoded instead of popping. */
+img.ih-img {
+  transition: opacity var(--ih-dur-md) var(--ih-ease-out), filter var(--ih-dur-lg) var(--ih-ease-out), transform 1.1s var(--ih-ease-out);
+}
+img.ih-img[data-loaded='false'] {
+  opacity: 0;
+  filter: blur(10px);
+}
+img.ih-img[data-loaded='true'] {
+  opacity: 1;
+  filter: none;
+}
+
+/* ------------------------------------------------------------ links, inputs, nav */
+
+@media (hover: hover) {
+  .ih-link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--ih-dur-sm) var(--ih-ease-out);
+  }
+  .ih-link:hover {
+    background-size: 100% 1px;
+  }
+}
+
+input:not([type='checkbox']):not([type='radio']),
+textarea,
+select {
+  transition: box-shadow var(--ih-dur-sm) var(--ih-ease-out), border-color var(--ih-dur-sm) var(--ih-ease-out);
+}
+input:not([type='checkbox']):not([type='radio']):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 3px rgb(196 163 90 / 0.35);
+}
+
+.ih-tab-active svg {
+  animation: ih-tab-bounce 520ms var(--ih-ease-spring);
+}
+
+/* Floating action buttons breathe gently. */
+.ih-fab {
+  animation: ih-pulse-ring 2.4s var(--ih-ease-out) infinite;
+}
+
+/* Skeletons shimmer in gold. */
+.ih-shimmer {
+  background: linear-gradient(90deg, rgb(255 255 255 / 0.04) 0%, rgb(196 163 90 / 0.14) 50%, rgb(255 255 255 / 0.04) 100%);
+  background-size: 800px 100%;
+  animation: ih-shimmer 1.6s linear infinite;
+}
+
+/* Count-up numbers keep their width steady. */
+.ih-count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dialogs, sheets and menus scale in. */
+[role='dialog'] > *:first-child,
+.ih-sheet {
+  animation: ih-scale-in var(--ih-dur-sm) var(--ih-ease-out) both;
+}
+[role='status'],
+[role='alert'] {
+  animation: ih-fade-down var(--ih-dur-sm) var(--ih-ease-out) both;
+}
+
+/* Marquee for long strips (amenities, partners…). */
+.ih-marquee {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: ih-marquee 28s linear infinite;
+}
+@keyframes ih-marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ------------------------------------------------------------ reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  html.ih-motion [data-reveal]:not(.is-revealed) {
+    opacity: 1;
+  }
+  .ih-card {
+    transform: none !important;
+  }
+  .ih-progress {
+    display: none;
+  }
+}

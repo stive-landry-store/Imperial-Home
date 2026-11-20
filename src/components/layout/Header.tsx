@@ -52,7 +52,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-40 border-b border-black/10 text-[var(--header-fg)] backdrop-blur-md',
+        'ih-header fixed inset-x-0 top-0 z-40 border-b border-black/10 text-[var(--header-fg)] backdrop-blur-md',
       )}
       style={{ background: 'var(--header-solid)' }}
     >
