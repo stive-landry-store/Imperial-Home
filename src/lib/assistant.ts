@@ -40,12 +40,12 @@ export function groundedReply(input: {
     }
   }
 
-  if (/book|reserv|disponib|available|calendar|calendrier/.test(q)) {
+  if (/book|reserv|disponib|available|availability|calendar|calendrier|\bfree\b|\blibre|vacant|weekend|week-end|tonight|ce soir|demain|tomorrow/.test(q)) {
     return {
       escalate: false,
       answer: fr
-        ? 'Regardez la fiche de l’appartement : choisissez le jour d’arrivée et le nombre de nuits. Si les dates sont libres, la demande part tout de suite.'
-        : 'Open the apartment page, choose the arrival day and the number of nights. If the dates are free, the request goes through.',
+        ? 'Je ne devine pas les disponibilités : regardez le calendrier sur la fiche de l’appartement, choisissez le jour d’arrivée et le nombre de nuits. Si les dates sont libres, la demande part tout de suite.'
+        : 'I never guess availability: open the calendar on the apartment page, choose the arrival day and the number of nights. If the dates are free, the request goes through.',
     }
   }
 

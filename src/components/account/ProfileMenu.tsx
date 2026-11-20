@@ -14,19 +14,22 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
   const { t } = useTranslation()
   const { profile, signOut, updatePassword, reloadProfile } = useAuth()
   const [section, setSection] = useState<Section>(null)
-  const [fullName, setFullName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [cni, setCni] = useState('')
+  const [fullName, setFullName] = useState(profile?.full_name ?? '')
+  const [phone, setPhone] = useState(profile?.phone ?? '')
+  const [cni, setCni] = useState(profile?.cni ?? '')
+  const [syncedProfile, setSyncedProfile] = useState(profile)
+  if (profile !== syncedProfile) {
+    // Refill the fields when a fresh profile arrives (React's "adjust state on prop change" pattern).
+    setSyncedProfile(profile)
+    if (profile) {
+      setFullName(profile.full_name ?? '')
+      setPhone(profile.phone ?? '')
+      setCni(profile.cni ?? '')
+    }
+  }
   const [password, setPassword] = useState('')
   const [notice, setNotice] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!profile) return
-    setFullName(profile.full_name ?? '')
-    setPhone(profile.phone ?? '')
-    setCni(profile.cni ?? '')
-  }, [profile])
 
   useEffect(() => {
     if (!open) return

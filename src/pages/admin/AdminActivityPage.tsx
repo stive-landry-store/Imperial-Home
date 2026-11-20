@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { Loader } from '../../components/ui/Loader'
 import { Input } from '../../components/ui/Field'
 import { cn } from '../../lib/cn'
+import { useNow } from '../../hooks/useNow'
 
 const TZ = 'Africa/Douala'
 const ONLINE_MS = 5 * 60 * 1000
@@ -150,8 +151,8 @@ export function AdminActivityPage() {
     },
   })
 
+  const now = useNow()
   const stats = useMemo(() => {
-    const now = Date.now()
     const list = people.data ?? []
     const online = list.filter((p) => p.last_seen && now - new Date(p.last_seen).getTime() < ONLINE_MS)
     const rows = today.data ?? []
@@ -160,13 +161,13 @@ export function AdminActivityPage() {
       loginsToday: rows.filter((r) => r.kind === 'login' || r.kind === 'open').length,
       activeToday: new Set(rows.map((r) => r.user_id).filter(Boolean)).size,
     }
-  }, [people.data, today.data])
+  }, [people.data, today.data, now])
 
   if (loading) return <Loader size="lg" fill />
   if (!isSuper) return <Navigate to="/admin" replace />
 
   const roleLabel = (r: string | null) => (r ? t(`activity.role.${r}`, { defaultValue: r }) : '')
-  const isOnline = (iso: string | null) => Boolean(iso && Date.now() - new Date(iso).getTime() < ONLINE_MS)
+  const isOnline = (iso: string | null) => Boolean(iso && now - new Date(iso).getTime() < ONLINE_MS)
   const selected = userId ? (people.data ?? []).find((p) => p.user_id === userId) : null
 
   function describe(e: Entry) {

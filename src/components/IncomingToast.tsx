@@ -19,7 +19,9 @@ export function IncomingToast() {
   const [item, setItem] = useState<Incoming | null>(null)
   const timer = useRef<number>(0)
   const path = useRef(location.pathname)
-  path.current = location.pathname
+  useEffect(() => {
+    path.current = location.pathname
+  }, [location.pathname])
 
   useEffect(() => {
     if (!supabase || !user) return

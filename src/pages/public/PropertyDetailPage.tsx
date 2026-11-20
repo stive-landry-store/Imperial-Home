@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useOnline } from '../../hooks/useOnline'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
@@ -68,10 +68,9 @@ export function PropertyDetailPage() {
   const shownNights = Math.max(1, nightsBetween(activeCheckIn, checkOut))
   const followsReserved = ranges.some((range) => range.end_date === activeCheckIn)
 
-  useEffect(() => {
-    if (adjusted.checkIn !== checkIn) setCheckIn(adjusted.checkIn)
-    if (shownNights !== nights) setNights(shownNights)
-  }, [adjusted.checkIn, checkIn, shownNights, nights])
+  // Keep the picked dates clear of reserved nights (adjusted while rendering, no extra effect pass).
+  if (adjusted.checkIn !== checkIn) setCheckIn(adjusted.checkIn)
+  if (shownNights !== nights) setNights(shownNights)
 
   const { data: quote } = useQuery({
     queryKey: ['quote', property?.id, activeCheckIn, checkOut, guests],

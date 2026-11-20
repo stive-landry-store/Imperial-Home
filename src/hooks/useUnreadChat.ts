@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import { useAuth } from './useAuth'
 import { chatSeen } from '../lib/chatText'
 import { supabase } from '../lib/supabase'
@@ -9,13 +9,10 @@ export function useUnreadChat() {
   const { user } = useAuth()
   const [count, setCount] = useState(0)
   const userId = user?.id
-  const instance = useRef(Math.random().toString(36).slice(2, 8))
+  const instance = useId().replace(/[^a-z0-9]/gi, '')
 
   const refresh = useCallback(async () => {
-    if (!supabase || !userId) {
-      setCount(0)
-      return
-    }
+    if (!supabase || !userId) return
     const { data: convs } = await supabase.from('conversations').select('id').eq('customer_id', userId)
     const ids = (convs ?? []).map((row) => row.id as string)
     if (!ids.length) {
@@ -34,11 +31,11 @@ export function useUnreadChat() {
   }, [userId])
 
   useEffect(() => {
-    void refresh()
     if (!supabase || !userId) return
     const client = supabase
+    const first = window.setTimeout(() => void refresh(), 0)
     const channel = client
-      .channel(`unread-${userId}-${instance.current}`)
+      .channel(`unread-${userId}-${instance}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => void refresh())
       .subscribe()
     const onSeen = () => void refresh()
@@ -46,12 +43,13 @@ export function useUnreadChat() {
     window.addEventListener('focus', onSeen)
     const timer = window.setInterval(onSeen, 60_000)
     return () => {
+      window.clearTimeout(first)
       void client.removeChannel(channel)
       window.removeEventListener('ih-chat-seen', onSeen)
       window.removeEventListener('focus', onSeen)
       window.clearInterval(timer)
     }
-  }, [refresh, userId])
+  }, [refresh, userId, instance])
 
-  return count
+  return userId ? count : 0
 }

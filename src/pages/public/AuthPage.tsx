@@ -11,7 +11,8 @@ import { useTheme } from '../../hooks/useTheme'
 import { formatLoginRegisterError } from '../../lib/authMessages'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { ImperialLogo } from '../../components/brand/Logo'
-import { Turnstile, captchaEnabled } from '../../components/security/Turnstile'
+import { Turnstile } from '../../components/security/Turnstile'
+import { captchaEnabled } from '../../lib/captcha'
 
 export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const { t, i18n } = useTranslation()

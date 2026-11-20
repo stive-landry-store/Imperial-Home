@@ -1,7 +1,7 @@
 import { IMPERIAL_HOME } from './house'
 import { SITE_DEFAULTS } from './config'
 
-export const SITE_ORIGIN = 'https://imperial-home.vercel.app'
+export const SITE_ORIGIN = (import.meta.env.VITE_SITE_URL || 'https://imperial-home.vercel.app').replace(/\/$/, '')
 
 /** Shown to search engines on the home page and in the first HTML they download. */
 export const SITE_DESCRIPTION =

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { captchaEnabled } from '../../lib/captcha'
 
 // Cloudflare Turnstile captcha. Shown only when VITE_TURNSTILE_SITE_KEY is set.
 // Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
@@ -29,8 +30,6 @@ function loadScript(): Promise<void> {
   })
   return loader
 }
-
-export const captchaEnabled = Boolean(import.meta.env.VITE_TURNSTILE_SITE_KEY)
 
 export function Turnstile({ onToken, theme }: { onToken: (token: string | null) => void; theme: 'dark' | 'light' }) {
   const box = useRef<HTMLDivElement>(null)

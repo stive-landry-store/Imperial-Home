@@ -15,6 +15,14 @@ import { imperialPlace } from '../../lib/place'
 import { SITE_DESCRIPTION, SITE_ORIGIN, lodgingJsonLd } from '../../lib/seo'
 import { demoHousingSheet } from '../../lib/housingSheet'
 
+const bundledHero = `${import.meta.env.BASE_URL}hero-accueil.jpg?v=2`
+
+function readyHero(url: string | null | undefined) {
+  if (!url || url.includes('/site/hero-accueil/1791483803854')) return bundledHero
+  if (url.includes('hero-accueil.jpg') && !url.includes('v=2')) return bundledHero
+  return url
+}
+
 export function HomePage() {
   const { t, i18n } = useTranslation()
   const { data: properties = [] } = usePublishedProperties()
@@ -22,13 +30,7 @@ export function HomePage() {
   const { data: config } = useSiteConfig()
   const featured = properties.slice(0, 3)
   const offer = promotions.find((p) => p.is_active && p.code)
-  const bundledHero = `${import.meta.env.BASE_URL}hero-accueil.jpg?v=2`
-  function readyHero(url: string | null | undefined) {
-    if (!url || url.includes('/site/hero-accueil/1791483803854')) return bundledHero
-    if (url.includes('hero-accueil.jpg') && !url.includes('v=2')) return bundledHero
-    return url
-  }
-  const [hero, setHero] = useState(() => {
+  const [cachedHero] = useState(() => {
     try {
       return readyHero(localStorage.getItem('ih-hero'))
     } catch {
@@ -36,15 +38,15 @@ export function HomePage() {
     }
   })
   const chosenHero = config?.home_hero_image_url?.trim() || ''
+  const hero = config ? readyHero(chosenHero) : cachedHero
   useEffect(() => {
-    const next = readyHero(chosenHero)
-    setHero(next)
+    if (!config) return
     try {
-      localStorage.setItem('ih-hero', next)
+      localStorage.setItem('ih-hero', hero)
     } catch {
       /* ignore private mode */
     }
-  }, [chosenHero, bundledHero])
+  }, [config, hero])
   const place = imperialPlace(config)
 
   const pillars = [

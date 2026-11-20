@@ -15,6 +15,7 @@ export function ZoomableImage({
 }) {
   const [scale, setScale] = useState(1)
   const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
+  const [dragging, setDragging] = useState(false)
   const pointers = useRef(new Map<number, Point>())
   const pinch = useRef<{ distance: number; scale: number } | null>(null)
   const swipeStart = useRef<Point | null>(null)
@@ -30,6 +31,7 @@ export function ZoomableImage({
   function down(event: React.PointerEvent) {
     event.currentTarget.setPointerCapture(event.pointerId)
     pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
+    setDragging(true)
     if (pointers.current.size === 2) {
       const [a, b] = [...pointers.current.values()]
       pinch.current = { distance: Math.hypot(a.x - b.x, a.y - b.y), scale }
@@ -58,6 +60,7 @@ export function ZoomableImage({
   function up(event: React.PointerEvent) {
     pointers.current.delete(event.pointerId)
     if (pointers.current.size < 2) pinch.current = null
+    if (pointers.current.size === 0) setDragging(false)
     const start = swipeStart.current
     swipeStart.current = null
     if (start && scale === 1 && onSwipe) {
@@ -82,7 +85,7 @@ export function ZoomableImage({
         alt={alt}
         draggable={false}
         className="max-h-[85svh] max-w-full select-none object-contain"
-        style={{ transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`, transition: pointers.current.size ? 'none' : 'transform 0.2s' }}
+        style={{ transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`, transition: dragging ? 'none' : 'transform 0.25s cubic-bezier(.22,1,.36,1)' }}
       />
     </div>
   )

@@ -11,6 +11,7 @@ import { supabase } from '../../lib/supabase'
 import { whatsappUrl } from '../../lib/whatsapp'
 import { Live } from '../i18n/Live'
 import { cn } from '../../lib/cn'
+import { isoMinutesAgo } from '../../lib/time'
 
 type ChatMsg = {
   id: string
@@ -124,7 +125,7 @@ export function ImperialAssistantFab() {
       return
     }
     const text = prompt || t('assistant.unknown')
-    const since = new Date(Date.now() - 2 * 60 * 1000).toISOString()
+    const since = isoMinutesAgo(2)
     const { data: duplicate } = await client
       .from('messages')
       .select('id')

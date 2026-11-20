@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ChevronLeft, Menu, X } from 'lucide-react'
@@ -11,13 +11,28 @@ import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
 import { SettingsMenu } from './SettingsMenu'
 
+function subscribeTitle(onChange: () => void) {
+  const observer = new MutationObserver(onChange)
+  observer.observe(document.head, { childList: true, characterData: true, subtree: true })
+  return () => observer.disconnect()
+}
+
+const readTitle = () => document.title.split('|')[0].trim()
+
 export function Header() {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isStaff, signOut, user } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
-  const [open, setOpen] = useState(false)
+  const [openPath, setOpenPath] = useState<string | null>(null)
+  const open = openPath === location.pathname
+  const setOpen = (value: boolean | ((current: boolean) => boolean)) =>
+    setOpenPath((current) => {
+      const was = current === location.pathname
+      const next = typeof value === 'function' ? value(was) : value
+      return next ? location.pathname : null
+    })
   const isDetail = /^\/(properties\/(?!map$)[^/]+|cars\/[^/]+|account\/reservations\/[^/]+|compare|contact|favoris)/.test(location.pathname)
   const fallback = location.pathname.startsWith('/cars') ? '/cars' : location.pathname.startsWith('/account') ? '/account' : '/properties'
   function goBack() {
@@ -26,16 +41,7 @@ export function Header() {
     else navigate(fallback)
   }
 
-  useEffect(() => setOpen(false), [location.pathname])
-
-  const [title, setTitle] = useState('')
-  useEffect(() => {
-    const read = () => setTitle(document.title.split('|')[0].trim())
-    read()
-    const observer = new MutationObserver(read)
-    observer.observe(document.head, { childList: true, characterData: true, subtree: true })
-    return () => observer.disconnect()
-  }, [location.pathname])
+  const title = useSyncExternalStore(subscribeTitle, readTitle, () => '')
 
   const links = [
     { to: '/properties', label: t('nav.residences') },

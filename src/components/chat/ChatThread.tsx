@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { ArrowLeft, Camera, Plus, SendHorizontal } from 'lucide-react'
 import { chatDay } from '../../lib/chatText'
 import { cn } from '../../lib/cn'
@@ -66,7 +66,7 @@ export function ChatThread({
   const gallery = useRef<HTMLInputElement>(null)
   const camera = useRef<HTMLInputElement>(null)
   const [menu, setMenu] = useState(false)
-  const [preview, setPreview] = useState<string | null>(null)
+  const preview = useMemo(() => (file ? URL.createObjectURL(file) : null), [file])
 
   useEffect(() => {
     document.documentElement.classList.add('ih-thread-open')
@@ -78,14 +78,10 @@ export function ChatThread({
   }, [messages, file])
 
   useEffect(() => {
-    if (!file) {
-      setPreview(null)
-      return
+    return () => {
+      if (preview) URL.revokeObjectURL(preview)
     }
-    const url = URL.createObjectURL(file)
-    setPreview(url)
-    return () => URL.revokeObjectURL(url)
-  }, [file])
+  }, [preview])
 
   function submit(event?: FormEvent) {
     event?.preventDefault()

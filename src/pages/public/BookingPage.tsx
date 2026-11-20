@@ -55,13 +55,14 @@ export function BookingPage() {
 
   const selectedVehicle = useMemo(() => vehicles.find((v) => v.id === vehicleId), [vehicleId, vehicles])
 
+  const quoteNights = quote?.nights ?? 0
   const carEstimate = useMemo(() => {
-    if (!wantCar || !selectedVehicle || !quote?.nights) return null
+    if (!wantCar || !selectedVehicle || !quoteNights) return null
     const rate = withDriver ? selectedVehicle.daily_rate_with_driver_xaf : selectedVehicle.daily_rate_no_driver_xaf
-    const base = rate * quote.nights
+    const base = rate * quoteNights
     const discount = usePromo && carPromo.trim() ? Math.floor(base * 0.05) : 0
     return { base, discount, total: base - discount, rate }
-  }, [wantCar, selectedVehicle, quote?.nights, withDriver, usePromo, carPromo])
+  }, [wantCar, selectedVehicle, quoteNights, withDriver, usePromo, carPromo])
 
   async function confirm() {
     if (!property) return

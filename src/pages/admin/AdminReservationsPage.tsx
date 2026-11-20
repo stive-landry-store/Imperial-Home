@@ -24,7 +24,7 @@ export function AdminReservationsPage() {
   const client = useQueryClient()
   const stays = useQuery({ queryKey: ['admin-reservations'], queryFn: fetchAllReservations })
   const cars = useQuery({ queryKey: ['vehicle-rentals'], queryFn: fetchVehicleRentals })
-  const data = stays.data ?? []
+  const data = useMemo(() => stays.data ?? [], [stays.data])
   const { confirm, reject } = useAdminReservationActions()
   const cancelStay = useMutation({
     mutationFn: (id: string) => cancelReservation(id, 'Cancelled by administrator'),

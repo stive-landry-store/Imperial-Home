@@ -34,68 +34,72 @@ type AuthState = {
 const AuthContext = createContext<AuthState | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [loading, setLoading] = useState(true)
+  // Session first, then the profile of that session's user. Everything else is derived.
+  const [sessionReady, setSessionReady] = useState(() => !supabase)
   const [session, setSession] = useState<Session | null>(null)
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [admin, setAdmin] = useState<AdminProfile | null>(null)
-  const [permissions, setPermissions] = useState<PermissionKey[]>([])
+  const [loaded, setLoaded] = useState<{
+    userId: string
+    profile: Profile | null
+    admin: AdminProfile | null
+    permissions: PermissionKey[]
+  } | null>(null)
 
   useEffect(() => {
-    if (!supabase) {
-      setLoading(false)
-      return
-    }
+    if (!supabase) return
     const client = supabase
-    void client.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data: sub } = client.auth.onAuthStateChange((_event, next) => setSession(next))
+    void client.auth.getSession().then(({ data }) => {
+      setSession(data.session)
+      setSessionReady(true)
+    })
+    const { data: sub } = client.auth.onAuthStateChange((_event, next) => {
+      setSession(next)
+      setSessionReady(true)
+    })
     return () => sub.subscription.unsubscribe()
   }, [])
 
+  const userId = session?.user.id ?? null
+
   useEffect(() => {
-    if (!supabase || !session?.user) {
-      setProfile(null)
-      setAdmin(null)
-      setPermissions([])
-      setLoading(false)
-      return
-    }
-    const userId = session.user.id
+    if (!supabase || !userId) return
+    const client = supabase
+    const id = userId
     let cancelled = false
     async function load() {
-      setLoading(true)
-      if (supabase) {
-        try {
-          await supabase.rpc('ensure_profile')
-        } catch {
-          /* profile may already exist */
-        }
+      try {
+        await client.rpc('ensure_profile')
+      } catch {
+        /* profile may already exist */
       }
-      const nextProfile = await fetchProfile(userId)
+      const nextProfile = await fetchProfile(id)
       if (cancelled) return
-      setProfile(nextProfile)
-      if (nextProfile && (nextProfile.role === 'admin' || nextProfile.role === 'main_admin' || nextProfile.role === 'super_admin') && supabase) {
-        const { data: adminRow } = await supabase.from('admin_profiles').select('*').eq('id', userId).maybeSingle()
-        const { data: perms } = await supabase.from('admin_permissions').select('permission').eq('admin_id', userId)
-        if (!cancelled) {
-          setAdmin(adminRow as AdminProfile | null)
-          setPermissions((perms ?? []).map((p) => p.permission as PermissionKey))
-        }
-      } else if (!cancelled) {
-        setAdmin(null)
-        setPermissions([])
+      let nextAdmin: AdminProfile | null = null
+      let nextPermissions: PermissionKey[] = []
+      if (nextProfile && (nextProfile.role === 'admin' || nextProfile.role === 'main_admin' || nextProfile.role === 'super_admin')) {
+        const { data: adminRow } = await client.from('admin_profiles').select('*').eq('id', id).maybeSingle()
+        const { data: perms } = await client.from('admin_permissions').select('permission').eq('admin_id', id)
+        nextAdmin = adminRow as AdminProfile | null
+        nextPermissions = (perms ?? []).map((p) => p.permission as PermissionKey)
       }
-      if (!cancelled) setLoading(false)
+      if (!cancelled) setLoaded({ userId: id, profile: nextProfile, admin: nextAdmin, permissions: nextPermissions })
     }
     void load()
     return () => {
       cancelled = true
     }
-  }, [session?.user.id])
+  }, [userId])
+
+  const current = loaded && loaded.userId === userId ? loaded : null
+  const profile = current?.profile ?? null
+  const admin = current?.admin ?? null
+  const permissions = useMemo(() => current?.permissions ?? [], [current])
+  const loading = !sessionReady || (Boolean(userId) && !current)
 
   const reloadProfile = useCallback(async () => {
-    if (!supabase || !session?.user.id) return
-    setProfile(await fetchProfile(session.user.id))
-  }, [session?.user.id])
+    if (!supabase || !userId) return
+    const nextProfile = await fetchProfile(userId)
+    setLoaded((previous) => (previous && previous.userId === userId ? { ...previous, profile: nextProfile } : previous))
+  }, [userId])
 
   const value = useMemo<AuthState>(
     () => ({

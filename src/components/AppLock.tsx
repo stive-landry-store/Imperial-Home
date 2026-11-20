@@ -14,10 +14,9 @@ export function AppLock() {
   const hiddenAt = useRef<number | null>(null)
 
   const attempt = useCallback(async () => {
-    setFailed(false)
     const ok = await unlock()
+    setFailed(!ok)
     if (ok) setLocked(false)
-    else setFailed(true)
   }, [])
 
   useEffect(() => {
@@ -34,8 +33,17 @@ export function AppLock() {
   }, [])
 
   useEffect(() => {
-    if (locked && user) void attempt()
-  }, [locked, user, attempt])
+    if (!locked || !user) return
+    let cancelled = false
+    void unlock().then((ok) => {
+      if (cancelled) return
+      setFailed(!ok)
+      if (ok) setLocked(false)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [locked, user])
 
   if (!locked || !user) return null
 

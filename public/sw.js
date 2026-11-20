@@ -1,4 +1,4 @@
-const CACHE = 'imperial-home-v7'
+const CACHE = 'imperial-home-__BUILD_ID__'
 const IMAGES = 'imperial-home-images-v1'
 const FONTS = 'imperial-home-fonts-v1'
 const KEEP = [CACHE, IMAGES, FONTS]

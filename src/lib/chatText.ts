@@ -1,3 +1,4 @@
+import { useMemo, useSyncExternalStore } from 'react'
 import type { TFunction } from 'i18next'
 
 export function visibleMessage(body: string, t: TFunction) {
@@ -48,4 +49,33 @@ export function chatWhen(iso: string | null, locale: string) {
 export function chatDay(iso: string, locale: string) {
   const date = new Date(iso)
   return new Intl.DateTimeFormat(locale, { weekday: 'short', day: 'numeric', month: 'short' }).format(date)
+}
+
+function subscribeSeen(onChange: () => void) {
+  window.addEventListener('ih-chat-seen', onChange)
+  window.addEventListener('storage', onChange)
+  return () => {
+    window.removeEventListener('ih-chat-seen', onChange)
+    window.removeEventListener('storage', onChange)
+  }
+}
+
+function readSeenRaw() {
+  try {
+    return localStorage.getItem(SEEN) || '{}'
+  } catch {
+    return '{}'
+  }
+}
+
+/** Live map conversation id → last time it was read on this device. */
+export function useChatSeenMap(): Record<string, string> {
+  const raw = useSyncExternalStore(subscribeSeen, readSeenRaw, () => '{}')
+  return useMemo(() => {
+    try {
+      return JSON.parse(raw) as Record<string, string>
+    } catch {
+      return {}
+    }
+  }, [raw])
 }

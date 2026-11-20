@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { ChatInbox, type InboxRow } from '../../components/chat/ChatInbox'
 import { ChatThread, type Bubble } from '../../components/chat/ChatThread'
 import { useAuth } from '../../hooks/useAuth'
-import { chatSeen, markChatSeen, visibleMessage } from '../../lib/chatText'
+import { markChatSeen, visibleMessage, useChatSeenMap } from '../../lib/chatText'
 import { sendChatMessage, signedAttachmentUrls } from '../../lib/chatSend'
 import { supabase } from '../../lib/supabase'
 import { cn } from '../../lib/cn'
@@ -28,12 +28,14 @@ export function AdminChatPage() {
   const [messages, setMessages] = useState<Bubble[]>([])
   const [body, setBody] = useState('')
   const [file, setFile] = useState<File | null>(null)
-  const [seenTick, setSeenTick] = useState(0)
+  const seenMap = useChatSeenMap()
 
-  useEffect(() => {
-    const id = params.get('c')
-    if (id) setActive(id)
-  }, [params])
+  const linked = params.get('c')
+  const [lastLinked, setLastLinked] = useState(linked)
+  if (linked !== lastLinked) {
+    setLastLinked(linked)
+    if (linked) setActive(linked)
+  }
 
   useEffect(() => {
     if (!supabase) return
@@ -85,8 +87,7 @@ export function AdminChatPage() {
       const urls = await signedAttachmentUrls(rows.flatMap((row) => row.message_attachments?.map((item) => item.storage_path) ?? []))
       if (cancelled || !active) return
       markChatSeen(active)
-      setSeenTick((value) => value + 1)
-      setMessages(
+        setMessages(
         rows.map((row) => ({
           id: row.id,
           body: visibleMessage(row.body, t),
@@ -98,7 +99,6 @@ export function AdminChatPage() {
       )
     }
     markChatSeen(active)
-    setSeenTick((value) => value + 1)
     void loadThread()
     const channel = client
       .channel(`admin-chat-${active}`)
@@ -145,7 +145,7 @@ export function AdminChatPage() {
       .sort((a, b) => Number(b.needs_human) - Number(a.needs_human) || (b.last_message_at || b.created_at).localeCompare(a.last_message_at || a.created_at))
     return list.map((item) => {
       const last = recent.find((note) => note.conversation_id === item.id)
-      const seen = chatSeen(item.id)
+      const seen = seenMap[item.id] || ''
       const unread = recent.filter((note) => note.conversation_id === item.id && note.role === 'customer' && note.created_at > seen).length
       const photo = Boolean(last?.message_attachments?.length)
       const preview = last ? visibleMessage(last.body, t).trim() : ''
@@ -162,7 +162,7 @@ export function AdminChatPage() {
       }
       return row
     })
-  }, [archived, conversations, recent, seenTick, t])
+  }, [archived, conversations, recent, seenMap, t])
 
   return (
     <div className="ih-chat flex h-full min-h-0 flex-1 bg-[#0b0b0c]">

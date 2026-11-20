@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
@@ -60,11 +60,10 @@ export function AdminLayout() {
   const { t } = useTranslation()
   const { profile, admin, signOut } = useAuth()
   const location = useLocation()
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    setMenuOpen(false)
-  }, [location.pathname])
+  // The menu closes by itself on navigation: it is open only for the page it was opened on.
+  const [menuPath, setMenuPath] = useState<string | null>(null)
+  const menuOpen = menuPath === location.pathname
+  const setMenuOpen = (value: boolean) => setMenuPath(value ? location.pathname : null)
 
   const row =
     'flex min-h-14 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[15px] touch-manipulation'

@@ -31,12 +31,14 @@ export function PhotoCropper({ file, aspect, round = false, outputWidth, title, 
     const objectUrl = URL.createObjectURL(file)
     const image = new Image()
     image.onload = () => {
+      const fit = Math.max(frameW / image.naturalWidth, frameH / image.naturalHeight)
       setUrl(objectUrl)
       setImg(image)
+      setPos({ x: (frameW - image.naturalWidth * fit) / 2, y: (frameH - image.naturalHeight * fit) / 2 })
     }
     image.src = objectUrl
     return () => URL.revokeObjectURL(objectUrl)
-  }, [file])
+  }, [file, frameW, frameH])
 
   const baseScale = img ? Math.max(frameW / img.naturalWidth, frameH / img.naturalHeight) : 1
   const scale = baseScale * zoom
@@ -50,13 +52,6 @@ export function PhotoCropper({ file, aspect, round = false, outputWidth, title, 
     }),
     [frameW, frameH],
   )
-
-  useEffect(() => {
-    if (!img) return
-    const w = img.naturalWidth * baseScale
-    const h = img.naturalHeight * baseScale
-    setPos({ x: (frameW - w) / 2, y: (frameH - h) / 2 })
-  }, [img, baseScale, frameW, frameH])
 
   function applyZoom(next: number, anchor?: Point) {
     if (!img) return

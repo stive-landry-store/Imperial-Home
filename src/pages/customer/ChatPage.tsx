@@ -7,7 +7,7 @@ import { ChatThread, type Bubble } from '../../components/chat/ChatThread'
 import { Button } from '../../components/ui/Button'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
-import { chatSeen, markChatSeen, visibleMessage } from '../../lib/chatText'
+import { markChatSeen, visibleMessage, useChatSeenMap } from '../../lib/chatText'
 import { sendChatMessage, signedAttachmentUrls } from '../../lib/chatSend'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { whatsappUrl } from '../../lib/whatsapp'
@@ -33,11 +33,13 @@ export function ChatPage() {
   const [messages, setMessages] = useState<Bubble[]>([])
   const [body, setBody] = useState('')
   const [file, setFile] = useState<File | null>(null)
-  const [seenTick, setSeenTick] = useState(0)
-  useEffect(() => {
-    const target = (location.state as { open?: string } | null)?.open
+  const seenMap = useChatSeenMap()
+  const target = (location.state as { open?: string } | null)?.open ?? null
+  const [lastTarget, setLastTarget] = useState<string | null>(null)
+  if (target !== lastTarget) {
+    setLastTarget(target)
     if (target) setActive(target)
-  }, [location.state])
+  }
   const phone = config?.phone || config?.whatsapp || '237674092263'
 
   useEffect(() => {
@@ -107,8 +109,7 @@ export function ChatPage() {
       const urls = await signedAttachmentUrls(rows.flatMap((row) => row.message_attachments?.map((item) => item.storage_path) ?? []))
       if (cancelled || !active) return
       markChatSeen(active)
-      setSeenTick((value) => value + 1)
-      setMessages(
+        setMessages(
         rows.map((row) => ({
           id: row.id,
           body: visibleMessage(row.body, t),
@@ -120,7 +121,6 @@ export function ChatPage() {
       )
     }
     markChatSeen(active)
-    setSeenTick((value) => value + 1)
     void loadThread()
     const channel = client
       .channel(`chat-${active}`)
@@ -184,7 +184,7 @@ export function ChatPage() {
     const ordered = mainId ? [...list].sort((a, b) => Number(b.id === mainId) - Number(a.id === mainId)) : list
     const built = ordered.map((item) => {
       const last = recent.find((note) => note.conversation_id === item.id)
-      const seen = chatSeen(item.id)
+      const seen = seenMap[item.id] || ''
       const unread = recent.filter(
         (note) => note.conversation_id === item.id && note.role !== 'customer' && note.role !== 'system' && note.created_at > seen,
       ).length
@@ -217,7 +217,7 @@ export function ChatPage() {
       })
     }
     return built
-  }, [archived, conversations, recent, seenTick, t])
+  }, [archived, conversations, recent, seenMap, t])
 
   async function openRow(id: string) {
     if (id !== NEW_ASSISTANCE) {

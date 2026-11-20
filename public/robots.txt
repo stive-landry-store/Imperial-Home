@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://imperial-home.vercel.app/sitemap.xml

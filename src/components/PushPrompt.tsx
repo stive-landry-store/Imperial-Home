@@ -18,20 +18,19 @@ export function PushPrompt() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
-  const [iosInstall, setIosInstall] = useState(false)
+  const [iosInstall] = useState(() => needsHomeScreenInstall())
   const userId = user?.id
 
   useEffect(() => {
     if (!userId) return
     void syncPush()
-    const installFirst = needsHomeScreenInstall()
-    setIosInstall(installFirst)
+    const installFirst = iosInstall
     const canAsk = typeof Notification !== 'undefined' && Notification.permission === 'default' && pushSupported()
     if ((installFirst || canAsk) && !recentlyDismissed()) {
       const timer = window.setTimeout(() => setVisible(true), 1500)
       return () => window.clearTimeout(timer)
     }
-  }, [userId])
+  }, [userId, iosInstall])
 
   if (!visible || !userId) return null
 

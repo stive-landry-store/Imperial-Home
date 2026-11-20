@@ -67,7 +67,7 @@ export function AdminSettingsPage() {
         const row = data?.find((r) => r.key === 'bootstrap_admin_email')
         const list = data?.find((r) => r.key === 'bootstrap_admin_emails')
         if (typeof row?.value === 'string') setBootstrap(row.value)
-        else if (Array.isArray(list?.value)) setBootstrap((list?.value as string[]).join(', '))
+        else if (list && Array.isArray(list.value)) setBootstrap((list.value as string[]).join(', '))
       })
   }, [])
 
