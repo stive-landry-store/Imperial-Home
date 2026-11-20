@@ -225,6 +225,8 @@ export const en = {
     hidePassword: 'Hide password',
     confirmEmail: 'Please confirm your email before signing in. Check your inbox.',
     confirmEmailSent: 'Account created. Check your email to confirm, then sign in.',
+    captchaRequired: 'Complete the security check.',
+    emailConfirmed: 'Your e-mail is confirmed. You can sign in.',
     invalidCredentials: 'Incorrect email or password.',
     alreadyRegistered: 'This email is already registered. Sign in or reset your password.',
     passwordTooShort: 'Password must be at least 8 characters.',

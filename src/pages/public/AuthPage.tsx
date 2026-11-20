@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useOnline } from '../../hooks/useOnline'
 import { Helmet } from 'react-helmet-async'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button } from '../../components/ui/Button'
 import { Input, Label } from '../../components/ui/Field'
@@ -11,9 +11,11 @@ import { useTheme } from '../../hooks/useTheme'
 import { formatLoginRegisterError } from '../../lib/authMessages'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { ImperialLogo } from '../../components/brand/Logo'
+import { Turnstile, captchaEnabled } from '../../components/security/Turnstile'
 
 export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const [params] = useSearchParams()
   const online = useOnline()
   const { theme } = useTheme()
   const { signIn, signUp } = useAuth()
@@ -25,6 +27,10 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const [phone, setPhone] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const [captcha, setCaptcha] = useState<string | null>(null)
+  const [sent, setSent] = useState(false)
+  const next = params.get('next') || '/'
+  const confirmed = params.get('confirmed') === '1'
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
@@ -37,10 +43,14 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
     try {
       if (mode === 'login') {
         await signIn(email, password)
-        navigate('/', { replace: true })
+        navigate(next.startsWith('/') ? next : '/', { replace: true })
       } else {
-        await signUp({ email, password, full_name: fullName, phone })
-        navigate('/', { replace: true })
+        if (captchaEnabled && !captcha) {
+          setError(t('auth.captchaRequired'))
+          return
+        }
+        await signUp({ email, password, full_name: fullName, phone, captchaToken: captcha, locale: i18n.language })
+        setSent(true)
       }
     } catch (err) {
       setError(formatLoginRegisterError(err, t, mode))
@@ -57,6 +67,17 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
       <ImperialLogo compact light={theme === 'dark'} />
       <h1 className="mt-8 font-display text-4xl">{mode === 'login' ? t('auth.loginTitle') : t('auth.registerTitle')}</h1>
       {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-[#d4af6a]">{t('auth.configure')}</p> : null}
+      {confirmed && mode === 'login' ? (
+        <p className="ih-pop mt-4 rounded-2xl border border-[#d4af6a]/40 p-4 text-sm text-[#d4af6a]">{t('auth.emailConfirmed')}</p>
+      ) : null}
+      {sent ? (
+        <div className="ih-pop theme-card mt-8 space-y-3 p-6 text-center" role="status">
+          <p className="ih-float text-4xl" aria-hidden>✉︎</p>
+          <p className="font-display text-xl">{t('auth.confirmEmailSent')}</p>
+          <p className="text-sm theme-muted">{email}</p>
+          <Link to="/login" className="mt-2 inline-block text-sm text-[#d4af6a]">{t('auth.toLogin')}</Link>
+        </div>
+      ) : (
       <form className="theme-card mt-8 space-y-4 p-6" onSubmit={(e) => void onSubmit(e)}>
         {mode === 'register' ? (
           <>
@@ -96,12 +117,14 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
             />
           </div>
         ) : null}
-        {error ? <p className="text-sm text-red-500">{error}</p> : null}
+        {mode === 'register' ? <Turnstile onToken={setCaptcha} theme={theme === 'dark' ? 'dark' : 'light'} /> : null}
+        {error ? <p className="ih-shake text-sm text-red-500" role="alert">{error}</p> : null}
         {!online ? <p className="text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
         <Button type="submit" className="w-full" disabled={!online || pending || !isSupabaseConfigured()}>
           {mode === 'login' ? t('auth.submitLogin') : t('auth.submitRegister')}
         </Button>
       </form>
+      )}
       {mode === 'login' ? (
         <Link to="/forgot-password" className="mt-4 block text-center text-sm text-[#d4af6a]">
           {t('auth.forgot')}

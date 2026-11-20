@@ -228,6 +228,8 @@ export const fr: Messages = {
     hidePassword: 'Masquer le mot de passe',
     confirmEmail: 'Confirmez votre e-mail avant de vous connecter. Vérifiez votre boîte mail.',
     confirmEmailSent: 'Compte créé. Confirmez votre e-mail, puis connectez-vous.',
+    captchaRequired: 'Validez la vérification de sécurité.',
+    emailConfirmed: 'Votre e-mail est confirmé. Vous pouvez vous connecter.',
     invalidCredentials: 'E-mail ou mot de passe incorrect.',
     alreadyRegistered: 'Cet e-mail est déjà inscrit. Connectez-vous ou réinitialisez le mot de passe.',
     passwordTooShort: 'Le mot de passe doit contenir au moins 8 caractères.',

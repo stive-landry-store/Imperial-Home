@@ -1,16 +1,19 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-}
+import { clientIp, corsFor, underRateLimit } from "../_shared/http.ts"
+// Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
 
 const ALLOWED = new Set(["en", "zh-CN", "zh", "hi", "es", "fr", "de", "ar", "bn", "pt", "ru", "ur"])
 
 Deno.serve(async (req) => {
+  const CORS = corsFor(req)
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS })
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405, headers: CORS })
+  if (!(await underRateLimit(`translate:${clientIp(req)}`, 120, 600))) {
+    return new Response(JSON.stringify({ error: "Too many requests" }), {
+      status: 429,
+      headers: { ...CORS, "Content-Type": "application/json" },
+    })
+  }
 
   const body = await req.json().catch(() => null)
   const texts = Array.isArray(body?.texts) ? body.texts.slice(0, 16).map((item: unknown) => String(item).slice(0, 450)) : []

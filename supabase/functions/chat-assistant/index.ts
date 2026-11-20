@@ -1,5 +1,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { handleCors, json, serviceClient } from '../_shared/http.ts'
+import Anthropic from 'npm:@anthropic-ai/sdk'
+import { handleCors, json, serviceClient, underRateLimit } from '../_shared/http.ts'
+
+// Imperial Home reception assistant, grounded on the house data and answered by Claude.
+// Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
 
 Deno.serve(async (req) => {
   const cors = handleCors(req)
@@ -15,6 +19,9 @@ Deno.serve(async (req) => {
   })
   const { data: userData } = await userClient.auth.getUser()
   if (!userData.user) return json({ error: 'Unauthorized' }, 401)
+  if (!(await underRateLimit(`assistant:${userData.user.id}`, 30, 3600))) {
+    return json({ error: 'Too many messages. Try again in a moment.' }, 429)
+  }
 
   const admin = createClient(url, key)
   const { data: convo } = await admin.from('conversations').select('*').eq('id', conversation_id).single()
@@ -83,32 +90,59 @@ Deno.serve(async (req) => {
       answer = fr
         ? `${match.name}, à ${match.city}. ${match.capacity} personnes, ${match.nightly_rate_xaf} FCFA la nuit.`
         : `${match.name}, in ${match.city}. ${match.capacity} people, ${match.nightly_rate_xaf} FCFA a night.`
-    } else {
+    } else if (!Deno.env.get('ANTHROPIC_API_KEY')) {
       escalate = true
     }
   }
 
-  const openai = Deno.env.get('OPENAI_API_KEY')
-  if (openai && !escalate) {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${openai}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        temperature: 0.1,
-        messages: [
-          {
-            role: 'system',
-            content:
-              'You write like the person at the Imperial Home reception desk in Douala. Short texts, warm, in the guest language. No essays, no bullet lists, no "I am an assistant". Use ONLY the JSON facts. Never invent availability, prices, or reservation status. If you do not know, say you will pass it to the team. Currency is FCFA.',
-          },
-          { role: 'user', content: `FACTS:\n${facts}\n\nQUESTION:\n${message}` },
-        ],
-      }),
-    })
-    if (res.ok) {
-      const payload = await res.json()
-      answer = payload.choices?.[0]?.message?.content ?? answer
+  const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY')
+  if (anthropicKey && !escalate) {
+    const { data: history } = await admin
+      .from('messages')
+      .select('role, body')
+      .eq('conversation_id', conversation_id)
+      .order('created_at', { ascending: false })
+      .limit(12)
+    const turns: Anthropic.Beta.BetaMessageParam[] = []
+    for (const row of (history ?? []).reverse()) {
+      const role = row.role === 'customer' || row.role === 'user' ? 'user' : 'assistant'
+      const text = String(row.body ?? '').slice(0, 2000)
+      if (!text) continue
+      const last = turns[turns.length - 1]
+      if (last && last.role === role) last.content = `${last.content}\n${text}`
+      else turns.push({ role, content: text })
+    }
+    while (turns.length && turns[0].role !== 'user') turns.shift()
+    const question = `FACTS (JSON, the only source of truth):\n${facts}\n\nGUEST MESSAGE:\n${message}`
+    if (turns.length && turns[turns.length - 1].role === 'user') turns[turns.length - 1].content = question
+    else turns.push({ role: 'user', content: question })
+
+    try {
+      const client = new Anthropic({ apiKey: anthropicKey })
+      const response = await client.beta.messages.create({
+        model: Deno.env.get('ANTHROPIC_MODEL') ?? 'claude-opus-5-5',
+        max_tokens: 1024,
+        betas: ['server-side-fallback-2026-07-01'],
+        fallbacks: 'default',
+        output_config: { effort: 'low' },
+        system:
+          'You are the reception desk of Imperial Home, furnished apartments at Carrefour Conquête, Douala. Reply in the guest\'s language, in two to four short sentences, warm and plain. Use ONLY the FACTS. Never invent availability, prices, or reservation status. When you do not know, say you are passing the question to the team. Currency is FCFA.',
+        messages: turns,
+      })
+      if (response.stop_reason !== 'refusal') {
+        const text = response.content
+          .filter((block): block is Anthropic.Beta.BetaTextBlock => block.type === 'text')
+          .map((block) => block.text)
+          .join('')
+          .trim()
+        if (text) answer = text
+      } else {
+        escalate = true
+      }
+    } catch (error) {
+      if (error instanceof Anthropic.RateLimitError) console.warn('assistant rate limited')
+      else if (error instanceof Anthropic.APIError) console.error('assistant api error', error.status)
+      else console.error('assistant error', error)
     }
   }
 

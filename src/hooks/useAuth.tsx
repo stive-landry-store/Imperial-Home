@@ -20,6 +20,8 @@ type AuthState = {
     password: string
     full_name: string
     phone?: string
+    captchaToken?: string | null
+    locale?: string
   }) => Promise<{ needsEmailConfirmation: boolean }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
@@ -110,32 +112,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const client = supabase
         const normalized = email.trim().toLowerCase()
         const attempt = () => client.auth.signInWithPassword({ email: normalized, password })
-        let { error } = await attempt()
-        const unconfirmed = `${error?.code ?? ''} ${error?.message ?? ''}`.toLowerCase().includes('not confirmed')
-        if (unconfirmed) {
-          const base = import.meta.env.VITE_SUPABASE_URL as string
-          const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string
-          await fetch(`${base}/functions/v1/confirm-email`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              apikey: anon,
-              Authorization: `Bearer ${anon}`,
-            },
-            body: JSON.stringify({ email: normalized }),
-          })
-          const retry = await attempt()
-          error = retry.error
-        }
+        const { error } = await attempt()
         if (error) throw error
         await client.rpc('ensure_profile')
         markSessionStarted()
         void logActivity('login')
       },
-      signUp: async ({ email, password, full_name, phone }) => {
+      signUp: async ({ email, password, full_name, phone, captchaToken, locale }) => {
         if (!supabase) throw new Error('Supabase is not configured')
         const base = import.meta.env.VITE_SUPABASE_URL as string
         const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string
+        const normalized = email.trim().toLowerCase()
         const response = await fetch(`${base}/functions/v1/register`, {
           method: 'POST',
           headers: {
@@ -144,23 +131,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             Authorization: `Bearer ${anon}`,
           },
           body: JSON.stringify({
-            email: email.trim().toLowerCase(),
+            email: normalized,
             password,
             full_name: full_name.trim(),
             phone: phone?.trim() ?? '',
+            captcha_token: captchaToken ?? null,
+            redirect_to: authRedirectUrl('/login?confirmed=1'),
+            locale: locale ?? 'fr',
           }),
         })
         const payload = (await response.json().catch(() => null)) as { error?: string } | null
         if (!response.ok) throw new Error(payload?.error || 'Could not create the account')
-        const { error } = await supabase.auth.signInWithPassword({
-          email: email.trim().toLowerCase(),
-          password,
-        })
-        if (error) throw error
-        await supabase.rpc('ensure_profile')
-        markSessionStarted()
-        void logActivity('login')
-        return { needsEmailConfirmation: false }
+        // The address must be confirmed from the inbox before the first sign-in.
+        return { needsEmailConfirmation: true }
       },
       signOut: async () => {
         await logActivity('logout')
