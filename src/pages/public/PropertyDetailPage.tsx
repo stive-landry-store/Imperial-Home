@@ -29,11 +29,13 @@ import { whatsappUrl } from '../../lib/whatsapp'
 import { SITE_ORIGIN } from '../../lib/seo'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'
+import { fetchRatings } from '../../lib/guest'
 
 export function PropertyDetailPage() {
   const { slug = '' } = useParams()
   const [params] = useSearchParams()
   const { t, i18n } = useTranslation()
+  const { data: ratings } = useQuery({ queryKey: ['reviews', 'ratings'], queryFn: fetchRatings, staleTime: 120_000 })
   const navigate = useNavigate()
   const { user } = useAuth()
   const online = useOnline()
@@ -116,6 +118,7 @@ export function PropertyDetailPage() {
 
   const place = imperialPlace(config)
   const summary = apartmentSummary(property, i18n.language)
+  const rating = ratings?.[property.id]
 
   return (
     <div className="theme-page">
@@ -141,6 +144,11 @@ export function PropertyDetailPage() {
                 addressLocality: property.city || 'Douala',
                 addressCountry: 'CM',
               },
+              image: coverImage(property.property_images) || undefined,
+              offers: { '@type': 'Offer', price: property.nightly_rate_xaf, priceCurrency: 'XAF' },
+              aggregateRating: rating
+                ? { '@type': 'AggregateRating', ratingValue: rating.average.toFixed(1), reviewCount: rating.count, bestRating: 5 }
+                : undefined,
             })}
           </script>
         </Helmet>

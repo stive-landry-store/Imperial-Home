@@ -1,7 +1,17 @@
 {
-  "name": "imperial-home-1",
+  "name": "imperial-home",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Imperial Home \u2014 furnished apartments and car rental in Douala. App by stive landry store (NYAMI TCHOUPE STIVE LANDRY).",
+  "author": {
+    "name": "stive landry store",
+    "url": "https://github.com/stive-landry-store"
+  },
+  "contributors": [
+    {
+      "name": "NYAMI TCHOUPE STIVE LANDRY (stive landry store)"
+    }
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,12 +25,18 @@
     "db:check": "node scripts/check-connection.mjs",
     "db:link": "npx supabase link",
     "db:push": "npx supabase db push",
-    "functions:deploy": "npx supabase functions deploy"
+    "functions:deploy": "npx supabase functions deploy",
+    "e2e": "playwright test --trace off",
+    "db:types": "npx supabase gen types typescript --linked --schema public > src/types/supabase.gen.ts",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
+    "@sentry/react": "10.78.0",
     "@supabase/supabase-js": "^2.112.4",
     "@tanstack/react-query": "^5.102.7",
+    "@vercel/analytics": "2.0.1",
+    "@vercel/speed-insights": "2.1.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "exceljs": "^4.4.0",
@@ -43,6 +59,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",

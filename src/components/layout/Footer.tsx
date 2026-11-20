@@ -9,6 +9,7 @@ import { ImperialLogo } from '../brand/Logo'
 import { SocialLinks } from './SocialLinks'
 import { Live } from '../i18n/Live'
 import { isAppInstalled } from '../../lib/installPrompt'
+import { CREATOR } from '../../lib/credits'
 
 export function Footer() {
   const { t } = useTranslation()
@@ -65,6 +66,18 @@ export function Footer() {
           <Link to="/login" className="hover:text-gold-light">
             {t('nav.login')}
           </Link>
+          <Link to="/avis" className="hover:text-gold-light">
+            {t('reviewsPage.title')}
+          </Link>
+          <Link to="/a-propos" className="hover:text-gold-light">
+            {t('legal.about.title')}
+          </Link>
+          <Link to="/conditions" className="hover:text-gold-light">
+            {t('legal.terms.title')}
+          </Link>
+          <Link to="/confidentialite" className="hover:text-gold-light">
+            {t('legal.privacy.title')}
+          </Link>
         </div>
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center">
@@ -88,9 +101,16 @@ export function Footer() {
       <p className="pb-4 text-center font-display text-base tracking-[0.18em]">
         <Live text="MERCI ET BIENVENUE CHEZ IMPERIAL HOME !" from="fr" />
       </p>
-      <p className="border-t border-[#d4af6a]/15 py-4 text-center text-[12px] tracking-wider text-[#d4af6a]/50">
-        © {year} Imperial Home. {t('footer.rights')}
-      </p>
+      <div className="border-t border-[#d4af6a]/15 py-4 text-center text-[12px] tracking-wider text-[#d4af6a]/50">
+        <p>© {year} Imperial Home. {t('footer.rights')}</p>
+        <p className="mt-2" data-reveal="fade">
+          {t('credits.madeBy')}{' '}
+          <Link to="/a-propos" className="ih-gold-text font-semibold" title={CREATOR.fullName}>
+            {CREATOR.company}
+          </Link>
+          <span className="sr-only"> — {CREATOR.fullName}</span>
+        </p>
+      </div>
     </footer>
   )
 }

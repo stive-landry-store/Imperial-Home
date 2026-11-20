@@ -1,0 +1,32 @@
+# Imperial Home — weekly database backup (schema + data) kept as a private workflow artifact for 90 days.
+# Needs the repository secret SUPABASE_DB_URL (Supabase → Project Settings → Database → Connection string, URI).
+# Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
+name: Database backup
+
+on:
+  schedule:
+    - cron: '17 2 * * 0'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'stive-landry-store' }}
+    steps:
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y postgresql-client
+      - name: Dump
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then echo "SUPABASE_DB_URL is not set"; exit 1; fi
+          stamp=$(date -u +%Y-%m-%d)
+          pg_dump "$SUPABASE_DB_URL" --no-owner --no-privileges --schema=public --format=custom --file="imperial-home-$stamp.dump"
+          ls -lh imperial-home-*.dump
+      - uses: actions/upload-artifact@v4
+        with:
+          name: imperial-home-db-${{ github.run_id }}
+          path: imperial-home-*.dump
+          retention-days: 90

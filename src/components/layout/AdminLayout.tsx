@@ -24,8 +24,7 @@ import {
   Sparkles,
   Users,
   X,
-  type LucideIcon,
-} from 'lucide-react'
+  type LucideIcon, KeyRound, Tags } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { VerifiedBadge } from '../ui/VerifiedBadge'
@@ -43,6 +42,8 @@ const links: { to: string; key: string; icon: LucideIcon }[] = [
   { to: '/admin/calendar', key: 'calendar', icon: CalendarDays },
   { to: '/admin/customers', key: 'customers', icon: Users },
   { to: '/admin/promotions', key: 'promotions', icon: BadgePercent },
+  { to: '/admin/pricing', key: 'pricing', icon: Tags },
+  { to: '/admin/security', key: 'security', icon: KeyRound },
   { to: '/admin/vehicles', key: 'vehicles', icon: Car },
   { to: '/admin/payments', key: 'payments', icon: CreditCard },
   { to: '/admin/turnover', key: 'turnover', icon: Sparkles },

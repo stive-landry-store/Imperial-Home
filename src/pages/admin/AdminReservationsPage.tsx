@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
@@ -42,11 +42,17 @@ export function AdminReservationsPage() {
     onSuccess: () => void client.invalidateQueries({ queryKey: ['vehicle-rentals'] }),
   })
   const locale = i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'
+  const [month, setMonth] = useState('')
   const rows = useMemo<Row[]>(() => {
     const stayRows: Row[] = data.map((reservation) => ({ kind: 'stay', at: reservation.created_at, reservation }))
     const carRows: Row[] = (cars.data ?? []).map((rental) => ({ kind: 'car', at: rental.created_at, rental }))
     return [...stayRows, ...carRows].sort((a, b) => b.at.localeCompare(a.at))
   }, [data, cars.data])
+
+  // Accounting: export every stay and car rental that starts in the chosen month (or everything).
+  const months = Array.from(new Set(data.map((r) => r.check_in.slice(0, 7)))).sort().reverse()
+  const inMonth = month ? data.filter((r) => r.check_in.startsWith(month)) : data
+  const carsInMonth = month ? (cars.data ?? []).filter((c) => (c.start_date ?? c.created_at ?? '').startsWith(month)) : cars.data ?? []
 
   return (
     <div className="px-4 py-5 md:p-10">
@@ -55,17 +61,30 @@ export function AdminReservationsPage() {
       </Helmet>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-3xl md:text-4xl">{t('admin.reservations')}</h1>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            aria-label={t('admin.exportMonth')}
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            className="min-h-10 rounded-full border border-[#d4af6a]/40 bg-transparent px-3 text-sm"
+          >
+            <option value="">{t('admin.exportAll')}</option>
+            {months.map((m) => (
+              <option key={m} value={m}>
+                {new Date(`${m}-15T12:00:00`).toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
+              </option>
+            ))}
+          </select>
           <Button
             className="px-4 py-2 text-[11px]"
-            onClick={() => void import('../../lib/exportExcel').then((m) => m.downloadReservationsExcel(data, cars.data ?? []))}
+            onClick={() => void import('../../lib/exportExcel').then((m) => m.downloadReservationsExcel(inMonth, carsInMonth))}
           >
             {t('admin.exportExcel')}
           </Button>
           <Button
             variant="outline"
             className="px-4 py-2 text-[11px]"
-            onClick={() => void import('../../lib/exportPdf').then((m) => m.downloadReservationsPdf(data, cars.data ?? []))}
+            onClick={() => void import('../../lib/exportPdf').then((m) => m.downloadReservationsPdf(inMonth, carsInMonth))}
           >
             {t('admin.exportPdf')}
           </Button>

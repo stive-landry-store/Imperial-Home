@@ -1,15 +1,37 @@
 {
   "rewrites": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(Googlebot|bingbot|DuckDuckBot|YandexBot|Applebot|Baiduspider|facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview).*"
+        }
+      ],
+      "destination": "/api/og?kind=home"
+    },
+    {
+      "source": "/properties",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(Googlebot|bingbot|DuckDuckBot|YandexBot|Applebot|Baiduspider|facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview).*"
+        }
+      ],
+      "destination": "/api/og?kind=list"
+    },
+    {
       "source": "/properties/:slug",
       "has": [
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview).*"
+          "value": ".*(Googlebot|bingbot|DuckDuckBot|YandexBot|Applebot|Baiduspider|facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview).*"
         }
       ],
-      "destination": "/api/og?slug=:slug"
+      "destination": "/api/og?kind=property&slug=:slug"
     },
     {
       "source": "/cars/:slug",
@@ -17,7 +39,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview).*"
+          "value": ".*(Googlebot|bingbot|DuckDuckBot|YandexBot|Applebot|Baiduspider|facebookexternalhit|WhatsApp|Twitterbot|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|SkypeUriPreview).*"
         }
       ],
       "destination": "/api/og?kind=car&slug=:slug"

@@ -17,6 +17,7 @@ import { ReservationQr } from '../../components/account/ReservationQr'
 import { useMatricule } from '../../hooks/useMatricule'
 import { todayIso } from '../../lib/availability'
 import { Loader } from '../../components/ui/Loader'
+import { ArrivalCard } from '../../components/account/ArrivalCard'
 
 export function ReservationDetailPage() {
   const { id = '' } = useParams()
@@ -74,6 +75,7 @@ export function ReservationDetailPage() {
           <p className="mt-2 text-sm">
             <Live text={localized(reservation.properties?.access_notes_en, reservation.properties?.access_notes_fr, i18n.language)} />
           </p>
+          <ArrivalCard reservationId={reservation.id} />
           <WifiCard reservationId={reservation.id} />
           <CleaningStatus reservationId={reservation.id} />
           <ReservationQr reservationId={reservation.id} code={reservation.public_code} />

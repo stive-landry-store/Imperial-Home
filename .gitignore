@@ -28,3 +28,7 @@ supabase/bootstrap.sql
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright
+/test-results/
+/playwright-report/

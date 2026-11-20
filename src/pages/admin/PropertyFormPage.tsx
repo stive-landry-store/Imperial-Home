@@ -446,10 +446,6 @@ export function PropertyFormPage() {
 
         security_deposit_xaf: Number(form.security_deposit_xaf) || 0,
 
-        weekly_discount_percent: 0,
-
-        monthly_discount_percent: 0,
-
         guide_fr: form.guide_fr,
 
         guide_en: form.guide_en,

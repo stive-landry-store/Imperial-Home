@@ -40,6 +40,10 @@ const AdminReservationsPage = lazy(() => import('../pages/admin/AdminReservation
 const AdminReservationDetailPage = lazy(() => import('../pages/admin/AdminReservationDetailPage').then((m) => ({ default: m.AdminReservationDetailPage })))
 const AdminCalendarPage = lazy(() => import('../pages/admin/AdminCalendarPage').then((m) => ({ default: m.AdminCalendarPage })))
 const AdminCustomersPage = lazy(() => import('../pages/admin/AdminCustomersPage').then((m) => ({ default: m.AdminCustomersPage })))
+const ReviewsPage = lazy(() => import('../pages/public/ReviewsPage').then((m) => ({ default: m.ReviewsPage })))
+const LegalPage = lazy(() => import('../pages/public/LegalPage').then((m) => ({ default: m.LegalPage })))
+const AdminPricingPage = lazy(() => import('../pages/admin/AdminPricingPage').then((m) => ({ default: m.AdminPricingPage })))
+const AdminSecurityPage = lazy(() => import('../pages/admin/AdminSecurityPage').then((m) => ({ default: m.AdminSecurityPage })))
 const AdminPromotionsPage = lazy(() => import('../pages/admin/AdminPromotionsPage').then((m) => ({ default: m.AdminPromotionsPage })))
 const AdminPaymentsPage = lazy(() => import('../pages/admin/AdminPaymentsPage').then((m) => ({ default: m.AdminPaymentsPage })))
 const AdminChatPage = lazy(() => import('../pages/admin/AdminChatPage').then((m) => ({ default: m.AdminChatPage })))
@@ -100,6 +104,10 @@ export function AppRouter() {
               }
             />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/avis" element={<ReviewsPage />} />
+            <Route path="/a-propos" element={<LegalPage kind="about" />} />
+            <Route path="/conditions" element={<LegalPage kind="terms" />} />
+            <Route path="/confidentialite" element={<LegalPage kind="privacy" />} />
             <Route path="/installer" element={<InstallGuidePage />} />
             <Route path="/cars" element={<CarsPage />} />
             <Route path="/cars/:slug" element={<CarDetailPage />} />
@@ -152,6 +160,8 @@ export function AppRouter() {
           <Route path="calendar" element={<AdminCalendarPage />} />
           <Route path="customers" element={<AdminCustomersPage />} />
           <Route path="promotions" element={<AdminPromotionsPage />} />
+          <Route path="pricing" element={<AdminPricingPage />} />
+          <Route path="security" element={<AdminSecurityPage />} />
           <Route path="vehicles" element={<AdminVehiclesPage />} />
           <Route path="payments" element={<AdminPaymentsPage />} />
           <Route path="turnover" element={<AdminTurnoverPage />} />

@@ -233,6 +233,59 @@ export type Quote = {
   deposit_xaf?: number
   services_xaf?: number
   long_stay?: boolean
+  long_stay_discount_xaf?: number
+  long_stay_percent?: number
+  promo_discount_xaf?: number
+  base_nightly_rate_xaf?: number
+  nightly?: { date: string; rate: number }[]
+}
+
+export type SeasonalRate = {
+  id: string
+  property_id: string | null
+  label: string
+  starts_on: string
+  ends_on: string
+  nightly_rate_xaf: number | null
+  adjust_percent: number
+  is_active: boolean
+}
+
+export type ExternalCalendar = {
+  id: string
+  property_id: string
+  source: string
+  url: string
+  is_active: boolean
+  last_synced_at: string | null
+  last_error: string | null
+}
+
+export type PublicReview = {
+  id: string
+  property_id: string
+  property_name: string
+  property_slug: string
+  rating: number
+  body: string
+  created_at: string
+  guest_name: string
+  stay_month: string
+  verified: boolean
+}
+
+export type Arrival = {
+  open: boolean
+  opens_on: string
+  access_code: string | null
+  arrival_time: string | null
+  departure_time: string | null
+  guide_fr: string | null
+  guide_en: string | null
+  access_notes_fr: string | null
+  access_notes_en: string | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type Conversation = {
