@@ -498,3 +498,233 @@ select:focus-visible {
     display: none;
   }
 }
+
+/* =================================================================== motion v2 */
+
+@keyframes ih-mask-up {
+  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.35em, 0); }
+  to { opacity: 1; clip-path: inset(0 0 -20% 0); transform: none; }
+}
+@keyframes ih-clip-reveal {
+  from { clip-path: inset(100% 0 0 0 round 1rem); transform: scale(1.08); }
+  to { clip-path: inset(0 0 0 0 round 0); transform: none; }
+}
+
+/* Headings arrive behind a mask instead of a plain fade. */
+html.ih-motion h1[data-reveal].is-revealed,
+html.ih-motion h2[data-reveal].is-revealed {
+  animation-name: ih-mask-up;
+}
+.theme-page h1:not([data-reveal]):not(.ih-no-anim) {
+  animation: ih-mask-up 900ms var(--ih-ease-out) both;
+}
+
+/* Card photos wipe in when their card is revealed. */
+html.ih-motion .is-revealed .ih-card-media img,
+html.ih-motion .is-revealed img.ih-card-img {
+  animation: ih-clip-reveal 1200ms var(--ih-ease-out) both;
+  animation-delay: calc(var(--ih-i, 0) * var(--ih-stagger) + 120ms);
+}
+
+/* Route change: a gold line sweeps across the top while the new page fades in. */
+.ih-route-sweep {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 150;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, #a8843f 20%, #f1d896 50%, #a8843f 80%, transparent);
+  box-shadow: 0 0 18px rgb(224 197 122 / 0.8);
+  transform-origin: left;
+  animation: ih-route-sweep 900ms var(--ih-ease-in-out) forwards;
+}
+@keyframes ih-route-sweep {
+  0% { transform: scaleX(0); opacity: 1; }
+  60% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* Ambient light: two slow gold auras drifting behind every page (dark theme). */
+.ih-ambient {
+  position: fixed;
+  inset: -20vmax;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s var(--ih-ease-out);
+}
+html.theme-dark .ih-ambient {
+  opacity: 1;
+}
+.ih-ambient::before,
+.ih-ambient::after {
+  content: '';
+  position: absolute;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 999px;
+  filter: blur(80px);
+  background: radial-gradient(circle, rgb(196 163 90 / 0.13), transparent 65%);
+  animation: ih-drift-a 26s var(--ih-ease-in-out) infinite alternate;
+}
+.ih-ambient::before {
+  top: 10%;
+  left: 5%;
+}
+.ih-ambient::after {
+  right: 0;
+  bottom: 5%;
+  background: radial-gradient(circle, rgb(168 132 63 / 0.1), transparent 65%);
+  animation-name: ih-drift-b;
+  animation-duration: 32s;
+}
+@keyframes ih-drift-a {
+  to { transform: translate3d(18vmax, 12vmax, 0) scale(1.15); }
+}
+@keyframes ih-drift-b {
+  to { transform: translate3d(-16vmax, -10vmax, 0) scale(0.9); }
+}
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Film grain for depth. */
+html.theme-dark body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Cursor: a gold ring that follows the pointer and grows over anything clickable (desktop only). */
+.ih-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 999px;
+  border: 1px solid rgb(224 197 122 / 0.75);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  transform: translate3d(var(--cx, -100px), var(--cy, -100px), 0) scale(var(--cs, 1));
+  transition: transform 160ms var(--ih-ease-out), border-color var(--ih-dur-sm), background-color var(--ih-dur-sm), opacity var(--ih-dur-sm);
+}
+.ih-cursor.is-hover {
+  --cs: 1.8;
+  background-color: rgb(224 197 122 / 0.15);
+}
+.ih-cursor.is-down {
+  --cs: 0.7;
+}
+.ih-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 301;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 999px;
+  background: #e0c57a;
+  pointer-events: none;
+  transform: translate3d(var(--dx, -100px), var(--dy, -100px), 0);
+}
+
+/* Header navigation: gold underline that slides in. */
+@media (hover: hover) {
+  header.ih-header nav a,
+  header.ih-header a.ih-nav-link {
+    position: relative;
+  }
+  header.ih-header nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: linear-gradient(90deg, #a8843f, #f1d896);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--ih-dur-md) var(--ih-ease-out);
+  }
+  header.ih-header nav a:hover::after,
+  header.ih-header nav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+header.ih-header {
+  animation: ih-fade-down 700ms var(--ih-ease-out) both;
+}
+
+/* Bottom tab bar: the active tab carries a glowing gold pill. */
+[data-tabbar] a {
+  position: relative;
+  transition: color var(--ih-dur-sm), transform var(--ih-dur-xs);
+}
+[data-tabbar] a:active {
+  transform: scale(0.92);
+}
+[data-tabbar] a.ih-tab-active::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 28px;
+  height: 3px;
+  margin-left: -14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #a8843f, #f1d896);
+  box-shadow: 0 0 12px rgb(224 197 122 / 0.85);
+  animation: ih-pop 420ms var(--ih-ease-spring);
+}
+
+/* Forms: labels and fields arrive in sequence, focus glows. */
+.theme-card form > *,
+form.theme-card > * {
+  animation: ih-fade-up 600ms var(--ih-ease-out) both;
+}
+form.theme-card > *:nth-child(2), .theme-card form > *:nth-child(2) { animation-delay: 60ms; }
+form.theme-card > *:nth-child(3), .theme-card form > *:nth-child(3) { animation-delay: 120ms; }
+form.theme-card > *:nth-child(4), .theme-card form > *:nth-child(4) { animation-delay: 180ms; }
+form.theme-card > *:nth-child(5), .theme-card form > *:nth-child(5) { animation-delay: 240ms; }
+form.theme-card > *:nth-child(n + 6), .theme-card form > *:nth-child(n + 6) { animation-delay: 300ms; }
+
+/* Floating buttons (WhatsApp, assistant): entrance and gentle bob. */
+.ih-fab {
+  animation: ih-pop 700ms var(--ih-ease-spring) 600ms both, ih-pulse-ring 2.6s var(--ih-ease-out) 1.4s infinite;
+}
+
+/* Loader veil between lazy pages. */
+.ih-page-loader {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-ambient::before,
+  .ih-ambient::after,
+  .ih-route-sweep,
+  .theme-page h1 {
+    animation: none !important;
+  }
+  .ih-cursor,
+  .ih-cursor-dot {
+    display: none;
+  }
+}
+@media (hover: none), (pointer: coarse) {
+  .ih-cursor,
+  .ih-cursor-dot {
+    display: none;
+  }
+}

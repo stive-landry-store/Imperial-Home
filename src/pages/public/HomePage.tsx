@@ -90,7 +90,7 @@ export function HomePage() {
             <p className="ih-fade-up ih-delay-1 mb-3 text-xs font-semibold tracking-[0.35em] uppercase">
               <span className="ih-gold-text">Imperial Home</span>
             </p>
-            <h1 className="text-3xl font-semibold text-white md:text-5xl" aria-label={t('home.placeLine')}>
+            <h1 className="ih-no-anim text-3xl font-semibold text-white md:text-5xl" aria-label={t('home.placeLine')}>
               {t('home.placeLine')
                 .split(' ')
                 .map((word, index) => (

@@ -1,0 +1,355 @@
+/*
+ * Imperial Home — messages (customer chat, admin inbox, assistant).
+ * Onyx & gold in the dark theme, cream & ink in the light theme, with motion on every message.
+ * Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
+ */
+
+html.theme-dark .ih-chat-skin,
+html.theme-dark .ih-thread {
+  --chat-bg: #08080a;
+  --chat-wall: #0c0c0f;
+  --chat-panel: rgb(18 17 15 / 0.92);
+  --chat-line: rgb(212 175 106 / 0.16);
+  --chat-fg: #f4eee3;
+  --chat-muted: rgb(244 238 227 / 0.55);
+  --chat-accent: #e0c57a;
+  --chat-theirs: rgb(255 255 255 / 0.06);
+  --chat-theirs-line: rgb(255 255 255 / 0.08);
+  --chat-theirs-fg: #f4eee3;
+  --chat-mine-from: #d8b76d;
+  --chat-mine-to: #a8843f;
+  --chat-mine-fg: #120f0a;
+  --chat-input: rgb(255 255 255 / 0.06);
+  --chat-active: rgb(212 175 106 / 0.1);
+  --chat-pattern: rgb(212 175 106 / 0.05);
+  color-scheme: dark;
+}
+html.theme-light .ih-chat-skin,
+html.theme-light .ih-thread {
+  --chat-bg: #f6f1e8;
+  --chat-wall: #efe8da;
+  --chat-panel: rgb(246 241 232 / 0.94);
+  --chat-line: #e4d8c4;
+  --chat-fg: #1c1914;
+  --chat-muted: #7a7064;
+  --chat-accent: #8b6f32;
+  --chat-theirs: #ffffff;
+  --chat-theirs-line: rgb(28 25 20 / 0.05);
+  --chat-theirs-fg: #1c1914;
+  --chat-mine-from: #1f1b15;
+  --chat-mine-to: #2f281d;
+  --chat-mine-fg: #f6f1e8;
+  --chat-input: #ffffff;
+  --chat-active: #e7dcc8;
+  --chat-pattern: rgb(139 111 50 / 0.06);
+  color-scheme: light;
+}
+
+.ih-chat-skin {
+  background: var(--chat-bg);
+  color: var(--chat-fg);
+}
+.ih-chat-divider {
+  border-color: var(--chat-line);
+}
+.ih-chat-muted {
+  color: var(--chat-muted);
+}
+.ih-chat-accent {
+  color: var(--chat-accent);
+}
+
+/* Wall: subtle monogram-like diamond pattern and a slow gold glow. */
+.ih-chat-wall {
+  position: relative;
+  background-color: var(--chat-wall);
+  background-image:
+    radial-gradient(circle at 15% 0%, rgb(196 163 90 / 0.08), transparent 40%),
+    radial-gradient(circle at 85% 100%, rgb(196 163 90 / 0.06), transparent 45%),
+    repeating-linear-gradient(45deg, var(--chat-pattern) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-45deg, var(--chat-pattern) 0 1px, transparent 1px 22px);
+}
+
+/* Header and bars float on blurred glass. */
+.ih-chat-head,
+.ih-chat-bar {
+  background: var(--chat-panel);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+  backdrop-filter: saturate(150%) blur(14px);
+  border-color: var(--chat-line);
+}
+.ih-chat-head {
+  border-bottom: 1px solid var(--chat-line);
+  animation: ih-fade-down 520ms var(--ih-ease-out) both;
+}
+.ih-chat-bar {
+  border-top: 1px solid var(--chat-line);
+}
+.ih-chat-status {
+  color: var(--chat-muted);
+}
+.ih-chat-status::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 6px;
+  border-radius: 999px;
+  background: #3ecf8e;
+  box-shadow: 0 0 0 0 rgb(62 207 142 / 0.6);
+  animation: ih-online 2.2s var(--ih-ease-out) infinite;
+  vertical-align: 1px;
+}
+@keyframes ih-online {
+  0% { box-shadow: 0 0 0 0 rgb(62 207 142 / 0.55); }
+  100% { box-shadow: 0 0 0 7px rgb(62 207 142 / 0); }
+}
+
+.ih-chat-avatar {
+  background: linear-gradient(140deg, #2a241b, #0d0c0a);
+  box-shadow: inset 0 0 0 1px rgb(212 175 106 / 0.35);
+  color: #f4eee3;
+}
+.ih-avatar-ring {
+  box-shadow: 0 0 0 2px var(--chat-bg), 0 0 0 4px #c4a35a;
+  animation: ih-pulse-ring 2.4s var(--ih-ease-out) infinite;
+}
+
+.ih-chat-day {
+  background: var(--chat-panel);
+  color: var(--chat-muted);
+  border: 1px solid var(--chat-line);
+  letter-spacing: 0.04em;
+  animation: ih-fade-in 500ms var(--ih-ease-out) both;
+}
+.ih-chat-system {
+  color: var(--chat-muted);
+}
+
+/* Bubbles: arrive from their side with a small spring; the latest ones cascade. */
+.ih-bubble {
+  position: relative;
+  transform-origin: bottom right;
+  animation: ih-bubble-in 520ms var(--ih-ease-spring) both;
+  animation-delay: calc(var(--ih-b, 0) * 45ms);
+  box-shadow: 0 6px 18px -12px rgb(0 0 0 / 0.55);
+}
+.ih-bubble-theirs {
+  transform-origin: bottom left;
+  animation-name: ih-bubble-in-left;
+  background: var(--chat-theirs);
+  color: var(--chat-theirs-fg);
+  border: 1px solid var(--chat-theirs-line);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.ih-bubble-mine {
+  background: linear-gradient(135deg, var(--chat-mine-from), var(--chat-mine-to));
+  color: var(--chat-mine-fg);
+}
+.ih-bubble-mine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28), transparent 65%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  animation: ih-bubble-sheen 1.4s var(--ih-ease-out) 0.25s both;
+  pointer-events: none;
+}
+.ih-bubble-time {
+  opacity: 0.6;
+}
+.ih-bubble img {
+  animation: ih-blur-in 700ms var(--ih-ease-out) both;
+}
+@keyframes ih-bubble-in {
+  from { opacity: 0; transform: translate3d(18px, 14px, 0) scale(0.86); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-bubble-in-left {
+  from { opacity: 0; transform: translate3d(-18px, 14px, 0) scale(0.86); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ih-bubble-sheen {
+  to { background-position: -40% 0; }
+}
+
+/* Quick replies and menus. */
+.ih-chip {
+  background: var(--chat-input);
+  border: 1px solid var(--chat-line);
+  color: var(--chat-fg);
+  transition: transform var(--ih-dur-xs) var(--ih-ease-out), border-color var(--ih-dur-sm), background var(--ih-dur-sm);
+  animation: ih-fade-up 600ms var(--ih-ease-out) both;
+}
+.ih-chip:hover {
+  border-color: #c4a35a;
+  transform: translateY(-2px);
+}
+.ih-chip:active {
+  transform: scale(0.96);
+}
+.ih-chat-menu {
+  background: var(--chat-panel);
+  border: 1px solid var(--chat-line);
+  color: var(--chat-fg);
+  box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  transform-origin: bottom left;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.ih-chat-menu button {
+  transition: background var(--ih-dur-sm), padding var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-chat-menu button:hover {
+  background: var(--chat-active);
+  padding-inline-start: 1.25rem;
+}
+.ih-chat-plus svg {
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring);
+}
+.ih-chat-plus[data-open='true'] svg {
+  transform: rotate(135deg);
+  color: #c4a35a;
+}
+
+/* Composer. */
+.ih-chat-input {
+  background: var(--chat-input);
+  border: 1px solid var(--chat-line);
+  transition: border-color var(--ih-dur-sm), box-shadow var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-chat-input:focus-within {
+  border-color: rgb(196 163 90 / 0.7);
+  box-shadow: 0 0 0 4px rgb(196 163 90 / 0.14);
+}
+.ih-chat-input textarea {
+  color: var(--chat-fg);
+  box-shadow: none !important;
+}
+.ih-chat-input textarea::placeholder {
+  color: var(--chat-muted);
+}
+
+.ih-send {
+  background: linear-gradient(135deg, #e0c57a, #a8843f);
+  color: #120f0a;
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring), opacity var(--ih-dur-sm), box-shadow var(--ih-dur-sm);
+}
+.ih-send[data-ready='false'] {
+  opacity: 0.35;
+  transform: scale(0.88);
+}
+.ih-send[data-ready='true'] {
+  box-shadow: 0 10px 24px -10px rgb(196 163 90 / 0.9);
+  animation: ih-pop 420ms var(--ih-ease-spring);
+}
+.ih-send:active:not(:disabled) svg {
+  animation: ih-send-fly 420ms var(--ih-ease-out);
+}
+@keyframes ih-send-fly {
+  0% { transform: none; }
+  45% { transform: translate(14px, -10px) rotate(-18deg); opacity: 0; }
+  55% { transform: translate(-12px, 8px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* Inbox. */
+.ih-chat h1 {
+  animation: ih-fade-up 700ms var(--ih-ease-out) both;
+}
+.ih-inbox-archive {
+  transition: color var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-inbox-archive:hover {
+  color: var(--chat-accent);
+  transform: translateX(4px);
+}
+.ih-inbox-row {
+  position: relative;
+  animation: ih-slide-right 620ms var(--ih-ease-out) both;
+  animation-delay: calc(var(--ih-i, 0) * 55ms);
+  transition: background var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-inbox-row::before {
+  content: '';
+  position: absolute;
+  inset-block: 12%;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(#e0c57a, #a8843f);
+  transform: scaleY(0);
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-inbox-row:hover {
+  background: var(--chat-active);
+}
+.ih-inbox-row.is-active {
+  background: var(--chat-active);
+}
+.ih-inbox-row.is-active::before,
+.ih-inbox-row:hover::before {
+  transform: scaleY(1);
+}
+.ih-inbox-row .ih-chat-avatar {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-inbox-row:hover .ih-chat-avatar {
+  transform: scale(1.06);
+}
+.ih-inbox-line {
+  border-bottom: 1px solid var(--chat-line);
+}
+.ih-unread {
+  background: linear-gradient(135deg, #e0c57a, #a8843f);
+  color: #120f0a;
+  box-shadow: 0 0 0 0 rgb(196 163 90 / 0.6);
+  animation: ih-pop 480ms var(--ih-ease-spring), ih-pulse-ring 2.4s var(--ih-ease-out) 0.5s infinite;
+}
+
+/* Empty conversation panel. */
+.ih-chat-empty {
+  color: var(--chat-accent);
+}
+.ih-chat-empty-art {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+.ih-chat-empty-ring {
+  position: absolute;
+  top: -28px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  border: 1px solid rgb(196 163 90 / 0.35);
+  animation: ih-ring-out 2.8s var(--ih-ease-out) infinite;
+}
+@keyframes ih-ring-out {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-bubble,
+  .ih-inbox-row,
+  .ih-chat-head {
+    animation: none !important;
+  }
+}
+
+/* Assistant panel: grows out of its floating button. */
+.ih-assistant-panel {
+  transform-origin: bottom right;
+  animation: ih-assistant-in 520ms var(--ih-ease-spring) both;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgb(196 163 90 / 0.14), transparent 60%),
+    #0a0a0a;
+}
+@keyframes ih-assistant-in {
+  from { opacity: 0; transform: translate3d(12px, 24px, 0) scale(0.6); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}

@@ -108,12 +108,12 @@ export function ChatThread({
   const ready = Boolean(body.trim() || file)
 
   return (
-    <div className="ih-thread flex h-full min-h-0 flex-col bg-[#f6f1e8] text-[#1c1914]">
-      <header className="ih-thread-head flex h-[64px] shrink-0 items-center gap-1 border-b border-[#e4d8c4] bg-[#f6f1e8] px-1">
+    <div className="ih-thread ih-chat-skin flex h-full min-h-0 flex-col">
+      <header className="ih-thread-head ih-chat-head flex h-[64px] shrink-0 items-center gap-1 px-1">
         <button type="button" className="grid h-10 w-10 place-items-center md:hidden" aria-label={backLabel} onClick={onBack}>
-          <ArrowLeft className="h-6 w-6 text-[#1c1914] rtl:scale-x-[-1]" />
+          <ArrowLeft className="h-6 w-6 rtl:scale-x-[-1]" />
         </button>
-        <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-[#1c1914]">
+        <span className="ih-chat-avatar grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full">
           {mark ? (
             <img src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`} alt="" className="h-6 w-6 object-contain" />
           ) : avatarUrl ? (
@@ -124,7 +124,7 @@ export function ChatThread({
         </span>
         <div className="min-w-0 flex-1 px-1">
           <p className="truncate text-[16px] leading-tight font-semibold">{title}</p>
-          <p className="truncate text-[12.5px] text-[#6f675c]">{subtitle}</p>
+          <p className="ih-chat-status truncate text-[12.5px]">{subtitle}</p>
         </div>
       </header>
       <div className="ih-chat-wall min-h-0 flex-1 overflow-y-auto px-3 py-2">
@@ -134,16 +134,19 @@ export function ChatThread({
           return (
             <div key={item.id}>
               {showDay ? (
-                <p className="mx-auto my-3 w-fit text-[12px] text-[#8a8175]">{chatDay(item.at, locale)}</p>
+                <p className="ih-chat-day mx-auto my-3 w-fit rounded-full px-3 py-1 text-[12px]">{chatDay(item.at, locale)}</p>
               ) : null}
               {item.system ? (
-                <p className="mx-auto my-2 max-w-[88%] text-center text-[12.5px] text-[#8a8175]">{item.body}</p>
+                <p className="ih-chat-system mx-auto my-2 max-w-[88%] text-center text-[12.5px]">{item.body}</p>
               ) : (
-                <div className={cn('mb-1 flex', item.mine ? 'justify-end' : 'justify-start')}>
+                <div
+                  className={cn('ih-bubble-row mb-1 flex', item.mine ? 'justify-end' : 'justify-start')}
+                  style={{ ['--ih-b' as string]: Math.max(0, Math.min(8, index - (messages.length - 9))) }}
+                >
                   <div
                     className={cn(
-                      'max-w-[82%] rounded-[18px] px-3 pt-1.5 pb-1.5 shadow-[0_1px_2px_rgba(28,25,20,0.06)]',
-                      item.mine ? 'rounded-ee-[5px] bg-[#1c1914] text-[#f6f1e8]' : 'rounded-es-[5px] bg-[#ffffff] text-[#1c1914]',
+                      'ih-bubble max-w-[82%] rounded-[18px] px-3 pt-1.5 pb-1.5',
+                      item.mine ? 'ih-bubble-mine rounded-ee-[5px]' : 'ih-bubble-theirs rounded-es-[5px]',
                     )}
                   >
                     {item.imageUrl ? <img src={item.imageUrl} alt="" className="mb-1 max-h-56 rounded-2xl object-cover" /> : null}
@@ -151,7 +154,7 @@ export function ChatThread({
                     <span
                       className={cn(
                         'float-right mt-1 ms-3 inline-flex translate-y-0.5 text-[11px] leading-none',
-                        item.mine ? 'text-[#f6f1e8]/60' : 'text-[#8a8175]',
+                        'ih-bubble-time',
                       )}
                     >
                       {new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(item.at))}
@@ -165,20 +168,20 @@ export function ChatThread({
         <div ref={bottom} />
       </div>
       {preview ? (
-        <div className="flex items-center gap-3 bg-[#f6f1e8] px-3 pt-2">
+        <div className="ih-chat-bar ih-pop flex items-center gap-3 px-3 pt-2">
           <img src={preview} alt="" className="h-16 w-16 rounded-2xl object-cover" />
-          <button type="button" className="text-lg text-[#6f675c]" onClick={() => onPick(null)}>
+          <button type="button" className="ih-chat-muted text-lg" onClick={() => onPick(null)}>
             ×
           </button>
         </div>
       ) : null}
       {quickReplies?.length && onQuick ? (
-        <div className="flex gap-2 overflow-x-auto border-t border-[#e4d8c4] bg-[#f6f1e8] px-3 py-2">
+        <div className="ih-chat-bar flex gap-2 overflow-x-auto px-3 py-2">
           {quickReplies.map((text) => (
             <button
               key={text}
               type="button"
-              className="shrink-0 rounded-full border border-[#e4d8c4] bg-[#ffffff] px-3 py-1.5 text-left text-[13px] text-[#1c1914]"
+              className="ih-chip shrink-0 rounded-full px-3 py-1.5 text-left text-[13px]"
               onClick={() => onQuick(text)}
             >
               {text}
@@ -186,9 +189,9 @@ export function ChatThread({
           ))}
         </div>
       ) : null}
-      <form className="ih-thread-form relative flex items-end gap-1.5 border-t border-[#e4d8c4] bg-[#f6f1e8] px-2 py-2" onSubmit={submit}>
+      <form className="ih-thread-form ih-chat-bar relative flex items-end gap-1.5 px-2 py-2" onSubmit={submit}>
         {menu ? (
-          <div className="absolute bottom-16 start-2 z-10 w-56 overflow-hidden rounded-2xl border border-[#e4d8c4] bg-[#ffffff] py-1 text-[#1c1914] shadow-lg">
+          <div className="ih-chat-menu ih-sheet absolute bottom-16 start-2 z-10 w-56 overflow-hidden rounded-2xl py-1">
             <button
               type="button"
               className="block min-h-11 w-full px-4 text-left text-[15px]"
@@ -213,27 +216,28 @@ export function ChatThread({
             ) : null}
           </div>
         ) : null}
-        <button type="button" className="mb-1 grid h-10 w-10 place-items-center text-[#6f675c]" aria-label={attachLabel} onClick={() => setMenu((value) => !value)}>
+        <button type="button" className="ih-chat-muted ih-chat-plus mb-1 grid h-10 w-10 place-items-center" data-open={menu ? 'true' : 'false'} aria-label={attachLabel} onClick={() => setMenu((value) => !value)}>
           <Plus className="h-6 w-6" />
         </button>
-        <div className="flex min-w-0 flex-1 items-end rounded-3xl bg-[#ffffff] px-3 py-2 shadow-[0_1px_2px_rgba(28,25,20,0.05)]">
+        <div className="ih-chat-input flex min-w-0 flex-1 items-end rounded-3xl px-3 py-2">
           <textarea
             ref={field}
             rows={1}
             value={body}
             placeholder={placeholder}
             enterKeyHint="send"
-            className="max-h-28 min-h-6 w-full resize-none bg-transparent text-[15px] leading-5 text-[#1c1914] outline-none placeholder:text-[#8a8175]"
+            className="max-h-28 min-h-6 w-full resize-none bg-transparent text-[15px] leading-5 outline-none"
             onChange={(event) => grow(event.target.value)}
             onKeyDown={onKey}
           />
-          <button type="button" className="ms-1 grid h-7 w-7 place-items-center text-[#6f675c]" aria-label={cameraLabel} onClick={() => camera.current?.click()}>
+          <button type="button" className="ih-chat-muted ms-1 grid h-7 w-7 place-items-center" aria-label={cameraLabel} onClick={() => camera.current?.click()}>
             <Camera className="h-5 w-5" />
           </button>
         </div>
         <button
           type="submit"
-          className="mb-0.5 grid h-11 w-11 place-items-center rounded-full bg-[#1c1914] text-[#f6f1e8] disabled:opacity-30"
+          className="ih-send mb-0.5 grid h-11 w-11 place-items-center rounded-full"
+          data-ready={ready ? 'true' : 'false'}
           aria-label={sendLabel}
           disabled={!ready}
         >

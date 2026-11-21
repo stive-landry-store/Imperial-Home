@@ -245,11 +245,11 @@ export function ChatPage() {
   }
 
   return (
-    <div className="ih-chat flex h-full min-h-0 bg-[#0b0b0c]">
+    <div className="ih-chat ih-chat-skin flex h-full min-h-0">
       <Helmet>
         <title>{`${t('chat.discussions')} | Imperial Home`}</title>
       </Helmet>
-      <aside className={cn('h-full min-h-0 w-full md:w-[360px] md:shrink-0 md:border-r md:border-[#d4af6a]/25', active && 'hidden md:block')}>
+      <aside className={cn('h-full min-h-0 w-full md:w-[360px] md:shrink-0 md:border-e ih-chat-divider', active && 'hidden md:block')}>
         <ChatInbox
           title={t('chat.discussions')}
           rows={rows}
@@ -286,8 +286,12 @@ export function ChatPage() {
             onHuman={() => void requestHuman()}
           />
         ) : (
-          <div className="ih-chat-wall hidden h-full place-items-center px-8 text-center text-[#d4af6a] md:grid">
-            <p>{t('chat.emptyPick')}</p>
+          <div className="ih-chat-wall ih-chat-empty hidden h-full place-items-center px-8 text-center md:grid">
+            <div className="ih-chat-empty-art">
+              <span className="ih-chat-empty-ring" aria-hidden />
+              <img src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`} alt="" className="ih-float relative h-16 w-16 object-contain" />
+              <p className="ih-fade-up ih-delay-2 mt-6">{t('chat.emptyPick')}</p>
+            </div>
           </div>
         )}
       </section>

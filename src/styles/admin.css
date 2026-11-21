@@ -1,0 +1,187 @@
+/*
+ * Imperial Home — administration motion & look.
+ * Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
+ */
+
+/* Sidebar: onyx glass with a slow gold aura. */
+.ih-admin-aside,
+.ih-admin-topbar,
+.ih-admin-sheet {
+  background:
+    radial-gradient(120% 50% at 0% 0%, rgb(196 163 90 / 0.12), transparent 60%),
+    radial-gradient(120% 40% at 100% 100%, rgb(196 163 90 / 0.08), transparent 60%),
+    #050505;
+}
+.ih-admin-topbar {
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  background-color: rgb(5 5 5 / 0.88);
+}
+.ih-admin-brand {
+  animation: ih-fade-down 700ms var(--ih-ease-out) both;
+}
+.ih-admin-brand img {
+  transition: filter var(--ih-dur-md), transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-admin-brand:hover img {
+  filter: drop-shadow(0 0 14px rgb(224 197 122 / 0.55));
+  transform: scale(1.03);
+}
+
+/* Links: cascade in, slide on hover, gold rail on the active page. */
+.ih-admin-link {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid transparent;
+  animation: ih-slide-right 560ms var(--ih-ease-out) both;
+  animation-delay: calc(120ms + var(--ih-i, 0) * 35ms);
+  transition:
+    background-color var(--ih-dur-sm) var(--ih-ease-out),
+    border-color var(--ih-dur-sm),
+    color var(--ih-dur-sm),
+    padding var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-admin-link::before {
+  content: '';
+  position: absolute;
+  inset-block: 22%;
+  inset-inline-start: 4px;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(#f1d896, #a8843f);
+  box-shadow: 0 0 12px rgb(224 197 122 / 0.8);
+  transform: scaleY(0);
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-admin-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgb(196 163 90 / 0.16), rgb(196 163 90 / 0.02));
+  opacity: 0;
+  transition: opacity var(--ih-dur-sm);
+}
+.ih-admin-link svg:first-child {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-admin-chevron {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-out);
+}
+@media (hover: hover) {
+  .ih-admin-link:hover {
+    padding-inline-start: 1.35rem;
+    color: #f1d896;
+  }
+  .ih-admin-link:hover::after {
+    opacity: 1;
+  }
+  .ih-admin-link:hover svg:first-child {
+    transform: scale(1.15) rotate(-6deg);
+  }
+  .ih-admin-link:hover .ih-admin-chevron {
+    opacity: 1;
+    transform: none;
+  }
+}
+.ih-admin-link.is-active {
+  border-color: rgb(212 175 106 / 0.35);
+  padding-inline-start: 1.35rem;
+}
+.ih-admin-link.is-active::before {
+  transform: scaleY(1);
+}
+.ih-admin-link.is-active::after {
+  opacity: 1;
+}
+.ih-admin-link.is-active .ih-admin-chevron {
+  opacity: 1;
+  transform: none;
+}
+.ih-admin-danger {
+  border-color: rgb(212 175 106 / 0.25);
+}
+
+/* Phone menu: slides in from the side. */
+.ih-admin-sheet {
+  animation: ih-sheet-in 460ms var(--ih-ease-out) both;
+}
+@keyframes ih-sheet-in {
+  from { opacity: 0; transform: translate3d(-24px, 0, 0); clip-path: inset(0 100% 0 0 round 24px); }
+  to { opacity: 1; transform: none; clip-path: inset(0 0 0 0 round 0); }
+}
+
+/* Main area. */
+.admin-main {
+  position: relative;
+}
+.admin-main h1 {
+  animation: ih-mask-up 900ms var(--ih-ease-out) both;
+}
+.admin-main .surface-light {
+  transition: transform var(--ih-dur-md) var(--ih-ease-out), box-shadow var(--ih-dur-md) var(--ih-ease-out);
+}
+@media (hover: hover) {
+  .admin-main .surface-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 44px -28px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(196 163 90 / 0.35);
+  }
+}
+
+/* Charts: gold bars grow from the floor, progress bars fill. */
+.admin-main svg rect[fill^='url(#gold'] {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: ih-grow-y 1100ms var(--ih-ease-out) both;
+}
+.admin-main svg g:nth-child(2) rect { animation-delay: 80ms; }
+.admin-main svg g:nth-child(3) rect { animation-delay: 160ms; }
+.admin-main svg g:nth-child(4) rect { animation-delay: 240ms; }
+.admin-main svg g:nth-child(5) rect { animation-delay: 320ms; }
+.admin-main svg g:nth-child(6) rect { animation-delay: 400ms; }
+.admin-main svg g:nth-child(7) rect { animation-delay: 480ms; }
+.admin-main [role='progressbar'] > *,
+.admin-main .ih-meter > * {
+  transform-origin: left;
+  animation: ih-grow-x 1200ms var(--ih-ease-out) both;
+}
+@keyframes ih-grow-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@keyframes ih-grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Tables: rows cascade in and highlight on hover. */
+.admin-main tbody tr {
+  animation: ih-fade-up 560ms var(--ih-ease-out) both;
+}
+.admin-main tbody tr:nth-child(1) { animation-delay: 40ms; }
+.admin-main tbody tr:nth-child(2) { animation-delay: 80ms; }
+.admin-main tbody tr:nth-child(3) { animation-delay: 120ms; }
+.admin-main tbody tr:nth-child(4) { animation-delay: 160ms; }
+.admin-main tbody tr:nth-child(5) { animation-delay: 200ms; }
+.admin-main tbody tr:nth-child(6) { animation-delay: 240ms; }
+.admin-main tbody tr:nth-child(7) { animation-delay: 280ms; }
+.admin-main tbody tr:nth-child(n + 8) { animation-delay: 320ms; }
+.admin-main tbody tr {
+  transition: background-color var(--ih-dur-sm);
+}
+.admin-main tbody tr:hover {
+  background-color: rgb(196 163 90 / 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-admin-link,
+  .ih-admin-sheet,
+  .admin-main h1,
+  .admin-main tbody tr,
+  .admin-main svg rect {
+    animation: none !important;
+  }
+}

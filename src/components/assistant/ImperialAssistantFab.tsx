@@ -161,7 +161,7 @@ export function ImperialAssistantFab() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af6a]/50 bg-black text-[#d4af6a] shadow-lg touch-manipulation md:right-6"
+        className="ih-fab ih-btn fixed right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af6a]/50 bg-black text-[#d4af6a] shadow-lg touch-manipulation md:right-6"
         style={{ bottom: 'max(9.25rem, calc(env(safe-area-inset-bottom) + 8.5rem))' }}
         aria-label={t('assistant.open')}
       >
@@ -170,8 +170,8 @@ export function ImperialAssistantFab() {
 
       {open ? (
         <div className="fixed inset-0 z-[60] flex items-end justify-end p-4 md:p-6">
-          <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close" onClick={() => setOpen(false)} />
-          <div className="relative flex h-[min(560px,85svh)] w-full max-w-md flex-col overflow-hidden border border-[#d4af6a]/35 bg-[#0a0a0a] shadow-2xl">
+          <button type="button" className="ih-fade-in absolute inset-0 bg-black/50 backdrop-blur-sm" aria-label="Close" onClick={() => setOpen(false)} />
+          <div className="ih-assistant-panel relative flex h-[min(560px,85svh)] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-[#d4af6a]/35 bg-[#0a0a0a] shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#d4af6a]/25 px-4 py-3">
               <div>
                 <p className="font-display text-lg text-[#d4af6a]">Imperial-Home Bot</p>

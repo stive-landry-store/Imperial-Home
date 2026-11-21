@@ -84,7 +84,7 @@ async function pageRequest(request) {
   const cache = await caches.open(CACHE)
   try {
     const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), 5000)
+    const timer = setTimeout(() => controller.abort(), 12000)
     const response = await fetch(request, { signal: controller.signal })
     clearTimeout(timer)
     if (response.ok && new URL(request.url).pathname === '/') cache.put('/', response.clone())

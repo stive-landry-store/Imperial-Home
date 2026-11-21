@@ -34,6 +34,7 @@ import { NotificationBell } from './NotificationBell'
 import { ThemeSwitch } from './ThemeSwitch'
 import { LanguageDock } from './LanguageDock'
 import { SocialLinks } from './SocialLinks'
+import { PageTransition } from './PageTransition'
 
 const links: { to: string; key: string; icon: LucideIcon }[] = [
   { to: '/admin', key: 'dashboard', icon: LayoutDashboard },
@@ -66,31 +67,29 @@ export function AdminLayout() {
   const menuOpen = menuPath === location.pathname
   const setMenuOpen = (value: boolean) => setMenuPath(value ? location.pathname : null)
 
-  const row =
-    'flex min-h-14 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[15px] touch-manipulation'
+  const row = 'ih-admin-link flex min-h-12 items-center gap-3 rounded-2xl px-4 py-2.5 text-[15px] touch-manipulation'
 
   function renderNav() {
     return (
-    <nav className="flex flex-col gap-2 px-3 pb-4">
+    <nav className="ih-admin-nav flex flex-col gap-1 px-3 pb-4">
       {profile?.role === 'super_admin' ? (
-        <NavLink to="/admin#reset" className={cn(row, 'text-[#e0c57a]')}>
+        <NavLink to="/admin#reset" className={cn(row, 'ih-admin-danger text-[#e0c57a]')}>
           <RotateCcw className="h-5 w-5 shrink-0 text-[#d4af6a]" strokeWidth={1.75} />
           <span className="min-w-0 flex-1 break-words">{t('admin.resetStatsButton')}</span>
           <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </NavLink>
       ) : null}
-      {links.filter((l) => l.to !== '/admin/activity' || profile?.role === 'super_admin').map((l) => (
+      {links.filter((l) => l.to !== '/admin/activity' || profile?.role === 'super_admin').map((l, index) => (
         <NavLink
           key={l.to}
           to={l.to}
           end={l.to === '/admin'}
-          className={({ isActive }) =>
-            cn(row, isActive ? 'border-[#d4af6a]/50 bg-white/10 text-[#e0c57a]' : 'text-[#d4af6a]/90')
-          }
+          style={{ ['--ih-i' as string]: index }}
+          className={({ isActive }) => cn(row, isActive ? 'is-active text-[#f1d896]' : 'text-[#d4af6a]/85')}
         >
           <l.icon className="h-5 w-5 shrink-0 text-[#d4af6a]" strokeWidth={1.75} />
           <span className="min-w-0 flex-1 truncate">{t(`admin.${l.key}`)}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="ih-admin-chevron h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
         </NavLink>
       ))}
     </nav>
@@ -99,7 +98,7 @@ export function AdminLayout() {
 
   return (
     <div className={cn('theme-page min-h-svh md:grid md:h-dvh md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr]', location.pathname.startsWith('/admin/chat') && 'flex h-dvh flex-col md:grid')}>
-      <header className="sticky top-0 z-40 flex items-center gap-1 border-b border-[#d4af6a]/20 bg-black px-2 py-2 text-[#d4af6a] pt-[max(0.5rem,env(safe-area-inset-top))] md:hidden">
+      <header className="ih-admin-topbar sticky top-0 z-40 flex items-center gap-1 border-b border-[#d4af6a]/20 px-2 py-2 text-[#d4af6a] pt-[max(0.5rem,env(safe-area-inset-top))] md:hidden">
         <button
           type="button"
           className="inline-flex h-10 w-10 shrink-0 items-center justify-center touch-manipulation"
@@ -129,7 +128,7 @@ export function AdminLayout() {
       </header>
 
       {menuOpen ? (
-        <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-black text-[#d4af6a] md:hidden">
+        <div className="ih-admin-sheet fixed inset-0 z-[80] flex h-dvh w-full flex-col text-[#d4af6a] md:hidden" role="dialog" aria-modal="true">
           <div className="flex items-center justify-between px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
             <p className="text-lg font-semibold">{t('admin.menu')}</p>
             <button
@@ -155,8 +154,8 @@ export function AdminLayout() {
         </div>
       ) : null}
 
-      <aside className="hidden border-r border-[#d4af6a]/20 bg-black text-[#d4af6a] md:flex md:h-svh md:flex-col md:overflow-y-auto">
-        <div className="px-5 py-5">
+      <aside className="ih-admin-aside hidden border-e border-[#d4af6a]/20 text-[#d4af6a] md:flex md:h-svh md:flex-col md:overflow-y-auto">
+        <div className="ih-admin-brand px-5 py-5">
           <NavLink to="/" className="block">
             <ImperialLogo light compact />
           </NavLink>
@@ -189,7 +188,9 @@ export function AdminLayout() {
             {t('admin.supabaseRequired')}
           </div>
         ) : null}
-        <Outlet />
+        <PageTransition className={location.pathname.startsWith('/admin/chat') ? 'flex min-h-0 flex-1 flex-col' : undefined}>
+          <Outlet />
+        </PageTransition>
       </div>
     </div>
   )

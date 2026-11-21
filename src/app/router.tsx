@@ -57,6 +57,9 @@ const AdminVehiclesPage = lazy(() => import('../pages/admin/AdminVehiclesPage').
 const HousingSheetEditorPage = lazy(() => import('../pages/shared/HousingSheetEditorPage').then((m) => ({ default: m.HousingSheetEditorPage })))
 const AdminScanPage = lazy(() => import('../pages/admin/AdminScanPage').then((m) => ({ default: m.AdminScanPage })))
 
+// Dev-only playground for the motion design (never shipped to production).
+const MotionLab = import.meta.env.DEV ? lazy(() => import('../pages/dev/MotionLab').then((m) => ({ default: m.MotionLab }))) : null
+
 function Page({ children }: { children: ReactNode }) {
   return <Suspense fallback={<div className="theme-page ih-fade-in pt-28"><Loader size="lg" fill /></div>}>{children}</Suspense>
 }
@@ -194,6 +197,7 @@ export function AppRouter() {
           }
         />
         <Route path="/book" element={<Navigate to="/properties" replace />} />
+        {MotionLab ? <Route path="/__lab" element={<MotionLab />} /> : null}
       </Routes>
       </Page>
     </BrowserRouter>

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "./styles/motion.css";
+@import "./styles/chat.css";
+@import "./styles/admin.css";
 
 @theme {
   --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
@@ -322,16 +324,11 @@ input[type='date']::-webkit-calendar-picker-indicator {
 .hero-still {
   object-fit: cover;
   object-position: center center;
-  animation: none;
-  transform: none;
 }
 
 .ih-chat {
-  color: #1c1914;
-  color-scheme: light;
   font-size: 15px;
   line-height: 1.45;
-  background: #f6f1e8;
 }
 
 .ih-profile {
@@ -356,12 +353,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
   letter-spacing: -0.02em;
   line-height: 1.2;
   text-transform: none;
-  color: #1c1914;
-}
-
-.ih-chat-wall {
-  background-color: #efe8da;
-  background-image: none;
+  color: var(--chat-fg);
 }
 
 .housing-a4 {

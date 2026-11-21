@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 
 /**
@@ -32,9 +32,14 @@ const AUTO_SELECTORS = [
   'main .theme-card',
   'main [class*="grid-cols"] > *',
   'main table',
+  '.admin-main h2',
+  '.admin-main .surface-light',
+  '.admin-main .theme-card',
+  '.admin-main [class*="grid-cols"] > *',
+  '.admin-main section',
 ].join(',')
 
-const SKIP = 'header, nav, footer nav, [role="dialog"], .ih-chat, [data-no-reveal], .ih-hero, .fixed, .sticky, #ih-boot'
+const SKIP = 'header, nav, footer nav, [role="dialog"], .ih-chat, .ih-thread, [data-no-reveal], .ih-hero, .fixed, .sticky, #ih-boot, tbody'
 const MAX_STAGGER = 8
 
 function kindFor(el: Element): string {
@@ -216,9 +221,98 @@ export function MotionDirector() {
     }
   }, [])
 
-  // On each route, start the progress bar back at the top.
+  // Ambient gold light behind every page.
+  useEffect(() => {
+    const ambient = document.createElement('div')
+    ambient.className = 'ih-ambient'
+    ambient.setAttribute('aria-hidden', 'true')
+    document.body.prepend(ambient)
+    return () => ambient.remove()
+  }, [])
+
+  // Desktop cursor: gold ring with inertia, grows over links and buttons; magnetic primary buttons.
+  useEffect(() => {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!fine || reduce) return
+    const ring = document.createElement('div')
+    ring.className = 'ih-cursor'
+    const dot = document.createElement('div')
+    dot.className = 'ih-cursor-dot'
+    document.body.append(ring, dot)
+    let x = -100
+    let y = -100
+    let rx = -100
+    let ry = -100
+    let frame = 0
+    const loop = () => {
+      rx += (x - rx) * 0.18
+      ry += (y - ry) * 0.18
+      ring.style.setProperty('--cx', `${rx}px`)
+      ring.style.setProperty('--cy', `${ry}px`)
+      frame = requestAnimationFrame(loop)
+    }
+    frame = requestAnimationFrame(loop)
+    let magnet: HTMLElement | null = null
+    const onMove = (event: PointerEvent) => {
+      x = event.clientX
+      y = event.clientY
+      dot.style.setProperty('--dx', `${x}px`)
+      dot.style.setProperty('--dy', `${y}px`)
+      const target = event.target as Element | null
+      ring.classList.toggle('is-hover', Boolean(target?.closest?.('a, button, [role="button"], input, select, textarea, label')))
+      const button = target?.closest?.('.ih-btn-primary') as HTMLElement | null
+      if (magnet && magnet !== button) {
+        magnet.style.translate = ''
+        magnet = null
+      }
+      if (button) {
+        const box = button.getBoundingClientRect()
+        const mx = (x - (box.left + box.width / 2)) * 0.18
+        const my = (y - (box.top + box.height / 2)) * 0.3
+        button.style.translate = `${mx}px ${my}px`
+        magnet = button
+      }
+    }
+    const onDown = () => ring.classList.add('is-down')
+    const onUp = () => ring.classList.remove('is-down')
+    const onLeave = () => {
+      x = -100
+      y = -100
+    }
+    document.addEventListener('pointermove', onMove, { passive: true })
+    document.addEventListener('pointerdown', onDown, { passive: true })
+    document.addEventListener('pointerup', onUp, { passive: true })
+    document.documentElement.addEventListener('pointerleave', onLeave)
+    return () => {
+      cancelAnimationFrame(frame)
+      document.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerdown', onDown)
+      document.removeEventListener('pointerup', onUp)
+      document.documentElement.removeEventListener('pointerleave', onLeave)
+      ring.remove()
+      dot.remove()
+    }
+  }, [])
+
+  // On each route: progress bar back to the top and a gold sweep across the screen.
+  const first = useRef(true)
   useEffect(() => {
     document.documentElement.classList.remove('ih-scroll-down')
+    if (first.current) {
+      first.current = false
+      return
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const sweep = document.createElement('div')
+    sweep.className = 'ih-route-sweep'
+    sweep.setAttribute('aria-hidden', 'true')
+    document.body.appendChild(sweep)
+    const timer = window.setTimeout(() => sweep.remove(), 950)
+    return () => {
+      window.clearTimeout(timer)
+      sweep.remove()
+    }
   }, [location.pathname])
 
   return null
