@@ -9,4 +9,5 @@ export const CREATOR = {
   name: 'stive landry store',
   fullName: 'NYAMI TCHOUPE STIVE LANDRY',
   role: 'Créateur et développeur de l’application Imperial Home',
+  portfolio: 'https://stive-landry-portfolio.vercel.app',
 } as const

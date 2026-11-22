@@ -109,6 +109,10 @@ export function Footer() {
             {CREATOR.company}
           </Link>
           <span className="sr-only"> — {CREATOR.fullName}</span>
+          {' · '}
+          <a href={CREATOR.portfolio} target="_blank" rel="noopener" className="ih-link font-semibold text-[#e0c57a]">
+            Portfolio
+          </a>
         </p>
       </div>
     </footer>
