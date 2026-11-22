@@ -8,7 +8,7 @@ import { Camera, ChevronRight, Gift, Mail, MapPin, MessageCircle, Phone, Share2 
 import { ProfileMenu } from '../../components/account/ProfileMenu'
 import { PhotoCropper } from '../../components/account/PhotoCropper'
 import { PhotoViewer } from '../../components/account/PhotoViewer'
-import { PlaceMap } from '../../components/property/PlaceMap'
+import { LazyPlaceMap as PlaceMap } from '../../components/property/LazyPlaceMap'
 import { VerifiedBadge } from '../../components/ui/VerifiedBadge'
 import { useAuth } from '../../hooks/useAuth'
 import { useSiteConfig } from '../../hooks/useSite'

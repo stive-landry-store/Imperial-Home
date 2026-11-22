@@ -652,7 +652,16 @@ export function PropertyFormPage() {
 
               setSlugManual(true)
 
-              setField('slug', e.target.value)
+              // Web addresses: lowercase, no accents, no spaces.
+              setField(
+                'slug',
+                e.target.value
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
+                  .toLowerCase()
+                  .replace(/[^a-z0-9-]+/g, '-')
+                  .replace(/-{2,}/g, '-'),
+              )
 
             }}
 

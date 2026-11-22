@@ -21,7 +21,7 @@ import { fetchPropertyBySlug, fetchQuote, fetchUnavailableRanges } from '../../l
 import { apartmentSummary } from '../../lib/apartmentCopy'
 import { checkOutFromNights, isDateAvailable, nightsBetween, stayAfterReserved, todayIso } from '../../lib/availability'
 import { PlaceActions } from '../../components/property/PlaceActions'
-import { PlaceMap } from '../../components/property/PlaceMap'
+import { LazyPlaceMap as PlaceMap } from '../../components/property/LazyPlaceMap'
 import { imperialPlace } from '../../lib/place'
 import { shareSite } from '../../lib/social'
 import { coverImage, formatDate, localized } from '../../lib/format'
