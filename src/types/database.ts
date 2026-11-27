@@ -318,6 +318,7 @@ export type AppNotification = {
   link: string | null
   read_at: string | null
   created_at: string
+  push_job?: string | null
 }
 
 export type SiteConfig = {

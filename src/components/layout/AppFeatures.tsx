@@ -4,7 +4,7 @@ import { Bell, Fingerprint } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { disableLock, enableLock, lockEnabled, lockSupported } from '../../lib/appLock'
-import { disableNotifications, enableNotifications, needsHomeScreenInstall, notificationsEnabled, notificationsSupported } from '../../lib/systemNotifications'
+import { disableNotifications, enableNotifications, needsHomeScreenInstall, notificationsEnabled, notificationsSupported, previewOnScreen, registerPush } from '../../lib/systemNotifications'
 import { cn } from '../../lib/cn'
 
 function Row({ icon, label, on, onClick, disabled }: { icon: React.ReactNode; label: string; on: boolean; onClick: () => void; disabled?: boolean }) {
@@ -32,15 +32,28 @@ export function AppFeatures() {
   const [notif, setNotif] = useState(() => notificationsEnabled())
   const [lock, setLock] = useState(() => lockEnabled())
   const [lockOk, setLockOk] = useState(false)
+  const [note, setNote] = useState('')
+  const [trying, setTrying] = useState(false)
 
   useEffect(() => {
     void lockSupported().then(setLockOk)
     if (!notificationsSupported() || Notification.permission !== 'granted' || !('serviceWorker' in navigator)) return
+    let cancelled = false
     void navigator.serviceWorker.ready.then(async (registration) => {
+      if (cancelled) return
       const subscription = 'pushManager' in registration ? await registration.pushManager.getSubscription() : null
-      setNotif(Boolean(subscription))
+      if (!subscription) {
+        setNotif(false)
+        return
+      }
+      setNotif(true)
+      const saved = await registerPush(registration)
+      if (!saved) setNote(t('app.pushUnlinked'))
     })
-  }, [])
+    return () => {
+      cancelled = true
+    }
+  }, [t])
 
   if (!user) return null
   const notifOk = notificationsSupported()
@@ -57,12 +70,39 @@ export function AppFeatures() {
             navigate('/installer')
             return
           }
+          setNote('')
           if (notif) {
             void disableNotifications()
             setNotif(false)
-          } else void enableNotifications().then(setNotif)
+          } else {
+            void enableNotifications().then((result) => {
+              setNotif(result === 'on' || result === 'unlinked')
+              if (result === 'blocked') setNote(t('app.pushTryFail'))
+              else if (result === 'unlinked') setNote(t('app.pushUnlinked'))
+            })
+          }
         }}
       />
+      {notif ? (
+        <button
+          type="button"
+          disabled={trying}
+          className="mb-1 min-h-11 w-full rounded-xl px-3 text-left text-[15px] font-semibold text-[#c4a35a] disabled:opacity-50"
+          onClick={() => {
+            setTrying(true)
+            void previewOnScreen()
+              .then((result) => {
+                if (result.saved) setNotif(true)
+                setNote(result.shown ? t('app.pushTryOk') : t('app.pushTryFail'))
+              })
+              .catch(() => setNote(t('app.pushTryFail')))
+              .finally(() => setTrying(false))
+          }}
+        >
+          {t('app.pushTry')}
+        </button>
+      ) : null}
+      {note ? <p className="px-3 pb-2 text-xs leading-snug theme-muted">{note}</p> : null}
       {notifOk && Notification.permission === 'denied' ? <p className="px-3 pb-2 text-xs theme-muted">{t('app.pushBlocked')}</p> : null}
       <Row
         icon={<Fingerprint className="h-5 w-5" />}
