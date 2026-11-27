@@ -298,3 +298,116 @@ html.ih-thread-open .ih-top {
     clip-path: none !important;
   }
 }
+
+/* ------------------------------------------------------------ phones & tablets (touch) */
+
+/* Touch has no hover: every effect gets a press version, and some play once on arrival. */
+@property --ih-sweep {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: -30%;
+}
+@media (hover: none), (pointer: coarse) {
+  .ih-card:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-lift);
+  }
+  .ih-card:active .ih-card-go {
+    transform: rotate(45deg);
+    background: var(--accent-strong);
+    color: var(--on-accent);
+  }
+  /* A light border sweeps once around each property card when it appears. */
+  .ih-card.is-revealed::before,
+  .ih-card::before {
+    background: linear-gradient(115deg, transparent calc(var(--ih-sweep) - 18%), color-mix(in srgb, var(--accent-strong) 75%, transparent) var(--ih-sweep), transparent calc(var(--ih-sweep) + 18%));
+    animation: ih-card-sweep 1.8s var(--ih-ease-out) 0.5s both;
+  }
+  @keyframes ih-card-sweep {
+    0% { opacity: 1; --ih-sweep: -30%; }
+    85% { opacity: 1; }
+    100% { opacity: 0; --ih-sweep: 130%; }
+  }
+  .ih-pillar:active {
+    transform: scale(0.97);
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-lift);
+  }
+  .ih-pillar:active svg {
+    transform: rotate(-10deg) scale(1.15);
+  }
+  .ih-set-row:active .ih-set-icon,
+  .ih-admin-link:active .ih-admin-tile,
+  .ih-notif-item:active .ih-notif-icon {
+    transform: rotate(-8deg) scale(1.1);
+  }
+  .ih-notif-item:active {
+    transform: scale(0.98);
+  }
+  .ih-btn:active > svg:last-child:not(:first-child) {
+    transform: translateX(4px);
+  }
+  .theme-page button:active > img.object-cover,
+  .theme-page a:active > img.object-cover {
+    transform: scale(1.04);
+  }
+  .ih-inbox-row:active .ih-chat-avatar {
+    transform: scale(1.06) rotate(-3deg);
+  }
+  .ih-top:active .ih-top-arrow {
+    animation: ih-top-fly 700ms var(--ih-ease-out);
+  }
+  /* Bubble actions open with a long press: show them a touch larger for fingers. */
+  .ih-bubble-tools.is-open .ih-tool {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  /* The ambient cursor is desktop only; phones get the light sweep on the hero instead. */
+  .ih-hero-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.22) 50%, transparent 65%);
+    background-size: 250% 100%;
+    background-position: 130% 0;
+    animation: ih-bubble-sheen 2.2s var(--ih-ease-out) 1.4s both;
+  }
+}
+
+/* Small screens: lighter blur and shorter distances keep motion smooth on modest phones. */
+@media (max-width: 640px) {
+  .ih-glass,
+  .ih-notif-panel,
+  .ih-chat-head,
+  .ih-chat-bar {
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    backdrop-filter: saturate(160%) blur(14px);
+  }
+  .ih-orb {
+    width: 14rem;
+    height: 14rem;
+    filter: blur(40px);
+  }
+  .ih-tilt > * {
+    transform: rotateY(-4deg) rotateX(2deg);
+  }
+  @supports (animation-timeline: view()) and (animation-range: entry) {
+    @keyframes ih-sd-tilt {
+      from { transform: perspective(900px) rotateX(12deg) rotateY(-8deg) translateY(40px); opacity: 0.4; }
+      to { transform: none; opacity: 1; }
+    }
+    @keyframes ih-sd-widen {
+      from { clip-path: inset(0 6% round 2.5rem); scale: 0.97; }
+      to { clip-path: inset(0 0 round 2rem); scale: 1; }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-card::before,
+  .ih-hero-frame::after {
+    animation: none !important;
+  }
+}

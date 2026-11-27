@@ -98,7 +98,7 @@ export function SalesTotal({ reservations }: { reservations: Reservation[] }) {
             style={{ ['--ih-i' as string]: index }}
           >
             <s.icon className="h-4 w-4 text-white/80" />
-            <p className="mt-2 truncate text-lg leading-tight font-semibold md:text-xl">{s.value}</p>
+            <p className="mt-2 text-[15px] leading-tight font-semibold break-words whitespace-nowrap sm:text-lg md:text-xl">{s.value}</p>
             <p className="mt-0.5 flex items-center gap-1.5 text-[12px] text-white/75">
               {s.label}
               {s.trend != null ? (

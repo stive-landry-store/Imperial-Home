@@ -70,7 +70,7 @@ export function HomePage() {
       </Helmet>
 
       <section className="ih-hero relative px-3 pt-[4.75rem] md:px-6 md:pt-[5.5rem]">
-        <div className="ih-hero-frame relative mx-auto min-h-[calc(100svh-9.5rem)] max-w-7xl overflow-hidden rounded-[2rem] bg-[#e9e3d9] md:min-h-[calc(100svh-8rem)] md:rounded-[2.5rem]">
+        <div className="ih-hero-frame relative mx-auto min-h-[calc(100svh-17rem)] max-w-7xl overflow-hidden rounded-[2rem] bg-[#e9e3d9] md:min-h-[calc(100svh-8rem)] md:rounded-[2.5rem]">
           <div className="ih-hero-parallax absolute inset-0">
             <img
               key={hero}
@@ -84,13 +84,13 @@ export function HomePage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1f1d1a]/75 via-[#1f1d1a]/10 to-transparent" />
           </div>
-          <div className="relative z-10 flex min-h-[calc(100svh-9.5rem)] flex-col justify-end p-6 pb-28 md:min-h-[calc(100svh-8rem)] md:p-12 md:pb-32">
+          <div className="relative z-10 flex min-h-[calc(100svh-17rem)] flex-col justify-end p-5 pb-24 md:min-h-[calc(100svh-8rem)] md:p-12 md:pb-32">
             <div className="max-w-3xl">
               <p className="ih-fade-up ih-delay-1 mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3.5 py-1.5 text-[12px] font-semibold tracking-[0.2em] text-white uppercase backdrop-blur-md">
                 <span className="ih-live-dot" aria-hidden />
                 {t('hero.kicker')}
               </p>
-              <h1 className="ih-no-anim font-display text-[2.6rem] leading-[1.02] font-medium text-white md:text-7xl" aria-label={t('home.placeLine')}>
+              <h1 className="ih-no-anim font-display text-[2.25rem] leading-[1.04] sm:text-[2.6rem] font-medium text-white md:text-7xl" aria-label={t('home.placeLine')}>
                 {t('home.placeLine')
                   .split(' ')
                   .map((word, index) => (
