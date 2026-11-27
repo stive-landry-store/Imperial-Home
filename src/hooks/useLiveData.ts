@@ -47,9 +47,12 @@ export function useLiveData() {
       })
     }
     channel.subscribe()
-    void db.rpc('dispatch_stay_reminders').then(() => {
-      void client.invalidateQueries({ queryKey: ['notifications'] })
-    })
+    // Reminders are sent on behalf of signed-in people only (the database refuses anonymous calls).
+    if (userId) {
+      void db.rpc('dispatch_stay_reminders').then(() => {
+        void client.invalidateQueries({ queryKey: ['notifications'] })
+      })
+    }
 
     return () => {
       void db.removeChannel(channel)
