@@ -42,6 +42,7 @@ const AdminCalendarPage = lazy(() => import('../pages/admin/AdminCalendarPage').
 const AdminCustomersPage = lazy(() => import('../pages/admin/AdminCustomersPage').then((m) => ({ default: m.AdminCustomersPage })))
 const ReviewsPage = lazy(() => import('../pages/public/ReviewsPage').then((m) => ({ default: m.ReviewsPage })))
 const LegalPage = lazy(() => import('../pages/public/LegalPage').then((m) => ({ default: m.LegalPage })))
+const PrivacyPage = lazy(() => import('../pages/public/PrivacyPage').then((m) => ({ default: m.PrivacyPage })))
 const AdminPricingPage = lazy(() => import('../pages/admin/AdminPricingPage').then((m) => ({ default: m.AdminPricingPage })))
 const AdminSecurityPage = lazy(() => import('../pages/admin/AdminSecurityPage').then((m) => ({ default: m.AdminSecurityPage })))
 const AdminPromotionsPage = lazy(() => import('../pages/admin/AdminPromotionsPage').then((m) => ({ default: m.AdminPromotionsPage })))
@@ -110,7 +111,8 @@ export function AppRouter() {
             <Route path="/avis" element={<ReviewsPage />} />
             <Route path="/a-propos" element={<LegalPage kind="about" />} />
             <Route path="/conditions" element={<LegalPage kind="terms" />} />
-            <Route path="/confidentialite" element={<LegalPage kind="privacy" />} />
+            <Route path="/confidentialite" element={<PrivacyPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/installer" element={<InstallGuidePage />} />
             <Route path="/cars" element={<CarsPage />} />
             <Route path="/cars/:slug" element={<CarDetailPage />} />

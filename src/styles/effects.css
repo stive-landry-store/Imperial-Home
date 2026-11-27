@@ -411,3 +411,79 @@ html.ih-thread-open .ih-top {
     animation: none !important;
   }
 }
+
+/* ------------------------------------------------------------ privacy policy */
+
+.ih-privacy-hero {
+  background: linear-gradient(180deg, var(--accent-soft), transparent 85%);
+}
+.ih-privacy-shield {
+  animation: ih-pop 700ms var(--ih-ease-spring) 200ms both;
+}
+.ih-privacy-shield svg {
+  animation: ih-float 3.4s var(--ih-ease-in-out) 1s infinite;
+}
+.ih-toc-link {
+  position: relative;
+  transition: background-color var(--ih-dur-sm), color var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-out);
+}
+.ih-toc-num {
+  background: var(--page-alt);
+  transition: background-color var(--ih-dur-sm), color var(--ih-dur-sm), transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-toc-link:hover {
+  background: var(--page-alt);
+  transform: translateX(3px);
+}
+.ih-toc-link.is-active {
+  background: var(--accent-soft);
+  color: var(--page-fg);
+  font-weight: 600;
+}
+.ih-toc-link.is-active .ih-toc-num {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  transform: scale(1.08);
+}
+.ih-privacy-section {
+  transition: box-shadow var(--ih-dur-md) var(--ih-ease-out), border-color var(--ih-dur-sm);
+}
+.ih-privacy-section:target {
+  border-color: color-mix(in srgb, var(--accent-strong) 45%, transparent);
+  box-shadow: var(--shadow-lift);
+}
+.ih-privacy-icon {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+@media (hover: hover) {
+  .ih-privacy-section:hover .ih-privacy-icon {
+    transform: rotate(-8deg) scale(1.1);
+  }
+}
+.ih-privacy-list li {
+  animation: ih-fade-up 520ms var(--ih-ease-out) both;
+}
+.ih-privacy-list li:nth-child(2) { animation-delay: 40ms; }
+.ih-privacy-list li:nth-child(3) { animation-delay: 80ms; }
+.ih-privacy-list li:nth-child(4) { animation-delay: 120ms; }
+.ih-privacy-list li:nth-child(n + 5) { animation-delay: 160ms; }
+.ih-privacy-dot {
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+@media print {
+  .ih-privacy-hero .ih-orb,
+  .ih-privacy-shield,
+  .ih-privacy-toc,
+  header.ih-header,
+  footer,
+  [data-tabbar],
+  [data-lang-dock],
+  .ih-fab,
+  .ih-top {
+    display: none !important;
+  }
+  .ih-privacy .theme-card {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+}
