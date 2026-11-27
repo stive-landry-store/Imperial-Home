@@ -66,7 +66,7 @@ export function AdminReservationsPage() {
             aria-label={t('admin.exportMonth')}
             value={month}
             onChange={(e) => setMonth(e.target.value)}
-            className="min-h-10 rounded-full border border-[#d4af6a]/40 bg-transparent px-3 text-sm"
+            className="min-h-10 rounded-full border border-accent/40 bg-transparent px-3 text-sm"
           >
             <option value="">{t('admin.exportAll')}</option>
             {months.map((m) => (
@@ -104,7 +104,7 @@ export function AdminReservationsPage() {
           row.kind === 'stay' ? (
             <li key={row.reservation.id} className="surface-light border border-line p-4">
               <Link to={`/admin/reservations/${row.reservation.id}`} className="block min-h-11">
-                <p className="font-medium text-gold">{row.reservation.public_code}</p>
+                <p className="font-medium text-accent">{row.reservation.public_code}</p>
                 <p className="mt-1 text-sm">{row.reservation.properties?.name}</p>
                 <p className="text-sm text-muted">{row.reservation.profiles?.full_name || row.reservation.profiles?.email}</p>
                 <p className="mt-1 text-sm">
@@ -128,7 +128,7 @@ export function AdminReservationsPage() {
             </li>
           ) : (
             <li key={row.rental.id} className="surface-light border border-line p-4">
-              <p className="font-medium text-gold">{row.rental.public_code ?? t('nav.cars')}</p>
+              <p className="font-medium text-accent">{row.rental.public_code ?? t('nav.cars')}</p>
               <p className="mt-1 text-sm">{rentalVehicleName(row.rental)}</p>
               <p className="mt-1 text-sm">
                 {row.rental.start_date ? formatDate(row.rental.start_date, locale) : ''}
@@ -166,7 +166,7 @@ export function AdminReservationsPage() {
               row.kind === 'stay' ? (
                 <tr key={row.reservation.id} className="border-t border-line">
                   <td className="px-4 py-3">
-                    <Link to={`/admin/reservations/${row.reservation.id}`} className="hover:text-gold">
+                    <Link to={`/admin/reservations/${row.reservation.id}`} className="hover:text-accent">
                       {row.reservation.public_code}
                     </Link>
                   </td>

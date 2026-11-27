@@ -22,7 +22,7 @@ export function AdminReviewsPage() {
       <ul className="mt-8 space-y-3">
         {data.map((review) => (
           <li key={review.id} className="surface-light border border-line p-4">
-            <p className="text-[#d4af6a]">{'★'.repeat(review.rating)}</p>
+            <p className="text-accent">{'★'.repeat(review.rating)}</p>
             <p className="mt-2 text-sm">{review.body}</p>
             <p className="mt-1 text-xs uppercase tracking-wider theme-muted">{review.status}</p>
             <Button

@@ -223,7 +223,7 @@ export function AdminAdminsPage() {
                   {p.role === "customer" ? (
                     <button
                       type="button"
-                      className="text-xs uppercase tracking-wider text-gold"
+                      className="text-xs uppercase tracking-wider text-accent"
                       onClick={() => {
                         setEmail(p.email ?? "");
                         setTitle(p.full_name || "");
@@ -291,7 +291,7 @@ export function AdminAdminsPage() {
                   <>
                     <button
                       type="button"
-                      className="text-xs uppercase tracking-wider text-gold"
+                      className="text-xs uppercase tracking-wider text-accent"
                       onClick={() =>
                         void toggleVerify(row.id, !row.is_verified)
                       }
@@ -312,7 +312,7 @@ export function AdminAdminsPage() {
                     ) : (
                       <button
                         type="button"
-                        className="text-xs uppercase tracking-wider text-gold"
+                        className="text-xs uppercase tracking-wider text-accent"
                         onClick={() =>
                           reactivate.mutate({
                             id: row.id,

@@ -14,12 +14,17 @@ function Row({ icon, label, on, onClick, disabled }: { icon: React.ReactNode; la
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-left disabled:opacity-50"
+      role="switch"
+      aria-checked={on}
+      className="ih-set-row flex min-h-14 w-full items-center gap-3 rounded-2xl border border-line bg-[var(--card-bg)] px-3.5 text-left disabled:opacity-50"
     >
-      <span className="text-[#c4a35a]">{icon}</span>
-      <span className="flex-1 text-[15px]">{label}</span>
-      <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-semibold', on ? 'bg-[#c4a35a] text-black' : 'bg-black/10 theme-muted')}>
-        {disabled ? t('app.unavailable') : on ? t('app.on') : t('app.off')}
+      <span className="ih-set-icon grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">{icon}</span>
+      <span className="min-w-0 flex-1 text-[15px] font-medium">
+        {label}
+        {disabled ? <span className="block text-xs font-normal theme-muted">{t('app.unavailable')}</span> : null}
+      </span>
+      <span className={cn('ih-switch', on && 'is-on')} aria-hidden>
+        <span className="ih-switch-knob" />
       </span>
     </button>
   )
@@ -59,7 +64,7 @@ export function AppFeatures() {
   const notifOk = notificationsSupported()
 
   return (
-    <div className="mt-4 flex flex-col gap-2">
+    <div className="ih-set-group mt-2 flex flex-col gap-2">
       <Row
         icon={<Bell className="h-5 w-5" />}
         label={t('app.notifications')}
@@ -87,7 +92,7 @@ export function AppFeatures() {
         <button
           type="button"
           disabled={trying}
-          className="mb-1 min-h-11 w-full rounded-xl px-3 text-left text-[15px] font-semibold text-[#c4a35a] disabled:opacity-50"
+          className="mb-1 min-h-11 w-full rounded-xl px-3 text-left text-[15px] font-semibold text-accent disabled:opacity-50"
           onClick={() => {
             setTrying(true)
             void previewOnScreen()

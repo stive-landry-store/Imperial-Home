@@ -28,7 +28,7 @@ export function MfaChallenge({ onDone }: { onDone: () => void }) {
   return (
     <div className="theme-page flex min-h-[70svh] items-center justify-center p-6">
       <form onSubmit={(e) => void submit(e)} className="ih-pop theme-card w-full max-w-sm space-y-4 rounded-3xl p-6 text-center">
-        <ShieldCheck className="ih-float mx-auto h-10 w-10 text-[#d4af6a]" />
+        <ShieldCheck className="ih-float mx-auto h-10 w-10 text-accent" />
         <h1 className="font-display text-2xl">{t('security.challengeTitle')}</h1>
         <p className="text-sm theme-muted">{t('security.challengeLead')}</p>
         <Input

@@ -46,16 +46,16 @@ export function SimilarStays({ currentId }: { currentId: string }) {
       ) : null}
       <Link
         to="/cars"
-        className="mt-6 flex items-center gap-4 rounded-2xl border border-[#d4af6a]/60 bg-[#0a0907] p-4 text-[#f4eee3]"
+        className="mt-6 flex items-center gap-4 rounded-2xl border border-accent/60 bg-panel p-4 text-panel-fg"
       >
-        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[#d4af6a] text-[#ecd08a]">
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-accent text-accent">
           <Car className="h-6 w-6" />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block font-display text-lg text-[#ecd08a]">{t('app.carUpsellTitle')}</span>
-          <span className="block text-sm text-[#a89f90]">{t('app.carUpsellLead')}</span>
+          <span className="block font-display text-lg text-accent">{t('app.carUpsellTitle')}</span>
+          <span className="block text-sm theme-muted">{t('app.carUpsellLead')}</span>
         </span>
-        <ChevronRight className="h-5 w-5 text-[#d4af6a] rtl:scale-x-[-1]" />
+        <ChevronRight className="h-5 w-5 text-accent rtl:scale-x-[-1]" />
       </Link>
     </section>
   )

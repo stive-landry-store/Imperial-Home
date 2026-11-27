@@ -117,12 +117,12 @@ export function PhotoCropper({ file, aspect, round = false, outputWidth, title, 
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4" role="dialog" aria-modal="true">
-      <div className="w-full max-w-md rounded-2xl border border-[#d4af6a]/60 bg-[#0a0907] p-5 text-[#f4eee3]">
-        <p className="text-center font-display text-lg tracking-wider text-[#ecd08a]">{title}</p>
-        <p className="mt-1 text-center text-xs text-[#a89f90]">{t('common.cropHint')}</p>
+      <div className="w-full max-w-md rounded-2xl border border-accent/60 bg-panel p-5 text-panel-fg">
+        <p className="text-center font-display text-lg tracking-wider text-accent">{title}</p>
+        <p className="mt-1 text-center text-xs theme-muted">{t('common.cropHint')}</p>
         <div className="mt-4 flex justify-center">
           <div
-            className={`relative touch-none overflow-hidden bg-black ring-2 ring-[#d4af6a] ${round ? 'rounded-full' : 'rounded-lg'}`}
+            className={`relative touch-none overflow-hidden bg-black ring-2 ring-accent ${round ? 'rounded-full' : 'rounded-lg'}`}
             style={{ width: frameW, height: frameH }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -149,7 +149,7 @@ export function PhotoCropper({ file, aspect, round = false, outputWidth, title, 
           </div>
         </div>
         <div className="mt-5 flex items-center gap-3">
-          <button type="button" aria-label="-" className="grid h-9 w-9 place-items-center rounded-full border border-[#d4af6a]/60 text-[#ecd08a]" onClick={() => applyZoom(zoom - 0.25)}>
+          <button type="button" aria-label="-" className="grid h-9 w-9 place-items-center rounded-full border border-accent/60 text-accent" onClick={() => applyZoom(zoom - 0.25)}>
             <Minus className="h-4 w-4" />
           </button>
           <input
@@ -162,18 +162,18 @@ export function PhotoCropper({ file, aspect, round = false, outputWidth, title, 
             className="h-2 flex-1 accent-[#d4af6a]"
             aria-label="Zoom"
           />
-          <button type="button" aria-label="+" className="grid h-9 w-9 place-items-center rounded-full border border-[#d4af6a]/60 text-[#ecd08a]" onClick={() => applyZoom(zoom + 0.25)}>
+          <button type="button" aria-label="+" className="grid h-9 w-9 place-items-center rounded-full border border-accent/60 text-accent" onClick={() => applyZoom(zoom + 0.25)}>
             <Plus className="h-4 w-4" />
           </button>
         </div>
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <button type="button" className="min-h-11 rounded-full border border-[#d4af6a]/60 text-sm text-[#ecd08a]" onClick={onCancel}>
+          <button type="button" className="min-h-11 rounded-full border border-accent/60 text-sm text-accent" onClick={onCancel}>
             {t('common.cancel')}
           </button>
           <button
             type="button"
             disabled={!img || busy}
-            className="min-h-11 rounded-full bg-gradient-to-r from-[#b8893b] to-[#ecd08a] text-sm font-semibold text-[#17110a] disabled:opacity-60"
+            className="min-h-11 rounded-full ih-accent-fill text-sm font-semibold text-on-accent disabled:opacity-60"
             onClick={() => void confirm()}
           >
             {t('common.cropApply')}

@@ -789,7 +789,7 @@ export function PropertyFormPage() {
 
                 {img.is_cover ? (
 
-                  <span className="absolute left-1 top-1 rounded bg-[#d4af6a] px-2 py-0.5 text-[10px] uppercase text-black">
+                  <span className="absolute left-1 top-1 rounded bg-accent-strong px-2 py-0.5 text-[10px] uppercase text-on-accent">
 
                     {t('admin.roomPhotoCover')}
 
@@ -935,7 +935,7 @@ export function PropertyFormPage() {
           <Label>{t('app.videoUrl')}</Label>
           <Input value={form.video_url} placeholder="https://" onChange={(e) => setField('video_url', e.target.value)} />
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <label className="cursor-pointer border border-[#d4af6a]/50 px-4 py-2 text-xs tracking-[0.16em] text-[#d4af6a] uppercase">
+            <label className="cursor-pointer border border-accent/50 px-4 py-2 text-xs tracking-[0.16em] text-accent uppercase">
               {videoBusy ? '…' : t('app.videoUpload')}
               <input
                 type="file"

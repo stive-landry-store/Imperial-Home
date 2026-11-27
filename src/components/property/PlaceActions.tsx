@@ -35,7 +35,7 @@ export function PlaceActions({ place }: { place: ImperialPlace }) {
           setSaved(true)
         }}
       >
-        <Bookmark className={saved ? 'h-4 w-4 fill-current text-[#c4a35a]' : 'h-4 w-4'} />
+        <Bookmark className={saved ? 'h-4 w-4 fill-current text-accent' : 'h-4 w-4'} />
         {saved ? t('place.saved') : t('place.save')}
       </Action>
       <Action href={links.directions}>

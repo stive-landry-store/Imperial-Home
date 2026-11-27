@@ -244,7 +244,7 @@ export function AdminActivityPage() {
                 }}
                 className={cn(
                   'flex w-full flex-col gap-1 px-4 py-3 text-left md:flex-row md:items-center md:justify-between',
-                  p.user_id === userId && 'bg-[#c4a35a]/15',
+                  p.user_id === userId && 'bg-accent-strong/15',
                 )}
               >
                 <span className="min-w-0">
@@ -254,7 +254,7 @@ export function AdminActivityPage() {
                       title={isOnline(p.last_seen) ? t('activity.online') : undefined}
                     />
                     <span className="truncate">{p.user_name || p.user_email || t('activity.unknown')}</span>
-                    <span className="text-xs uppercase tracking-wider text-gold">{roleLabel(p.user_role)}</span>
+                    <span className="text-xs uppercase tracking-wider text-accent">{roleLabel(p.user_role)}</span>
                   </span>
                   <span className="block truncate text-sm text-muted">{p.user_email}</span>
                 </span>
@@ -323,21 +323,21 @@ export function AdminActivityPage() {
             }}
             className={cn(
               'min-h-10 border px-3 text-xs uppercase tracking-wider',
-              kind === k.key ? 'border-[#c4a35a] bg-[#c4a35a] text-black' : 'border-line',
+              kind === k.key ? 'border-accent bg-accent-strong text-on-accent' : 'border-line',
             )}
           >
             {k.label}
           </button>
         ))}
         {day ? (
-          <button type="button" className="text-xs uppercase tracking-wider text-gold" onClick={() => setDay('')}>
+          <button type="button" className="text-xs uppercase tracking-wider text-accent" onClick={() => setDay('')}>
             {t('activity.allDays')}
           </button>
         ) : null}
         {selected ? (
           <button
             type="button"
-            className="inline-flex items-center gap-1 border border-[#c4a35a] px-3 py-2 text-xs uppercase tracking-wider text-gold"
+            className="inline-flex items-center gap-1 border border-accent px-3 py-2 text-xs uppercase tracking-wider text-accent"
             onClick={() => setUserId(null)}
           >
             {selected.user_name || selected.user_email}
@@ -357,7 +357,7 @@ export function AdminActivityPage() {
               <div className="min-w-0">
                 <p className="text-base">
                   <span className="font-medium">{e.user_name || e.user_email || t('activity.unknown')}</span>{' '}
-                  <span className="text-xs uppercase tracking-wider text-gold">{roleLabel(e.user_role)}</span>
+                  <span className="text-xs uppercase tracking-wider text-accent">{roleLabel(e.user_role)}</span>
                 </p>
                 <p className="text-base">{describe(e)}</p>
                 {e.device ? (

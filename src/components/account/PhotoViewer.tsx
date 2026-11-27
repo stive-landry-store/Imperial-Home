@@ -12,11 +12,11 @@ export function PhotoViewer({ src, round, onClose, onChange }: { src: string; ro
         src={src}
         alt=""
         onClick={(event) => event.stopPropagation()}
-        className={`max-h-[75vh] max-w-full object-contain ${round ? 'aspect-square w-[min(80vw,420px)] rounded-full object-cover ring-[3px] ring-[#d4af6a]' : 'rounded-lg'}`}
+        className={`max-h-[75vh] max-w-full object-contain ${round ? 'aspect-square w-[min(80vw,420px)] rounded-full object-cover ring-[3px] ring-accent' : 'rounded-lg'}`}
       />
       <button
         type="button"
-        className="min-h-11 rounded-full bg-gradient-to-r from-[#b8893b] to-[#ecd08a] px-6 text-sm font-semibold text-[#17110a]"
+        className="min-h-11 rounded-full ih-accent-fill px-6 text-sm font-semibold text-on-accent"
         onClick={(event) => {
           event.stopPropagation()
           onChange()

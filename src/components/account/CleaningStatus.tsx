@@ -23,8 +23,8 @@ export function CleaningStatus({ reservationId }: { reservationId: string }) {
   if (tasks.length === 0) return null
 
   return (
-    <div className="mt-6 border border-[#d4af6a]/30 p-4">
-      <p className="font-display text-lg text-[#d4af6a]">{t('app.cleaningTitle')}</p>
+    <div className="mt-6 border border-accent/30 p-4">
+      <p className="font-display text-lg text-accent">{t('app.cleaningTitle')}</p>
       <ul className="mt-2 space-y-1 text-sm">
         {tasks.map((task) => (
           <li key={task.id} className="flex items-center justify-between gap-3">

@@ -195,7 +195,7 @@ export function AdminPropertiesPage() {
 
                     <p className="font-medium text-[var(--surface-fg)]">{p.name}</p>
 
-                    <p className="text-xs tracking-[0.18em] text-[#b8923f]">{propertyMatricule(p, index)}</p>
+                    <p className="text-xs tracking-[0.18em] text-accent">{propertyMatricule(p, index)}</p>
 
                     <p className="text-sm text-[var(--surface-muted)]">{p.slug}</p>
 
@@ -242,7 +242,7 @@ export function AdminPropertiesPage() {
 
                         to={`/admin/properties/${p.id}`}
 
-                        className="text-sm uppercase tracking-wider text-[var(--surface-fg)] hover:text-[#c4a35a]"
+                        className="text-sm uppercase tracking-wider text-[var(--surface-fg)] hover:text-accent"
 
                       >
 

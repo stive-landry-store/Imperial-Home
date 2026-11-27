@@ -40,7 +40,7 @@ export function ComparePage() {
                   <th className="p-3 text-left" />
                   {chosen.map((property) => (
                     <th key={property.id} className="p-3 text-left font-display text-2xl font-normal">
-                      <Link to={`/properties/${property.slug}`} className="text-[#d4af6a]">
+                      <Link to={`/properties/${property.slug}`} className="text-accent">
                         {property.name}
                       </Link>
                     </th>
@@ -63,7 +63,7 @@ export function ComparePage() {
                     ],
                   ] as const
                 ).map(([label, value]) => (
-                  <tr key={label} className="border-t border-[#d4af6a]/20">
+                  <tr key={label} className="border-t border-accent/20">
                     <th className="p-3 text-left font-normal theme-muted">{label}</th>
                     {chosen.map((property) => (
                       <td key={property.id} className="p-3 align-top">

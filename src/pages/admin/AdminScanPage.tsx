@@ -154,9 +154,9 @@ export function AdminScanPage() {
       <p className="mt-2 max-w-xl text-sm text-muted">{t('app.scanLead')}</p>
 
       {live ? (
-        <div className="relative mt-5 max-w-md overflow-hidden rounded-[1.35rem] border border-[#d4af6a]/60 bg-black">
+        <div className="relative mt-5 max-w-md overflow-hidden rounded-[1.35rem] border border-accent/60 bg-black">
           <video ref={video} playsInline muted autoPlay className="aspect-square w-full object-cover" />
-          <p className="absolute inset-x-0 bottom-0 bg-black/55 px-3 py-2 text-center text-xs text-[#f4eee3]">{t('app.scanLive')}</p>
+          <p className="absolute inset-x-0 bottom-0 bg-black/55 px-3 py-2 text-center text-xs text-panel-fg">{t('app.scanLive')}</p>
         </div>
       ) : (
         <Button className="mt-5 w-full max-w-md" onClick={() => void openCamera()} disabled={opening}>

@@ -25,67 +25,68 @@ export function Footer() {
   ]
 
   return (
-    <footer className="bg-black text-[#d4af6a]">
-      <div className="gold-line" />
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-4 md:px-6 md:divide-x md:divide-[#d4af6a]/25">
-        {pillars.map((p) => (
-          <div key={p.title} className="px-2 text-center">
-            <p.icon className="mx-auto mb-3 h-6 w-6" strokeWidth={1.4} />
-            <p className="text-[13px] tracking-[0.18em] uppercase">{p.title}</p>
-            <p className="mt-2 text-sm leading-relaxed text-[#d4af6a]/75">{p.text}</p>
+    <footer className="ih-footer relative overflow-hidden border-t border-line bg-[var(--page-alt)] text-[var(--page-fg)]">
+      <div className="ih-footer-glow" aria-hidden />
+      <div className="relative mx-auto grid max-w-6xl grid-cols-2 gap-3 px-4 pt-14 md:grid-cols-4 md:gap-5 md:px-6">
+        {pillars.map((p, index) => (
+          <div
+            key={p.title}
+            data-reveal="up"
+            style={{ ['--ih-i' as string]: index }}
+            className="ih-pillar rounded-3xl border border-line bg-[var(--card-bg)] p-5 text-left shadow-[var(--shadow-soft)]"
+          >
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-accent-soft text-accent">
+              <p.icon className="h-5 w-5" strokeWidth={1.6} />
+            </span>
+            <p className="mt-4 text-[15px] font-semibold">{p.title}</p>
+            <p className="mt-1 text-sm leading-relaxed theme-muted">{p.text}</p>
           </div>
         ))}
       </div>
-      <div className="gold-line" />
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-10 md:flex-row md:justify-between md:px-6">
-        <ImperialLogo light />
-        {isAppInstalled() ? null : (
-          <Link to="/installer" className="rounded-full border border-[#d4af6a]/60 px-5 py-2 text-sm tracking-[0.14em] uppercase">
-            {t('app.guideTitle')}
-          </Link>
-        )}
-        <div className="text-center text-base md:text-right">
-          <a className="block hover:text-gold-light" href={whatsappUrl(config?.whatsapp ?? '237674092263')}>
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:px-6">
+        <div className="flex flex-col items-start gap-5">
+          <ImperialLogo />
+          <p className="max-w-sm text-sm leading-relaxed theme-muted">{t('home.locationBody')}</p>
+          {isAppInstalled() ? null : (
+            <Link to="/installer" className="ih-btn ih-btn-primary rounded-full px-5 py-2.5 text-sm font-semibold">
+              {t('app.guideTitle')}
+            </Link>
+          )}
+        </div>
+        <div className="text-base">
+          <p className="ih-eyebrow">{t('nav.contact')}</p>
+          <a className="ih-link mt-4 block w-fit font-medium" href={whatsappUrl(config?.whatsapp ?? '237674092263')}>
             {config?.phone}
           </a>
-          <a className="mt-1 block hover:text-gold-light" href={`mailto:${config?.email}`}>
+          <a className="ih-link mt-2 block w-fit break-all theme-muted" href={`mailto:${config?.email}`}>
             {config?.email}
           </a>
-          <p className="mt-2 text-sm text-[#d4af6a]/70">{config?.city}</p>
+          <p className="mt-2 text-sm theme-muted-soft">{config?.city}</p>
         </div>
-        <div className="flex flex-col gap-2 text-center text-[13px] tracking-[0.16em] uppercase md:text-right">
-          <Link to="/properties" className="hover:text-gold-light">
-            {t('nav.residences')}
-          </Link>
-          <Link to="/contact" className="hover:text-gold-light">
-            {t('nav.contact')}
-          </Link>
-          <Link to="/fiche" className="hover:text-gold-light">
-            {t('account.housing')}
-          </Link>
-          <Link to="/login" className="hover:text-gold-light">
-            {t('nav.login')}
-          </Link>
-          <Link to="/avis" className="hover:text-gold-light">
-            {t('reviewsPage.title')}
-          </Link>
-          <Link to="/a-propos" className="hover:text-gold-light">
-            {t('legal.about.title')}
-          </Link>
-          <Link to="/conditions" className="hover:text-gold-light">
-            {t('legal.terms.title')}
-          </Link>
-          <Link to="/confidentialite" className="hover:text-gold-light">
-            {t('legal.privacy.title')}
-          </Link>
-        </div>
+        <nav className="grid grid-cols-2 gap-x-6 gap-y-2.5 text-[15px] md:grid-cols-1">
+          <p className="ih-eyebrow col-span-2 mb-2 md:col-span-1">Imperial Home</p>
+          {[
+            ['/properties', t('nav.residences')],
+            ['/contact', t('nav.contact')],
+            ['/fiche', t('account.housing')],
+            ['/login', t('nav.login')],
+            ['/avis', t('reviewsPage.title')],
+            ['/a-propos', t('legal.about.title')],
+            ['/conditions', t('legal.terms.title')],
+            ['/confidentialite', t('legal.privacy.title')],
+          ].map(([to, label]) => (
+            <Link key={to} to={to} className="ih-link w-fit theme-muted hover:text-accent">
+              {label}
+            </Link>
+          ))}
+        </nav>
       </div>
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center">
-        <p className="text-base tracking-[0.2em] uppercase">{t('nav.networks')}</p>
+      <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-4 border-t border-line px-4 py-10 text-center">
+        <p className="ih-eyebrow">{t('nav.networks')}</p>
         <SocialLinks prominent className="max-w-xl" />
         <button
           type="button"
-          className="min-h-11 px-4 text-[13px] tracking-[0.16em] uppercase hover:text-gold-light"
+          className="ih-btn min-h-11 rounded-full border border-line px-5 text-sm font-medium hover:bg-accent-soft hover:text-accent"
           onClick={() =>
             void shareSite().then((result) => {
               if (result === 'copied') {
@@ -98,19 +99,19 @@ export function Footer() {
           {copied ? t('nav.copied') : t('nav.share')}
         </button>
       </div>
-      <p className="pb-4 text-center font-display text-base tracking-[0.18em]">
-        <Live text="MERCI ET BIENVENUE CHEZ IMPERIAL HOME !" from="fr" />
+      <p className="relative pb-6 text-center font-display text-xl italic text-accent">
+        <Live text="Merci et bienvenue chez Imperial Home" from="fr" />
       </p>
-      <div className="border-t border-[#d4af6a]/15 py-4 text-center text-[12px] tracking-wider text-[#d4af6a]/50">
+      <div className="relative border-t border-line py-5 text-center text-[13px] theme-muted-soft">
         <p>© {year} Imperial Home. {t('footer.rights')}</p>
         <p className="mt-2" data-reveal="fade">
           {t('credits.madeBy')}{' '}
-          <Link to="/a-propos" className="ih-gold-text font-semibold" title={CREATOR.fullName}>
+          <Link to="/a-propos" className="font-semibold text-accent" title={CREATOR.fullName}>
             {CREATOR.company}
           </Link>
           <span className="sr-only"> — {CREATOR.fullName}</span>
           {' · '}
-          <a href={CREATOR.portfolio} target="_blank" rel="noopener" className="ih-link font-semibold text-[#e0c57a]">
+          <a href={CREATOR.portfolio} target="_blank" rel="noopener" className="ih-link font-semibold text-accent">
             Portfolio
           </a>
         </p>

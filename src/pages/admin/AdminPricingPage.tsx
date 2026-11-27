@@ -169,7 +169,7 @@ export function AdminPricingPage() {
 
       <section className="space-y-4">
         <h2 className="flex items-center gap-2 text-xl font-semibold">
-          <Percent className="h-5 w-5 text-[#d4af6a]" /> {t('pricing.rulesTitle')}
+          <Percent className="h-5 w-5 text-accent" /> {t('pricing.rulesTitle')}
         </h2>
         <p className="text-sm theme-muted">{t('pricing.rulesLead')}</p>
         <div className="space-y-3">
@@ -181,7 +181,7 @@ export function AdminPricingPage() {
 
       <section className="space-y-4">
         <h2 className="flex items-center gap-2 text-xl font-semibold">
-          <Sun className="h-5 w-5 text-[#d4af6a]" /> {t('pricing.seasonsTitle')}
+          <Sun className="h-5 w-5 text-accent" /> {t('pricing.seasonsTitle')}
         </h2>
         <p className="text-sm theme-muted">{t('pricing.seasonsLead')}</p>
         <form onSubmit={submitSeason} className="theme-card grid gap-3 rounded-2xl p-4 md:grid-cols-3">
@@ -245,7 +245,7 @@ export function AdminPricingPage() {
 
       <section className="space-y-4">
         <h2 className="flex items-center gap-2 text-xl font-semibold">
-          <CalendarSync className="h-5 w-5 text-[#d4af6a]" /> {t('ical.title')}
+          <CalendarSync className="h-5 w-5 text-accent" /> {t('ical.title')}
         </h2>
         <p className="text-sm theme-muted">{t('ical.lead')}</p>
         <div className="space-y-2">
@@ -254,7 +254,7 @@ export function AdminPricingPage() {
             return url ? (
               <div key={p.id} className="theme-card rounded-2xl px-4 py-3 text-sm">
                 <p className="font-semibold">{p.name} — {t('ical.export')}</p>
-                <code className="mt-1 block break-all text-xs text-[#d4af6a]">{url}</code>
+                <code className="mt-1 block break-all text-xs text-accent">{url}</code>
               </div>
             ) : null
           })}
@@ -297,7 +297,7 @@ export function AdminPricingPage() {
                   {nameOf(c.property_id)} · {c.source}
                 </p>
                 <p className="truncate text-xs theme-muted">{c.url}</p>
-                <p className={`text-xs ${c.last_error ? 'text-red-400' : 'text-[#d4af6a]'}`}>
+                <p className={`text-xs ${c.last_error ? 'text-red-400' : 'text-accent'}`}>
                   {c.last_error
                     ? c.last_error
                     : c.last_synced_at

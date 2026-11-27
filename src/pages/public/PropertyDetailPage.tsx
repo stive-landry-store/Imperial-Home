@@ -156,16 +156,16 @@ export function PropertyDetailPage() {
         {property.video_url ? <PropertyVideo url={property.video_url} /> : null}
         <div className="mt-8 max-w-3xl">
           <div>
-            <p className="text-[13px] tracking-[0.28em] text-[#d4af6a] uppercase">{t('properties.houseLabel')}</p>
+            <p className="text-[13px] tracking-[0.28em] text-accent uppercase">{t('properties.houseLabel')}</p>
             <h1 className="mt-2 font-display text-5xl tracking-[0.04em]">
               <Live text={property.name} />
             </h1>
-            {matricule ? <p className="mt-2 text-xs tracking-[0.24em] text-[#d4af6a]">{matricule}</p> : null}
+            {matricule ? <p className="mt-2 text-xs tracking-[0.24em] text-accent">{matricule}</p> : null}
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <StayActions propertyId={property.id} />
               <button
                 type="button"
-                className="text-[11px] tracking-[0.14em] text-[#d4af6a] uppercase"
+                className="text-[11px] tracking-[0.14em] text-accent uppercase"
                 onClick={() =>
                   window.open(
                     whatsappUrl(
@@ -180,7 +180,7 @@ export function PropertyDetailPage() {
               </button>
               <button
                 type="button"
-                className="text-[11px] tracking-[0.14em] text-[#d4af6a] uppercase"
+                className="text-[11px] tracking-[0.14em] text-accent uppercase"
                 onClick={() =>
                   void shareSite(window.location.href).then((result) => {
                     if (result === 'copied') {
@@ -200,7 +200,7 @@ export function PropertyDetailPage() {
                 <AvailabilityCalendar ranges={ranges} checkIn={activeCheckIn} checkOut={checkOut} onSelect={onSelectDate} />
               </div>
               {adjusted.shifted || followsReserved ? (
-                <p className="mt-3 text-sm text-[#d4af6a]">
+                <p className="mt-3 text-sm text-accent">
                   {t('property.skipReserved', {
                     date: formatDate(activeCheckIn, i18n.language.startsWith('fr') ? 'fr-FR' : 'en-GB'),
                   })}
@@ -210,7 +210,7 @@ export function PropertyDetailPage() {
                 <ManualDate label={t('property.checkIn')} value={activeCheckIn} min={todayIso()} onChange={onManualCheckIn} />
                 <ManualDate label={t('property.checkOut')} value={checkOut} min={checkOutFromNights(activeCheckIn, 1)} onChange={onManualCheckOut} />
                 <fieldset className="min-w-0 max-w-full sm:col-span-2">
-                  <legend className="text-sm tracking-wider text-[#d4af6a]/80 uppercase">{t('property.stayNights')}</legend>
+                  <legend className="text-sm tracking-wider text-accent/80 uppercase">{t('property.stayNights')}</legend>
                   <input
                     type="number"
                     min={1}
@@ -245,7 +245,7 @@ export function PropertyDetailPage() {
               >
                 {user ? t('property.continue') : t('property.needAccount')}
               </Button>
-              {!online ? <p className="mt-3 text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
+              {!online ? <p className="mt-3 text-sm text-accent">{t('app.offlineNoBooking')}</p> : null}
               <p className="mt-3 text-sm theme-muted-soft">{t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}</p>
             </section>
             <section className="mt-8">

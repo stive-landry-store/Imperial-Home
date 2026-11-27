@@ -48,7 +48,7 @@ export function PaymentDesk({
       <p className="text-sm">{t('plus.paySteps')}</p>
       <p className="text-lg">{formatXaf(amount)}</p>
       <p className="text-sm">
-        {t('plus.payTo')} <span className="text-[#d4af6a]">{merchantPhone}</span>
+        {t('plus.payTo')} <span className="text-accent">{merchantPhone}</span>
       </p>
       <p className="text-sm">
         {t('plus.payRef')} : <span className="font-medium">{reservation.public_code}</span>
@@ -58,7 +58,7 @@ export function PaymentDesk({
           <button
             key={item}
             type="button"
-            className={`min-h-12 w-full border px-3 py-3 text-base ${provider === item ? 'border-[#d4af6a] text-[#d4af6a]' : 'border-line'}`}
+            className={`min-h-12 w-full border px-3 py-3 text-base ${provider === item ? 'border-accent text-accent' : 'border-line'}`}
             onClick={() => setProvider(item)}
           >
             {item === 'mtn_momo' ? t('plus.mtn') : t('plus.orange')}

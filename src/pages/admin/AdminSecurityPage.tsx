@@ -97,20 +97,20 @@ export function AdminSecurityPage() {
       </header>
 
       {params.get('required') === '1' && !verified.length ? (
-        <p className="ih-pop rounded-2xl border border-[#d4af6a]/50 p-4 text-sm text-[#d4af6a]">{t('security.requiredNotice')}</p>
+        <p className="ih-pop rounded-2xl border border-accent/50 p-4 text-sm text-accent">{t('security.requiredNotice')}</p>
       ) : null}
       {notice ? <p className="ih-pop rounded-2xl border border-emerald-500/40 p-4 text-sm text-emerald-400">{notice}</p> : null}
       {error ? <p className="ih-shake text-sm text-red-500" role="alert">{error}</p> : null}
 
       <section className="theme-card space-y-4 rounded-3xl p-6">
         <h2 className="flex items-center gap-2 text-xl font-semibold">
-          <Smartphone className="h-5 w-5 text-[#d4af6a]" /> {t('security.appTitle')}
+          <Smartphone className="h-5 w-5 text-accent" /> {t('security.appTitle')}
         </h2>
         <p className="text-sm theme-muted">{t('security.appLead')}</p>
         {verified.length ? (
           <ul className="space-y-2">
             {verified.map((f) => (
-              <li key={f.id} className="flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3">
+              <li key={f.id} className="flex items-center justify-between rounded-2xl border border-line px-4 py-3">
                 <span className="flex items-center gap-2 text-sm">
                   <ShieldCheck className="h-4 w-4 text-emerald-400" /> {f.friendly_name || 'TOTP'}
                 </span>

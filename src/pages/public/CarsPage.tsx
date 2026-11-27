@@ -31,7 +31,7 @@ export function CarsPage() {
         </Helmet>
         <h1 className="text-2xl font-semibold">{t('cars.title')}</h1>
         <p className="mt-2 max-w-2xl text-sm theme-muted">{t('cars.lead')}</p>
-        <p className="mt-3 text-sm text-[#d4af6a]">{t('cars.promoHint')}</p>
+        <p className="mt-3 text-sm text-accent">{t('cars.promoHint')}</p>
 
         {isLoading ? <Loader size="md" /> : null}
 
@@ -60,7 +60,7 @@ export function CarsPage() {
                       <dt>{t('cars.withoutDriver')}</dt>
                       <dd>{formatXaf(v.daily_rate_no_driver_xaf)}/j</dd>
                     </div>
-                    <div className="flex flex-wrap justify-between gap-x-3 gap-y-1 text-[#d4af6a]">
+                    <div className="flex flex-wrap justify-between gap-x-3 gap-y-1 text-accent">
                       <dt>{t('cars.withDriver')}</dt>
                       <dd>{formatXaf(v.daily_rate_with_driver_xaf)}/j</dd>
                     </div>
@@ -68,7 +68,7 @@ export function CarsPage() {
                   <Button to={`/cars/${v.slug}`} className="mt-5 w-full rounded-full">
                     {t('cars.bookThis')}
                   </Button>
-                  <Link to="/properties" className="mt-3 block text-center text-sm text-[#c4a35a]">
+                  <Link to="/properties" className="mt-3 block text-center text-sm text-accent">
                     {t('cars.bookWithStay')}
                   </Link>
                 </div>
@@ -80,7 +80,7 @@ export function CarsPage() {
         {!isLoading && vehicles.length === 0 ? (
           <p className="mt-10 theme-muted">
             {t('cars.empty')}{' '}
-            <Link to="/contact" className="text-[#d4af6a]">
+            <Link to="/contact" className="text-accent">
               {t('nav.contact')}
             </Link>
           </p>

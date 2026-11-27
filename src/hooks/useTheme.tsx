@@ -15,13 +15,13 @@ function applyTheme(theme: Theme) {
   root.classList.remove('theme-dark', 'theme-light')
   root.classList.add(`theme-${theme}`)
   root.style.colorScheme = theme
-  localStorage.setItem('ih-theme', theme)
+  localStorage.setItem('ih-theme-v2', theme)
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof localStorage === 'undefined') return 'dark'
-    const next = localStorage.getItem('ih-theme') === 'light' ? 'light' : 'dark'
+    if (typeof localStorage === 'undefined') return 'light'
+    const next = localStorage.getItem('ih-theme-v2') === 'dark' ? 'dark' : 'light'
     applyTheme(next)
     return next
   })

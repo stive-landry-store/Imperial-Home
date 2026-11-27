@@ -42,15 +42,15 @@ export function AvailabilityCalendar({
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
-        <button type="button" onClick={() => setCursor(addMonths(cursor, -1))} className="grid h-10 w-10 place-items-center rounded-full border border-[var(--page-fg)]/15 text-lg text-[#d4af6a]" aria-label={t('common.back')}>
+        <button type="button" onClick={() => setCursor(addMonths(cursor, -1))} className="grid h-10 w-10 place-items-center rounded-full border border-[var(--page-fg)]/15 text-lg text-accent" aria-label={t('common.back')}>
           ‹
         </button>
         <p className="font-display text-xl capitalize">{format(cursor, 'MMMM yyyy', { locale })}</p>
-        <button type="button" onClick={() => setCursor(addMonths(cursor, 1))} className="grid h-10 w-10 place-items-center rounded-full border border-[var(--page-fg)]/15 text-lg text-[#d4af6a]" aria-label={t('common.next')}>
+        <button type="button" onClick={() => setCursor(addMonths(cursor, 1))} className="grid h-10 w-10 place-items-center rounded-full border border-[var(--page-fg)]/15 text-lg text-accent" aria-label={t('common.next')}>
           ›
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[11px] uppercase tracking-wider text-[#d4af6a]/70">
+      <div className="grid grid-cols-7 gap-1 text-center text-[11px] uppercase tracking-wider text-accent/70">
         {(Array.isArray(dow) ? dow : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']).map((d) => (
           <div key={d}>{d}</div>
         ))}
@@ -81,23 +81,23 @@ export function AvailabilityCalendar({
                 'flex min-h-12 flex-col items-center justify-center rounded-2xl px-0.5 py-1 text-sm',
                 !inMonth && 'opacity-30',
                 past && !reserved && 'cursor-not-allowed opacity-40',
-                reserved && 'cursor-not-allowed bg-[#8a1c1c]/25 text-[#c9a070]',
-                !past && free && 'hover:bg-[#c4a35a]/20',
-                selected && !reserved && 'bg-[#c4a35a]/25',
-                isStart && !reserved && 'bg-[#c4a35a] text-black',
+                reserved && 'cursor-not-allowed bg-[#8a1c1c]/25 text-accent',
+                !past && free && 'hover:bg-accent-strong/20',
+                selected && !reserved && 'bg-accent-strong/25',
+                isStart && !reserved && 'bg-accent-strong text-on-accent',
               )}
             >
               <span className={cn('leading-none', reserved && 'font-medium line-through decoration-[#c4a35a] decoration-2')}>
                 {date.getDate()}
               </span>
-              {label ? <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#d4af6a]" /> : null}
+              {label ? <span className="mt-1 h-1.5 w-1.5 rounded-full bg-accent-strong" /> : null}
             </button>
           )
         })}
       </div>
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[11px] uppercase tracking-wider theme-muted">
         <li className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full bg-[#c4a35a]" />
+          <span className="inline-block h-2 w-2 rounded-full bg-accent-strong" />
           {t('cal.available')}
         </li>
         <li className="flex items-center gap-1.5">
@@ -105,7 +105,7 @@ export function AvailabilityCalendar({
           <span className="line-through decoration-[#c4a35a]">{t('cal.reserved')}</span>
         </li>
         <li className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full border border-[#d4af6a]/50" />
+          <span className="inline-block h-2 w-2 rounded-full border border-accent/50" />
           {t('cal.unavailable')}
         </li>
       </ul>

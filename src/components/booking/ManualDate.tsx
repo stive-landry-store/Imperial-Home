@@ -47,7 +47,7 @@ export function ManualDate({
 
   return (
     <fieldset className="min-w-0 max-w-full">
-      <legend className="text-sm uppercase tracking-wider text-[#d4af6a]/80">{label}</legend>
+      <legend className="text-sm uppercase tracking-wider text-accent/80">{label}</legend>
       <div className="mt-1 grid max-w-full grid-cols-3 gap-2">
         <select
           aria-label={t('property.day')}

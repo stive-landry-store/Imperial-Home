@@ -8,14 +8,16 @@
 .ih-admin-topbar,
 .ih-admin-sheet {
   background:
-    radial-gradient(120% 50% at 0% 0%, rgb(196 163 90 / 0.12), transparent 60%),
-    radial-gradient(120% 40% at 100% 100%, rgb(196 163 90 / 0.08), transparent 60%),
-    #050505;
+    radial-gradient(120% 50% at 0% 0%, color-mix(in srgb, var(--accent-strong) 8%, transparent), transparent 60%),
+    radial-gradient(120% 40% at 100% 100%, rgb(196 214 224 / 0.16), transparent 60%),
+    var(--page);
+  color: var(--page-fg);
 }
 .ih-admin-topbar {
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
-  background-color: rgb(5 5 5 / 0.88);
+  background-color: var(--header-solid);
+  border-bottom: 1px solid var(--line);
 }
 .ih-admin-brand {
   animation: ih-fade-down 700ms var(--ih-ease-out) both;
@@ -24,7 +26,7 @@
   transition: filter var(--ih-dur-md), transform var(--ih-dur-md) var(--ih-ease-spring);
 }
 .ih-admin-brand:hover img {
-  filter: drop-shadow(0 0 14px rgb(224 197 122 / 0.55));
+  filter: drop-shadow(0 6px 14px rgb(148 112 47 / 0.25));
   transform: scale(1.03);
 }
 
@@ -39,7 +41,8 @@
     background-color var(--ih-dur-sm) var(--ih-ease-out),
     border-color var(--ih-dur-sm),
     color var(--ih-dur-sm),
-    padding var(--ih-dur-sm) var(--ih-ease-out);
+    transform var(--ih-dur-md) var(--ih-ease-out),
+    box-shadow var(--ih-dur-md) var(--ih-ease-out);
 }
 .ih-admin-link::before {
   content: '';
@@ -48,8 +51,7 @@
   inset-inline-start: 4px;
   width: 3px;
   border-radius: 3px;
-  background: linear-gradient(#f1d896, #a8843f);
-  box-shadow: 0 0 12px rgb(224 197 122 / 0.8);
+  background: var(--accent-strong);
   transform: scaleY(0);
   transition: transform var(--ih-dur-md) var(--ih-ease-spring);
 }
@@ -59,7 +61,7 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgb(196 163 90 / 0.16), rgb(196 163 90 / 0.02));
+  background: linear-gradient(90deg, var(--accent-soft), transparent);
   opacity: 0;
   transition: opacity var(--ih-dur-sm);
 }
@@ -73,8 +75,8 @@
 }
 @media (hover: hover) {
   .ih-admin-link:hover {
-    padding-inline-start: 1.35rem;
-    color: #f1d896;
+    transform: translateX(4px);
+    color: var(--page-fg);
   }
   .ih-admin-link:hover::after {
     opacity: 1;
@@ -88,8 +90,8 @@
   }
 }
 .ih-admin-link.is-active {
-  border-color: rgb(212 175 106 / 0.35);
-  padding-inline-start: 1.35rem;
+  border-color: color-mix(in srgb, var(--accent-strong) 22%, transparent);
+  font-weight: 600;
 }
 .ih-admin-link.is-active::before {
   transform: scaleY(1);
@@ -102,7 +104,7 @@
   transform: none;
 }
 .ih-admin-danger {
-  border-color: rgb(212 175 106 / 0.25);
+  border-color: var(--line);
 }
 
 /* Phone menu: slides in from the side. */
@@ -127,7 +129,7 @@
 @media (hover: hover) {
   .admin-main .surface-light:hover {
     transform: translateY(-3px);
-    box-shadow: 0 22px 44px -28px rgb(0 0 0 / 0.65), 0 0 0 1px rgb(196 163 90 / 0.35);
+    box-shadow: var(--shadow-lift);
   }
 }
 
@@ -173,7 +175,7 @@
   transition: background-color var(--ih-dur-sm);
 }
 .admin-main tbody tr:hover {
-  background-color: rgb(196 163 90 / 0.08);
+  background-color: var(--accent-soft);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -184,4 +186,112 @@
   .admin-main svg rect {
     animation: none !important;
   }
+}
+
+/* All-time sales card: bronze gradient, slow moving light, drawn curve. */
+.ih-sales {
+  background: linear-gradient(135deg, #b48a45 0%, #94702f 45%, #6f5222 100%);
+  box-shadow: 0 30px 60px -30px rgb(111 82 34 / 0.7);
+  animation: ih-scale-in 700ms var(--ih-ease-out) both;
+}
+.ih-sales-glow {
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(35% 35% at 30% 30%, rgb(255 255 255 / 0.22), transparent 70%),
+    radial-gradient(30% 30% at 75% 70%, rgb(255 236 200 / 0.18), transparent 70%);
+  animation: ih-sales-drift 14s var(--ih-ease-in-out) infinite alternate;
+  pointer-events: none;
+}
+@keyframes ih-sales-drift {
+  to { transform: translate3d(8%, -6%, 0) rotate(8deg); }
+}
+.ih-sales-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ih-sales-draw 1.8s var(--ih-ease-out) 300ms forwards;
+}
+@keyframes ih-sales-draw {
+  to { stroke-dashoffset: 0; }
+}
+.ih-sales-area {
+  opacity: 0;
+  animation: ih-fade-in 900ms var(--ih-ease-out) 1.2s forwards;
+}
+.ih-sales-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ih-pop 500ms var(--ih-ease-spring) 1.9s both, ih-sales-pulse 2s ease-in-out 2.4s infinite;
+}
+@keyframes ih-sales-pulse {
+  50% { transform: scale(1.6); opacity: 0.6; }
+}
+.ih-sales-stat {
+  animation: ih-fade-up 700ms var(--ih-ease-out) both;
+  animation-delay: calc(400ms + var(--ih-i, 0) * 90ms);
+  transition: transform var(--ih-dur-md) var(--ih-ease-out), background-color var(--ih-dur-sm);
+}
+@media (hover: hover) {
+  .ih-sales-stat:hover {
+    transform: translateY(-3px);
+    background-color: rgb(255 255 255 / 0.2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ih-sales-glow,
+  .ih-sales-dot {
+    animation: none;
+  }
+  .ih-sales-line {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .ih-sales-area {
+    opacity: 1;
+  }
+}
+
+
+/* Admin menu tiles: same coloured icon tiles as the home settings menu. */
+.ih-admin-tile {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring), background-color var(--ih-dur-sm), color var(--ih-dur-sm), box-shadow var(--ih-dur-sm);
+}
+.ih-admin-link:hover .ih-admin-tile {
+  transform: rotate(-8deg) scale(1.1);
+}
+.ih-admin-link:active {
+  transform: scale(0.98);
+}
+.ih-admin-link.is-active .ih-admin-tile {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  box-shadow: 0 8px 16px -8px color-mix(in srgb, var(--accent-strong) 80%, transparent);
+  animation: ih-pop 520ms var(--ih-ease-spring);
+}
+.ih-admin-link.is-active {
+  box-shadow: var(--shadow-soft);
+}
+.ih-admin-link.is-active::after {
+  background: linear-gradient(90deg, var(--accent-soft), color-mix(in srgb, var(--accent-soft) 30%, transparent));
+}
+.ih-admin-link .ih-admin-chevron {
+  opacity: 0.35;
+  transform: none;
+  transition: transform var(--ih-dur-md) var(--ih-ease-out), opacity var(--ih-dur-sm);
+}
+.ih-admin-link:hover .ih-admin-chevron,
+.ih-admin-link.is-active .ih-admin-chevron {
+  opacity: 0.9;
+  transform: translateX(3px);
+}
+.ih-admin-danger {
+  border-color: color-mix(in srgb, #c8322a 20%, transparent);
+  background: color-mix(in srgb, #fdeceb 55%, transparent);
+}
+html.theme-dark .ih-admin-danger {
+  background: rgb(200 50 42 / 0.08);
+}
+.ih-admin-sheet .ih-admin-link {
+  animation-name: ih-set-row-in;
+  animation-delay: calc(260ms + var(--ih-i, 0) * 40ms);
 }

@@ -12,6 +12,22 @@ import { uploadSiteImage } from '../../lib/siteAssets'
 import { useAuth } from '../../hooks/useAuth'
 import { Loader } from '../../components/ui/Loader'
 import { StayExtrasEditor } from '../../components/admin/StayExtrasEditor'
+import { Check, ImageIcon, KeyRound, MapPin, Phone, type LucideIcon } from 'lucide-react'
+import type { ReactNode } from 'react'
+
+function Card({ icon: Icon, title, index, children }: { icon: LucideIcon; title: string; index: number; children: ReactNode }) {
+  return (
+    <section className="ih-admin-card surface-light space-y-5 border border-line p-5 md:p-6" style={{ ['--ih-i' as string]: index }}>
+      <div className="flex items-center gap-3">
+        <span className="ih-admin-card-icon grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent">
+          <Icon className="h-5 w-5" />
+        </span>
+        <h2 className="font-display text-xl md:text-2xl">{title}</h2>
+      </div>
+      {children}
+    </section>
+  )
+}
 
 export function AdminSettingsPage() {
   const { t } = useTranslation()
@@ -172,7 +188,7 @@ export function AdminSettingsPage() {
   }
 
   return (
-    <div className="p-6 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <Helmet>
         <title>{`${t('admin.settings')} | Imperial Home`}</title>
       </Helmet>
@@ -181,7 +197,8 @@ export function AdminSettingsPage() {
         <p className="mt-4 rounded border border-amber-600/40 bg-amber-50 px-4 py-3 text-sm text-amber-900">{t('admin.supabaseRequired')}</p>
       ) : null}
 
-      <form className="surface-light mt-8 max-w-xl space-y-6 border border-line p-6" onSubmit={(e) => void save(e)}>
+      <form className="mt-8 max-w-2xl space-y-5 pb-4" onSubmit={(e) => void save(e)}>
+        <Card icon={ImageIcon} title={t('app.setImages')} index={0}>
         <div>
           <Label>{t('admin.heroHomeImage')}</Label>
           <p className="mb-3 text-sm text-[var(--surface-muted)]">{t('admin.heroHomeImageHint')}</p>
@@ -258,7 +275,10 @@ export function AdminSettingsPage() {
           </div>
         </div>
 
-        <div className="border-t border-line pt-4">
+        </Card>
+
+        <Card icon={Phone} title={t('app.setContact')} index={1}>
+        <div>
           <Label>{t('admin.settingsPhone')}</Label>
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
         </div>
@@ -274,9 +294,10 @@ export function AdminSettingsPage() {
           <Label>{t('admin.settingsPayment')}</Label>
           <Textarea rows={5} value={instructions} onChange={(e) => setInstructions(e.target.value)} />
         </div>
+        </Card>
         {isMainAdmin ? (
-          <div className="border-t border-line pt-4">
-            <Label>{t('admin.placeTitle')}</Label>
+          <Card icon={MapPin} title={t('admin.placeTitle')} index={2}>
+          <div>
             <p className="mb-3 text-sm text-[var(--surface-muted)]">{t('admin.placeHint')}</p>
             <PlaceMap
               latitude={Number(placeLat) || 4.0689}
@@ -303,20 +324,35 @@ export function AdminSettingsPage() {
               </div>
             </div>
           </div>
+          </Card>
         ) : null}
         {isMainAdmin ? (
+          <Card icon={KeyRound} title={t('app.setAccess')} index={3}>
           <div>
             <Label>{t('admin.settingsBootstrap')}</Label>
             <Input value={bootstrap} onChange={(e) => setBootstrap(e.target.value)} />
             <p className="mt-1 text-sm text-[var(--surface-muted)]">{t('admin.settingsBootstrapHint')}</p>
           </div>
+          </Card>
         ) : null}
 
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
-        {saved ? <p className="text-sm text-green-700">{t('admin.settingsSaved')}</p> : null}
-        <Button type="submit" disabled={!canSave || saving}>
-          {saving ? <Loader size="xs" /> : t('common.save')}
-        </Button>
+        <div className="ih-save-bar sticky bottom-3 z-10 flex flex-wrap items-center gap-3 rounded-full border border-line bg-[var(--card-bg)]/85 p-2 ps-4 shadow-[var(--shadow-lift)]">
+          <p className="min-w-0 flex-1 text-sm">
+            {error ? <span className="text-red-600">{error}</span> : null}
+            {saved ? (
+              <span className="ih-saved inline-flex items-center gap-2 font-semibold text-emerald-700">
+                <span className="grid h-6 w-6 place-items-center rounded-full bg-emerald-100">
+                  <Check className="h-4 w-4" strokeWidth={3} />
+                </span>
+                {t('admin.settingsSaved')}
+              </span>
+            ) : null}
+            {!error && !saved ? <span className="theme-muted">{t('admin.settings')}</span> : null}
+          </p>
+          <Button type="submit" disabled={!canSave || saving} className="min-w-32">
+            {saving ? <Loader size="xs" /> : t('common.save')}
+          </Button>
+        </div>
       </form>
       {canSave ? <StayExtrasEditor /> : null}
     </div>

@@ -25,7 +25,7 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
     return () => window.removeEventListener('keydown', onKey)
   }, [open, sorted.length])
 
-  if (!current) return <div className="aspect-[16/10] rounded-[1.35rem] bg-black" />
+  if (!current) return <div className="aspect-[16/10] rounded-[1.35rem] bg-accent-soft" />
 
   return (
     <div className="w-full min-w-0 max-w-full">
@@ -44,7 +44,7 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
               key={img.id}
               type="button"
               onClick={() => setActive(i)}
-              className={cn('h-16 w-24 shrink-0 overflow-hidden rounded-2xl border', i === active ? 'border-[#d4af6a]' : 'border-transparent')}
+              className={cn('h-16 w-24 shrink-0 overflow-hidden rounded-2xl border', i === active ? 'border-accent' : 'border-transparent')}
             >
               <OptimizedImage src={img.url} alt="" width={200} className="h-full w-full object-cover" />
             </button>
@@ -53,13 +53,13 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
       ) : null}
       {open ? createPortal(
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black" role="dialog">
-          <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={() => setOpen(false)}>
+          <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-accent uppercase" onClick={() => setOpen(false)}>
             {t('common.cancel')}
           </button>
           {sorted.length > 1 ? (
             <button
               type="button"
-              className="absolute left-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]"
+              className="absolute left-2 z-10 px-3 py-4 text-4xl text-accent"
               onClick={() => setActive((index) => (index - 1 + sorted.length) % sorted.length)}
             >
               ‹
@@ -72,14 +72,14 @@ export function PropertyGallery({ images, lang }: { images: PropertyImage[]; lan
             onSwipe={(direction) => setActive((index) => (index + direction + sorted.length) % sorted.length)}
           />
           {sorted.length > 1 ? (
-            <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-[#ecd08a]">
+            <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-accent">
               {active + 1} / {sorted.length}
             </p>
           ) : null}
           {sorted.length > 1 ? (
             <button
               type="button"
-              className="absolute right-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]"
+              className="absolute right-2 z-10 px-3 py-4 text-4xl text-accent"
               onClick={() => setActive((index) => (index + 1) % sorted.length)}
             >
               ›

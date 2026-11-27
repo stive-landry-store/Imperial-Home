@@ -1,48 +1,59 @@
 /*
  * Imperial Home — messages (customer chat, admin inbox, assistant).
- * Onyx & gold in the dark theme, cream & ink in the light theme, with motion on every message.
+ * "Salon" theme: ivory paper, bronze bubbles, frosted glass bars, a slowly breathing wall,
+ * iMessage-style grouping, Telegram-style jump-to-latest, WhatsApp-style replies.
  * Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
  */
 
+html.theme-light .ih-chat-skin,
+html.theme-light .ih-thread,
+.ih-chat-skin,
+.ih-thread {
+  --chat-bg: #ffffff;
+  --chat-wall: #f7f3ed;
+  --chat-panel: rgb(255 255 255 / 0.82);
+  --chat-line: rgb(31 29 26 / 0.08);
+  --chat-fg: #1f1d1a;
+  --chat-muted: #7a7266;
+  --chat-accent: #94702f;
+  --chat-theirs: #ffffff;
+  --chat-theirs-line: rgb(31 29 26 / 0.06);
+  --chat-theirs-fg: #1f1d1a;
+  --chat-mine-from: #bb914b;
+  --chat-mine-to: #8c6a2c;
+  --chat-mine-fg: #ffffff;
+  --chat-input: #f3efe8;
+  --chat-active: #f6efe3;
+  --chat-quote-mine: rgb(255 255 255 / 0.18);
+  --chat-quote-theirs: #f6efe3;
+  --chat-mesh-a: rgb(214 180 120 / 0.22);
+  --chat-mesh-b: rgb(173 204 222 / 0.22);
+  --chat-mesh-c: rgb(236 200 190 / 0.18);
+  color-scheme: light;
+}
 html.theme-dark .ih-chat-skin,
 html.theme-dark .ih-thread {
-  --chat-bg: #08080a;
-  --chat-wall: #0c0c0f;
-  --chat-panel: rgb(18 17 15 / 0.92);
-  --chat-line: rgb(212 175 106 / 0.16);
-  --chat-fg: #f4eee3;
-  --chat-muted: rgb(244 238 227 / 0.55);
-  --chat-accent: #e0c57a;
-  --chat-theirs: rgb(255 255 255 / 0.06);
-  --chat-theirs-line: rgb(255 255 255 / 0.08);
-  --chat-theirs-fg: #f4eee3;
-  --chat-mine-from: #d8b76d;
-  --chat-mine-to: #a8843f;
-  --chat-mine-fg: #120f0a;
-  --chat-input: rgb(255 255 255 / 0.06);
-  --chat-active: rgb(212 175 106 / 0.1);
-  --chat-pattern: rgb(212 175 106 / 0.05);
+  --chat-bg: #151413;
+  --chat-wall: #191816;
+  --chat-panel: rgb(26 25 23 / 0.82);
+  --chat-line: rgb(242 238 231 / 0.08);
+  --chat-fg: #f2eee7;
+  --chat-muted: rgb(242 238 231 / 0.55);
+  --chat-accent: #d8b878;
+  --chat-theirs: #24221f;
+  --chat-theirs-line: rgb(242 238 231 / 0.06);
+  --chat-theirs-fg: #f2eee7;
+  --chat-mine-from: #cfa860;
+  --chat-mine-to: #9b7735;
+  --chat-mine-fg: #1a1408;
+  --chat-input: rgb(242 238 231 / 0.06);
+  --chat-active: rgb(216 184 120 / 0.1);
+  --chat-quote-mine: rgb(26 20 8 / 0.14);
+  --chat-quote-theirs: rgb(216 184 120 / 0.12);
+  --chat-mesh-a: rgb(216 184 120 / 0.1);
+  --chat-mesh-b: rgb(90 130 160 / 0.1);
+  --chat-mesh-c: rgb(160 100 90 / 0.08);
   color-scheme: dark;
-}
-html.theme-light .ih-chat-skin,
-html.theme-light .ih-thread {
-  --chat-bg: #f6f1e8;
-  --chat-wall: #efe8da;
-  --chat-panel: rgb(246 241 232 / 0.94);
-  --chat-line: #e4d8c4;
-  --chat-fg: #1c1914;
-  --chat-muted: #7a7064;
-  --chat-accent: #8b6f32;
-  --chat-theirs: #ffffff;
-  --chat-theirs-line: rgb(28 25 20 / 0.05);
-  --chat-theirs-fg: #1c1914;
-  --chat-mine-from: #1f1b15;
-  --chat-mine-to: #2f281d;
-  --chat-mine-fg: #f6f1e8;
-  --chat-input: #ffffff;
-  --chat-active: #e7dcc8;
-  --chat-pattern: rgb(139 111 50 / 0.06);
-  color-scheme: light;
 }
 
 .ih-chat-skin {
@@ -59,23 +70,55 @@ html.theme-light .ih-thread {
   color: var(--chat-accent);
 }
 
-/* Wall: subtle monogram-like diamond pattern and a slow gold glow. */
+/* ------------------------------------------------------------ wall */
+
 .ih-chat-wall {
   position: relative;
+  isolation: isolate;
   background-color: var(--chat-wall);
-  background-image:
-    radial-gradient(circle at 15% 0%, rgb(196 163 90 / 0.08), transparent 40%),
-    radial-gradient(circle at 85% 100%, rgb(196 163 90 / 0.06), transparent 45%),
-    repeating-linear-gradient(45deg, var(--chat-pattern) 0 1px, transparent 1px 22px),
-    repeating-linear-gradient(-45deg, var(--chat-pattern) 0 1px, transparent 1px 22px);
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+/* Three soft colour clouds drift behind the conversation (outside the scroller). */
+.ih-wall-frame {
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--chat-wall);
+}
+.ih-wall-frame > .ih-chat-wall {
+  z-index: 1;
+  background: transparent;
+}
+.ih-wall-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ih-wall-mesh::before {
+  content: '';
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(40% 35% at 15% 20%, var(--chat-mesh-a), transparent 70%),
+    radial-gradient(35% 30% at 85% 35%, var(--chat-mesh-b), transparent 70%),
+    radial-gradient(40% 35% at 40% 85%, var(--chat-mesh-c), transparent 70%);
+  animation: ih-mesh 22s var(--ih-ease-in-out) infinite alternate;
+}
+@keyframes ih-mesh {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(4%, -3%, 0) scale(1.08); }
+  100% { transform: translate3d(-3%, 2%, 0) scale(1.02); }
 }
 
-/* Header and bars float on blurred glass. */
+/* ------------------------------------------------------------ bars */
+
 .ih-chat-head,
 .ih-chat-bar {
   background: var(--chat-panel);
-  -webkit-backdrop-filter: saturate(150%) blur(14px);
-  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
   border-color: var(--chat-line);
 }
 .ih-chat-head {
@@ -85,54 +128,104 @@ html.theme-light .ih-thread {
 .ih-chat-bar {
   border-top: 1px solid var(--chat-line);
 }
+.ih-thread-search {
+  border-top: 0;
+  border-bottom: 1px solid var(--chat-line);
+  animation: ih-search-in 380ms var(--ih-ease-spring) both;
+}
+@keyframes ih-search-in {
+  from { opacity: 0; transform: translate3d(0, -12px, 0); clip-path: inset(0 0 100% 0); }
+  to { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+}
 .ih-chat-status {
   color: var(--chat-muted);
 }
-.ih-chat-status::before {
-  content: '';
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-inline-end: 6px;
-  border-radius: 999px;
-  background: #3ecf8e;
-  box-shadow: 0 0 0 0 rgb(62 207 142 / 0.6);
-  animation: ih-online 2.2s var(--ih-ease-out) infinite;
-  vertical-align: 1px;
+
+.ih-icon-btn {
+  transition: background-color var(--ih-dur-sm), color var(--ih-dur-sm), transform var(--ih-dur-xs) var(--ih-ease-out);
 }
-@keyframes ih-online {
-  0% { box-shadow: 0 0 0 0 rgb(62 207 142 / 0.55); }
-  100% { box-shadow: 0 0 0 7px rgb(62 207 142 / 0); }
+.ih-icon-btn:hover {
+  background: var(--chat-active);
+}
+.ih-icon-btn:active {
+  transform: scale(0.9);
+}
+.ih-icon-btn.is-on {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
+/* ------------------------------------------------------------ avatars & presence */
+
 .ih-chat-avatar {
-  background: linear-gradient(140deg, #2a241b, #0d0c0a);
-  box-shadow: inset 0 0 0 1px rgb(212 175 106 / 0.35);
-  color: #f4eee3;
+  background: linear-gradient(140deg, #fbf7f0, #efe2c8);
+  box-shadow: inset 0 0 0 1px rgb(148 112 47 / 0.18);
+  color: var(--accent);
+}
+html.theme-dark .ih-chat-avatar {
+  background: linear-gradient(140deg, #2a2723, #1d1b19);
 }
 .ih-avatar-ring {
-  box-shadow: 0 0 0 2px var(--chat-bg), 0 0 0 4px #c4a35a;
-  animation: ih-pulse-ring 2.4s var(--ih-ease-out) infinite;
+  box-shadow: 0 0 0 2px var(--chat-bg), 0 0 0 3.5px color-mix(in srgb, var(--accent-strong) 70%, transparent);
 }
+.ih-presence {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #34c77b;
+  border: 2px solid var(--chat-bg);
+}
+.ih-presence::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid #34c77b;
+  animation: ih-live 2.4s var(--ih-ease-out) infinite;
+}
+
+/* ------------------------------------------------------------ day & system labels */
 
 .ih-chat-day {
   background: var(--chat-panel);
   color: var(--chat-muted);
   border: 1px solid var(--chat-line);
-  letter-spacing: 0.04em;
-  animation: ih-fade-in 500ms var(--ih-ease-out) both;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 16px -12px rgb(31 29 26 / 0.4);
+  animation: ih-scale-in 500ms var(--ih-ease-out) both;
 }
 .ih-chat-system {
   color: var(--chat-muted);
+  background: color-mix(in srgb, var(--chat-panel) 70%, transparent);
+  border: 1px dashed var(--chat-line);
+  animation: ih-fade-up 500ms var(--ih-ease-out) both;
 }
 
-/* Bubbles: arrive from their side with a small spring; the latest ones cascade. */
+/* ------------------------------------------------------------ bubbles */
+
+.ih-bubble-row {
+  transition: opacity var(--ih-dur-sm);
+}
+.ih-bubble-row.is-dim {
+  opacity: 0.35;
+}
 .ih-bubble {
-  position: relative;
+  --r: 20px;
+  --r-tight: 6px;
+  border-radius: var(--r);
   transform-origin: bottom right;
-  animation: ih-bubble-in 520ms var(--ih-ease-spring) both;
-  animation-delay: calc(var(--ih-b, 0) * 45ms);
-  box-shadow: 0 6px 18px -12px rgb(0 0 0 / 0.55);
+  animation: ih-bubble-in 560ms var(--ih-ease-spring) both;
+  animation-delay: calc(var(--ih-b, 0) * 40ms);
+  transition: transform var(--ih-dur-sm) var(--ih-ease-out), box-shadow var(--ih-dur-sm);
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: none;
 }
 .ih-bubble-theirs {
   transform-origin: bottom left;
@@ -140,110 +233,282 @@ html.theme-light .ih-thread {
   background: var(--chat-theirs);
   color: var(--chat-theirs-fg);
   border: 1px solid var(--chat-theirs-line);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  box-shadow: 0 1px 1px rgb(31 29 26 / 0.04), 0 8px 20px -14px rgb(31 29 26 / 0.3);
 }
 .ih-bubble-mine {
-  background: linear-gradient(135deg, var(--chat-mine-from), var(--chat-mine-to));
+  background: linear-gradient(150deg, var(--chat-mine-from), var(--chat-mine-to));
   color: var(--chat-mine-fg);
+  box-shadow: 0 10px 22px -14px rgb(140 106 44 / 0.75);
 }
+/* Grouping: inner corners tighten, only the last bubble keeps a tail. */
+.ih-bubble.join-top-mine { border-start-end-radius: var(--r-tight); }
+.ih-bubble.join-bottom-mine { border-end-end-radius: var(--r-tight); }
+.ih-bubble.join-top-theirs { border-start-start-radius: var(--r-tight); }
+.ih-bubble.join-bottom-theirs { border-end-start-radius: var(--r-tight); }
+.ih-bubble-mine.has-tail { border-end-end-radius: 6px; }
+.ih-bubble-theirs.has-tail { border-end-start-radius: 6px; }
+.ih-bubble-mine.has-tail::before,
+.ih-bubble-theirs.has-tail::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 14px;
+}
+.ih-bubble-mine.has-tail::before {
+  inset-inline-end: -5px;
+  background: radial-gradient(circle at 0 0, transparent 9px, var(--chat-mine-to) 9.5px);
+}
+.ih-bubble-theirs.has-tail::before {
+  inset-inline-start: -5px;
+  background: radial-gradient(circle at 100% 0, transparent 9px, var(--chat-theirs) 9.5px);
+}
+/* A one-time sheen across my new bubbles. */
 .ih-bubble-mine::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.28), transparent 65%);
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.3), transparent 65%);
   background-size: 250% 100%;
   background-position: 120% 0;
   animation: ih-bubble-sheen 1.4s var(--ih-ease-out) 0.25s both;
   pointer-events: none;
 }
-.ih-bubble-time {
-  opacity: 0.6;
+.ih-bubble.is-focused {
+  transform: scale(1.03);
+  box-shadow: 0 20px 40px -18px rgb(31 29 26 / 0.45);
+  z-index: 2;
 }
-.ih-bubble img {
+.ih-bubble.is-hit {
+  box-shadow: 0 0 0 2px var(--accent-strong), 0 12px 28px -16px rgb(140 106 44 / 0.7);
+}
+.ih-bubble-time {
+  opacity: 0.62;
+}
+.ih-bubble-photo img {
+  transition: transform 700ms var(--ih-ease-out);
   animation: ih-blur-in 700ms var(--ih-ease-out) both;
 }
+.ih-bubble-photo:hover img {
+  transform: scale(1.04);
+}
+.ih-bubble-quote {
+  border-inline-start: 3px solid currentColor;
+  background: var(--chat-quote-theirs);
+  color: inherit;
+  opacity: 0.92;
+}
+.ih-bubble-mine .ih-bubble-quote {
+  background: var(--chat-quote-mine);
+}
+.ih-draft-quote .ih-bubble-quote {
+  border-color: var(--accent-strong);
+  background: var(--chat-quote-theirs);
+}
+.ih-msg-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.ih-msg-hit {
+  border-radius: 4px;
+  padding: 0 2px;
+  background: #ffe08a;
+  color: #1f1d1a;
+  animation: ih-pop 420ms var(--ih-ease-spring) both;
+}
 @keyframes ih-bubble-in {
-  from { opacity: 0; transform: translate3d(18px, 14px, 0) scale(0.86); }
+  from { opacity: 0; transform: translate3d(22px, 16px, 0) scale(0.82); }
   to { opacity: 1; transform: none; }
 }
 @keyframes ih-bubble-in-left {
-  from { opacity: 0; transform: translate3d(-18px, 14px, 0) scale(0.86); }
+  from { opacity: 0; transform: translate3d(-22px, 16px, 0) scale(0.82); }
   to { opacity: 1; transform: none; }
 }
 @keyframes ih-bubble-sheen {
   to { background-position: -40% 0; }
 }
 
-/* Quick replies and menus. */
+/* Hover (desktop) or long-press (phone) shows reply / copy. */
+.ih-bubble-tools {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) scale(0.8);
+  transition: opacity var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-spring);
+}
+@media (hover: hover) {
+  .ih-bubble-row:hover .ih-bubble-tools {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) scale(1);
+  }
+}
+.ih-bubble-tools.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
+}
+.ih-tool {
+  background: var(--chat-panel);
+  color: var(--chat-fg);
+  border: 1px solid var(--chat-line);
+  box-shadow: 0 8px 18px -10px rgb(31 29 26 / 0.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: transform var(--ih-dur-xs) var(--ih-ease-out), background-color var(--ih-dur-sm), color var(--ih-dur-sm);
+}
+.ih-tool:hover {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  transform: scale(1.1);
+}
+.ih-copied {
+  transform: translateX(-50%);
+  background: var(--chat-fg);
+  color: var(--chat-bg);
+  animation: ih-copied 1.4s var(--ih-ease-out) both;
+}
+@keyframes ih-copied {
+  0% { opacity: 0; transform: translate(-50%, 8px) scale(0.8); }
+  15% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -6px); }
+}
+
+/* Jump to the latest messages. */
+.ih-to-bottom {
+  background: var(--chat-panel);
+  color: var(--chat-fg);
+  border: 1px solid var(--chat-line);
+  box-shadow: 0 14px 30px -14px rgb(31 29 26 / 0.5);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  animation: ih-pop 420ms var(--ih-ease-spring) both;
+  transition: transform var(--ih-dur-xs);
+}
+.ih-to-bottom svg {
+  animation: ih-nudge 1.6s var(--ih-ease-in-out) infinite;
+}
+.ih-to-bottom:active {
+  transform: scale(0.9);
+}
+@keyframes ih-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* ------------------------------------------------------------ composer */
+
 .ih-chip {
-  background: var(--chat-input);
+  background: var(--chat-bg);
   border: 1px solid var(--chat-line);
   color: var(--chat-fg);
-  transition: transform var(--ih-dur-xs) var(--ih-ease-out), border-color var(--ih-dur-sm), background var(--ih-dur-sm);
-  animation: ih-fade-up 600ms var(--ih-ease-out) both;
+  transition: transform var(--ih-dur-xs) var(--ih-ease-out), border-color var(--ih-dur-sm), background var(--ih-dur-sm), color var(--ih-dur-sm);
+  animation: ih-fade-up 500ms var(--ih-ease-out) both;
 }
 .ih-chip:hover {
-  border-color: #c4a35a;
+  border-color: var(--accent-strong);
+  background: var(--accent-soft);
+  color: var(--accent);
   transform: translateY(-2px);
 }
 .ih-chip:active {
-  transform: scale(0.96);
+  transform: scale(0.95);
+}
+.ih-attach,
+.ih-draft-quote {
+  border-top: 0;
+  animation: ih-fade-up 360ms var(--ih-ease-spring) both;
+}
+.ih-emoji-tray {
+  animation: ih-search-in 360ms var(--ih-ease-spring) both;
+}
+.ih-emoji {
+  animation: ih-pop 420ms var(--ih-ease-spring) both;
+  transition: transform var(--ih-dur-xs) var(--ih-ease-spring), background-color var(--ih-dur-sm);
+}
+.ih-emoji:hover {
+  background: var(--chat-active);
+  transform: scale(1.25) rotate(-6deg);
+}
+.ih-emoji:active {
+  transform: scale(0.9);
+}
+.ih-emoji-toggle {
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring), color var(--ih-dur-sm);
+}
+.ih-emoji-toggle.is-on {
+  color: var(--accent);
+  transform: rotate(18deg) scale(1.1);
 }
 .ih-chat-menu {
   background: var(--chat-panel);
   border: 1px solid var(--chat-line);
   color: var(--chat-fg);
-  box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  box-shadow: 0 30px 60px -28px rgb(31 29 26 / 0.55);
   transform-origin: bottom left;
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
 }
 .ih-chat-menu button {
+  animation: ih-fade-up 380ms var(--ih-ease-out) both;
   transition: background var(--ih-dur-sm), padding var(--ih-dur-sm) var(--ih-ease-out);
 }
+.ih-chat-menu button:nth-child(2) { animation-delay: 50ms; }
+.ih-chat-menu button:nth-child(3) { animation-delay: 100ms; }
 .ih-chat-menu button:hover {
   background: var(--chat-active);
-  padding-inline-start: 1.25rem;
+  padding-inline-start: 1rem;
+}
+.ih-menu-icon {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-chat-menu button:hover .ih-menu-icon {
+  transform: rotate(-10deg) scale(1.1);
 }
 .ih-chat-plus svg {
   transition: transform var(--ih-dur-sm) var(--ih-ease-spring);
 }
+.ih-chat-plus[data-open='true'] {
+  background: var(--accent-soft);
+}
 .ih-chat-plus[data-open='true'] svg {
   transform: rotate(135deg);
-  color: #c4a35a;
+  color: var(--accent);
 }
-
-/* Composer. */
 .ih-chat-input {
   background: var(--chat-input);
-  border: 1px solid var(--chat-line);
-  transition: border-color var(--ih-dur-sm), box-shadow var(--ih-dur-sm) var(--ih-ease-out);
+  border: 1px solid transparent;
+  transition: border-color var(--ih-dur-sm), box-shadow var(--ih-dur-sm) var(--ih-ease-out), background-color var(--ih-dur-sm);
 }
 .ih-chat-input:focus-within {
-  border-color: rgb(196 163 90 / 0.7);
-  box-shadow: 0 0 0 4px rgb(196 163 90 / 0.14);
+  background: var(--chat-bg);
+  border-color: color-mix(in srgb, var(--accent-strong) 55%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-strong) 14%, transparent);
 }
-.ih-chat-input textarea {
+.ih-chat-input textarea,
+.ih-chat-input input {
   color: var(--chat-fg);
   box-shadow: none !important;
+  border: 0 !important;
 }
-.ih-chat-input textarea::placeholder {
+.ih-chat-input textarea::placeholder,
+.ih-chat-input input::placeholder {
   color: var(--chat-muted);
 }
-
 .ih-send {
-  background: linear-gradient(135deg, #e0c57a, #a8843f);
-  color: #120f0a;
+  background: var(--accent-grad);
+  color: var(--on-accent);
   transition: transform var(--ih-dur-sm) var(--ih-ease-spring), opacity var(--ih-dur-sm), box-shadow var(--ih-dur-sm);
 }
 .ih-send[data-ready='false'] {
   opacity: 0.35;
-  transform: scale(0.88);
+  transform: scale(0.86) rotate(-12deg);
 }
 .ih-send[data-ready='true'] {
-  box-shadow: 0 10px 24px -10px rgb(196 163 90 / 0.9);
+  box-shadow: 0 12px 24px -10px rgb(140 106 44 / 0.8);
   animation: ih-pop 420ms var(--ih-ease-spring);
 }
 .ih-send:active:not(:disabled) svg {
@@ -255,62 +520,94 @@ html.theme-light .ih-thread {
   55% { transform: translate(-12px, 8px); opacity: 0; }
   100% { transform: none; opacity: 1; }
 }
+.ih-enter-hint {
+  background: var(--chat-panel);
+}
 
-/* Inbox. */
+/* ------------------------------------------------------------ inbox */
+
 .ih-chat h1 {
+  font-size: 2rem;
+  line-height: 1.1;
   animation: ih-fade-up 700ms var(--ih-ease-out) both;
 }
+.ih-inbox-search {
+  animation: ih-fade-up 600ms var(--ih-ease-out) 80ms both;
+}
+.ih-segment {
+  background: var(--chat-input);
+  animation: ih-fade-up 600ms var(--ih-ease-out) 140ms both;
+}
+.ih-segment-pill {
+  width: calc((100% - 0.5rem) / 3);
+  background: var(--chat-bg);
+  box-shadow: 0 2px 8px -2px rgb(31 29 26 / 0.18);
+  transform: translateX(calc(var(--seg, 0) * 100%));
+  transition: transform 460ms var(--ih-ease-spring);
+}
+[dir='rtl'] .ih-segment-pill {
+  transform: translateX(calc(var(--seg, 0) * -100%));
+}
+html.theme-dark .ih-segment-pill {
+  background: rgb(242 238 231 / 0.1);
+}
 .ih-inbox-archive {
-  transition: color var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-out);
+  transition: background-color var(--ih-dur-sm), color var(--ih-dur-sm), transform var(--ih-dur-sm) var(--ih-ease-out);
+  animation: ih-fade-up 600ms var(--ih-ease-out) 180ms both;
 }
 .ih-inbox-archive:hover {
+  background: var(--chat-active);
   color: var(--chat-accent);
   transform: translateX(4px);
 }
 .ih-inbox-row {
   position: relative;
-  animation: ih-slide-right 620ms var(--ih-ease-out) both;
-  animation-delay: calc(var(--ih-i, 0) * 55ms);
-  transition: background var(--ih-dur-sm) var(--ih-ease-out);
+  animation: ih-row-in 620ms var(--ih-ease-out) both;
+  animation-delay: calc(200ms + var(--ih-i, 0) * 50ms);
+  transition: background-color var(--ih-dur-sm) var(--ih-ease-out), transform var(--ih-dur-sm) var(--ih-ease-out);
+}
+@keyframes ih-row-in {
+  from { opacity: 0; transform: translate3d(-16px, 6px, 0); }
+  to { opacity: 1; transform: none; }
 }
 .ih-inbox-row::before {
   content: '';
   position: absolute;
-  inset-block: 12%;
+  inset-block: 22%;
   inset-inline-start: 0;
   width: 3px;
   border-radius: 3px;
-  background: linear-gradient(#e0c57a, #a8843f);
+  background: var(--accent-strong);
   transform: scaleY(0);
   transition: transform var(--ih-dur-md) var(--ih-ease-spring);
 }
 .ih-inbox-row:hover {
   background: var(--chat-active);
 }
+.ih-inbox-row:active {
+  transform: scale(0.985);
+}
 .ih-inbox-row.is-active {
   background: var(--chat-active);
 }
 .ih-inbox-row.is-active::before,
-.ih-inbox-row:hover::before {
+.ih-inbox-row.is-unread::before {
   transform: scaleY(1);
 }
 .ih-inbox-row .ih-chat-avatar {
   transition: transform var(--ih-dur-md) var(--ih-ease-spring);
 }
 .ih-inbox-row:hover .ih-chat-avatar {
-  transform: scale(1.06);
-}
-.ih-inbox-line {
-  border-bottom: 1px solid var(--chat-line);
+  transform: scale(1.07) rotate(-3deg);
 }
 .ih-unread {
-  background: linear-gradient(135deg, #e0c57a, #a8843f);
-  color: #120f0a;
-  box-shadow: 0 0 0 0 rgb(196 163 90 / 0.6);
+  background: var(--accent-grad);
+  color: var(--on-accent);
   animation: ih-pop 480ms var(--ih-ease-spring), ih-pulse-ring 2.4s var(--ih-ease-out) 0.5s infinite;
 }
 
-/* Empty conversation panel. */
+/* ------------------------------------------------------------ empty conversation panel */
+
 .ih-chat-empty {
   color: var(--chat-accent);
 }
@@ -325,7 +622,7 @@ html.theme-light .ih-thread {
   width: 120px;
   height: 120px;
   border-radius: 999px;
-  border: 1px solid rgb(196 163 90 / 0.35);
+  border: 1px solid color-mix(in srgb, var(--accent-strong) 35%, transparent);
   animation: ih-ring-out 2.8s var(--ih-ease-out) infinite;
 }
 @keyframes ih-ring-out {
@@ -336,18 +633,23 @@ html.theme-light .ih-thread {
 @media (prefers-reduced-motion: reduce) {
   .ih-bubble,
   .ih-inbox-row,
-  .ih-chat-head {
+  .ih-chat-head,
+  .ih-wall-mesh::before,
+  .ih-presence::after,
+  .ih-to-bottom svg {
     animation: none !important;
   }
 }
 
-/* Assistant panel: grows out of its floating button. */
+/* ------------------------------------------------------------ assistant panel */
+
 .ih-assistant-panel {
   transform-origin: bottom right;
   animation: ih-assistant-in 520ms var(--ih-ease-spring) both;
   background:
-    radial-gradient(120% 60% at 100% 0%, rgb(196 163 90 / 0.14), transparent 60%),
-    #0a0a0a;
+    radial-gradient(120% 60% at 100% 0%, color-mix(in srgb, var(--accent-strong) 12%, transparent), transparent 60%),
+    var(--panel);
+  color: var(--panel-fg);
 }
 @keyframes ih-assistant-in {
   from { opacity: 0; transform: translate3d(12px, 24px, 0) scale(0.6); filter: blur(6px); }

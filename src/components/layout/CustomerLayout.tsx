@@ -19,7 +19,7 @@ export function CustomerLayout() {
   const item = ({ isActive }: { isActive: boolean }) =>
     cn(
       'flex min-h-14 items-center gap-3 rounded-2xl px-4 text-sm font-medium touch-manipulation',
-      isActive ? 'bg-[#1c1914] text-[#f6f1e8]' : 'border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/6 text-[var(--page-fg)]',
+      isActive ? 'bg-accent-strong text-on-accent' : 'border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/6 text-[var(--page-fg)]',
     )
 
   return (

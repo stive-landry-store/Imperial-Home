@@ -44,7 +44,7 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
   }, [open, items.length])
 
   if (!current) {
-    return <div className="flex aspect-[16/10] items-center justify-center rounded-[1.35rem] bg-black text-[#d4af6a]/40">{title}</div>
+    return <div className="flex aspect-[16/10] items-center justify-center rounded-[1.35rem] bg-accent-soft text-accent/40">{title}</div>
   }
 
   return (
@@ -64,11 +64,11 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
               }}
               className={cn(
                 'h-16 w-24 shrink-0 overflow-hidden rounded-2xl border',
-                index === active ? 'border-[#d4af6a]' : 'border-transparent',
+                index === active ? 'border-accent' : 'border-transparent',
               )}
             >
               {item.media_type === 'video' ? (
-                <span className="flex h-full items-center justify-center bg-black text-[10px] text-[#d4af6a]">VIDEO</span>
+                <span className="flex h-full items-center justify-center bg-black text-[10px] text-accent">VIDEO</span>
               ) : (
                 <img src={item.url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
               )}
@@ -76,17 +76,17 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
           ))}
         </div>
       ) : null}
-      <p className="mt-2 text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
+      <p className="mt-2 text-xs tracking-[0.14em] text-accent uppercase">
         {items.length} {items.length > 1 ? t('cars.photos') : t('cars.photo')}
       </p>
       {open
         ? createPortal(
             <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black" role="dialog">
-              <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={() => setOpen(false)}>
+              <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-accent uppercase" onClick={() => setOpen(false)}>
                 {t('common.cancel')}
               </button>
               {items.length > 1 ? (
-                <button type="button" className="absolute left-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]" onClick={() => setActive((index) => (index - 1 + items.length) % items.length)}>
+                <button type="button" className="absolute left-2 z-10 px-3 py-4 text-4xl text-accent" onClick={() => setActive((index) => (index - 1 + items.length) % items.length)}>
                   ‹
                 </button>
               ) : null}
@@ -102,10 +102,10 @@ export function VehicleGallery({ media, title }: { media: VehicleMedia[]; title:
               )}
               {items.length > 1 ? (
                 <>
-                  <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-[#ecd08a]">
+                  <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-accent">
                     {active + 1} / {items.length}
                   </p>
-                  <button type="button" className="absolute right-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]" onClick={() => setActive((index) => (index + 1) % items.length)}>
+                  <button type="button" className="absolute right-2 z-10 px-3 py-4 text-4xl text-accent" onClick={() => setActive((index) => (index + 1) % items.length)}>
                     ›
                   </button>
                 </>

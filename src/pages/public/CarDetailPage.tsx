@@ -103,7 +103,7 @@ export function CarDetailPage() {
     return (
       <div className="theme-page min-h-svh px-6 pt-36">
         <p className="theme-muted">{t('cars.empty')}</p>
-        <Link to="/cars" className="mt-4 inline-block text-[#d4af6a]">
+        <Link to="/cars" className="mt-4 inline-block text-accent">
           {t('cars.back')}
         </Link>
       </div>
@@ -120,13 +120,13 @@ export function CarDetailPage() {
           <title>{`${title} | Imperial Home`}</title>
         </Helmet>
         <div className="min-w-0 max-w-full">
-          <Link to="/cars" className="text-xs tracking-[0.2em] text-[#d4af6a] uppercase">
+          <Link to="/cars" className="text-xs tracking-[0.2em] text-accent uppercase">
             {t('cars.back')}
           </Link>
-          <div className="mt-4 overflow-hidden rounded-[1.35rem] border border-[#d4af6a]/30">
+          <div className="mt-4 overflow-hidden rounded-[1.35rem] border border-accent/30">
             <VehicleGallery media={vehicle.vehicle_media ?? []} title={title} />
           </div>
-          <p className="mt-6 text-xs tracking-[0.2em] text-[#d4af6a] uppercase">{vehicle.brand}</p>
+          <p className="mt-6 text-xs tracking-[0.2em] text-accent uppercase">{vehicle.brand}</p>
           <h1 className="mt-1 font-display text-5xl">{vehicle.model}</h1>
           <p className="mt-4 max-w-xl theme-muted">
             <Live text={desc} />
@@ -134,13 +134,13 @@ export function CarDetailPage() {
         </div>
 
         <aside className="theme-card h-fit min-w-0 max-w-full p-4 sm:p-5">
-          <p className="text-xs tracking-[0.22em] text-[#d4af6a] uppercase">{t('cars.bookAlone')}</p>
+          <p className="text-xs tracking-[0.22em] text-accent uppercase">{t('cars.bookAlone')}</p>
           <h2 className="mt-2 font-display text-3xl">{t('cars.bookThis')}</h2>
           <p className="mt-2 text-sm theme-muted">{t('cars.aloneHint')}</p>
 
           {booked ? (
             <div className="mt-6 space-y-3">
-              <p className="text-[#d4af6a]">{t('cars.requestSent')}</p>
+              <p className="text-accent">{t('cars.requestSent')}</p>
               <p className="font-display text-3xl">{booked.code}</p>
               <p className="text-sm theme-muted">{t('cars.requestLead')}</p>
               <p className="text-sm">{formatXaf(booked.total)}</p>
@@ -192,14 +192,14 @@ export function CarDetailPage() {
               <div className="grid gap-2">
                 <button
                   type="button"
-                  className={`min-h-12 w-full rounded-2xl border px-3 py-3 text-base ${!withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-[var(--page-fg)]/15'}`}
+                  className={`min-h-12 w-full rounded-2xl border px-3 py-3 text-base ${!withDriver ? 'border-accent bg-accent-strong/15 text-accent' : 'border-[var(--page-fg)]/15'}`}
                   onClick={() => setWithDriver(false)}
                 >
                   {t('cars.withoutDriver')}
                 </button>
                 <button
                   type="button"
-                  className={`min-h-12 w-full rounded-2xl border px-3 py-3 text-base ${withDriver ? 'border-[#d4af6a] bg-[#d4af6a]/15 text-[#d4af6a]' : 'border-[var(--page-fg)]/15'}`}
+                  className={`min-h-12 w-full rounded-2xl border px-3 py-3 text-base ${withDriver ? 'border-accent bg-accent-strong/15 text-accent' : 'border-[var(--page-fg)]/15'}`}
                   onClick={() => setWithDriver(true)}
                 >
                   {t('cars.withDriver')}
@@ -223,7 +223,7 @@ export function CarDetailPage() {
                     <dd>{formatXaf(quote.base)}</dd>
                   </div>
                   {quote.discount > 0 ? (
-                    <div className="flex justify-between text-[#d4af6a]">
+                    <div className="flex justify-between text-accent">
                       <dt>{t('cars.promoCode')}</dt>
                       <dd>−{formatXaf(quote.discount)}</dd>
                     </div>
@@ -237,7 +237,7 @@ export function CarDetailPage() {
               {checking ? <Loader size="sm" className="!py-2" /> : null}
               {available === false ? <p className="text-sm text-red-300">{t('cars.unavailable')}</p> : null}
               {error ? <p className="text-sm text-red-300">{error}</p> : null}
-              {!online ? <p className=" text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
+              {!online ? <p className=" text-sm text-accent">{t('app.offlineNoBooking')}</p> : null}
               {user ? (
                 <Button type="submit" className="w-full rounded-full" disabled={!online || book.isPending || available === false}>
                   {book.isPending ? <Loader size="xs" /> : t('cars.bookThis')}
@@ -247,7 +247,7 @@ export function CarDetailPage() {
                   {t('cars.loginToBook')}
                 </Button>
               )}
-              <Link to="/properties" className="block text-center text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
+              <Link to="/properties" className="block text-center text-xs tracking-[0.14em] text-accent uppercase">
                 {t('cars.bookWithStay')}
               </Link>
             </form>

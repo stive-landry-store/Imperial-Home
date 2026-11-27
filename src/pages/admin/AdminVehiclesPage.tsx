@@ -312,7 +312,7 @@ export function AdminVehiclesPage() {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                <button type="button" className="text-xs uppercase tracking-wider text-gold" onClick={() => startEdit(v)}>
+                <button type="button" className="text-xs uppercase tracking-wider text-accent" onClick={() => startEdit(v)}>
                   {t('admin.roomEditBtn')}
                 </button>
                 <button type="button" className="text-xs uppercase tracking-wider text-red-700" onClick={() => remove.mutate(v.id)}>

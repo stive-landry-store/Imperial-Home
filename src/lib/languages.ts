@@ -1,15 +1,15 @@
 export const LANGUAGES = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'zh', label: '中文', flag: '🇨🇳' },
-  { code: 'hi', label: 'हिन्दी', flag: '🇮🇳' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'ar', label: 'العربية', flag: '🇸🇦' },
-  { code: 'bn', label: 'বাংলা', flag: '🇧🇩' },
-  { code: 'pt', label: 'Português', flag: '🇧🇷' },
-  { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-  { code: 'ur', label: 'اردو', flag: '🇵🇰' },
+  { code: 'en', label: 'English', flag: '🇬🇧', country: 'gb' },
+  { code: 'zh', label: '中文', flag: '🇨🇳', country: 'cn' },
+  { code: 'hi', label: 'हिन्दी', flag: '🇮🇳', country: 'in' },
+  { code: 'es', label: 'Español', flag: '🇪🇸', country: 'es' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷', country: 'fr' },
+  { code: 'de', label: 'Deutsch', flag: '🇩🇪', country: 'de' },
+  { code: 'ar', label: 'العربية', flag: '🇸🇦', country: 'sa' },
+  { code: 'bn', label: 'বাংলা', flag: '🇧🇩', country: 'bd' },
+  { code: 'pt', label: 'Português', flag: '🇧🇷', country: 'br' },
+  { code: 'ru', label: 'Русский', flag: '🇷🇺', country: 'ru' },
+  { code: 'ur', label: 'اردو', flag: '🇵🇰', country: 'pk' },
 ] as const
 
 export type LanguageCode = (typeof LANGUAGES)[number]['code']

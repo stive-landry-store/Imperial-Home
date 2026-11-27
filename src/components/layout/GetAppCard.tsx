@@ -15,7 +15,7 @@ export function GetAppCard({ className, onNavigate }: { className?: string; onNa
       to="/installer"
       onClick={onNavigate}
       className={cn(
-        'flex min-h-16 items-center gap-3 rounded-2xl bg-gradient-to-r from-[#b8893b] to-[#ecd08a] px-4 py-3 text-[#17110a] shadow-lg touch-manipulation',
+        'flex min-h-16 items-center gap-3 rounded-2xl ih-accent-fill px-4 py-3 text-on-accent shadow-lg touch-manipulation',
         className,
       )}
     >

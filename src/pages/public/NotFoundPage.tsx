@@ -9,7 +9,7 @@ export function NotFoundPage() {
       <Helmet>
         <title>404 | Imperial Home</title>
       </Helmet>
-      <p className="text-gold">404</p>
+      <p className="text-accent">404</p>
       <h1 className="mt-2 font-display text-4xl">Page not found</h1>
       <Button to="/" className="mt-8">
         {t('common.back')}

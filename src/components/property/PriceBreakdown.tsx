@@ -19,7 +19,7 @@ export function PriceBreakdown({ quote }: { quote: Quote }) {
         </p>
       ) : null}
       {(quote.long_stay_discount_xaf ?? 0) > 0 ? (
-        <div className="ih-fade-in flex justify-between text-[#d4af6a]">
+        <div className="ih-fade-in flex justify-between text-accent">
           <span>
             {t('plus.longStay')}
             {quote.long_stay_percent ? ` (−${quote.long_stay_percent} %)` : ''}
@@ -28,7 +28,7 @@ export function PriceBreakdown({ quote }: { quote: Quote }) {
         </div>
       ) : null}
       {(quote.promo_discount_xaf ?? (quote.long_stay ? 0 : quote.discount_xaf)) > 0 ? (
-        <div className="ih-fade-in flex justify-between text-[#d4af6a]">
+        <div className="ih-fade-in flex justify-between text-accent">
           <span>{quote.promotion_name || t('plus.promoCode')}</span>
           <span>− {formatXaf(quote.promo_discount_xaf ?? quote.discount_xaf)}</span>
         </div>

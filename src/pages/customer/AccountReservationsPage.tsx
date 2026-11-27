@@ -46,7 +46,7 @@ export function AccountReservationsPage() {
         {rows.map((row) =>
           row.kind === 'stay' ? (
             <li key={row.reservation.id}>
-              <Link to={`/account/reservations/${row.reservation.id}`} className="theme-card block p-5 hover:border-[#d4af6a]">
+              <Link to={`/account/reservations/${row.reservation.id}`} className="theme-card block p-5 hover:border-accent">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-display text-2xl">{row.reservation.properties?.name ?? row.reservation.public_code}</p>
                   <Badge variant="dark">{t(`status.${row.reservation.status}`)}</Badge>

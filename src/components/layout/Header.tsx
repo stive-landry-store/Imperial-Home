@@ -52,7 +52,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        'ih-header fixed inset-x-0 top-0 z-40 border-b border-black/10 text-[var(--header-fg)] backdrop-blur-md',
+        'ih-header fixed inset-x-0 top-0 z-40 border-b border-line text-[var(--header-fg)] backdrop-blur-xl backdrop-saturate-150',
       )}
       style={{ background: 'var(--header-solid)' }}
     >
@@ -91,21 +91,21 @@ export function Header() {
         </div>
         <nav className="hidden min-w-0 items-center justify-end gap-4 overflow-x-auto text-sm lg:flex">
           {links.map((l) => (
-            <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'text-gold-light' : 'hover:text-gold-light')}>
+            <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? 'font-semibold text-accent' : 'theme-muted hover:text-accent')}>
               {l.label}
             </NavLink>
           ))}
           {user ? (
-            <NavLink to="/account" className={({ isActive }) => (isActive ? 'text-gold-light' : 'hover:text-gold-light')}>
+            <NavLink to="/account" className={({ isActive }) => (isActive ? 'font-semibold text-accent' : 'theme-muted hover:text-accent')}>
               {t('nav.account')}
             </NavLink>
           ) : (
-            <NavLink to="/login" className={({ isActive }) => (isActive ? 'text-gold-light' : 'hover:text-gold-light')}>
+            <NavLink to="/login" className={({ isActive }) => (isActive ? 'font-semibold text-accent' : 'theme-muted hover:text-accent')}>
               {t('nav.login')}
             </NavLink>
           )}
           {isStaff ? (
-            <NavLink to="/admin" className="text-gold-light">
+            <NavLink to="/admin" className="text-accent">
               {t('nav.admin')}
             </NavLink>
           ) : null}
@@ -116,7 +116,7 @@ export function Header() {
           ) : null}
           <Link
             to="/properties"
-            className="bg-[#c4a35a] px-4 py-2 text-[13px] tracking-[0.16em] text-black uppercase hover:bg-[#e0c57a]"
+            className="ih-btn ih-btn-primary rounded-full px-5 py-2.5 text-sm font-semibold"
           >
             {t('nav.book')}
           </Link>

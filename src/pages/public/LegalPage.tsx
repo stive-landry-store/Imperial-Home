@@ -32,8 +32,8 @@ export function LegalPage({ kind }: { kind: Kind }) {
         ))}
       </div>
       {kind === 'about' ? (
-        <section className="ih-card theme-card mt-12 rounded-3xl border border-[#d4af6a]/30 p-6 text-center">
-          <p className="text-xs tracking-[0.3em] text-[#d4af6a] uppercase">{t('credits.madeBy')}</p>
+        <section className="ih-card theme-card mt-12 rounded-3xl border border-accent/30 p-6 text-center">
+          <p className="text-xs tracking-[0.3em] text-accent uppercase">{t('credits.madeBy')}</p>
           <p className="ih-gold-text mt-3 font-display text-3xl">{CREATOR.company}</p>
           <p className="mt-2 text-sm theme-muted">
             {t('credits.creator')} : <span className="font-semibold">{CREATOR.fullName}</span>

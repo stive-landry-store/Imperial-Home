@@ -13,7 +13,7 @@ function ReceiptLink({ path }: { path: string }) {
   return (
     <button
       type="button"
-      className="text-sm text-[#d4af6a]"
+      className="text-sm text-accent"
       disabled={busy}
       onClick={() => {
         setBusy(true)
@@ -44,7 +44,7 @@ export function AdminPaymentsPage() {
           const pay = r.payments?.[0]
           return (
             <li key={r.id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-base">
-              <Link to={`/admin/reservations/${r.id}`} className="hover:text-gold">
+              <Link to={`/admin/reservations/${r.id}`} className="hover:text-accent">
                 {r.public_code}
               </Link>
               <span>{formatXaf(r.total_amount_xaf)}</span>

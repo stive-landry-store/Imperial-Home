@@ -5,6 +5,7 @@ import { WhatsAppFab } from './WhatsAppFab'
 import { ImperialAssistantFab } from '../assistant/ImperialAssistantFab'
 import { PageTransition } from './PageTransition'
 import { AssistantNotice } from './AssistantNotice'
+import { BackToTop } from './BackToTop'
 
 export function PublicLayout() {
   return (
@@ -19,6 +20,7 @@ export function PublicLayout() {
       <AssistantNotice />
       <ImperialAssistantFab />
       <WhatsAppFab />
+      <BackToTop />
     </div>
   )
 }

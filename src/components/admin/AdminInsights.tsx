@@ -27,7 +27,7 @@ function Person({ r }: { r: Reservation }) {
         </a>
       ) : null}
       {phone ? (
-        <a className="shrink-0 rounded-full bg-[#1c1914] px-3 py-1.5 text-xs text-[#f6f1e8]" href={whatsappUrl(phone, note)} target="_blank" rel="noreferrer">
+        <a className="shrink-0 rounded-full bg-accent-strong px-3 py-1.5 text-xs text-on-accent" href={whatsappUrl(phone, note)} target="_blank" rel="noreferrer">
           {t('admin.writeGuest')}
         </a>
       ) : null}
@@ -163,7 +163,7 @@ export function AdminInsights({
                 <span className="text-sm">{formatXaf(p.revenue)}</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-black/10">
-                <div className="h-full rounded-full bg-gradient-to-r from-[#8b6f32] to-[#ecd08a]" style={{ width: `${Math.min(100, p.occupancy)}%` }} />
+                <div className="h-full rounded-full bg-gradient-to-r from-accent to-accent" style={{ width: `${Math.min(100, p.occupancy)}%` }} />
               </div>
               <p className="mt-1 text-xs text-muted">
                 {t('admin.occupancyRate')} : {p.occupancy}% · {formatDate(today)}

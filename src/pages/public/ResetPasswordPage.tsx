@@ -91,7 +91,7 @@ export function ResetPasswordPage() {
           </Button>
         </form>
       )}
-      <Link to="/login" className="mt-4 block text-center text-sm text-[#d4af6a]">
+      <Link to="/login" className="mt-4 block text-center text-sm text-accent">
         {t('auth.toLogin')}
       </Link>
     </div>

@@ -165,19 +165,19 @@ export function ProfilePage() {
           <div className="relative -mt-12 block h-28 w-28">
             <button
               type="button"
-              className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-[#1c1914] ring-[3px] ring-[#d4af6a]"
+              className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-accent-strong ring-[3px] ring-accent"
               onClick={() => (profile?.avatar_url ? setViewer('avatar') : avatarInput.current?.click())}
               aria-label={t('account.avatar')}
             >
               {profile?.avatar_url ? (
                 <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
               ) : (
-                <span className="text-4xl font-semibold text-[#e0c57a]">{(profile?.full_name || profile?.email || '?').slice(0, 1).toUpperCase()}</span>
+                <span className="text-4xl font-semibold text-accent">{(profile?.full_name || profile?.email || '?').slice(0, 1).toUpperCase()}</span>
               )}
             </button>
             <button
               type="button"
-              className="absolute right-0 bottom-0 grid h-8 w-8 place-items-center rounded-full bg-[#d4af6a] text-black"
+              className="absolute right-0 bottom-0 grid h-8 w-8 place-items-center rounded-full bg-accent-strong text-on-accent"
               onClick={() => avatarInput.current?.click()}
             >
               <Camera className="h-4 w-4" />
@@ -239,7 +239,7 @@ export function ProfilePage() {
       <section className="mx-3 mt-3 space-y-2">
         <p className="flex min-h-14 items-center rounded-2xl bg-[#ffffff] px-4 text-[15px]">{t('account.houseCategory')}</p>
         <p className="flex min-h-14 items-center gap-2 rounded-2xl bg-[#ffffff] px-4 text-[15px]">
-          <MapPin className="h-4 w-4 shrink-0 text-[#c4a35a]" />
+          <MapPin className="h-4 w-4 shrink-0 text-accent" />
           {place.address}
         </p>
         {next ? (

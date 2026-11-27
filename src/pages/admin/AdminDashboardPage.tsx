@@ -9,6 +9,7 @@ import { supabase } from '../../lib/supabase'
 import { todayIso } from '../../lib/availability'
 import { formatDate, formatXaf } from '../../lib/format'
 import { AdminInsights } from '../../components/admin/AdminInsights'
+import { SalesTotal } from '../../components/admin/SalesTotal'
 import { Button } from '../../components/ui/Button'
 import { useAuth } from '../../hooks/useAuth'
 import { decisionErrorMessage, useAdminReservationActions } from '../../hooks/useAdminReservationActions'
@@ -49,7 +50,7 @@ function PendingSwipeCard({
   return (
     <li className="border-b border-line last:border-b-0">
       <div className="hidden items-center justify-between gap-4 px-4 py-4 md:flex">
-        <Link to={`/admin/reservations/${r.id}`} className="min-w-0 flex-1 hover:text-gold">
+        <Link to={`/admin/reservations/${r.id}`} className="min-w-0 flex-1 hover:text-accent">
           {info}
         </Link>
         <div className="flex shrink-0 gap-2">{actions}</div>
@@ -61,7 +62,7 @@ function PendingSwipeCard({
             <Link to={`/admin/reservations/${r.id}`} className="block">
               {info}
             </Link>
-            <p className="mt-3 flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] text-[#c4a35a]">
+            <p className="mt-3 flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] text-accent">
               {t('admin.swipeToApprove')}
               <ChevronRight size={14} />
               <ChevronRight size={14} className="-ml-2" />
@@ -120,13 +121,15 @@ export function AdminDashboardPage() {
       </Helmet>
       <h1 className="font-display text-3xl break-words md:text-4xl">{t('admin.dashboard')}</h1>
 
+      <SalesTotal reservations={reservations} />
+
       {canReset ? (
-        <section id="reset" className="mt-5 rounded-[1.35rem] border border-red-900/40 bg-black/40 p-5">
+        <section id="reset" className="mt-5 rounded-[1.5rem] border border-red-200 bg-red-50/60 p-5 text-[var(--page-fg)]">
           <h2 className="font-display text-2xl">{t('admin.resetStats')}</h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed theme-muted">{t('admin.resetStatsLead')}</p>
           {resetDone ? <p className="mt-3 text-sm text-emerald-700">{t('admin.resetStatsDone')}</p> : null}
           {resetError ? <p className="mt-3 text-sm text-red-600">{resetError}</p> : null}
-          <Button className="mt-4 bg-red-800 text-white hover:bg-red-700" onClick={() => void resetStatistics()} disabled={resetting}>
+          <Button variant="outline" className="mt-4 border-red-300 text-red-700 hover:border-red-600 hover:bg-red-600 hover:text-white" onClick={() => void resetStatistics()} disabled={resetting}>
             {resetting ? t('common.loading') : t('admin.resetStatsButton')}
           </Button>
         </section>
@@ -150,7 +153,7 @@ export function AdminDashboardPage() {
             to={s.to}
             className="surface-light flex min-h-14 min-w-0 items-center gap-3 rounded-2xl border border-black/10 px-4 py-3 text-sm text-[var(--surface-fg)] touch-manipulation"
           >
-            <s.icon size={20} className="shrink-0 text-[#6f675c]" />
+            <s.icon size={20} className="shrink-0 theme-muted" />
             <span className="min-w-0 break-words">{s.label}</span>
           </Link>
         ))}
@@ -166,7 +169,7 @@ export function AdminDashboardPage() {
       {reject.isError ? (
         <p className="mt-2 text-sm text-red-600">{decisionErrorMessage(reject.error, t('admin.rejectError'))}</p>
       ) : null}
-      <p className="mt-1 text-sm text-[#c4a35a] md:hidden">{t('admin.swipeToApprove')}</p>
+      <p className="mt-1 text-sm text-accent md:hidden">{t('admin.swipeToApprove')}</p>
       <ul className="surface-light mt-4 overflow-hidden rounded-2xl border border-line">
         {pendingPay.slice(0, 8).map((r) => (
           <PendingSwipeCard

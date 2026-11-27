@@ -60,7 +60,7 @@ export function PullToRefresh() {
   if (pull <= 0 && !busy) return null
   return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-[60] flex justify-center" style={{ transform: `translateY(${Math.max(pull, 0) + 64}px)` }}>
-      <span className="ih-loader grid place-items-center rounded-full border border-[#d4af6a]/60 bg-[#0a0907] p-1 shadow-lg" style={{ width: 40, height: 40 }}>
+      <span className="ih-loader grid place-items-center rounded-full border border-accent/60 bg-panel p-1 shadow-lg" style={{ width: 40, height: 40 }}>
         <span className="ih-loader-ring" style={busy ? undefined : { animationPlayState: 'paused', transform: `rotate(${pull * 4}deg)` }} />
         <img src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`} alt="" className="ih-loader-logo" draggable={false} />
       </span>

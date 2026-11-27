@@ -14,12 +14,12 @@ export function AssistantNotice() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 pb-4" aria-live="polite">
       <div className="flex gap-3 rounded-xl border border-black/10 bg-[var(--header-solid)] px-4 py-3 text-sm leading-snug">
-        <Bot className="mt-0.5 h-5 w-5 shrink-0 text-[#d4af6a]" aria-hidden />
+        <Bot className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
         <div>
           <p>{t('assistant.notice')}</p>
           <button
             type="button"
-            className="mt-2 text-sm font-medium text-[#c4a35a]"
+            className="mt-2 text-sm font-medium text-accent"
             onClick={() => {
               localStorage.setItem(KEY, '1')
               setHidden(true)

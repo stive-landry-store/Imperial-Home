@@ -8,11 +8,11 @@ export function LocaleSwitch({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex items-center gap-2">
       {compact ? null : (
-        <span className="hidden text-[12px] tracking-[0.18em] text-[#d4af6a] uppercase lg:inline">{t('common.language')}</span>
+        <span className="hidden text-[12px] tracking-[0.18em] text-accent uppercase lg:inline">{t('common.language')}</span>
       )}
       <div
         className={cn(
-          'inline-flex overflow-hidden border-2 border-[#c4a35a] bg-black/40 text-[13px] font-semibold tracking-[0.16em] uppercase',
+          'inline-flex overflow-hidden rounded-full border border-line bg-[var(--card-bg)] text-[13px] font-semibold tracking-[0.12em] uppercase',
           compact ? '' : 'shadow-[0_0_12px_rgba(196,163,90,0.25)]',
         )}
         role="group"
@@ -20,7 +20,7 @@ export function LocaleSwitch({ compact = false }: { compact?: boolean }) {
       >
         <button
           type="button"
-          className={cn('min-w-10 px-3 py-1.5', fr ? 'bg-[#c4a35a] text-black' : 'text-[#d4af6a] hover:bg-[#c4a35a]/20')}
+          className={cn('min-w-10 px-3 py-1.5', fr ? 'bg-accent-strong text-on-accent' : 'text-accent hover:bg-accent-strong/20')}
           onClick={() => void i18n.changeLanguage('fr')}
           aria-pressed={fr}
         >
@@ -28,7 +28,7 @@ export function LocaleSwitch({ compact = false }: { compact?: boolean }) {
         </button>
         <button
           type="button"
-          className={cn('min-w-10 px-3 py-1.5', !fr ? 'bg-[#c4a35a] text-black' : 'text-[#d4af6a] hover:bg-[#c4a35a]/20')}
+          className={cn('min-w-10 px-3 py-1.5', !fr ? 'bg-accent-strong text-on-accent' : 'text-accent hover:bg-accent-strong/20')}
           onClick={() => void i18n.changeLanguage('en')}
           aria-pressed={!fr}
         >

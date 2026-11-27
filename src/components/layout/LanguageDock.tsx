@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { LANGUAGES, languageCode, languageShort } from '../../lib/languages'
+import { Flag } from '../ui/Flag'
 import { cn } from '../../lib/cn'
 
 export function LanguageDock({ placement = 'float' }: { placement?: 'float' | 'header' }) {
@@ -57,7 +58,7 @@ export function LanguageDock({ placement = 'float' }: { placement?: 'float' | 'h
       {open ? (
         <ul
           className={cn(
-            'max-h-[min(24rem,70dvh)] w-56 overflow-y-auto rounded-2xl border border-[#d4af6a]/40 bg-black py-1 text-[#f4eee3] shadow-2xl',
+            'max-h-[min(24rem,70dvh)] w-56 overflow-y-auto rounded-2xl border border-accent/25 bg-panel py-1 text-panel-fg shadow-2xl',
             floating ? 'mb-2' : 'absolute right-0 top-full z-50 mt-2',
           )}
           role="listbox"
@@ -71,16 +72,14 @@ export function LanguageDock({ placement = 'float' }: { placement?: 'float' | 'h
                 aria-selected={item.code === current.code}
                 className={cn(
                   'flex min-h-12 w-full items-center gap-3 px-3 text-left text-base touch-manipulation',
-                  item.code === current.code ? 'bg-[#c4a35a] text-black' : 'hover:bg-white/10',
+                  item.code === current.code ? 'bg-accent-strong text-on-accent' : 'hover:bg-accent-soft',
                 )}
                 onClick={() => {
                   void i18n.changeLanguage(item.code)
                   setOpen(false)
                 }}
               >
-                <span className="text-xl" aria-hidden>
-                  {item.flag}
-                </span>
+                <Flag country={item.country} className="h-5 text-xl" />
                 <span>{item.label}</span>
               </button>
             </li>
@@ -90,16 +89,14 @@ export function LanguageDock({ placement = 'float' }: { placement?: 'float' | 'h
       <button
         type="button"
         className={cn(
-          'inline-flex items-center gap-1.5 rounded-full border border-[#c4a35a] bg-black/90 font-semibold text-[#d4af6a] shadow-lg touch-manipulation',
+          'ih-btn inline-flex items-center gap-1.5 rounded-full border border-line bg-[var(--panel)]/85 font-semibold text-[var(--page-fg)] shadow-[var(--shadow-soft)] backdrop-blur-xl touch-manipulation',
           floating ? 'min-h-11 px-2.5 text-sm' : 'h-9 px-2 text-xs',
         )}
         aria-expanded={open}
         aria-label={`${t('common.language')}: ${current.label}`}
         onClick={() => setOpen((value) => !value)}
       >
-        <span className={floating ? 'text-lg' : 'text-base'} aria-hidden>
-          {current.flag}
-        </span>
+        <Flag country={current.country} className={floating ? 'h-4' : 'h-3.5'} />
         {floating ? <span>{languageShort(current.code)}</span> : null}
         {floating ? <ChevronDown className={cn('h-4 w-4 transition', open && 'rotate-180')} /> : null}
       </button>

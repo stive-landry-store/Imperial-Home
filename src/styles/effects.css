@@ -1,0 +1,300 @@
+/*
+ * Imperial Home — effects layer (motion v4).
+ * Built on what motion design looks like in 2026: native scroll-driven animations (no JavaScript),
+ * purposeful micro-interactions on every control, gentle 3D depth, and restraint.
+ * Browsers without scroll timelines simply keep the static layout.
+ * Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
+ */
+
+/* ------------------------------------------------------------ scroll-driven (native CSS) */
+
+@supports (animation-timeline: view()) and (animation-range: entry) {
+  /* Hero photo frame shrinks and rounds as the page scrolls away from it. */
+  .ih-hero-frame {
+    animation:
+      ih-frame-open 1.3s var(--ih-ease-out) both,
+      ih-sd-hero-out linear both;
+    animation-timeline: auto, view();
+    animation-range: normal, exit 0% exit 100%;
+  }
+  @keyframes ih-sd-hero-out {
+    to { scale: 0.92; opacity: 0.55; border-radius: 3.5rem; }
+  }
+
+  /* Housing sheet preview straightens up while it scrolls into view. */
+  .ih-sd-tilt {
+    animation: ih-sd-tilt linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+  @keyframes ih-sd-tilt {
+    from { transform: perspective(1200px) rotateX(18deg) rotateY(-14deg) translateY(60px); opacity: 0.3; }
+    to { transform: none; opacity: 1; }
+  }
+
+  /* Quiet sections open from a narrow band to full width. */
+  .ih-sd-widen {
+    animation: ih-sd-widen linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  @keyframes ih-sd-widen {
+    from { clip-path: inset(0 12% round 3rem); scale: 0.96; }
+    to { clip-path: inset(0 0 round 2rem); scale: 1; }
+  }
+
+  /* Blocks rise with a soft 3D lean. */
+  .ih-sd-rise {
+    animation: ih-sd-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  @keyframes ih-sd-rise {
+    from { transform: perspective(1000px) rotateX(10deg) translateY(50px) scale(0.96); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+
+  /* The services strip drifts sideways with the scroll, on top of its own loop. */
+  .ih-sd-drift {
+    animation: ih-sd-drift linear both;
+    animation-timeline: view();
+  }
+  @keyframes ih-sd-drift {
+    from { translate: 8% 0; }
+    to { translate: -8% 0; }
+  }
+
+  /* Property photos inside cards glide slightly slower than the page (parallax). */
+  .ih-card-media > img,
+  .ih-card-media picture img {
+    scale: 1.08;
+    animation: ih-sd-img linear both;
+    animation-timeline: view();
+  }
+  @keyframes ih-sd-img {
+    from { translate: 0 -4%; }
+    to { translate: 0 4%; }
+  }
+
+  /* Footer service tiles fan in from the bottom. */
+  .ih-footer .ih-pillar {
+    animation: ih-sd-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+}
+
+/* ------------------------------------------------------------ micro-interactions */
+
+/* Arrow icons at the end of a button slide forward on hover. */
+.ih-btn > svg:last-child:not(:first-child) {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+@media (hover: hover) {
+  .ih-btn:hover > svg:last-child:not(:first-child) {
+    transform: translateX(4px);
+  }
+  [dir='rtl'] .ih-btn:hover > svg:last-child:not(:first-child) {
+    transform: translateX(-4px);
+  }
+  .ih-btn:hover > svg:first-child:not(:last-child) {
+    animation: ih-wiggle 600ms var(--ih-ease-spring);
+  }
+}
+@keyframes ih-wiggle {
+  0%, 100% { transform: rotate(0); }
+  30% { transform: rotate(-12deg) scale(1.1); }
+  60% { transform: rotate(8deg); }
+}
+
+/* Favourite heart: bursts when saved. */
+.ih-heart {
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring);
+}
+.ih-heart:active {
+  transform: scale(0.85);
+}
+.ih-heart.is-saved svg {
+  animation: ih-heart-beat 700ms var(--ih-ease-spring) both;
+}
+.ih-heart.is-saved::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid #ef4444;
+  animation: ih-heart-ring 700ms var(--ih-ease-out) forwards;
+  pointer-events: none;
+}
+@keyframes ih-heart-beat {
+  0% { transform: scale(0.4); }
+  45% { transform: scale(1.35); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+@keyframes ih-heart-ring {
+  from { transform: scale(0.6); opacity: 1; }
+  to { transform: scale(1.8); opacity: 0; }
+}
+
+/* Links in text: underline grows from the left. */
+@media (hover: hover) {
+  .theme-page p a:not(.ih-btn),
+  .theme-page li a:not(.ih-btn) {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--ih-dur-md) var(--ih-ease-out), color var(--ih-dur-sm);
+  }
+  .theme-page p a:not(.ih-btn):hover,
+  .theme-page li a:not(.ih-btn):hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* Photos anywhere: a soft zoom on hover. */
+@media (hover: hover) {
+  .theme-page figure img,
+  .theme-page button > img.object-cover,
+  .theme-page a > img.object-cover {
+    transition: transform 900ms var(--ih-ease-out), filter 600ms var(--ih-ease-out);
+  }
+  .theme-page figure:hover img,
+  .theme-page button:hover > img.object-cover,
+  .theme-page a:hover > img.object-cover {
+    transform: scale(1.05);
+  }
+}
+
+/* Cards: a light border that glows where the pointer is. */
+.ih-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--ih-mx, 50%) var(--ih-my, 50%), color-mix(in srgb, var(--accent-strong) 70%, transparent), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity var(--ih-dur-md) var(--ih-ease-out);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .ih-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* Keyboard focus: an animated ring that draws itself. */
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
+  animation: ih-focus 420ms var(--ih-ease-spring);
+}
+@keyframes ih-focus {
+  from { outline-offset: 9px; outline-color: transparent; }
+  to { outline-offset: 3px; }
+}
+
+/* Checkboxes and radios spring when ticked, everywhere. */
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--accent-strong);
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring);
+}
+input[type='checkbox']:checked,
+input[type='radio']:checked {
+  animation: ih-pop 380ms var(--ih-ease-spring);
+}
+
+/* Selects and fields lift a hair on focus. */
+.theme-page :is(input, textarea, select):not([type='checkbox']):not([type='radio']):not([type='file']):focus {
+  transform: translateY(-1px);
+}
+
+/* Elegant thin scrollbar on desktop. */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--accent-strong) 45%, transparent) transparent;
+  }
+}
+
+/* Header logo breathes on hover; bell and theme buttons spring. */
+@media (hover: hover) {
+  header.ih-header a:has(> div > img) img,
+  header.ih-header a img {
+    transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+  }
+  header.ih-header a:hover img {
+    transform: rotate(-6deg) scale(1.06);
+  }
+}
+
+/* Empty states and loaders float. */
+.ih-page-loader img,
+.ih-loader-logo {
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------ back to top */
+
+.ih-top {
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  color: var(--page-fg);
+  box-shadow: var(--shadow-soft);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.7);
+  transition: opacity 360ms var(--ih-ease-out), transform 520ms var(--ih-ease-spring);
+}
+.ih-top.is-shown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.ih-top-ring circle:last-child {
+  transition: stroke-dashoffset 120ms linear;
+}
+@media (hover: hover) {
+  .ih-top:hover .ih-top-arrow {
+    animation: ih-top-fly 700ms var(--ih-ease-out);
+  }
+}
+.ih-top:active {
+  transform: scale(0.9);
+}
+@keyframes ih-top-fly {
+  0% { transform: none; }
+  45% { transform: translateY(-14px); opacity: 0; }
+  55% { transform: translateY(12px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+html.ih-typing .ih-top,
+html.ih-thread-open .ih-top {
+  display: none;
+}
+
+/* ------------------------------------------------------------ reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-hero-frame,
+  .ih-sd-tilt,
+  .ih-sd-widen,
+  .ih-sd-rise,
+  .ih-sd-drift,
+  .ih-card-media > img,
+  .ih-footer .ih-pillar {
+    animation: none !important;
+    translate: none !important;
+    scale: none !important;
+    clip-path: none !important;
+  }
+}

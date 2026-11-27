@@ -18,7 +18,7 @@ export function AdminTodayPage() {
       <Helmet>
         <title>{`${t('app.today')} | Imperial Home`}</title>
       </Helmet>
-      <Link to="/admin" className="inline-flex min-h-11 items-center gap-1 text-sm text-[#d4af6a]">
+      <Link to="/admin" className="inline-flex min-h-11 items-center gap-1 text-sm text-accent">
         <ChevronLeft size={18} className="rtl:scale-x-[-1]" />
         {t('admin.dashboard')}
       </Link>

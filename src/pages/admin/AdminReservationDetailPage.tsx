@@ -46,7 +46,7 @@ export function AdminReservationDetailPage() {
         <title>{`${r.public_code} | Imperial Home`}</title>
       </Helmet>
       {decideNow ? (
-        <div className="mb-6 border border-[#d4af6a] p-4">
+        <div className="mb-6 border border-accent p-4">
           <p className="font-display text-xl">{t('app.newBooking')}</p>
           <div className="mt-3 grid grid-cols-2 gap-3">
             <Button onClick={() => confirm.mutate(id)} disabled={confirm.isPending}>
@@ -58,7 +58,7 @@ export function AdminReservationDetailPage() {
           </div>
         </div>
       ) : null}
-      <p className="text-xs uppercase tracking-[0.16em] text-gold">{r.public_code}</p>
+      <p className="text-xs uppercase tracking-[0.16em] text-accent">{r.public_code}</p>
       <h1 className="mt-2 font-display text-4xl">{r.properties?.name}</h1>
       <div className="mt-3">
         <Badge>{t(`status.${r.status}`)}</Badge>
@@ -108,7 +108,7 @@ export function AdminReservationDetailPage() {
             {t('admin.callGuest')}
           </a>
           <a
-            className="rounded-full bg-[#1c1914] px-4 py-2 text-sm text-[#f6f1e8]"
+            className="rounded-full bg-accent-strong px-4 py-2 text-sm text-on-accent"
             href={whatsappUrl(
               r.profiles.phone,
               `Bonjour ${r.profiles.full_name || ''}, c’est Impérial Home pour votre séjour ${r.public_code}.`,

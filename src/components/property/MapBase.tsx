@@ -65,7 +65,7 @@ export function MapModeSwitch({ mode, onChange }: { mode: MapMode; onChange: (mo
     { value: 'satellite', label: t('common.mapSatellite'), icon: <Layers size={14} /> },
   ]
   return (
-    <div className="absolute right-3 top-3 z-[1000] flex overflow-hidden rounded-full border border-[#d4af6a]/70 bg-[#0a0907]/90 p-0.5 shadow-lg backdrop-blur">
+    <div className="absolute right-3 top-3 z-[1000] flex overflow-hidden rounded-full border border-accent/70 bg-panel/90 p-0.5 shadow-lg backdrop-blur">
       {options.map((option) => (
         <button
           key={option.value}
@@ -74,7 +74,7 @@ export function MapModeSwitch({ mode, onChange }: { mode: MapMode; onChange: (mo
           onClick={() => onChange(option.value)}
           className={cn(
             'flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-medium uppercase tracking-wider transition',
-            mode === option.value ? 'bg-gradient-to-r from-[#b8893b] to-[#ecd08a] text-[#17110a]' : 'text-[#ecd08a]',
+            mode === option.value ? 'ih-accent-fill text-on-accent' : 'text-accent',
           )}
         >
           {option.icon}

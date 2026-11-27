@@ -20,11 +20,11 @@ export function ReviewList({ propertyId }: { propertyId: string }) {
         <p className="mt-3 text-sm theme-muted">{t('plus.noReviews')}</p>
       ) : (
         <>
-          <p className="mt-2 text-[#d4af6a]">{average.toFixed(1)} / 5 · {data.length}</p>
+          <p className="mt-2 text-accent">{average.toFixed(1)} / 5 · {data.length}</p>
           <ul className="mt-4 space-y-4">
             {data.map((review) => (
-              <li key={review.id} className="rounded-[1.35rem] border border-[#d4af6a]/25 p-4">
-                <p className="text-[#d4af6a]">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</p>
+              <li key={review.id} className="rounded-[1.35rem] border border-accent/25 p-4">
+                <p className="text-accent">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</p>
                 <p className="mt-2 text-sm">{review.body}</p>
                 {review.photos?.length ? (
                   <div className="mt-3 flex gap-2 overflow-x-auto">

@@ -50,11 +50,11 @@ export function ImperialMark({ className = 'h-16 w-auto', markClassName = '', va
 }
 
 export function ImperialWordmark({ light = false, compact = false }: { light?: boolean; compact?: boolean }) {
-  const gold = light ? 'text-[#d4af6a]' : 'text-gold'
+  const ink = light ? 'text-accent' : 'text-[var(--page-fg)]'
   return (
     <div className="leading-none">
-      <p className={`font-display tracking-[0.28em] ${gold} ${compact ? 'text-[1.15rem]' : 'text-[1.5rem]'}`}>IMPERIAL</p>
-      <p className={`mt-1 flex items-center gap-2 tracking-[0.42em] ${gold} ${compact ? 'text-[0.62rem]' : 'text-[0.72rem]'}`}>
+      <p className={`font-display font-medium tracking-[0.24em] ${ink} ${compact ? 'text-[1.15rem]' : 'text-[1.5rem]'}`}>IMPERIAL</p>
+      <p className={`mt-1 flex items-center gap-2 font-medium tracking-[0.42em] text-accent ${compact ? 'text-[0.62rem]' : 'text-[0.72rem]'}`}>
         <span className="h-px flex-1 bg-current opacity-70" />
         HOME
         <span className="h-px flex-1 bg-current opacity-70" />
@@ -70,7 +70,7 @@ export function ImperialLogo({ light = false, compact = false }: { light?: boole
       <div>
         <ImperialWordmark light={light} compact={compact} />
         {!compact ? (
-          <p className={`mt-1.5 text-[0.62rem] tracking-[0.22em] ${light ? 'text-[#d4af6a]/90' : 'text-gold'}`}>
+          <p className={`mt-1.5 text-[0.62rem] tracking-[0.22em] ${light ? 'text-accent/90' : 'text-accent'}`}>
             L&apos;ART DU SOIN. L&apos;ESPRIT DU DÉTAIL.
           </p>
         ) : null}

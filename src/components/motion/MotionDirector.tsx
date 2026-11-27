@@ -199,6 +199,10 @@ export function MotionDirector() {
       card.style.removeProperty('--ih-ry')
     }
     const onDown = (event: PointerEvent) => {
+      // A tiny tap of vibration on phones, paired with the visual press.
+      if (event.pointerType === 'touch' && (event.target as Element | null)?.closest?.('button, a, [role="button"], [role="switch"]')) {
+        navigator.vibrate?.(8)
+      }
       const button = (event.target as Element | null)?.closest?.('.ih-btn') as HTMLElement | null
       if (!button || (button as HTMLButtonElement).disabled) return
       const box = button.getBoundingClientRect()

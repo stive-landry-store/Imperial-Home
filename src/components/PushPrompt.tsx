@@ -51,17 +51,17 @@ export function PushPrompt() {
       role="dialog"
       aria-live="polite"
     >
-      <div className="flex w-full max-w-md items-start gap-3 rounded-2xl border border-[#d4af6a]/70 bg-[#0b0b0c] p-4 text-[#f4eee3] shadow-[0_18px_50px_rgba(0,0,0,0.75)]">
-        <span className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#d4af6a] text-black">
+      <div className="flex w-full max-w-md items-start gap-3 rounded-2xl border border-accent/70 bg-panel p-4 text-panel-fg shadow-[0_18px_50px_rgba(0,0,0,0.75)]">
+        <span className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-accent-strong text-on-accent">
           <BellRing className="h-6 w-6" />
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-[16px] leading-snug font-semibold">{iosInstall ? t('app.pushIosTitle') : t('app.pushTitle')}</p>
-          <p className="mt-1 text-[14px] leading-snug text-white/80">{iosInstall ? t('app.pushIosBody') : t('app.pushBody')}</p>
+          <p className="mt-1 text-[14px] leading-snug text-panel-fg/80">{iosInstall ? t('app.pushIosBody') : t('app.pushBody')}</p>
           <div className="mt-3 flex gap-2">
             <button
               type="button"
-              className="min-h-11 rounded-full bg-[#d4af6a] px-5 text-[15px] font-semibold text-black"
+              className="min-h-11 rounded-full bg-accent-strong px-5 text-[15px] font-semibold text-on-accent"
               onClick={() => {
                 if (iosInstall) {
                   setVisible(false)
@@ -71,12 +71,12 @@ export function PushPrompt() {
             >
               {iosInstall ? t('app.pushIosHow') : t('app.pushEnable')}
             </button>
-            <button type="button" className="min-h-11 rounded-full px-4 text-[15px] text-white/75" onClick={later}>
+            <button type="button" className="min-h-11 rounded-full px-4 text-[15px] text-panel-fg/75" onClick={later}>
               {t('app.pushLater')}
             </button>
           </div>
         </div>
-        <button type="button" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-white/70" aria-label="Close" onClick={later}>
+        <button type="button" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-panel-fg/70" aria-label="Close" onClick={later}>
           <X className="h-5 w-5" />
         </button>
       </div>

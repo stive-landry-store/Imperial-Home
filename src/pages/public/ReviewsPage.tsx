@@ -11,7 +11,7 @@ import { SITE_ORIGIN } from '../../lib/seo'
 
 function Stars({ value }: { value: number }) {
   return (
-    <span className="inline-flex gap-0.5 text-[#d4af6a]" aria-label={`${value}/5`}>
+    <span className="inline-flex gap-0.5 text-accent" aria-label={`${value}/5`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star key={i} className={`h-4 w-4 ${i < value ? 'fill-current' : 'opacity-30'}`} />
       ))}
@@ -52,7 +52,7 @@ export function ReviewsPage() {
       <p className="mt-2 theme-muted">{t('reviewsPage.lead')}</p>
       {reviews.length ? (
         <div className="theme-card mt-8 flex items-center gap-6 rounded-3xl p-6">
-          <p className="font-display text-5xl text-[#d4af6a]">
+          <p className="font-display text-5xl text-accent">
             <span className="ih-count" data-count={Math.round(average * 10)} data-suffix="">{(average * 10).toFixed(0)}</span>
             <span className="text-2xl">/50</span>
           </p>
@@ -80,7 +80,7 @@ export function ReviewsPage() {
               <p className="mt-4 text-xs theme-muted">
                 {r.guest_name} ·{' '}
                 {new Date(`${r.stay_month}T12:00:00`).toLocaleDateString(i18n.language, { month: 'long', year: 'numeric' })} ·{' '}
-                <Link to={`/properties/${encodeURIComponent(r.property_slug)}`} className="ih-link text-[#d4af6a]">
+                <Link to={`/properties/${encodeURIComponent(r.property_slug)}`} className="ih-link text-accent">
                   {r.property_name}
                 </Link>
               </p>

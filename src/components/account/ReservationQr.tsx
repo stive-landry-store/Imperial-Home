@@ -13,11 +13,11 @@ export function ReservationQr({ reservationId, code }: { reservationId: string; 
 
   if (!src) return null
   return (
-    <div className="mt-6 flex flex-col items-center rounded-2xl border border-[#d4af6a]/60 bg-[#0a0907] p-5 text-center text-[#f4eee3]">
-      <p className="font-display text-lg tracking-wider text-[#ecd08a]">{t('app.qrTitle')}</p>
-      <p className="mt-1 text-xs text-[#a89f90]">{t('app.qrLead')}</p>
+    <div className="mt-6 flex flex-col items-center rounded-2xl border border-accent/60 bg-panel p-5 text-center text-panel-fg">
+      <p className="font-display text-lg tracking-wider text-accent">{t('app.qrTitle')}</p>
+      <p className="mt-1 text-xs theme-muted">{t('app.qrLead')}</p>
       <img src={src} alt={code} className="mt-3 h-52 w-52 rounded-xl bg-white p-2" />
-      <p className="mt-2 text-sm tracking-[0.2em] text-[#d4af6a]">{code}</p>
+      <p className="mt-2 text-sm tracking-[0.2em] text-accent">{code}</p>
     </div>
   )
 }

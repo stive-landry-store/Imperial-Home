@@ -28,8 +28,8 @@ export function WifiCard({ reservationId }: { reservationId: string }) {
   }
 
   return (
-    <div className="mt-6 border border-[#d4af6a]/40 p-4">
-      <p className="flex items-center gap-2 font-display text-lg text-[#d4af6a]">
+    <div className="mt-6 border border-accent/40 p-4">
+      <p className="flex items-center gap-2 font-display text-lg text-accent">
         <Wifi className="h-5 w-5" />
         {t('app.wifiTitle')}
       </p>
@@ -43,7 +43,7 @@ export function WifiCard({ reservationId }: { reservationId: string }) {
               <dt className="text-xs theme-muted">{label}</dt>
               <dd className="truncate text-base font-semibold tracking-wide">{value}</dd>
             </div>
-            <button type="button" className="shrink-0 p-2 text-[#d4af6a]" aria-label={label} onClick={() => copy(value, key)}>
+            <button type="button" className="shrink-0 p-2 text-accent" aria-label={label} onClick={() => copy(value, key)}>
               {copied === key ? '✓' : <Copy className="h-4 w-4" />}
             </button>
           </div>

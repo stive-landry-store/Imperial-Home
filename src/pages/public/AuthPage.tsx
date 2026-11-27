@@ -67,16 +67,16 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
       </Helmet>
       <ImperialLogo compact light={theme === 'dark'} />
       <h1 className="mt-8 font-display text-4xl">{mode === 'login' ? t('auth.loginTitle') : t('auth.registerTitle')}</h1>
-      {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-[#d4af6a]">{t('auth.configure')}</p> : null}
+      {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-accent">{t('auth.configure')}</p> : null}
       {confirmed && mode === 'login' ? (
-        <p className="ih-pop mt-4 rounded-2xl border border-[#d4af6a]/40 p-4 text-sm text-[#d4af6a]">{t('auth.emailConfirmed')}</p>
+        <p className="ih-pop mt-4 rounded-2xl border border-accent/40 p-4 text-sm text-accent">{t('auth.emailConfirmed')}</p>
       ) : null}
       {sent ? (
         <div className="ih-pop theme-card mt-8 space-y-3 p-6 text-center" role="status">
           <p className="ih-float text-4xl" aria-hidden>✉︎</p>
           <p className="font-display text-xl">{t('auth.confirmEmailSent')}</p>
           <p className="text-sm theme-muted">{email}</p>
-          <Link to="/login" className="mt-2 inline-block text-sm text-[#d4af6a]">{t('auth.toLogin')}</Link>
+          <Link to="/login" className="mt-2 inline-block text-sm text-accent">{t('auth.toLogin')}</Link>
         </div>
       ) : (
       <form className="theme-card mt-8 space-y-4 p-6" onSubmit={(e) => void onSubmit(e)}>
@@ -120,20 +120,20 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
         ) : null}
         {mode === 'register' ? <Turnstile onToken={setCaptcha} theme={theme === 'dark' ? 'dark' : 'light'} /> : null}
         {error ? <p className="ih-shake text-sm text-red-500" role="alert">{error}</p> : null}
-        {!online ? <p className="text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
+        {!online ? <p className="text-sm text-accent">{t('app.offlineNoBooking')}</p> : null}
         <Button type="submit" className="w-full" disabled={!online || pending || !isSupabaseConfigured()}>
           {mode === 'login' ? t('auth.submitLogin') : t('auth.submitRegister')}
         </Button>
       </form>
       )}
       {mode === 'login' ? (
-        <Link to="/forgot-password" className="mt-4 block text-center text-sm text-[#d4af6a]">
+        <Link to="/forgot-password" className="mt-4 block text-center text-sm text-accent">
           {t('auth.forgot')}
         </Link>
       ) : null}
       <Link
         to={mode === 'login' ? '/register' : '/login'}
-        className="mt-3 block text-center text-sm text-[#d4af6a]"
+        className="mt-3 block text-center text-sm text-accent"
       >
         {mode === 'login' ? t('auth.toRegister') : t('auth.toLogin')}
       </Link>

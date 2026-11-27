@@ -48,12 +48,12 @@ export function AppLock() {
   if (!locked || !user) return null
 
   return (
-    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-6 bg-[#050505] p-6 text-center text-[#f4eee3]">
+    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-6 bg-panel p-6 text-center text-panel-fg">
       <img src={`${import.meta.env.BASE_URL}brand/imperial-monogram.png`} alt="" className="h-28 w-auto" />
-      <p className="font-display text-xl tracking-[0.2em] text-[#ecd08a] uppercase">Imperial Home</p>
+      <p className="font-display text-xl tracking-[0.2em] text-accent uppercase">Imperial Home</p>
       <button
         type="button"
-        className="flex min-h-12 items-center gap-2 rounded-full bg-gradient-to-r from-[#b8893b] to-[#ecd08a] px-6 text-sm font-semibold text-[#17110a]"
+        className="flex min-h-12 items-center gap-2 rounded-full ih-accent-fill px-6 text-sm font-semibold text-on-accent"
         onClick={() => void attempt()}
       >
         <Fingerprint className="h-5 w-5" />
@@ -62,7 +62,7 @@ export function AppLock() {
       {failed ? <p className="text-sm text-red-300">{t('app.unlockFailed')}</p> : null}
       <button
         type="button"
-        className="text-xs text-[#a89f90] underline"
+        className="text-xs theme-muted underline"
         onClick={() => {
           disableLock()
           void signOut().finally(() => setLocked(false))

@@ -46,7 +46,7 @@ export function ReviewForm({
             key={value}
             type="button"
             aria-label={`${value}/5`}
-            className={`text-3xl leading-none ${value <= rating ? 'text-[#d4af6a]' : 'text-[#d4af6a]/30'}`}
+            className={`text-3xl leading-none ${value <= rating ? 'text-accent' : 'text-accent/30'}`}
             onClick={() => {
               setRating(value)
               haptic(10)
@@ -58,7 +58,7 @@ export function ReviewForm({
       </div>
       <textarea required minLength={8} value={body} onChange={(e) => setBody(e.target.value)} className="w-full border border-line bg-transparent px-3 py-2" rows={4} />
       <div>
-        <label className="inline-block cursor-pointer border border-[#d4af6a]/50 px-4 py-2 text-xs tracking-[0.16em] text-[#d4af6a] uppercase">
+        <label className="inline-block cursor-pointer border border-accent/50 px-4 py-2 text-xs tracking-[0.16em] text-accent uppercase">
           {t('app.addPhotos')}
           <input
             type="file"
@@ -80,7 +80,7 @@ export function ReviewForm({
                 <button
                   type="button"
                   aria-label="remove"
-                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-black text-xs text-[#d4af6a]"
+                  className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-panel shadow text-xs text-accent"
                   onClick={() => setFiles((current) => current.filter((_, i) => i !== index))}
                 >
                   ×

@@ -38,8 +38,8 @@ export function StayActions({
       <button
         type="button"
         className={cn(
-          'absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow',
-          saved ? 'text-red-500' : 'text-neutral-700',
+          'ih-heart absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow backdrop-blur',
+          saved ? 'is-saved text-red-500' : 'text-neutral-700',
           className,
         )}
         aria-label={saved ? t('plus.saved') : t('plus.favorite')}
@@ -51,7 +51,7 @@ export function StayActions({
           if (user) void syncFavorite(user.id, propertyId, next)
         }}
       >
-        <Heart className={cn('h-5 w-5', saved && 'fill-current')} />
+        <Heart key={String(saved)} className={cn('h-5 w-5', saved && 'fill-current')} />
       </button>
     )
   }
@@ -60,7 +60,7 @@ export function StayActions({
     <div className={cn('flex flex-wrap gap-2 text-sm', className)}>
       <button
         type="button"
-        className="rounded-full border border-[#d4af6a]/50 px-4 py-2 text-[#d4af6a]"
+        className="rounded-full border border-accent/50 px-4 py-2 text-accent"
         onClick={(event) => {
           event.preventDefault()
           event.stopPropagation()
@@ -73,7 +73,7 @@ export function StayActions({
       </button>
       <button
         type="button"
-        className="rounded-full border border-[#d4af6a]/50 px-4 py-2 text-[#d4af6a]"
+        className="rounded-full border border-accent/50 px-4 py-2 text-accent"
         onClick={(event) => {
           event.preventDefault()
           event.stopPropagation()
@@ -82,7 +82,7 @@ export function StayActions({
       >
         {compared ? t('plus.compareTitle') : t('plus.compare')}
       </button>
-      <Link to="/compare" className="px-1 py-2 text-[#d4af6a]" onClick={(event) => event.stopPropagation()}>
+      <Link to="/compare" className="px-1 py-2 text-accent" onClick={(event) => event.stopPropagation()}>
         {count}/3
       </Link>
     </div>

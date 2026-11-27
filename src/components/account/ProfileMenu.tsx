@@ -78,10 +78,10 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
   }
 
   const item =
-    'mx-3 mt-2 flex min-h-14 w-[calc(100%-1.5rem)] items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-left text-base touch-manipulation'
+    'mx-3 mt-2 flex min-h-14 w-[calc(100%-1.5rem)] items-center gap-3 rounded-2xl border border-line bg-accent-soft/60 px-4 text-left text-base touch-manipulation'
 
   return createPortal(
-    <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-black text-[#d4af6a]" role="dialog" aria-modal="true" aria-label={t('account.profile')}>
+    <div className="fixed inset-0 z-[80] flex h-dvh w-full flex-col bg-[var(--page)] text-[var(--page-fg)]" role="dialog" aria-modal="true" aria-label={t('account.profile')}>
       <div className="flex items-center justify-between px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <p className="font-display text-2xl">{t('account.profile')}</p>
         <button type="button" className="inline-flex min-h-12 min-w-12 items-center justify-center touch-manipulation" aria-label={t('common.cancel')} onClick={onClose}>
@@ -91,7 +91,7 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
       <div className="min-h-0 flex-1 overflow-y-auto pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         <button type="button" className={item} onClick={() => toggle('account')}>
           <span className="flex-1">{t('account.myAccount')}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-accent/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'account' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void saveProfile(event)}>
@@ -103,7 +103,7 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
 
         <button type="button" className={item} onClick={() => toggle('phone')}>
           <span className="flex-1">{t('auth.phone')}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-accent/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'phone' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void saveProfile(event)}>
@@ -115,7 +115,7 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
 
         <button type="button" className={item} onClick={() => toggle('email')}>
           <span className="flex-1">{t('auth.email')}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-accent/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'email' ? (
           <div className="space-y-3 px-4 pb-4">
@@ -126,7 +126,7 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
 
         <button type="button" className={item} onClick={() => toggle('password')}>
           <span className="flex-1">{t('account.password')}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-accent/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'password' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void savePassword(event)}>
@@ -140,7 +140,7 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
 
         <button type="button" className={item} onClick={() => toggle('cni')}>
           <span className="flex-1">{t('account.cni')}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-accent/70 rtl:scale-x-[-1]" />
         </button>
         {section === 'cni' ? (
           <form className="space-y-3 px-4 pb-4" onSubmit={(event) => void saveProfile(event)}>
@@ -152,7 +152,7 @@ export function ProfileMenu({ open, onClose }: { open: boolean; onClose: () => v
 
         <button type="button" className={item} onClick={() => void signOut()}>
           <span className="flex-1">{t('nav.logout')}</span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-[#d4af6a]/70 rtl:scale-x-[-1]" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-accent/70 rtl:scale-x-[-1]" />
         </button>
         {notice ? <p className="px-4 text-sm">{notice}</p> : null}
         {error ? <p className="px-4 text-sm text-red-300">{error}</p> : null}

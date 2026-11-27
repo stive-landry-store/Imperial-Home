@@ -16,10 +16,13 @@ import {
   Shield,
   UserRound,
   ChevronRight,
+  Moon,
+  Sun,
   X,
 } from 'lucide-react'
 import { cn } from '../../lib/cn'
 import { LANGUAGES, languageCode } from '../../lib/languages'
+import { Flag } from '../ui/Flag'
 import { shareSite } from '../../lib/social'
 import { GetAppCard } from './GetAppCard'
 import { useAuth } from '../../hooks/useAuth'
@@ -58,128 +61,159 @@ export function SettingsMenu({ open, onClose }: { open: boolean; onClose: () => 
     }
   }, [open])
 
+  useEffect(() => {
+    if (!open) return
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', escape)
+    return () => window.removeEventListener('keydown', escape)
+  }, [open, onClose])
+
   if (!open) return null
 
+  const tones = ['ih-tone-a', 'ih-tone-b', 'ih-tone-c', 'ih-tone-d', 'ih-tone-e']
+  const modes: ('light' | 'dark')[] = ['light', 'dark']
+
   return createPortal(
-    <div
-      className="fixed inset-0 z-[80] flex h-dvh w-full flex-col"
-      style={{ background: 'var(--page)', color: 'var(--page-fg)' }}
-      role="dialog"
-      aria-modal="true"
-      aria-label={t('nav.menu')}
-    >
-      <div className="flex items-center gap-3 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
-        <p className="min-w-0 flex-1 text-lg font-semibold">{t('menu.title')}</p>
-        <button
-          type="button"
-          className="inline-flex min-h-12 min-w-12 items-center justify-center touch-manipulation"
-          aria-label={t('common.cancel')}
-          onClick={onClose}
-        >
-          <X size={26} />
-        </button>
-      </div>
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
-        <GetAppCard onNavigate={onClose} />
-        <p className="mt-6 text-xs font-medium tracking-wide theme-muted uppercase">{t('menu.appearance')}</p>
-        <div className="mt-2 flex items-center gap-3">
-          <button
-            type="button"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/10"
-            aria-label={theme === 'light' ? t('common.darkMode') : t('common.lightMode')}
-            onClick={toggle}
-          >
-            {theme === 'light' ? <span className="text-lg">☾</span> : <span className="text-lg">☀</span>}
-          </button>
-          <div className="flex min-w-0 flex-1 gap-1 overflow-x-auto rounded-full border border-black/10 p-1">
-            {LANGUAGES.map((item) => (
-              <button
-                key={item.code}
-                type="button"
-                className={cn(
-                  'min-h-9 shrink-0 rounded-full px-3 text-xs font-semibold uppercase touch-manipulation',
-                  item.code === currentLanguage ? 'bg-[#c4a35a] text-black' : 'theme-muted',
-                )}
-                onClick={() => void i18n.changeLanguage(item.code)}
-              >
-                {item.code}
-              </button>
-            ))}
-          </div>
-        </div>
-        <p className="mt-6 text-xs font-medium tracking-wide theme-muted uppercase">{t('menu.settings')}</p>
-        <nav className="mt-2 flex flex-col gap-2">
-          {menuItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="flex min-h-14 items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-base"
+    <div className="ih-settings-root fixed inset-0 z-[80]" role="dialog" aria-modal="true" aria-label={t('nav.menu')}>
+      <button type="button" className="ih-settings-veil absolute inset-0" aria-label={t('common.cancel')} onClick={onClose} />
+      <div className="ih-settings-sheet absolute inset-y-0 start-0 flex h-dvh w-full max-w-md flex-col" style={{ background: 'var(--page)', color: 'var(--page-fg)' }}>
+        <div className="ih-settings-hero relative shrink-0 overflow-hidden px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-5">
+          <div className="ih-settings-hero-glow" aria-hidden />
+          <div className="relative flex items-center gap-3 py-2">
+            <p className="min-w-0 flex-1 font-display text-2xl font-medium">{t('menu.title')}</p>
+            <button
+              type="button"
+              className="ih-settings-close grid h-11 w-11 place-items-center rounded-full border border-line bg-[var(--card-bg)] touch-manipulation"
+              aria-label={t('common.cancel')}
               onClick={onClose}
             >
-              <item.icon className="h-5 w-5 shrink-0 text-[#c4a35a]" strokeWidth={1.75} />
-              <span className="min-w-0 flex-1">{item.label}</span>
-              <ChevronRight className="h-4 w-4 shrink-0 opacity-50 rtl:scale-x-[-1]" />
-            </Link>
-          ))}
-          <button
-            type="button"
-            className="flex min-h-14 w-full items-center gap-3 rounded-2xl border border-[var(--page-fg)]/10 bg-[var(--page-fg)]/5 px-4 text-left text-base"
-            onClick={() =>
-              void shareSite().then((result) => {
-                if (result === 'copied') {
-                  setCopied(true)
-                  window.setTimeout(() => setCopied(false), 2000)
-                }
-              })
-            }
-          >
-            <Share2 className="h-5 w-5 shrink-0 text-[#c4a35a]" strokeWidth={1.75} />
-            <span className="min-w-0 flex-1">{copied ? t('nav.copied') : t('nav.share')}</span>
-            <ChevronRight className="h-4 w-4 shrink-0 opacity-50 rtl:scale-x-[-1]" />
-          </button>
-        </nav>
-        <AppFeatures />
-        <div className="mt-4">
-          <SocialLinks />
-        </div>
-      </div>
-      <div className="shrink-0 border-t border-black/10 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        {user ? (
-          <>
-            <Link to="/account/profile" className="flex items-center gap-3" onClick={onClose}>
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt="" className="h-11 w-11 rounded-full object-cover" />
-              ) : (
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/10">
-                  <UserRound className="h-5 w-5" />
-                </span>
-              )}
-              <span className="min-w-0">
+              <X size={22} />
+            </button>
+          </div>
+          {user ? (
+            <Link to="/account/profile" className="ih-settings-me relative mt-3 flex items-center gap-3 rounded-3xl border border-line bg-[var(--card-bg)]/80 p-3 backdrop-blur" onClick={onClose}>
+              <span className="ih-settings-avatar relative grid h-14 w-14 shrink-0 place-items-center overflow-hidden rounded-full bg-accent-soft text-accent">
+                {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" /> : <UserRound className="h-6 w-6" />}
+              </span>
+              <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-1 font-semibold">
                   <span className="truncate">{profile?.full_name || t('account.myAccount')}</span>
                   {admin?.is_verified ? <VerifiedBadge className="h-4 w-4" /> : null}
                 </span>
-                <span className="block text-sm theme-muted">{roleLabel}</span>
+                <span className="mt-0.5 inline-flex rounded-full bg-accent-soft px-2 py-0.5 text-[12px] font-semibold text-accent">{roleLabel}</span>
               </span>
+              <ChevronRight className="ih-chevron h-5 w-5 shrink-0 opacity-50 rtl:scale-x-[-1]" />
             </Link>
+          ) : null}
+        </div>
+        <div className="ih-settings-body flex-1 overflow-y-auto px-4 pb-6">
+          <div className="ih-set-block">
+            <GetAppCard onNavigate={onClose} />
+          </div>
+
+          <p className="ih-set-title">{t('menu.appearance')}</p>
+          <div className="ih-set-block ih-theme-seg relative grid grid-cols-2 rounded-2xl p-1" style={{ ['--seg' as string]: theme === 'light' ? 0 : 1 }}>
+            <span className="ih-theme-pill absolute inset-y-1 start-1 rounded-xl" aria-hidden />
+            {modes.map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                className={cn('relative z-[1] flex min-h-11 items-center justify-center gap-2 rounded-xl text-sm font-semibold', theme === mode ? '' : 'theme-muted')}
+                aria-pressed={theme === mode}
+                onClick={() => {
+                  if (theme !== mode) toggle()
+                }}
+              >
+                {mode === 'light' ? <Sun className="ih-theme-icon h-4 w-4" /> : <Moon className="ih-theme-icon h-4 w-4" />}
+                {mode === 'light' ? t('common.lightMode') : t('common.darkMode')}
+              </button>
+            ))}
+          </div>
+
+          <p className="ih-set-title">{t('common.language')}</p>
+          <div className="ih-set-block grid grid-cols-4 gap-1.5">
+            {LANGUAGES.map((item, index) => (
+              <button
+                key={item.code}
+                type="button"
+                className={cn(
+                  'ih-lang-chip flex min-h-12 flex-col items-center justify-center gap-1 rounded-xl border text-[11px] font-semibold uppercase touch-manipulation',
+                  item.code === currentLanguage ? 'is-on border-accent-strong bg-accent-strong text-on-accent' : 'border-line bg-[var(--card-bg)] theme-muted',
+                )}
+                style={{ ['--ih-i' as string]: index }}
+                aria-label={item.label}
+                aria-pressed={item.code === currentLanguage}
+                onClick={() => void i18n.changeLanguage(item.code)}
+              >
+                <Flag country={item.country} className="h-4" />
+                {item.code}
+              </button>
+            ))}
+          </div>
+
+          <p className="ih-set-title">{t('menu.settings')}</p>
+          <nav className="flex flex-col gap-2">
+            {menuItems.map((item, index) => (
+              <Link
+                key={item.label}
+                to={item.to}
+                className="ih-set-row flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-[var(--card-bg)] px-3.5 text-[15px] font-medium"
+                style={{ ['--ih-i' as string]: index }}
+                onClick={onClose}
+              >
+                <span className={cn('ih-set-icon grid h-10 w-10 shrink-0 place-items-center rounded-xl', tones[index % tones.length])}>
+                  <item.icon className="h-5 w-5" strokeWidth={1.8} />
+                </span>
+                <span className="min-w-0 flex-1">{item.label}</span>
+                <ChevronRight className="ih-chevron h-4 w-4 shrink-0 opacity-40 rtl:scale-x-[-1]" />
+              </Link>
+            ))}
             <button
               type="button"
-              className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/15 text-sm font-medium"
+              className="ih-set-row flex min-h-14 w-full items-center gap-3 rounded-2xl border border-line bg-[var(--card-bg)] px-3.5 text-left text-[15px] font-medium"
+              style={{ ['--ih-i' as string]: menuItems.length }}
+              onClick={() =>
+                void shareSite().then((result) => {
+                  if (result === 'copied') {
+                    setCopied(true)
+                    window.setTimeout(() => setCopied(false), 2000)
+                  }
+                })
+              }
+            >
+              <span className="ih-set-icon grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
+                <Share2 className="h-5 w-5" strokeWidth={1.8} />
+              </span>
+              <span key={String(copied)} className="ih-pop min-w-0 flex-1">
+                {copied ? t('nav.copied') : t('nav.share')}
+              </span>
+              <ChevronRight className="ih-chevron h-4 w-4 shrink-0 opacity-40 rtl:scale-x-[-1]" />
+            </button>
+          </nav>
+          {user ? <p className="ih-set-title">{t('app.notifications')}</p> : null}
+          <AppFeatures />
+          <div className="ih-set-block mt-6 flex justify-center">
+            <SocialLinks />
+          </div>
+        </div>
+        <div className="shrink-0 border-t border-line px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          {user ? (
+            <button
+              type="button"
+              className="ih-btn flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-red-200 text-sm font-semibold text-red-700 hover:bg-red-50"
               onClick={() => void signOut()}
             >
               <LogOut className="h-4 w-4" />
               {t('nav.logout')}
             </button>
-          </>
-        ) : (
-          <Link
-            to="/login"
-            className="flex min-h-12 w-full items-center justify-center rounded-full border border-black/15 text-sm font-semibold"
-            onClick={onClose}
-          >
-            {t('nav.login')}
-          </Link>
-        )}
+          ) : (
+            <Link to="/login" className="ih-btn ih-btn-primary flex min-h-12 w-full items-center justify-center rounded-full text-sm font-semibold" onClick={onClose}>
+              {t('nav.login')}
+            </Link>
+          )}
+        </div>
       </div>
     </div>,
     document.body,

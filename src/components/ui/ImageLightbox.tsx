@@ -20,21 +20,21 @@ export function ImageLightbox({ images, start, onClose }: { images: string[]; st
 
   return createPortal(
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black" role="dialog">
-      <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-[#d4af6a] uppercase" onClick={onClose}>
+      <button type="button" className="absolute top-4 right-4 z-10 rounded-full bg-black/60 px-4 py-2 text-sm tracking-[0.2em] text-accent uppercase" onClick={onClose}>
         {t('common.cancel')}
       </button>
       {images.length > 1 ? (
-        <button type="button" className="absolute left-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]" onClick={() => move(-1)}>
+        <button type="button" className="absolute left-2 z-10 px-3 py-4 text-4xl text-accent" onClick={() => move(-1)}>
           ‹
         </button>
       ) : null}
       <ZoomableImage key={active} src={images[active]} alt="" onSwipe={move} />
       {images.length > 1 ? (
         <>
-          <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-[#ecd08a]">
+          <p className="pointer-events-none absolute bottom-6 left-0 right-0 text-center text-sm tracking-widest text-accent">
             {active + 1} / {images.length}
           </p>
-          <button type="button" className="absolute right-2 z-10 px-3 py-4 text-4xl text-[#d4af6a]" onClick={() => move(1)}>
+          <button type="button" className="absolute right-2 z-10 px-3 py-4 text-4xl text-accent" onClick={() => move(1)}>
             ›
           </button>
         </>

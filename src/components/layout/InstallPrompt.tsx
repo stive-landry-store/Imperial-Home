@@ -63,22 +63,22 @@ export function InstallPrompt() {
 
   return (
     <div
-      className="fixed inset-x-3 z-[60] mx-auto max-w-md rounded-2xl border border-[#d4af6a]/60 bg-[#0a0907] p-4 text-[#f4eee3] shadow-2xl"
+      className="fixed inset-x-3 z-[60] mx-auto max-w-md rounded-2xl border border-accent/60 bg-panel p-4 text-panel-fg shadow-2xl"
       style={{ top: 'calc(5rem + env(safe-area-inset-top))' }}
     >
-      <button type="button" aria-label={t('common.close')} className="absolute top-2 right-2 grid h-8 w-8 place-items-center text-[#a89f90]" onClick={dismiss}>
+      <button type="button" aria-label={t('common.close')} className="absolute top-2 right-2 grid h-8 w-8 place-items-center theme-muted" onClick={dismiss}>
         <X className="h-4 w-4" />
       </button>
       <div className="flex items-center gap-3">
         <img src={`${import.meta.env.BASE_URL}icon-192.png`} alt="" className="h-12 w-12 rounded-xl" />
         <div className="min-w-0">
-          <p className="font-display text-base text-[#ecd08a]">{platform === 'ios' ? t('app.installIos') : platform === 'android' ? t('app.installAndroid') : t('app.installTitle')}</p>
-          <p className="text-xs text-[#a89f90]">{t('app.installLead')}</p>
+          <p className="font-display text-base text-accent">{platform === 'ios' ? t('app.installIos') : platform === 'android' ? t('app.installAndroid') : t('app.installTitle')}</p>
+          <p className="text-xs theme-muted">{t('app.installLead')}</p>
         </div>
       </div>
       <button
         type="button"
-        className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#b8893b] to-[#ecd08a] text-sm font-semibold text-[#17110a]"
+        className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-full ih-accent-fill text-sm font-semibold text-on-accent"
         onClick={() => void install()}
       >
         <Download className="h-4 w-4" />

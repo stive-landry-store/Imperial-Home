@@ -73,7 +73,7 @@ export function AdminTurnoverPage() {
         ))}
       </ul>
       <p className="mt-6 text-sm">
-        <Link to="/admin/reviews" className="text-[#d4af6a]">
+        <Link to="/admin/reviews" className="text-accent">
           {t('admin.reviewsAdmin')}
         </Link>
       </p>

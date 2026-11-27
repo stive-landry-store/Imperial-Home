@@ -33,7 +33,7 @@ export function ContactPage() {
           </div>
           <div>
             <p className="text-sm theme-muted">{t('contact.email')}</p>
-            <a className="mt-2 block text-lg hover:text-[#e0c57a]" href={`mailto:${config?.email}`}>
+            <a className="mt-2 block text-lg hover:text-accent" href={`mailto:${config?.email}`}>
               {config?.email}
             </a>
           </div>

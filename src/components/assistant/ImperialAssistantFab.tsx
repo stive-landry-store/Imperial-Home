@@ -161,23 +161,23 @@ export function ImperialAssistantFab() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="ih-fab ih-btn fixed right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-[#d4af6a]/50 bg-black text-[#d4af6a] shadow-lg touch-manipulation md:right-6"
-        style={{ bottom: 'max(9.25rem, calc(env(safe-area-inset-bottom) + 8.5rem))' }}
+        className="ih-fab ih-fab-bot ih-btn fixed right-4 z-50 flex h-[3.75rem] w-[3.75rem] items-center justify-center rounded-full text-white touch-manipulation md:right-6"
+        style={{ bottom: 'max(9.75rem, calc(env(safe-area-inset-bottom) + 9rem))' }}
         aria-label={t('assistant.open')}
       >
-        <Bot className="h-7 w-7" />
+        <Bot className="h-7 w-7" strokeWidth={2.1} />
       </button>
 
       {open ? (
         <div className="fixed inset-0 z-[60] flex items-end justify-end p-4 md:p-6">
           <button type="button" className="ih-fade-in absolute inset-0 bg-black/50 backdrop-blur-sm" aria-label="Close" onClick={() => setOpen(false)} />
-          <div className="ih-assistant-panel relative flex h-[min(560px,85svh)] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-[#d4af6a]/35 bg-[#0a0a0a] shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#d4af6a]/25 px-4 py-3">
+          <div className="ih-assistant-panel relative flex h-[min(560px,85svh)] w-full max-w-md flex-col overflow-hidden rounded-3xl border border-accent/35 bg-panel shadow-2xl">
+            <div className="flex items-center justify-between border-b border-accent/25 px-4 py-3">
               <div>
-                <p className="font-display text-lg text-[#d4af6a]">Imperial-Home Bot</p>
-                <p className="text-xs text-white/60">{t('assistant.subtitle')}</p>
+                <p className="font-display text-lg text-accent">Imperial-Home Bot</p>
+                <p className="text-xs text-panel-fg/60">{t('assistant.subtitle')}</p>
               </div>
-              <button type="button" onClick={() => setOpen(false)} className="text-[#d4af6a]">
+              <button type="button" onClick={() => setOpen(false)} className="text-accent">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -187,7 +187,7 @@ export function ImperialAssistantFab() {
                   key={m.id}
                   className={cn(
                     'max-w-[90%] rounded px-3 py-2 text-sm leading-relaxed',
-                    m.role === 'user' ? 'ml-auto bg-[#d4af6a]/20 text-white' : 'bg-white/5 text-white/90',
+                    m.role === 'user' ? 'ml-auto bg-accent-strong/20 text-panel-fg' : 'bg-accent-soft text-panel-fg/90',
                   )}
                 >
                   {m.imageUrl ? <img src={m.imageUrl} alt="" className="mb-2 max-h-32 rounded-2xl object-cover" /> : null}
@@ -199,7 +199,7 @@ export function ImperialAssistantFab() {
                       <button
                         type="button"
                         disabled={sending}
-                        className="min-h-11 bg-[#c4a35a] px-3 text-sm text-black touch-manipulation disabled:opacity-60"
+                        className="min-h-11 bg-accent-strong px-3 text-sm text-on-accent touch-manipulation disabled:opacity-60"
                         onClick={() => void writeHuman(m.prompt || '')}
                       >
                         {t('assistant.writeHuman')}
@@ -218,12 +218,12 @@ export function ImperialAssistantFab() {
               ))}
             </div>
             {preview ? (
-              <div className="border-t border-[#d4af6a]/20 px-4 py-2">
+              <div className="border-t border-accent/20 px-4 py-2">
                 <img src={preview} alt="" className="h-20 rounded-2xl object-cover" />
               </div>
             ) : null}
-            <div className="flex gap-2 border-t border-[#d4af6a]/25 p-3">
-              <button type="button" className="text-[#d4af6a]" onClick={() => fileRef.current?.click()}>
+            <div className="flex gap-2 border-t border-accent/25 p-3">
+              <button type="button" className="text-accent" onClick={() => fileRef.current?.click()}>
                 <ImagePlus className="h-5 w-5" />
               </button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => onPick(e.target.files?.[0] ?? null)} />
@@ -232,9 +232,9 @@ export function ImperialAssistantFab() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && void send()}
                 placeholder={t('assistant.placeholder')}
-                className="min-w-0 flex-1 border border-[#d4af6a]/30 bg-transparent px-3 py-2 text-sm text-white outline-none"
+                className="min-w-0 flex-1 border border-accent/30 bg-transparent px-3 py-2 text-sm text-panel-fg outline-none"
               />
-              <button type="button" disabled={pending} onClick={() => void send()} className="text-[#d4af6a] disabled:opacity-40">
+              <button type="button" disabled={pending} onClick={() => void send()} className="text-accent disabled:opacity-40">
                 <Send className="h-5 w-5" />
               </button>
             </div>

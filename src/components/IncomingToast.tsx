@@ -60,17 +60,17 @@ export function IncomingToast() {
       role="status"
       aria-live="polite"
     >
-      <div className="pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-2xl border border-[#d4af6a]/70 bg-[#0b0b0c] p-4 text-[#f4eee3] shadow-[0_18px_50px_rgba(0,0,0,0.75)]">
+      <div className="pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-2xl border border-accent/70 bg-panel p-4 text-panel-fg shadow-[0_18px_50px_rgba(0,0,0,0.75)]">
         <button type="button" className="flex min-w-0 flex-1 items-start gap-3 text-left" onClick={open}>
-          <span className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#d4af6a] text-black">
+          <span className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-full bg-accent-strong text-on-accent">
             <BellRing className="h-6 w-6" />
           </span>
           <span className="min-w-0">
             <span className="block text-[17px] leading-snug font-semibold">{item.title}</span>
-            {item.body ? <span className="mt-0.5 line-clamp-3 block text-[16px] leading-snug text-white/80">{item.body}</span> : null}
+            {item.body ? <span className="mt-0.5 line-clamp-3 block text-[16px] leading-snug text-panel-fg/80">{item.body}</span> : null}
           </span>
         </button>
-        <button type="button" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-white/70" aria-label="Close" onClick={() => setItem(null)}>
+        <button type="button" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-panel-fg/70" aria-label="Close" onClick={() => setItem(null)}>
           <X className="h-5 w-5" />
         </button>
       </div>

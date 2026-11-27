@@ -3,10 +3,11 @@ import type { ButtonHTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
 
 const variants = {
-  primary: 'bg-[#c4a35a] text-black hover:bg-[#e0c57a] disabled:opacity-50',
-  dark: 'bg-[#1c1914] text-[#f6f1e8] hover:bg-[#2a241c] disabled:opacity-50',
-  ghost: 'border border-black/15 text-[var(--page-fg)] hover:bg-black/5 disabled:opacity-50',
-  outline: 'border border-black/20 text-[var(--page-fg)] hover:bg-[#1c1914] hover:text-[#f6f1e8]',
+  primary: 'text-on-accent disabled:opacity-50',
+  dark: 'bg-accent-soft text-accent hover:bg-accent-strong hover:text-on-accent disabled:opacity-50',
+  ghost:
+    'border border-line bg-[var(--card-bg)]/70 text-[var(--page-fg)] backdrop-blur hover:border-accent/40 hover:bg-accent-soft disabled:opacity-50',
+  outline: 'border border-accent/40 text-accent hover:bg-accent-strong hover:text-on-accent',
 }
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {

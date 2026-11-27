@@ -58,25 +58,25 @@ export function HousingSheet({
 
   return (
     <article className="housing-a4 text-[#111]">
-      <header className="housing-header relative bg-black px-[4%] pt-[4%] pb-[7%] text-[#d4af6a]">
+      <header className="housing-header relative bg-[#f6efe3] px-[4%] pt-[4%] pb-[7%] text-[#8a6729]">
         <div className="grid grid-cols-[1.05fr_0.95fr] items-start gap-[3%]">
           <div className="min-w-0">
             <ImperialMark className="mx-auto h-[18cqi] w-auto max-h-24" />
             <div className="housing-wordmark mt-1">
               <ImperialWordmark light compact />
             </div>
-            <p className="mt-1 text-center text-[0.62em] tracking-[0.14em] text-[#d4af6a]">
+            <p className="mt-1 text-center text-[0.62em] tracking-[0.14em] text-[#8a6729]">
               L&apos;ART DU SOIN. L&apos;ESPRIT DU DÉTAIL.
             </p>
           </div>
           <div className="min-w-0 pt-[4%] text-center">
-            <h1 className="font-display text-[1.55em] leading-[0.95] tracking-[0.04em] text-[#d4af6a]">
+            <h1 className="font-display text-[1.55em] leading-[0.95] tracking-[0.04em] text-[#8a6729]">
               FICHE DE
               <br />
               LOGEMENT
             </h1>
-            <p className="mx-auto mt-1 h-px w-10 bg-[#d4af6a]" />
-            <p className="mt-2 text-[0.72em] leading-snug tracking-wide text-[#d4af6a]">{sheetLead}</p>
+            <p className="mx-auto mt-1 h-px w-10 bg-[#8a6729]" />
+            <p className="mt-2 text-[0.72em] leading-snug tracking-wide text-[#8a6729]">{sheetLead}</p>
           </div>
         </div>
         <svg className="absolute inset-x-0 -bottom-px h-[4cqi] w-full text-white" viewBox="0 0 800 28" preserveAspectRatio="none" aria-hidden>
@@ -190,14 +190,14 @@ export function HousingSheet({
         </section>
       </div>
 
-      <footer className="bg-black px-[3%] pt-[0.8em] pb-[0.7em] text-[#d4af6a]">
+      <footer className="bg-[#f6efe3] px-[3%] pt-[0.8em] pb-[0.7em] text-[#8a6729]">
         <div className="grid grid-cols-4">
           <FooterPill icon={Shield} title="Sécurité 24h/24" text="Votre sécurité est notre priorité." />
           <FooterPill icon={Wifi} title="Wifi haut débit" text="Restez connecté en toute simplicité." />
           <FooterPill icon={Sparkles} title="Service ménage" text="Confort et propreté au quotidien." />
           <FooterPill icon={Phone} title="Assistance" text="Équipe à votre écoute à tout moment." />
         </div>
-        <p className="mt-[0.55em] text-center font-display text-[0.72em] tracking-[0.12em] text-[#d4af6a]">{thanks}</p>
+        <p className="mt-[0.55em] text-center font-display text-[0.72em] tracking-[0.12em] text-[#8a6729]">{thanks}</p>
       </footer>
     </article>
   )
@@ -210,7 +210,7 @@ function FooterPill({ icon: Icon, title, text }: { icon: typeof Shield; title: s
     <div className="min-w-0 px-0.5 text-center">
       <Icon className="mx-auto mb-0.5 h-[1.1em] w-[1.1em]" strokeWidth={1.4} />
       <p className="text-[0.56em] leading-tight break-words tracking-[0.02em] uppercase">{shownTitle}</p>
-      <p className="mt-0.5 text-[0.5em] leading-tight break-words text-[#d4af6a]/80">{shownText}</p>
+      <p className="mt-0.5 text-[0.5em] leading-tight break-words text-[#8a6729]/80">{shownText}</p>
     </div>
   )
 }

@@ -24,14 +24,14 @@ export function CustomerNotifications() {
   return (
     <ul className="mb-6 space-y-2" aria-live="polite">
       {unread.map((n) => (
-        <li key={n.id} className="border border-[#d4af6a]/50 bg-[#d4af6a]/10 px-4 py-3">
-          <p className="font-medium text-[#c4a35a]">{n.title}</p>
+        <li key={n.id} className="border border-accent/50 bg-accent-strong/10 px-4 py-3">
+          <p className="font-medium text-accent">{n.title}</p>
           {n.body ? <p className="mt-1 text-sm">{n.body}</p> : null}
           <div className="mt-2 flex flex-wrap gap-3 text-xs uppercase tracking-wider">
             {n.link ? (
               <Link
                 to={n.link}
-                className="text-gold"
+                className="text-accent"
                 onClick={() => markRead.mutate(n.id)}
               >
                 {t('account.openReservation')}

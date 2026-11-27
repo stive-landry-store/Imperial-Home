@@ -128,15 +128,15 @@ export function BookingPage() {
         type="button"
         aria-pressed={wantCar}
         className={cn(
-          'mt-6 flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-[#d4af6a] px-4 py-5 text-center',
-          wantCar ? 'bg-[#d4af6a] text-black' : 'bg-[#0b0b0c] text-[#f4eee3]',
+          'mt-6 flex w-full flex-col items-center gap-3 rounded-2xl border-2 border-accent px-4 py-5 text-center',
+          wantCar ? 'bg-accent-strong text-on-accent' : 'bg-panel text-on-accent',
         )}
         onClick={() => setWantCar((value) => !value)}
       >
         <span
           className={cn(
             'grid h-24 w-24 place-items-center rounded-full',
-            wantCar ? 'bg-black text-[#d4af6a]' : 'bg-[#d4af6a] text-black',
+            wantCar ? 'bg-panel text-accent' : 'bg-accent-strong text-on-accent',
           )}
         >
           <Car className="h-14 w-14" strokeWidth={1.75} aria-hidden />
@@ -152,7 +152,7 @@ export function BookingPage() {
             {t('plus.applyCode')}
           </Button>
         </div>
-        {services.length > 0 ? <p className="pt-2 text-sm uppercase tracking-wider text-[#d4af6a]">{t('plus.extras')}</p> : null}
+        {services.length > 0 ? <p className="pt-2 text-sm uppercase tracking-wider text-accent">{t('plus.extras')}</p> : null}
         {services.map((service) => (
           <label key={service.id} className="flex items-center justify-between gap-3 text-sm">
             <span className="flex items-center gap-2">
@@ -198,7 +198,7 @@ export function BookingPage() {
                 <p className="mt-2 text-xs theme-muted">
                   <Live text={localized(selectedVehicle.description_en, selectedVehicle.description_fr, i18n.language)} />
                 </p>
-                <Link to={`/cars/${selectedVehicle.slug}`} className="mt-2 inline-block text-xs tracking-[0.14em] text-[#d4af6a] uppercase">
+                <Link to={`/cars/${selectedVehicle.slug}`} className="mt-2 inline-block text-xs tracking-[0.14em] text-accent uppercase">
                   {t('cars.bookThis')}
                 </Link>
               </div>
@@ -243,7 +243,7 @@ export function BookingPage() {
               )}
             </div>
             {carEstimate ? (
-              <p className="text-sm text-[#d4af6a]">
+              <p className="text-sm text-accent">
                 {t('cars.estimated')}: {formatXaf(carEstimate.total)}
                 {carEstimate.discount > 0 ? ` (−${formatXaf(carEstimate.discount)})` : ''}
               </p>
@@ -252,9 +252,9 @@ export function BookingPage() {
       ) : null}
 
       <p className="mt-6 text-sm theme-muted">{t('booking.hold', { minutes: config?.hold_minutes ?? '30' })}</p>
-      {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-[#d4af6a]/80">{t('booking.demoBlock')}</p> : null}
+      {!isSupabaseConfigured() ? <p className="mt-4 text-sm text-accent/80">{t('booking.demoBlock')}</p> : null}
       {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
-      {!online ? <p className="mt-4 text-sm text-[#d4af6a]">{t('app.offlineNoBooking')}</p> : null}
+      {!online ? <p className="mt-4 text-sm text-accent">{t('app.offlineNoBooking')}</p> : null}
       <Button
         className="mt-8 w-full rounded-full"
         disabled={!online || !quote?.available || pending || !isSupabaseConfigured() || (wantCar && !vehicleId)}
@@ -262,7 +262,7 @@ export function BookingPage() {
       >
         {t('booking.confirm')}
       </Button>
-      <Link to={`/properties/${slug}`} className="mt-4 block text-center text-sm text-[#d4af6a]">
+      <Link to={`/properties/${slug}`} className="mt-4 block text-center text-sm text-accent">
         {t('common.back')}
       </Link>
     </div>

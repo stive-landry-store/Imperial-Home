@@ -24,9 +24,9 @@ export function ArrivalCard({ reservationId }: { reservationId: string }) {
     data.latitude && data.longitude ? `https://www.google.com/maps/dir/?api=1&destination=${data.latitude},${data.longitude}` : null
 
   return (
-    <section className="ih-card theme-card mt-6 overflow-hidden rounded-3xl border border-[#d4af6a]/30 p-5">
+    <section className="ih-card theme-card mt-6 overflow-hidden rounded-3xl border border-accent/30 p-5">
       <h3 className="flex items-center gap-2 font-display text-xl">
-        <DoorOpen className="h-5 w-5 text-[#d4af6a]" /> {t('arrival.title')}
+        <DoorOpen className="h-5 w-5 text-accent" /> {t('arrival.title')}
       </h3>
       <p className="mt-1 text-sm theme-muted">
         {t('arrival.times', { arrival: data.arrival_time ?? '14:00', departure: data.departure_time ?? '11:00' })}
@@ -34,8 +34,8 @@ export function ArrivalCard({ reservationId }: { reservationId: string }) {
       {data.open ? (
         <>
           {data.access_code ? (
-            <div className="ih-pop mt-4 rounded-2xl bg-black/40 p-4 text-center">
-              <p className="flex items-center justify-center gap-2 text-xs tracking-[0.3em] text-[#d4af6a] uppercase">
+            <div className="ih-pop mt-4 rounded-2xl bg-accent-soft p-4 text-center">
+              <p className="flex items-center justify-center gap-2 text-xs tracking-[0.3em] text-accent uppercase">
                 <KeyRound className="h-4 w-4" /> {t('arrival.code')}
               </p>
               <p className="ih-gold-text mt-2 font-display text-4xl tracking-[0.35em]">{data.access_code}</p>
@@ -44,12 +44,12 @@ export function ArrivalCard({ reservationId }: { reservationId: string }) {
           {guide ? <p className="mt-4 text-sm whitespace-pre-line">{guide}</p> : null}
         </>
       ) : (
-        <p className="mt-4 rounded-2xl border border-white/10 p-4 text-sm theme-muted">
+        <p className="mt-4 rounded-2xl border border-line p-4 text-sm theme-muted">
           {t('arrival.opensOn', { date: new Date(`${data.opens_on}T12:00:00`).toLocaleDateString(i18n.language) })}
         </p>
       )}
       {map ? (
-        <a href={map} target="_blank" rel="noreferrer" className="ih-btn mt-4 inline-flex items-center gap-2 rounded-full border border-[#d4af6a]/50 px-4 py-2 text-sm text-[#d4af6a]">
+        <a href={map} target="_blank" rel="noreferrer" className="ih-btn mt-4 inline-flex items-center gap-2 rounded-full border border-accent/50 px-4 py-2 text-sm text-accent">
           <MapPin className="h-4 w-4" /> {t('arrival.directions')}
         </a>
       ) : null}

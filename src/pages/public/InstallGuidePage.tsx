@@ -14,9 +14,9 @@ type Platform = 'ios' | 'android'
 function Step({ n, text, icon }: { n: number; text: string; icon: React.ReactNode }) {
   return (
     <li className="flex items-center gap-4 px-4 py-4">
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#d4af6a]/15 text-lg font-semibold text-[#d4af6a]">{n}</span>
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-accent-strong/15 text-lg font-semibold text-accent">{n}</span>
       <span className="min-w-0 flex-1 text-[15px] leading-snug">{text}</span>
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-[#d4af6a]/30 text-[#d4af6a]">{icon}</span>
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-accent/30 text-accent">{icon}</span>
     </li>
   )
 }
@@ -24,7 +24,7 @@ function Step({ n, text, icon }: { n: number; text: string; icon: React.ReactNod
 function Benefit({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
     <li className="flex items-center gap-4 px-4 py-4">
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#d4af6a]/15 text-[#d4af6a]">{icon}</span>
+      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent-strong/15 text-accent">{icon}</span>
       <span className="min-w-0">
         <span className="block text-[15px] font-semibold">{title}</span>
         <span className="block text-sm theme-muted">{text}</span>
@@ -80,7 +80,7 @@ export function InstallGuidePage() {
       </Helmet>
       <div className="mx-auto max-w-xl px-4 pt-28 pb-28">
         <div className="flex flex-col items-center text-center">
-          <img src={`${import.meta.env.BASE_URL}icon-192.png`} alt="Imperial Home" className="h-24 w-24 rounded-[1.4rem] border border-[#d4af6a]/40 shadow-lg" />
+          <img src={`${import.meta.env.BASE_URL}icon-192.png`} alt="Imperial Home" className="h-24 w-24 rounded-[1.4rem] border border-accent/40 shadow-lg" />
           <p className="mt-2 text-xs theme-muted">Imperial Home</p>
           <h1 className="mt-5 font-display text-4xl">{t('app.guideTitle')}</h1>
           <p className="mt-4 font-semibold">{t('app.guideSub')}</p>
@@ -96,7 +96,7 @@ export function InstallGuidePage() {
             {notifsOn ? null : (
               <button
                 type="button"
-                className="min-h-12 w-full rounded-full bg-[#d4af6a] text-[16px] font-semibold text-black"
+                className="min-h-12 w-full rounded-full bg-accent-strong text-[16px] font-semibold text-on-accent"
                 onClick={() => void enableNotifications().then((result) => setNotifsOn(result === 'on' || result === 'unlinked'))}
               >
                 {t('app.pushEnableScreen')}
@@ -106,7 +106,7 @@ export function InstallGuidePage() {
         ) : null}
 
         <div className="theme-card mt-6 flex items-center gap-3 rounded-2xl p-4">
-          <WifiOff className="h-5 w-5 shrink-0 text-[#d4af6a]" />
+          <WifiOff className="h-5 w-5 shrink-0 text-accent" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">{readyAt ? t('app.offlineReady') : t('app.offlinePreparing')}</p>
             <p className="text-xs theme-muted">{t('app.offlineLead')}</p>
@@ -115,7 +115,7 @@ export function InstallGuidePage() {
             type="button"
             disabled={busy}
             onClick={() => void download()}
-            className="shrink-0 rounded-full border border-[#d4af6a]/60 px-3 py-2 text-xs text-[#d4af6a] disabled:opacity-50"
+            className="shrink-0 rounded-full border border-accent/60 px-3 py-2 text-xs text-accent disabled:opacity-50"
           >
             {busy ? '…' : t('app.offlineRefresh')}
           </button>
@@ -124,17 +124,17 @@ export function InstallGuidePage() {
         <button
           type="button"
           onClick={() => void shareSite(`${window.location.origin}/installer`, t('app.inviteText'))}
-          className="mt-3 min-h-11 w-full rounded-full border border-[#d4af6a]/60 text-sm text-[#d4af6a]"
+          className="mt-3 min-h-11 w-full rounded-full border border-accent/60 text-sm text-accent"
         >
           {t('app.guideShare')}
         </button>
 
         <h2 className="mt-8 text-xl font-semibold">{t('app.guideSteps')}</h2>
-        <p className="mt-2 text-sm text-[#d4af6a]">
+        <p className="mt-2 text-sm text-accent">
           {detected === 'ios' ? t('app.detectedIos') : detected === 'android' ? t('app.detectedAndroid') : t('app.detectedDesktop')}
         </p>
         {detected === 'desktop' || showOther ? (
-          <div className="mt-3 grid grid-cols-2 gap-1 rounded-full border border-[#d4af6a]/30 p-1" role="tablist">
+          <div className="mt-3 grid grid-cols-2 gap-1 rounded-full border border-accent/30 p-1" role="tablist">
             {(['ios', 'android'] as const).map((value) => (
               <button
                 key={value}
@@ -142,7 +142,7 @@ export function InstallGuidePage() {
                 role="tab"
                 aria-selected={platform === value}
                 onClick={() => setPlatform(value)}
-                className={cn('min-h-10 rounded-full text-sm', platform === value ? 'bg-[#d4af6a] font-semibold text-black' : 'text-[#d4af6a]')}
+                className={cn('min-h-10 rounded-full text-sm', platform === value ? 'bg-accent-strong font-semibold text-on-accent' : 'text-accent')}
               >
                 {value === 'ios' ? 'iPhone / iPad' : 'Android'}
               </button>
@@ -154,7 +154,7 @@ export function InstallGuidePage() {
           <button
             type="button"
             onClick={() => void installNow()}
-            className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#b8893b] to-[#ecd08a] font-semibold text-[#17110a]"
+            className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-full ih-accent-fill font-semibold text-on-accent"
           >
             <Download className="h-5 w-5" />
             {t('app.install')}
@@ -180,7 +180,7 @@ export function InstallGuidePage() {
         )}
 
         {detected !== 'desktop' && !showOther ? (
-          <button type="button" className="mt-4 text-sm text-[#d4af6a] underline" onClick={() => setShowOther(true)}>
+          <button type="button" className="mt-4 text-sm text-accent underline" onClick={() => setShowOther(true)}>
             {t('app.otherPhone')}
           </button>
         ) : null}

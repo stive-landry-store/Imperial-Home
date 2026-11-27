@@ -2,29 +2,39 @@
 @import "./styles/motion.css";
 @import "./styles/chat.css";
 @import "./styles/admin.css";
+@import "./styles/settings.css";
+@import "./styles/effects.css";
 
 @theme {
-  --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Montserrat", "Noto Sans", "Noto Sans SC", "Noto Sans Arabic", "Noto Sans Devanagari", "Noto Sans Bengali", system-ui, sans-serif;
-  --color-ink: #0a0a0a;
-  --color-ink-soft: #111111;
-  --color-gold: #c4a35a;
-  --color-gold-light: #e0c57a;
-  --color-gold-dim: #8b6f32;
-  --color-cream: #f4eee3;
-  --color-paper: #f7f4ee;
-  --color-stone: #a89f90;
-  --color-muted: #6f675c;
-  --color-line: #e4dccb;
+  --font-display: "Fraunces", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans", "Noto Sans SC", "Noto Sans Arabic", "Noto Sans Devanagari", "Noto Sans Bengali", system-ui, sans-serif;
+  --color-ink: #1f1d1a;
+  --color-ink-soft: #2b2824;
+  --color-gold: var(--accent);
+  --color-gold-light: var(--accent);
+  --color-gold-dim: var(--accent);
+  --color-cream: #f7f4ef;
+  --color-paper: #ffffff;
+  --color-stone: #a39a8c;
+  --color-muted: #6e665b;
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-panel: var(--panel);
+  --color-panel-fg: var(--panel-fg);
+  --color-fg: var(--page-fg);
   --text-xs: 0.875rem;
   --text-sm: 1rem;
   --text-base: 1.125rem;
   --text-lg: 1.25rem;
   --text-xl: 1.4375rem;
   --text-2xl: 1.75rem;
-  --surface-fg: #14110c;
-  --surface-muted: #524a40;
-  --surface-head: #3d362c;
+  --surface-fg: #1f1d1a;
+  --surface-muted: #5d564c;
+  --surface-head: #3d382f;
+  --radius-card: 1.5rem;
 }
 
 html {
@@ -53,14 +63,15 @@ textarea {
   min-height: 3.25rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(212 175 106 / 0.45);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
   padding: 0.6rem 0.75rem;
   text-align: center;
   font-size: 0.95rem;
   line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   touch-action: manipulation;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 @media (max-width: 767px) {
@@ -69,48 +80,107 @@ textarea {
   }
 }
 
-html.theme-dark {
-  --page: #050505;
-  --page-alt: #0c0c0c;
-  --page-fg: #f4eee3;
-  --muted-fg: rgba(244, 238, 227, 0.68);
-  --muted-fg-soft: rgba(244, 238, 227, 0.5);
-  --header-solid: rgba(5, 5, 5, 0.95);
-  --tabbar-solid: #050505;
-  --header-fg: #d4af6a;
-  --card-bg: #111111;
+/* Imperial Blanc — white first, warm charcoal ink, one champagne-bronze accent. */
+:root,
+html.theme-light {
+  --page: #ffffff;
+  --page-alt: #f8f5f0;
+  --page-fg: #1f1d1a;
+  --muted-fg: rgba(31, 29, 26, 0.62);
+  --muted-fg-soft: rgba(31, 29, 26, 0.45);
+  --line: rgba(31, 29, 26, 0.09);
+  --header-solid: rgba(255, 255, 255, 0.78);
+  --tabbar-solid: rgba(255, 255, 255, 0.86);
+  --header-fg: #1f1d1a;
+  --card-bg: #ffffff;
   --input-bg: #ffffff;
-  --input-fg: #14110c;
-  color-scheme: dark;
+  --input-fg: #1f1d1a;
+  --panel: #ffffff;
+  --panel-fg: #1f1d1a;
+  --accent: #94702f;
+  --accent-strong: #a27b36;
+  --accent-soft: #f6efe3;
+  --on-accent: #ffffff;
+  --accent-grad: linear-gradient(135deg, #c29a55 0%, #a27b36 48%, #8a6729 100%);
+  --shadow-soft: 0 1px 2px rgba(31, 29, 26, 0.04), 0 12px 32px -14px rgba(31, 29, 26, 0.14);
+  --shadow-lift: 0 2px 6px rgba(31, 29, 26, 0.05), 0 28px 60px -24px rgba(31, 29, 26, 0.22);
+  color-scheme: light;
 }
 
-html.theme-light {
-  --page: #f7f4ee;
-  --page-alt: #efe8da;
-  --page-fg: #14110c;
-  --muted-fg: rgba(20, 17, 12, 0.68);
-  --muted-fg-soft: rgba(20, 17, 12, 0.48);
-  --header-solid: rgba(247, 244, 238, 0.96);
-  --tabbar-solid: #f7f4ee;
-  --header-fg: #8b6f32;
-  --card-bg: #fffdf8;
+html.theme-dark {
+  --page: #151413;
+  --page-alt: #1c1b19;
+  --page-fg: #f2eee7;
+  --muted-fg: rgba(242, 238, 231, 0.66);
+  --muted-fg-soft: rgba(242, 238, 231, 0.48);
+  --line: rgba(242, 238, 231, 0.1);
+  --header-solid: rgba(21, 20, 19, 0.78);
+  --tabbar-solid: rgba(21, 20, 19, 0.88);
+  --header-fg: #f2eee7;
+  --card-bg: #1f1d1b;
   --input-bg: #ffffff;
-  --input-fg: #14110c;
-  color-scheme: light;
+  --input-fg: #1f1d1a;
+  --panel: #23211e;
+  --panel-fg: #f2eee7;
+  --accent: #d8b878;
+  --accent-strong: #c9a35d;
+  --accent-soft: rgba(216, 184, 120, 0.12);
+  --on-accent: #1a1408;
+  --accent-grad: linear-gradient(135deg, #e2c587 0%, #c9a35d 50%, #a9833f 100%);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -14px rgba(0, 0, 0, 0.55);
+  --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.3), 0 28px 60px -24px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
 }
 
 html,
 body {
-  background: var(--page, #050505);
-  color: var(--page-fg, #f4eee3);
+  background: var(--page, #ffffff);
+  color: var(--page-fg, #1f1d1a);
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   line-height: 1.65;
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 96, "SOFT" 50;
+}
+
+.ih-accent-fill {
+  background: var(--accent-grad);
+  color: var(--on-accent);
+}
+
+.ih-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ih-eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
 }
 
 .theme-page {
@@ -133,11 +203,11 @@ body {
 }
 
 .theme-card {
-  border: 1px solid rgba(28, 25, 20, 0.08);
-  border-radius: 1.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
   background: var(--card-bg);
   color: var(--page-fg);
-  box-shadow: 0 10px 28px rgba(20, 17, 12, 0.05);
+  box-shadow: var(--shadow-soft);
   min-width: 0;
 }
 
@@ -153,14 +223,14 @@ body {
 .surface-light,
 .theme-page .bg-white,
 .theme-page .bg-cream {
-  background: #fffdf8;
+  background: #ffffff;
   color: var(--surface-fg);
 }
 
 .surface-light {
-  border-radius: 1.35rem;
-  border-color: rgba(28, 25, 20, 0.08);
-  box-shadow: 0 10px 28px rgba(20, 17, 12, 0.05);
+  border-radius: var(--radius-card);
+  border-color: var(--line);
+  box-shadow: var(--shadow-soft);
   min-width: 0;
 }
 
@@ -288,8 +358,8 @@ body {
 }
 
 ::selection {
-  background: #c4a35a;
-  color: #0a0a0a;
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 input,
@@ -318,7 +388,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 .gold-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #c4a35a, transparent);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
 
 .hero-still {
@@ -347,9 +417,9 @@ input[type='date']::-webkit-calendar-picker-indicator {
 
 .ih-chat h1,
 .admin-main .ih-chat h1 {
-  font-family: var(--font-sans);
-  font-size: 22px;
-  font-weight: 650;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.2;
   text-transform: none;
@@ -387,7 +457,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 .housing-card {
   position: relative;
   margin-top: 0.85em;
-  border: 1px solid #c4a35a;
+  border: 1px solid #c9ab76;
   border-radius: 14px;
   padding: 1.05em 0.55em 0.6em;
 }
@@ -421,7 +491,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .housing-header {
-  background: #000;
+  background: #f6efe3;
 }
 
 .housing-wordmark p:first-child {

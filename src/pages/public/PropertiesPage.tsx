@@ -59,12 +59,12 @@ export function PropertiesPage() {
             <h1 className="text-2xl font-semibold">{t('properties.title')}</h1>
             <p className="mt-2 max-w-xl text-sm theme-muted">{t('properties.lead')}</p>
           </div>
-          <Link to="/properties/map" className="text-sm font-medium text-[#c4a35a]">
+          <Link to="/properties/map" className="text-sm font-medium text-accent">
             {t('plus.openMap')}
           </Link>
         </div>
         {params.get('checkIn') && params.get('checkOut') ? (
-          <p className="mt-6 text-base tracking-wide text-[#d4af6a]">
+          <p className="mt-6 text-base tracking-wide text-accent">
             {params.get('checkIn')} → {params.get('checkOut')}
             {params.get('nights') ? ` · ${params.get('nights')} ${t('property.nights')}` : ''}
             {params.get('guests') ? ` · ${params.get('guests')} ${t('property.guests')}` : ''}

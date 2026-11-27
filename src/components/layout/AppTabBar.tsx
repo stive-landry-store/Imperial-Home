@@ -24,24 +24,24 @@ export function AppTabBar() {
   return (
     <nav
       data-tabbar
-      className="fixed inset-x-0 bottom-0 z-[45] border-t border-[#d4af6a]/30 bg-[var(--tabbar-solid)]"
+      className="ih-tabbar fixed inset-x-0 bottom-0 z-[45] border-t border-line bg-[var(--tabbar-solid)] backdrop-blur-xl backdrop-saturate-150"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)', transform: 'translateZ(0)' }}
       aria-label={t('nav.menu')}
     >
       <div className="mx-auto flex max-w-lg">
-        <NavLink to="/" end className={cn(item, homeOn ? 'ih-tab-active font-semibold text-[#c4a35a]' : 'theme-muted')}>
+        <NavLink to="/" end className={cn(item, homeOn ? 'ih-tab-active font-semibold text-accent' : 'theme-muted')}>
           <Home className="h-6 w-6" strokeWidth={homeOn ? 2.25 : 1.75} />
           <span>{t('nav.home')}</span>
         </NavLink>
-        <NavLink to="/properties" className={cn(item, searchOn ? 'ih-tab-active font-semibold text-[#c4a35a]' : 'theme-muted')}>
+        <NavLink to="/properties" className={cn(item, searchOn ? 'ih-tab-active font-semibold text-accent' : 'theme-muted')}>
           <Search className="h-6 w-6" strokeWidth={searchOn ? 2.25 : 1.75} />
           <span>{t('nav.search')}</span>
         </NavLink>
-        <NavLink to={staysTo} end={Boolean(user)} className={cn(item, staysOn ? 'ih-tab-active font-semibold text-[#c4a35a]' : 'theme-muted')}>
+        <NavLink to={staysTo} end={Boolean(user)} className={cn(item, staysOn ? 'ih-tab-active font-semibold text-accent' : 'theme-muted')}>
           <CalendarDays className="h-6 w-6" strokeWidth={staysOn ? 2.25 : 1.75} />
           <span>{t('nav.reservations')}</span>
         </NavLink>
-        <NavLink to={accountTo} className={cn(item, accountOn ? 'ih-tab-active font-semibold text-[#c4a35a]' : 'theme-muted')}>
+        <NavLink to={accountTo} className={cn(item, accountOn ? 'ih-tab-active font-semibold text-accent' : 'theme-muted')}>
           <span className="relative">
             {profile?.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-6 w-6 rounded-full object-cover" />

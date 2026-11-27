@@ -53,9 +53,9 @@ export function ReservationDetailPage() {
       <Helmet>
         <title>{`${reservation.public_code} | Imperial Home`}</title>
       </Helmet>
-      <p className="text-xs uppercase tracking-[0.18em] text-gold">{reservation.public_code}</p>
+      <p className="text-xs uppercase tracking-[0.18em] text-accent">{reservation.public_code}</p>
       <h1 className="mt-2 font-display text-4xl">{reservation.properties?.name}</h1>
-      {matricule ? <p className="mt-1 text-xs tracking-[0.2em] text-gold">{matricule}</p> : null}
+      {matricule ? <p className="mt-1 text-xs tracking-[0.2em] text-accent">{matricule}</p> : null}
       <div className="mt-3">
         <Badge variant="dark">{t(`status.${reservation.status}`)}</Badge>
       </div>
@@ -65,7 +65,7 @@ export function ReservationDetailPage() {
       <p className="mt-2 text-lg">{formatXaf(reservation.total_amount_xaf)}</p>
 
       {reservation.status === 'confirmed' || reservation.status === 'completed' ? (
-        <div className="theme-card mt-8 border border-[#d4af6a]/50 p-6">
+        <div className="theme-card mt-8 border border-accent/50 p-6">
           <h2 className="font-display text-2xl">{t('account.bookingValidated')}</h2>
           <p className="mt-2 text-sm theme-muted">{t('account.bookingValidatedLead')}</p>
           <h3 className="mt-6 font-display text-2xl">{t('plus.guideTitle')}</h3>

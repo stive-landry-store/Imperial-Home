@@ -1,0 +1,325 @@
+/*
+ * Imperial Home — settings, menus and admin pages in motion.
+ * Every panel slides, every row cascades, every switch springs.
+ * Conçu par stive landry store (NYAMI TCHOUPE STIVE LANDRY).
+ */
+
+/* ------------------------------------------------------------ side sheet (☰ menu) */
+
+.ih-settings-veil {
+  background: rgb(31 29 26 / 0.32);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: ih-fade-in 360ms var(--ih-ease-out) both;
+}
+.ih-settings-sheet {
+  box-shadow: 30px 0 80px -30px rgb(31 29 26 / 0.45);
+  animation: ih-sheet-slide 620ms var(--ih-ease-out) both;
+}
+[dir='rtl'] .ih-settings-sheet {
+  animation-name: ih-sheet-slide-rtl;
+}
+@keyframes ih-sheet-slide {
+  from { transform: translate3d(-100%, 0, 0); }
+  to { transform: none; }
+}
+@keyframes ih-sheet-slide-rtl {
+  from { transform: translate3d(100%, 0, 0); }
+  to { transform: none; }
+}
+.ih-settings-sheet[role='dialog'] > *:first-child,
+.ih-settings-root[role='dialog'] > *:first-child {
+  animation: ih-fade-in 360ms var(--ih-ease-out) both;
+}
+.ih-settings-hero {
+  background: linear-gradient(180deg, var(--accent-soft), transparent);
+}
+.ih-settings-hero-glow {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-strong) 26%, transparent), transparent 70%);
+  animation: ih-orb 14s var(--ih-ease-in-out) infinite alternate;
+  pointer-events: none;
+}
+.ih-settings-close {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring), background-color var(--ih-dur-sm);
+  animation: ih-pop 520ms var(--ih-ease-spring) 200ms both;
+}
+.ih-settings-close:hover {
+  transform: rotate(90deg);
+  background: var(--accent-soft);
+}
+.ih-settings-me {
+  animation: ih-fade-up 640ms var(--ih-ease-out) 180ms both;
+  transition: transform var(--ih-dur-md) var(--ih-ease-out), box-shadow var(--ih-dur-md);
+}
+.ih-settings-me:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+.ih-settings-avatar {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--accent-strong);
+  animation: ih-pop 600ms var(--ih-ease-spring) 320ms both;
+}
+
+/* Section titles draw a small line, blocks rise in sequence. */
+.ih-set-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1.6rem 0 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-fg);
+  animation: ih-fade-up 600ms var(--ih-ease-out) both;
+  animation-delay: 220ms;
+}
+.ih-set-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  transform-origin: left;
+  animation: ih-draw-line 900ms var(--ih-ease-out) 400ms both;
+}
+.ih-set-block {
+  animation: ih-fade-up 640ms var(--ih-ease-out) both;
+  animation-delay: 260ms;
+}
+
+/* Rows: cascade, lift, icon tilts, chevron slides. */
+.ih-set-row {
+  animation: ih-set-row-in 600ms var(--ih-ease-out) both;
+  animation-delay: calc(300ms + var(--ih-i, 0) * 45ms);
+  transition:
+    transform var(--ih-dur-md) var(--ih-ease-out),
+    box-shadow var(--ih-dur-md) var(--ih-ease-out),
+    border-color var(--ih-dur-sm),
+    background-color var(--ih-dur-sm);
+}
+@keyframes ih-set-row-in {
+  from { opacity: 0; transform: translate3d(-18px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+[dir='rtl'] .ih-set-row {
+  animation-name: ih-set-row-in-rtl;
+}
+@keyframes ih-set-row-in-rtl {
+  from { opacity: 0; transform: translate3d(18px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+.ih-set-row:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.ih-set-icon {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-chevron {
+  transition: transform var(--ih-dur-md) var(--ih-ease-out), opacity var(--ih-dur-sm);
+}
+@media (hover: hover) {
+  .ih-set-row:hover:not(:disabled) {
+    transform: translateX(4px);
+    border-color: color-mix(in srgb, var(--accent-strong) 30%, transparent);
+    box-shadow: var(--shadow-soft);
+  }
+  .ih-set-row:hover .ih-set-icon,
+  .ih-settings-me:hover .ih-settings-avatar {
+    transform: rotate(-8deg) scale(1.1);
+  }
+  .ih-set-row:hover .ih-chevron,
+  .ih-settings-me:hover .ih-chevron {
+    transform: translateX(4px);
+    opacity: 0.9;
+  }
+}
+.ih-tone-a { background: var(--accent-soft); color: var(--accent); }
+.ih-tone-b { background: #e8f1fb; color: #2f6fb7; }
+.ih-tone-c { background: #e8f6ee; color: #1f8a51; }
+.ih-tone-d { background: #fdeceb; color: #c8322a; }
+.ih-tone-e { background: #f1edf9; color: #6a4fb3; }
+html.theme-dark .ih-tone-b { background: rgb(47 111 183 / 0.2); color: #9cc3ee; }
+html.theme-dark .ih-tone-c { background: rgb(31 138 81 / 0.18); color: #7fd6a4; }
+html.theme-dark .ih-tone-d { background: rgb(200 50 42 / 0.2); color: #f19a93; }
+html.theme-dark .ih-tone-e { background: rgb(106 79 179 / 0.22); color: #c3b2f0; }
+
+/* Light / dark switch with a sliding pill and spinning icons. */
+.ih-theme-seg {
+  background: var(--page-alt);
+  border: 1px solid var(--line);
+}
+.ih-theme-pill {
+  width: calc((100% - 0.5rem) / 2);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  transform: translateX(calc(var(--seg, 0) * 100%));
+  transition: transform 520ms var(--ih-ease-spring);
+}
+[dir='rtl'] .ih-theme-pill {
+  transform: translateX(calc(var(--seg, 0) * -100%));
+}
+.ih-theme-seg button[aria-pressed='true'] .ih-theme-icon {
+  color: var(--accent);
+  animation: ih-theme-spin 700ms var(--ih-ease-spring);
+}
+@keyframes ih-theme-spin {
+  from { transform: rotate(-120deg) scale(0.5); }
+  to { transform: none; }
+}
+
+/* Language chips pop in one after another. */
+.ih-lang-chip {
+  animation: ih-pop 480ms var(--ih-ease-spring) both;
+  animation-delay: calc(300ms + var(--ih-i, 0) * 30ms);
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring), background-color var(--ih-dur-sm), border-color var(--ih-dur-sm), color var(--ih-dur-sm);
+}
+.ih-lang-chip:hover {
+  transform: translateY(-2px);
+}
+.ih-lang-chip.is-on svg {
+  animation: ih-pop 480ms var(--ih-ease-spring);
+}
+
+/* iOS-style switch. */
+.ih-switch {
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 28px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--page-fg) 14%, transparent);
+  transition: background-color 360ms var(--ih-ease-out);
+}
+.ih-switch-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+  transition: transform 460ms var(--ih-ease-spring), width 200ms var(--ih-ease-out);
+}
+.ih-switch.is-on {
+  background: var(--accent-strong);
+}
+.ih-switch.is-on .ih-switch-knob {
+  transform: translateX(18px);
+}
+button:active .ih-switch-knob {
+  width: 27px;
+}
+button:active .ih-switch.is-on .ih-switch-knob {
+  transform: translateX(13px);
+}
+
+/* ------------------------------------------------------------ admin pages */
+
+/* Every admin page: its blocks rise one after another. */
+.admin-main > div > div > :is(section, form, ul, table, .surface-light, .theme-card, div[class*='grid']) {
+  animation: ih-fade-up 700ms var(--ih-ease-out) both;
+}
+.admin-main > div > div > :nth-child(2) { animation-delay: 80ms; }
+.admin-main > div > div > :nth-child(3) { animation-delay: 140ms; }
+.admin-main > div > div > :nth-child(4) { animation-delay: 200ms; }
+.admin-main > div > div > :nth-child(5) { animation-delay: 260ms; }
+.admin-main > div > div > :nth-child(6) { animation-delay: 320ms; }
+.admin-main > div > div > :nth-child(n + 7) { animation-delay: 380ms; }
+
+/* Fields glow and their label lights up while typing. */
+.admin-main label {
+  transition: color var(--ih-dur-sm);
+}
+.admin-main div:focus-within > label {
+  color: var(--accent);
+}
+.admin-main :is(input, textarea, select):not([type='checkbox']):not([type='radio']):not([type='file']) {
+  transition: border-color var(--ih-dur-sm), box-shadow var(--ih-dur-sm) var(--ih-ease-out), transform var(--ih-dur-sm) var(--ih-ease-out);
+}
+.admin-main :is(input, textarea, select):not([type='checkbox']):not([type='radio']):not([type='file']):focus {
+  transform: translateY(-1px);
+}
+.admin-main table tbody tr {
+  animation: ih-fade-up 520ms var(--ih-ease-out) both;
+  transition: background-color var(--ih-dur-sm);
+}
+.admin-main table tbody tr:nth-child(2) { animation-delay: 30ms; }
+.admin-main table tbody tr:nth-child(3) { animation-delay: 60ms; }
+.admin-main table tbody tr:nth-child(4) { animation-delay: 90ms; }
+.admin-main table tbody tr:nth-child(5) { animation-delay: 120ms; }
+.admin-main table tbody tr:nth-child(n + 6) { animation-delay: 150ms; }
+.admin-main table tbody tr:hover {
+  background-color: var(--accent-soft);
+}
+.admin-main ul > li {
+  animation: ih-fade-up 520ms var(--ih-ease-out) both;
+}
+.admin-main ul > li:nth-child(2) { animation-delay: 40ms; }
+.admin-main ul > li:nth-child(3) { animation-delay: 80ms; }
+.admin-main ul > li:nth-child(4) { animation-delay: 120ms; }
+.admin-main ul > li:nth-child(n + 5) { animation-delay: 160ms; }
+.admin-main input[type='checkbox'],
+.admin-main input[type='radio'] {
+  accent-color: var(--accent-strong);
+  transition: transform var(--ih-dur-sm) var(--ih-ease-spring);
+}
+.admin-main input[type='checkbox']:checked,
+.admin-main input[type='radio']:checked {
+  transform: scale(1.12);
+}
+
+/* Admin settings: section cards with an icon that turns, a save bar that floats. */
+.ih-admin-card {
+  position: relative;
+  overflow: hidden;
+  animation: ih-fade-up 700ms var(--ih-ease-out) both;
+  animation-delay: calc(120ms + var(--ih-i, 0) * 90ms);
+  transition: box-shadow var(--ih-dur-md) var(--ih-ease-out), border-color var(--ih-dur-sm);
+}
+.ih-admin-card:focus-within {
+  border-color: color-mix(in srgb, var(--accent-strong) 40%, transparent);
+  box-shadow: var(--shadow-lift);
+}
+.ih-admin-card-icon {
+  transition: transform var(--ih-dur-md) var(--ih-ease-spring);
+}
+.ih-admin-card:hover .ih-admin-card-icon,
+.ih-admin-card:focus-within .ih-admin-card-icon {
+  transform: rotate(-10deg) scale(1.12);
+}
+.ih-admin-card img {
+  animation: ih-blur-in 800ms var(--ih-ease-out) both;
+}
+.ih-save-bar {
+  animation: ih-fade-up 600ms var(--ih-ease-spring) 500ms both;
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+}
+.ih-saved {
+  animation: ih-pop 520ms var(--ih-ease-spring) both;
+}
+.ih-saved svg {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: ih-check-draw 600ms var(--ih-ease-out) 150ms forwards;
+}
+@keyframes ih-check-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-settings-sheet,
+  .ih-settings-hero-glow,
+  .ih-set-row,
+  .ih-lang-chip,
+  .ih-admin-card {
+    animation: none !important;
+  }
+}

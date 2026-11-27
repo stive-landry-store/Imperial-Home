@@ -74,11 +74,11 @@ export function AdminCalendarPage() {
           <p className="mt-2 text-sm theme-muted">{t('admin.calendarLead')}</p>
         </div>
         <div className="flex items-center gap-3">
-          <button type="button" onClick={() => setCursor(addMonths(cursor, -1))} className="px-2 text-lg text-gold">
+          <button type="button" onClick={() => setCursor(addMonths(cursor, -1))} className="px-2 text-lg text-accent">
             ‹
           </button>
           <span className="font-display text-xl capitalize">{format(cursor, 'MMMM yyyy', { locale })}</span>
-          <button type="button" onClick={() => setCursor(addMonths(cursor, 1))} className="px-2 text-lg text-gold">
+          <button type="button" onClick={() => setCursor(addMonths(cursor, 1))} className="px-2 text-lg text-accent">
             ›
           </button>
         </div>
@@ -111,7 +111,7 @@ export function AdminCalendarPage() {
             {pending.map((r) => (
               <li key={r.id} className="flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <Link to={`/admin/reservations/${r.id}`} className="font-medium text-gold">
+                  <Link to={`/admin/reservations/${r.id}`} className="font-medium text-accent">
                     {r.public_code}
                   </Link>
                   <p className="text-sm">
@@ -174,7 +174,7 @@ export function AdminCalendarPage() {
       <p className="mt-4 text-sm theme-muted md:hidden">{t('admin.swipeHint')}</p>
       <div className="table-swipe mt-2 -mx-4 overflow-x-auto px-4 snap-x md:mx-0 md:overflow-visible md:px-0">
       <div className="min-w-[40rem] snap-start md:min-w-0">
-      <div className="grid grid-cols-7 gap-2 text-center text-[11px] uppercase tracking-wider text-gold/80">
+      <div className="grid grid-cols-7 gap-2 text-center text-[11px] uppercase tracking-wider text-accent/80">
         {(Array.isArray(dow) ? dow : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']).map((d) => (
           <div key={d}>{d}</div>
         ))}
@@ -193,14 +193,14 @@ export function AdminCalendarPage() {
                 'surface-light min-h-32 border p-2 text-sm',
                 !inMonth && 'opacity-40',
                 awaiting && 'border-amber-700/60 bg-amber-950/10',
-                taken && !awaiting && 'border-[#c4a35a] bg-[#8a1c1c]/10',
+                taken && !awaiting && 'border-accent bg-[#8a1c1c]/10',
                 !taken && 'border-line',
               )}
             >
               <p
                 className={cn(
                   'text-muted',
-                  taken && 'font-medium text-[#c4a35a] line-through decoration-[#c4a35a] decoration-2',
+                  taken && 'font-medium text-accent line-through decoration-[#c4a35a] decoration-2',
                 )}
               >
                 {d.getDate()}
@@ -208,7 +208,7 @@ export function AdminCalendarPage() {
               <p
                 className={cn(
                   'mt-1 text-[10px] font-medium tracking-[0.12em] uppercase',
-                  taken ? 'text-[#d4af6a]' : 'theme-muted',
+                  taken ? 'text-accent' : 'theme-muted',
                 )}
               >
                 {awaiting ? t('admin.calendarPending') : taken ? t('cal.reserved') : t('cal.available')}
@@ -217,7 +217,7 @@ export function AdminCalendarPage() {
                 <Link
                   key={h.id}
                   to={`/admin/reservations/${h.id}`}
-                  className="mt-1 block truncate rounded bg-[#d4af6a]/15 px-1 py-0.5 text-[11px] text-[#d4af6a]"
+                  className="mt-1 block truncate rounded bg-accent-strong/15 px-1 py-0.5 text-[11px] text-accent"
                   title={`${h.properties?.name ?? ''} · ${h.public_code} · ${t(`status.${h.status}`)}`}
                 >
                   {h.properties?.name ?? h.public_code}
