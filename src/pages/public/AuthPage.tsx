@@ -14,6 +14,13 @@ import { ImperialLogo } from '../../components/brand/Logo'
 import { Turnstile } from '../../components/security/Turnstile'
 import { captchaEnabled } from '../../lib/captcha'
 
+/** Only same-site paths: refuses "//other.site", "/\other.site", full URLs and control characters (open-redirect guard). */
+function safeNext(value: string) {
+  if (!value.startsWith('/') || value.startsWith('//') || value.startsWith('/\\')) return '/'
+  if ([...value].some((c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)) return '/'
+  return value
+}
+
 export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
   const { t, i18n } = useTranslation()
   const [params] = useSearchParams()
@@ -44,7 +51,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
     try {
       if (mode === 'login') {
         await signIn(email, password)
-        navigate(next.startsWith('/') ? next : '/', { replace: true })
+        navigate(safeNext(next), { replace: true })
       } else {
         if (captchaEnabled && !captcha) {
           setError(t('auth.captchaRequired'))

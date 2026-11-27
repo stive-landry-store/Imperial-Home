@@ -12,6 +12,9 @@ Deno.serve(async (req) => {
   if (!auth) return json({ error: 'Unauthorized' }, 401)
   const { conversation_id, message } = await req.json().catch(() => ({ conversation_id: null, message: '' }))
   if (!conversation_id || !message) return json({ error: 'conversation_id and message required' }, 400)
+  if (typeof message !== 'string' || message.length > 2000 || typeof conversation_id !== 'string') {
+    return json({ error: 'Message too long' }, 413)
+  }
 
   const { url, key } = serviceClient()
   const userClient = createClient(url, Deno.env.get('SUPABASE_ANON_KEY')!, {
