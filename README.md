@@ -79,4 +79,4 @@ Vite, React 19, TypeScript, Tailwind CSS, React Router, TanStack Query, Supabase
 
 ---
 
-© Imperial Home. Application by **stive landry store** — NYAMI TCHOUPE STIVE LANDRY.
+Copyright © 2026 **NYAMI TCHOUPE STIVE LANDRY** (stive landry store). All rights reserved. Proprietary software, used by Imperial Home under a non-exclusive license — see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).

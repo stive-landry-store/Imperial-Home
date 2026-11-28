@@ -1,10 +1,12 @@
 {
   "name": "imperial-home",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "copyright": "Copyright (c) 2026 NYAMI TCHOUPE STIVE LANDRY (stive landry store). All rights reserved.",
   "version": "1.0.0",
   "description": "Imperial Home \u2014 furnished apartments and car rental in Douala. App by stive landry store (NYAMI TCHOUPE STIVE LANDRY).",
   "author": {
-    "name": "stive landry store",
+    "name": "NYAMI TCHOUPE STIVE LANDRY (stive landry store)",
     "url": "https://github.com/stive-landry-store"
   },
   "contributors": [

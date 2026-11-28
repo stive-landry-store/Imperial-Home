@@ -1,0 +1,72 @@
+LICENCE PROPRIÉTAIRE — LOGICIEL « IMPERIAL HOME »
+PROPRIETARY LICENSE — "IMPERIAL HOME" SOFTWARE
+
+Copyright © 2026 NYAMI TCHOUPE STIVE LANDRY, exerçant sous le nom « stive landry store ».
+Tous droits réservés. / All rights reserved.
+
+------------------------------------------------------------------------------
+1. TITULAIRE DES DROITS
+
+Le logiciel « Imperial Home » — c'est-à-dire l'ensemble de son code source et de son
+code compilé, de son architecture, de sa base de données (structure, migrations,
+fonctions et règles), de ses interfaces, de son design, de son motion design, de ses
+textes d'interface, de sa documentation et de leurs versions successives (le
+« Logiciel ») — a été conçu, écrit et développé par NYAMI TCHOUPE STIVE LANDRY
+(« l'Auteur »), qui en est le titulaire des droits d'auteur.
+
+L'historique Git de ce dépôt, conservé sur le compte GitHub « stive-landry-store »,
+fait foi de la création et de l'évolution du Logiciel.
+
+2. AUCUNE CESSION
+
+Aucun droit de propriété sur le Logiciel n'est cédé, vendu ou transféré par la mise à
+disposition du code, par son hébergement, par son utilisation ou par la publication du
+site. Toute cession de droits ne peut résulter que d'un écrit signé par l'Auteur, qui
+précise les droits cédés, leur étendue, leur durée, le territoire et le prix.
+
+3. UTILISATION PAR IMPERIAL HOME
+
+L'établissement Imperial Home (Carrefour Conquête, Douala, Cameroun) utilise le
+Logiciel au titre d'une licence d'utilisation accordée par l'Auteur. Cette licence est
+non exclusive, non cessible et ne peut pas être sous-licenciée. Ses conditions (durée,
+fin, transition) sont fixées par un contrat de licence écrit entre l'Auteur et
+l'exploitant d'Imperial Home. En l'absence d'un tel contrat signé, l'utilisation est
+tolérée par l'Auteur et peut être révoquée par lui dans les conditions prévues par la loi.
+
+4. INTERDICTIONS
+
+Sauf autorisation écrite et préalable de l'Auteur, il est interdit de :
+  a) copier, reproduire ou dupliquer tout ou partie du Logiciel ;
+  b) modifier, adapter, traduire ou créer une œuvre dérivée du Logiciel ;
+  c) distribuer, vendre, louer, prêter, publier ou mettre à disposition le Logiciel ;
+  d) décompiler, désassembler ou tenter d'extraire le code source, sauf dans les
+     limites strictement permises par la loi ;
+  e) supprimer ou modifier les mentions d'auteur, de copyright ou la présente licence.
+
+5. CE QUI N'APPARTIENT PAS À L'AUTEUR
+
+La présente licence ne porte que sur le Logiciel. Elle ne donne à l'Auteur aucun droit sur :
+  - le nom, le logo, la marque et l'identité commerciale « Imperial Home » ;
+  - les photographies, vidéos et textes descriptifs fournis par l'établissement ;
+  - les données des clients, des réservations et des paiements, qui restent la
+    propriété de l'établissement et sont protégées par la loi et par la politique de
+    confidentialité.
+
+6. COMPOSANTS TIERS
+
+Le Logiciel utilise des bibliothèques libres (open source) listées dans package.json.
+Chacune reste soumise à sa propre licence, qui prime pour ce composant.
+
+7. ABSENCE DE GARANTIE
+
+Le Logiciel est fourni « en l'état ». Sauf stipulation contraire d'un contrat écrit,
+l'Auteur ne garantit pas qu'il est exempt d'erreurs et ne peut être tenu responsable
+des dommages indirects liés à son utilisation.
+
+8. DROIT APPLICABLE
+
+La présente licence est soumise au droit camerounais, notamment à la législation sur
+le droit d'auteur et les droits voisins, et à l'Accord de Bangui (OAPI). Tout litige
+relève des juridictions compétentes de Douala, sauf accord écrit contraire.
+
+Contact : stive landry store — https://github.com/stive-landry-store
